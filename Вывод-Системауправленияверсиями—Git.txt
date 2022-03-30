@@ -1,0 +1,13 @@
+﻿Открытие репозиториев:
+C:\Users\ПК\source\repos\ExcelMacroAdd
+Ветвь remasrer(19/03/2022) создана локально в репозитории C:\Users\ПК\source\repos\ExcelMacroAdd
+M	ExcelMacroAdd/ExcelMacroAdd.csproj
+D	ExcelMacroAdd/Form1.Designer.cs
+D	ExcelMacroAdd/Form1.cs
+D	ExcelMacroAdd/Form1.resx
+M	ExcelMacroAdd/Properties/AssemblyInfo.cs
+M	ExcelMacroAdd/Ribbon1.Designer.cs
+M	ExcelMacroAdd/Ribbon1.cs
+M	ExcelMacroAdd/Ribbon1.resx
+Switched to branch 'remasrer(19/03/2022)'
+Извлечено remasrer(19/03/2022) в репозиторий C:\Users\ПК\source\repos\ExcelMacroAdd

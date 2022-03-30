@@ -39,28 +39,23 @@
             this.Группа1 = this.Factory.CreateRibbonGroup();
             this.button6 = this.Factory.CreateRibbonButton();
             this.button1 = this.Factory.CreateRibbonButton();
+            this.button8 = this.Factory.CreateRibbonButton();
             this.button3 = this.Factory.CreateRibbonButton();
             this.button4 = this.Factory.CreateRibbonButton();
             this.button9 = this.Factory.CreateRibbonButton();
             this.button2 = this.Factory.CreateRibbonButton();
             this.button7 = this.Factory.CreateRibbonButton();
             this.button5 = this.Factory.CreateRibbonButton();
-            this.group2 = this.Factory.CreateRibbonGroup();
-            this.button8 = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
-            this.label3 = this.Factory.CreateRibbonLabel();
-            this.label2 = this.Factory.CreateRibbonLabel();
-            this.label1 = this.Factory.CreateRibbonLabel();
+            this.button10 = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.Группа1.SuspendLayout();
-            this.group2.SuspendLayout();
             this.group1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
             // 
             this.tab1.Groups.Add(this.Группа1);
-            this.tab1.Groups.Add(this.group2);
             this.tab1.Groups.Add(this.group1);
             this.tab1.Label = "МАКРОСЫ";
             this.tab1.Name = "tab1";
@@ -69,6 +64,7 @@
             // 
             this.Группа1.Items.Add(this.button6);
             this.Группа1.Items.Add(this.button1);
+            this.Группа1.Items.Add(this.button8);
             this.Группа1.Items.Add(this.button3);
             this.Группа1.Items.Add(this.button4);
             this.Группа1.Items.Add(this.button9);
@@ -95,6 +91,15 @@
             this.button1.Name = "button1";
             this.button1.ShowImage = true;
             this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            // 
+            // button8
+            // 
+            this.button8.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button8.Image = ((System.Drawing.Image)(resources.GetObject("button8.Image")));
+            this.button8.Label = "Удалить все формулы";
+            this.button8.Name = "button8";
+            this.button8.ShowImage = true;
+            this.button8.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button8_Click);
             // 
             // button3
             // 
@@ -146,43 +151,19 @@
             this.button5.Label = "";
             this.button5.Name = "button5";
             // 
-            // group2
-            // 
-            this.group2.Items.Add(this.button8);
-            this.group2.Label = "Расширинные макросы";
-            this.group2.Name = "group2";
-            // 
-            // button8
-            // 
-            this.button8.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button8.Image = ((System.Drawing.Image)(resources.GetObject("button8.Image")));
-            this.button8.Label = "Модульные аппараты";
-            this.button8.Name = "button8";
-            this.button8.ShowImage = true;
-            this.button8.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button8_Click);
-            // 
             // group1
             // 
-            this.group1.Items.Add(this.label3);
-            this.group1.Items.Add(this.label2);
-            this.group1.Items.Add(this.label1);
-            this.group1.Label = "Автор: Чепурин В. Ю.";
+            this.group1.Items.Add(this.button10);
             this.group1.Name = "group1";
             // 
-            // label3
+            // button10
             // 
-            this.label3.Label = "Надстройка VSTO";
-            this.label3.Name = "label3";
-            // 
-            // label2
-            // 
-            this.label2.Label = "Написано на C#";
-            this.label2.Name = "label2";
-            // 
-            // label1
-            // 
-            this.label1.Label = "vlad1988_1@mail.ru";
-            this.label1.Name = "label1";
+            this.button10.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button10.Image = ((System.Drawing.Image)(resources.GetObject("button10.Image")));
+            this.button10.Label = "About";
+            this.button10.Name = "button10";
+            this.button10.ShowImage = true;
+            this.button10.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button10_Click);
             // 
             // Ribbon1
             // 
@@ -194,8 +175,6 @@
             this.tab1.PerformLayout();
             this.Группа1.ResumeLayout(false);
             this.Группа1.PerformLayout();
-            this.group2.ResumeLayout(false);
-            this.group2.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
             this.ResumeLayout(false);
@@ -213,13 +192,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button6;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button5;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button7;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label3;
-        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button8;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button9;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button8;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button10;
     }
 
     partial class ThisRibbonCollection

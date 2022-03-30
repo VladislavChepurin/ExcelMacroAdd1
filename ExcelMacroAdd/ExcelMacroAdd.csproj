@@ -26,16 +26,40 @@
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>ExcelMacroAdd</RootNamespace>
     <AssemblyName>ExcelMacroAdd</AssemblyName>
-    <LoadBehavior>3</LoadBehavior>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <BootstrapperComponentsLocation>HomeSite</BootstrapperComponentsLocation>
+    <PublishUrl>опубликовать\</PublishUrl>
+    <InstallUrl />
+    <TargetCulture>ru</TargetCulture>
+    <ApplicationVersion>1.3.6.0</ApplicationVersion>
+    <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>days</UpdateIntervalUnits>
+    <ProductName>ExcelMacroAdd</ProductName>
+    <PublisherName />
+    <SupportUrl />
+    <FriendlyName>ExcelMacroAdd</FriendlyName>
+    <OfficeApplicationDescription />
+    <LoadBehavior>3</LoadBehavior>
   </PropertyGroup>
   <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
-      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
+      <ProductName>Среда выполнения Microsoft Visual Studio 2010 Tools for Office %28x86 и x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
@@ -70,6 +94,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
     <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <!--
     This section defines properties that are set when the "Release" configuration is selected.
@@ -156,6 +181,13 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="AboutBox1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutBox1.Designer.cs">
+      <DependentUpon>AboutBox1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DBConect.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -165,6 +197,9 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="AboutBox1.resx">
+      <DependentUpon>AboutBox1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -176,11 +211,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Ribbon1.resx">
       <DependentUpon>Ribbon1.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="ExcelMacroAdd_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -188,6 +223,7 @@
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Ribbon.cs">
       <XmlRibbon>true</XmlRibbon>
@@ -262,6 +298,13 @@
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>8A4421708B872515DB484AD69925A07A3CDC5288</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,0 +1,4 @@
+﻿Сборка начата…
+1>------ Сборка начата: проект: ExcelMacroAdd, Конфигурация: Release Any CPU ------
+1>  ExcelMacroAdd -> C:\Users\ПК\source\repos\ExcelMacroAdd\ExcelMacroAdd\bin\Release\ExcelMacroAdd.dll
+========== Сборка: успешно: 1, с ошибками: 0, без изменений: 0, пропущено: 0 ==========
