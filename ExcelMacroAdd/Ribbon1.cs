@@ -264,6 +264,7 @@ namespace ExcelMacroAdd
             }
         }
 
+
         private void button6_Click(object sender, RibbonControlEventArgs e)  // Заполнение паспортов
         {
             Excel.Application application = (Excel.Application)Marshal.GetActiveObject("Excel.Application");
@@ -287,6 +288,7 @@ namespace ExcelMacroAdd
             }
             classDB.CloseDB();
         }
+
 
         private async void OpenForm()
         {
@@ -317,8 +319,6 @@ namespace ExcelMacroAdd
             }
         }                  
               
-
-
 
         private void button9_Click(object sender, RibbonControlEventArgs e)   // Корректировка записей БД
         {

@@ -6,13 +6,14 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Word = Microsoft.Office.Interop.Word;
 using System.IO;
 using System.Threading;
+using Microsoft.Office.Interop.Word;
 
 namespace ExcelMacroAdd
 {
     public partial class Form1 : Form
     {
         Object wordMissing = Missing.Value;
-               
+
         public Form1()
         {
             InitializeComponent();
@@ -106,9 +107,9 @@ namespace ExcelMacroAdd
                         string s_ue = (Convert.ToString(worksheet.Cells[firstRow, 9].Value2));
                         string s_ground = Convert.ToString(worksheet.Cells[firstRow, 28].Value2);
                         string s_name = Convert.ToString(worksheet.Cells[firstRow, 6].Value2);
-                        string s_paste = FuncReplece(s_name); // ссылка на метод замены
+                        string s_paste = FuncReplece(s_name ?? String.Empty); // ссылка на метод замены
                         string s_zapol = Convert.ToString(worksheet.Cells[firstRow, 7].Value2);
-                        string s_slon = FuncReplece(s_zapol); // ссылка на метод замены
+                        string s_slon = FuncReplece(s_zapol ?? String.Empty); // ссылка на метод замены
                         string s_isp = Convert.ToString(worksheet.Cells[firstRow, 27].Value2);
                         string s_korp = Convert.ToString(worksheet.Cells[firstRow, 29].Value2);
                         string folderSafe = Convert.ToString(worksheet.Cells[firstRow, 1].Value2);
@@ -210,13 +211,16 @@ namespace ExcelMacroAdd
                         string folderName = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Паспорта " + folderSafe;
                         DirectoryInfo drInfo = new DirectoryInfo(folderName);
                         // Проверяем есть ли папка, если нет создаем
-                        if (!drInfo.Exists)
-                        {
-                            drInfo.Create();
-                        }
+                        if (!drInfo.Exists)drInfo.Create();
+                 
                         document.SaveAs(folderName + @"\Паспорт " + numberSave + ".docx");
+
+                        int amountSheet= document.ComputeStatistics(WdStatistic.wdStatisticPages, false); ;
+                        // Вызов логгера
+                        Logger(folderName, numberSave, amountSheet);
+
                         document.Close();
-                        firstRow++;
+                        firstRow++;                                                                 
 
                         // Работа с элементами формы
                         sync.Post(__ => progressBar1.PerformStep(), null);
@@ -248,6 +252,20 @@ namespace ExcelMacroAdd
                 }
 
             }).Start();
+        }
+
+        /// <summary>
+        /// Метод для записи логов формиррования паспортов
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <param name="saveNum"></param>
+        /// <param name="amount"></param>
+        private void Logger(string folder, string saveNum, int amount)
+        {
+            string patch = folder + @"\log.txt";
+            StreamWriter output = File.AppendText(patch);
+            output.WriteLine("{0} | Паспорт {1} сформирован успешно, в паспорте {2} листа", DateTime.Now, saveNum, amount);
+            output.Close();
         }
 
         private string FuncReplece(string mReplase)                          // Функция замены
