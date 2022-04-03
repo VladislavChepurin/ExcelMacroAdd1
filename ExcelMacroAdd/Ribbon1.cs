@@ -12,7 +12,10 @@ namespace ExcelMacroAdd
     {
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {
-          
+            GetValuteTSB getRate = new GetValuteTSB();
+            this.label1.Label = "Доллар = " + getRate.USDRate;
+            this.label2.Label = "ЕВРО     = " + getRate.EvroRate;
+            this.label3.Label = "Юань    = " + getRate.CnyRate;
         }
 
         private void button1_Click(object sender, RibbonControlEventArgs e) //Удаление формул

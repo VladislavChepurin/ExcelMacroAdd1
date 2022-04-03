@@ -37,6 +37,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon1));
             this.tab1 = this.Factory.CreateRibbonTab();
             this.Группа1 = this.Factory.CreateRibbonGroup();
+            this.group1 = this.Factory.CreateRibbonGroup();
+            this.group2 = this.Factory.CreateRibbonGroup();
+            this.label1 = this.Factory.CreateRibbonLabel();
+            this.label2 = this.Factory.CreateRibbonLabel();
+            this.label3 = this.Factory.CreateRibbonLabel();
             this.button6 = this.Factory.CreateRibbonButton();
             this.button1 = this.Factory.CreateRibbonButton();
             this.button8 = this.Factory.CreateRibbonButton();
@@ -46,16 +51,17 @@
             this.button2 = this.Factory.CreateRibbonButton();
             this.button7 = this.Factory.CreateRibbonButton();
             this.button5 = this.Factory.CreateRibbonButton();
-            this.group1 = this.Factory.CreateRibbonGroup();
             this.button10 = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.Группа1.SuspendLayout();
             this.group1.SuspendLayout();
+            this.group2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
             // 
             this.tab1.Groups.Add(this.Группа1);
+            this.tab1.Groups.Add(this.group2);
             this.tab1.Groups.Add(this.group1);
             this.tab1.Label = "МАКРОСЫ";
             this.tab1.Name = "tab1";
@@ -73,6 +79,34 @@
             this.Группа1.Items.Add(this.button5);
             this.Группа1.Label = "Базовые макросы";
             this.Группа1.Name = "Группа1";
+            // 
+            // group1
+            // 
+            this.group1.Items.Add(this.button10);
+            this.group1.Name = "group1";
+            // 
+            // group2
+            // 
+            this.group2.Items.Add(this.label1);
+            this.group2.Items.Add(this.label2);
+            this.group2.Items.Add(this.label3);
+            this.group2.Label = "Курсы валют ЦБ РФ";
+            this.group2.Name = "group2";
+            // 
+            // label1
+            // 
+            this.label1.Label = "label1";
+            this.label1.Name = "label1";
+            // 
+            // label2
+            // 
+            this.label2.Label = "label2";
+            this.label2.Name = "label2";
+            // 
+            // label3
+            // 
+            this.label3.Label = "label3";
+            this.label3.Name = "label3";
             // 
             // button6
             // 
@@ -151,11 +185,6 @@
             this.button5.Label = "";
             this.button5.Name = "button5";
             // 
-            // group1
-            // 
-            this.group1.Items.Add(this.button10);
-            this.group1.Name = "group1";
-            // 
             // button10
             // 
             this.button10.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -177,6 +206,8 @@
             this.Группа1.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
+            this.group2.ResumeLayout(false);
+            this.group2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -196,6 +227,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button8;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button10;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label3;
     }
 
     partial class ThisRibbonCollection
