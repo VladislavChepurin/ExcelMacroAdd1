@@ -4,6 +4,9 @@ using System.Net;
 
 namespace ExcelMacroAdd
 {
+    /// <summary>
+    /// Класс запроса курса валют
+    /// </summary>
     internal class GetValuteTSB
     {
         public GetValuteTSB()
@@ -19,21 +22,13 @@ namespace ExcelMacroAdd
                 foreach (DataRow row in currency.Rows)
                 {
                     //Поиск доллара
-                    if (row["CharCode"].ToString() == "USD")
-                    {
-                        USDRate = Math.Round(Convert.ToDouble(row["Value"]), 2);
-                            
-                    }
+                    if (row["CharCode"].ToString() == "USD") USDRate = Math.Round(Convert.ToDouble(row["Value"]), 2);
+                  
                     // Поиск ЕВРО
-                    if (row["CharCode"].ToString() == "EUR")//Ищу нужный код валюты
-                    {
-                        EvroRate = Math.Round(Convert.ToDouble(row["Value"]), 2);
-                    }
+                    if (row["CharCode"].ToString() == "EUR") EvroRate = Math.Round(Convert.ToDouble(row["Value"]), 2);
+                    
                     // Поиск Юаня
-                    if (row["CharCode"].ToString() == "CNY")//Ищу нужный код валюты
-                    {
-                        CnyRate = Math.Round(Convert.ToDouble(row["Value"]), 2);
-                    }
+                    if (row["CharCode"].ToString() == "CNY") CnyRate = Math.Round(Convert.ToDouble(row["Value"]), 2);                
                 }
             }
             catch (WebException)
