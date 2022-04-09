@@ -4,6 +4,21 @@ using System.Windows.Forms;
 
 namespace ExcelMacroAdd
 {
+    public struct DBtable 
+    {
+        public string ipTable { get; set; }
+        public string klimaTable { get; set; }
+        public string reserveTable { get; set; }
+        public string heightTable { get; set; }
+        public string widthTable { get; set; }
+        public string depthTable { get; set; }
+        public string articleTable { get; set; }
+        public string executionTable { get; set; }
+        public string vendorTable { get; set; }
+
+    }
+
+
     /// <summary>
     /// Класс доступа к базе данных
     /// </summary>
@@ -132,13 +147,12 @@ namespace ExcelMacroAdd
                 Message(exception);
             }     
         }
-     
         /// <summary>
-        /// Пишет в массив переданый по референсной ссылке данные из базы данных
+        /// Пишет в структуру передан по референсной ссылке данные из базы данных
         /// </summary>
         /// <param name="dataRead"></param>
-        /// <param name="dataMassiv"></param>
-        public void ReadingDB(string dataRead, ref string[] dataMassiv)
+        /// <param name="dBtable"></param>
+        public void ReadingDB(string dataRead, ref DBtable dBtable)
         {
             try
             {
@@ -147,16 +161,15 @@ namespace ExcelMacroAdd
                 // Чтение из базы данных и поэлементная запись в массив
                 while (reader.Read())
                 {
-                    dataMassiv[0] = reader[0].ToString();
-                    dataMassiv[1] = reader[1].ToString();
-                    dataMassiv[2] = reader[2].ToString();
-                    dataMassiv[3] = reader[3].ToString();
-                    dataMassiv[4] = reader[4].ToString();
-                    dataMassiv[5] = reader[5].ToString();
-                    dataMassiv[6] = reader[6].ToString();
-                    dataMassiv[7] = reader[7].ToString();
-                    dataMassiv[8] = reader[8].ToString();
-                    dataMassiv[9] = reader[9].ToString();
+                    dBtable.ipTable        = reader[1].ToString();
+                    dBtable.heightTable    = reader[2].ToString();
+                    dBtable.klimaTable     = reader[3].ToString();
+                    dBtable.reserveTable   = reader[4].ToString();
+                    dBtable.widthTable     = reader[5].ToString();
+                    dBtable.depthTable     = reader[6].ToString();
+                    dBtable.articleTable   = reader[7].ToString();
+                    dBtable.executionTable = reader[8].ToString();
+                    dBtable.vendorTable    = reader[9].ToString();
                 }
             }
             catch (OleDbException exception)

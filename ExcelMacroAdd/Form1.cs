@@ -82,36 +82,38 @@ namespace ExcelMacroAdd
                         {
                             if ((Convert.ToInt32(worksheet.Cells[firstRow, 14].Value2) > iHeihgtMax))
                             {
+                                // переменная для открытия Word
                                 filename = classDB.pPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sFloor';");
                             }
                             else
                             {
+                                // переменная для открытия Word
                                 filename = classDB.pPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sWall';");
                             }
                         }
                         catch (FormatException)
                         {
+                            // переменная для открытия Word
                             filename = classDB.pPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sFloor';");
                         }
-
-                        // переменная для имени сохраниея
+        
                         string numberSave = Convert.ToString(worksheet.Cells[firstRow, 21].Value2);
-                        string s_ty = Convert.ToString(worksheet.Cells[firstRow, 8].Value2);
-                        string s_icu = (Convert.ToString(worksheet.Cells[firstRow, 10].Value2));
-                        string s_ip = Convert.ToString(worksheet.Cells[firstRow, 11].Value2);
-                        string s_gab = (Convert.ToString(worksheet.Cells[firstRow, 14].Value2) + "x" + Convert.ToString(worksheet.Cells[firstRow, 15].Value2) +
+                        string sTY = Convert.ToString(worksheet.Cells[firstRow, 8].Value2);
+                        string sIcu = (Convert.ToString(worksheet.Cells[firstRow, 10].Value2));
+                        string sIP = Convert.ToString(worksheet.Cells[firstRow, 11].Value2);
+                        string sGab = (Convert.ToString(worksheet.Cells[firstRow, 14].Value2) + "x" + Convert.ToString(worksheet.Cells[firstRow, 15].Value2) +
                             "x" + Convert.ToString(worksheet.Cells[firstRow, 16].Value2));
-                        string s_mark = Convert.ToString(worksheet.Cells[firstRow, 4].Value2);
-                        string s_num = Convert.ToString(worksheet.Cells[firstRow, 21].Value2);
-                        string s_klima = Convert.ToString(worksheet.Cells[firstRow, 12].Value2);
-                        string s_ue = (Convert.ToString(worksheet.Cells[firstRow, 9].Value2));
-                        string s_ground = Convert.ToString(worksheet.Cells[firstRow, 28].Value2);
-                        string s_name = Convert.ToString(worksheet.Cells[firstRow, 6].Value2);
-                        string s_paste = FuncReplece(s_name ?? String.Empty); // ссылка на метод замены
-                        string s_zapol = Convert.ToString(worksheet.Cells[firstRow, 7].Value2);
-                        string s_slon = FuncReplece(s_zapol ?? String.Empty); // ссылка на метод замены
-                        string s_isp = Convert.ToString(worksheet.Cells[firstRow, 27].Value2);
-                        string s_korp = Convert.ToString(worksheet.Cells[firstRow, 29].Value2);
+                        string sMark = Convert.ToString(worksheet.Cells[firstRow, 4].Value2);
+                        string sNum = Convert.ToString(worksheet.Cells[firstRow, 21].Value2);
+                        string sKlima = Convert.ToString(worksheet.Cells[firstRow, 12].Value2);
+                        string sUe = (Convert.ToString(worksheet.Cells[firstRow, 9].Value2));
+                        string sGround = Convert.ToString(worksheet.Cells[firstRow, 28].Value2);
+                        string sName = Convert.ToString(worksheet.Cells[firstRow, 6].Value2);
+                        string sPaste = FuncReplece(sName ?? String.Empty); // ссылка на метод замены
+                        string sZapol = Convert.ToString(worksheet.Cells[firstRow, 7].Value2);
+                        string sSklon = FuncReplece(sZapol ?? String.Empty); // ссылка на метод замены
+                        string sIsp = Convert.ToString(worksheet.Cells[firstRow, 27].Value2);
+                        string sKorp = Convert.ToString(worksheet.Cells[firstRow, 29].Value2);
                         string folderSafe = Convert.ToString(worksheet.Cells[firstRow, 1].Value2);
 
                         //Открываем Word
@@ -124,47 +126,47 @@ namespace ExcelMacroAdd
 
                         // Замены ТУ
                         find.Execute("#ТУ", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        s_ty, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sTY, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Ток
                         find.Execute("#Ток", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        s_icu, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sIcu, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены IP
                         find.Execute("#IP", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        s_ip, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sIP, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Габарит
                         find.Execute("#Габарит", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        s_gab, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sGab, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Марка
                         find.Execute("#Марка", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        s_mark, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sMark, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Номер
                         find.Execute("#Номер", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        s_num, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sNum, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Климат
                         find.Execute("#Климат", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        s_klima, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sKlima, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Заземление
                         find.Execute("#Заземление", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        s_ground, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sGround, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Название
                         find.Execute("#Название", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        s_name, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sName, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замена Вставка (необходим метод замены)
                         find.Execute("#Вставка", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        s_paste, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sPaste, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Заполнение
                         find.Execute("#Заполнение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        s_zapol, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sZapol, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замена Склонение (необходим метод замены)
                         find.Execute("#Склонение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        s_slon, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sSklon, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Напряжение
-                        if (s_ue == "380")
+                        if (sUe == "380")
                         {
                             find.Execute("#Напряжение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
                             "~230/380 В.", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         }
-                        else if (s_isp == "220")
+                        else if (sIsp == "220")
                         {
                             find.Execute("#Напряжение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
                             "~230В.", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
@@ -172,15 +174,15 @@ namespace ExcelMacroAdd
                         else
                         {
                             find.Execute("#Напряжение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                            s_ue + "В.", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                            sUe + "В.", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         }
                         // Замены Исполнение
-                        if (s_isp == "МП")
+                        if (sIsp == "МП")
                         {
                             find.Execute("#Исполнение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
                             "монтажной плате", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         }
-                        else if (s_isp == "ДР")
+                        else if (sIsp == "ДР")
                         {
                             find.Execute("#Исполнение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
                             "din-рейках", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
@@ -191,12 +193,12 @@ namespace ExcelMacroAdd
                             "монтажной плате, din-рейках", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         }
                         // Замены Материал
-                        if (s_korp == "Металл")
+                        if (sKorp == "Металл")
                         {
                             find.Execute("#Корпус", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
                             "металлическом", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         }
-                        else if (s_isp == "ДР")
+                        else if (sIsp == "ДР")
                         {
                             find.Execute("#Корпус", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
                             "пластиковом", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
@@ -233,11 +235,9 @@ namespace ExcelMacroAdd
                     sync.Post(__ => label1.Text = "Паспота заполнены. Ты молодец", null);
                     sync.Post(__ => button1.Enabled = true, null);
 
-                    classDB.CloseDB();
-                    applicationWord.Quit();
-                                       
                     // Закрываем соединение с базой данных
                     classDB.CloseDB();
+                    applicationWord.Quit();                
 
                 }
                 catch (Exception exception)

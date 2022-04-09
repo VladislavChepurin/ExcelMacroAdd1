@@ -105,8 +105,8 @@ namespace ExcelMacroAdd
                     firstRow = cell.Row;                 // Вычисляем верхний элемент
                     countRow = cell.Rows.Count;          // Вычисляем кол-во выделенных строк
                     endRow = firstRow + countRow;
-                    // Создаем массив на 10 элементов                   
-                    string[] dataMassiv = new string[10];   
+                    // Инициализируем структуру для записи                
+                    DBtable dBtable = new DBtable();  
                     do
                     {
                         string sArticle = Convert.ToString(worksheet.Cells[firstRow, 26].Value2);
@@ -118,16 +118,16 @@ namespace ExcelMacroAdd
                         }
                         else
                         {
-                            // Передеем массив по референсной ссылке в библиотечный метод 
-                            classDB.ReadingDB(query, ref dataMassiv);
+                            // Передеем структуру по референсной ссылке в библиотечный метод 
+                            classDB.ReadingDB(query,ref dBtable);                  
                             // Присваеваем ячейкам данные из массива
-                            worksheet.get_Range("K" + firstRow).Value2 = dataMassiv[1] ?? String.Empty;
-                            worksheet.get_Range("L" + firstRow).Value2 = dataMassiv[3] ?? String.Empty;
-                            worksheet.get_Range("M" + firstRow).Value2 = dataMassiv[4] ?? String.Empty;
-                            worksheet.get_Range("N" + firstRow).Value2 = dataMassiv[2] ?? String.Empty;
-                            worksheet.get_Range("O" + firstRow).Value2 = dataMassiv[5] ?? String.Empty;
-                            worksheet.get_Range("P" + firstRow).Value2 = dataMassiv[6] ?? String.Empty;
-                            worksheet.get_Range("AC" + firstRow).Value2 = dataMassiv[8] ?? String.Empty;
+                            worksheet.get_Range("K" + firstRow).Value2  = dBtable.ipTable        ?? String.Empty;
+                            worksheet.get_Range("L" + firstRow).Value2  = dBtable.klimaTable     ?? String.Empty;
+                            worksheet.get_Range("M" + firstRow).Value2  = dBtable.reserveTable   ?? String.Empty;
+                            worksheet.get_Range("N" + firstRow).Value2  = dBtable.heightTable    ?? String.Empty;
+                            worksheet.get_Range("O" + firstRow).Value2  = dBtable.widthTable     ?? String.Empty;
+                            worksheet.get_Range("P" + firstRow).Value2  = dBtable.depthTable     ?? String.Empty;
+                            worksheet.get_Range("AC" + firstRow).Value2 = dBtable.executionTable ?? String.Empty;
                         }                      
                         
                         firstRow++;
