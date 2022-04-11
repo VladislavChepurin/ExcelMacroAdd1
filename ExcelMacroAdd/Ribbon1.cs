@@ -17,7 +17,6 @@ namespace ExcelMacroAdd
             this.label2.Label = "ЕВРО     = " + getRate.EvroRate;
             this.label3.Label = "Юань    = " + getRate.CnyRate;
         }
-
         private void button1_Click(object sender, RibbonControlEventArgs e) //Удаление формул
         {
             Excel.Application application = (Excel.Application)Marshal.GetActiveObject("Excel.Application");
@@ -30,7 +29,10 @@ namespace ExcelMacroAdd
         private void button2_Click(object sender, RibbonControlEventArgs e) //Разметка шаблона расчетов
         {
             Excel.Application application = (Excel.Application)Marshal.GetActiveObject("Excel.Application");
-            Excel.Worksheet worksheet = ((Excel.Worksheet)application.ActiveSheet); 
+            Excel.Worksheet worksheet = ((Excel.Worksheet)application.ActiveSheet);
+
+            //имя вкладки в зависимости от индекса
+            worksheet.Name = (worksheet.Index - 1).ToString();
 
             //состовляем надписи колонок           
             worksheet.get_Range("A1").Value2 = "Артикул";

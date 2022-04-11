@@ -13,9 +13,7 @@ namespace ExcelMacroAdd
         {
             try
             {
-                string url = "http://www.cbr.ru/scripts/XML_daily.asp";
-                //XmlDocument xml_doc = new XmlDocument();
-                //xml_doc.Load(url);
+                string url = "http://www.cbr.ru/scripts/XML_daily.asp";       
                 DataSet ds = new DataSet();
                 ds.ReadXml(url);
                 DataTable currency = ds.Tables["Valute"];

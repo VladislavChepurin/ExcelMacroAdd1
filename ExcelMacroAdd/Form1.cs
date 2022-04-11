@@ -77,26 +77,18 @@ namespace ExcelMacroAdd
                     do
                     {
                         Object filename;
-                        // Ловим ошибку приведения типов
-                        try
+                        // Преобразование типов для определения формата сохранения 
+                        if (int.TryParse(worksheet.Cells[firstRow, 14].Value2.ToString(), out int result) && result < iHeihgtMax)
                         {
-                            if ((Convert.ToInt32(worksheet.Cells[firstRow, 14].Value2) > iHeihgtMax))
-                            {
-                                // переменная для открытия Word
-                                filename = classDB.pPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sFloor';");
-                            }
-                            else
-                            {
-                                // переменная для открытия Word
-                                filename = classDB.pPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sWall';");
-                            }
+                            // переменная для открытия Word
+                            filename = classDB.pPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sWall';");
                         }
-                        catch (FormatException)
+                        else
                         {
                             // переменная для открытия Word
                             filename = classDB.pPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sFloor';");
                         }
-        
+
                         string numberSave = Convert.ToString(worksheet.Cells[firstRow, 21].Value2);
                         string sTY = Convert.ToString(worksheet.Cells[firstRow, 8].Value2);
                         string sIcu = (Convert.ToString(worksheet.Cells[firstRow, 10].Value2));
