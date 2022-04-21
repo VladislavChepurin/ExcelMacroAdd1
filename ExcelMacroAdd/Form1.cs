@@ -20,9 +20,7 @@ namespace ExcelMacroAdd
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {            
-            var sync = SynchronizationContext.Current;
-
+        {    
             Excel.Application application = (Excel.Application)Marshal.GetActiveObject("Excel.Application");
             Excel.Worksheet worksheet = ((Excel.Worksheet)application.ActiveSheet);
             Excel.Range cell = application.Selection;
@@ -205,27 +203,36 @@ namespace ExcelMacroAdd
                         string folderName = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Паспорта " + folderSafe;
                         DirectoryInfo drInfo = new DirectoryInfo(folderName);
                         // Проверяем есть ли папка, если нет создаем
-                        if (!drInfo.Exists)drInfo.Create();
-                 
+                        if (!drInfo.Exists)
+                        {
+                            drInfo.Create();
+                            Logger(folderName);
+                        }
+                            
                         document.SaveAs(folderName + @"\Паспорт " + numberSave + ".docx");
+                        //document.ExportAsFixedFormat(folderName + @"\Паспорт " + numberSave + ".pdf", WdExportFormat.wdExportFormatPDF);
 
-                        int amountSheet= document.ComputeStatistics(WdStatistic.wdStatisticPages, false); ;
+                        int amountSheet= document.ComputeStatistics(WdStatistic.wdStatisticPages, false);
                         // Вызов логгера
                         Logger(folderName, numberSave, amountSheet);
 
                         document.Close();
-                        firstRow++;                                                                 
+                        firstRow++;
 
-                        // Работа с элементами формы
-                        sync.Post(__ => progressBar1.PerformStep(), null);
-                        sync.Post(__ => label1.Text = "Подождите пожайлуста, идет заполнение паспортов " + ++progressValue + "/" + countRow, null);
+                        // Работа с элементами формы через делегат
+                        this.Invoke((MethodInvoker)delegate () {
+                            progressBar1.PerformStep();
+                            label1.Text = "Подождите пожайлуста, идет заполнение паспортов " + ++progressValue + "/" + countRow;
+                        });
 
                     }
                     while (endRow > firstRow);
 
-                    // Работа с элементами формы
-                    sync.Post(__ => label1.Text = "Паспота заполнены. Ты молодец", null);
-                    sync.Post(__ => button1.Enabled = true, null);
+                    // Работа с элементами формы через делегат
+                    this.Invoke((MethodInvoker)delegate () {
+                        label1.Text = "Паспота заполнены. Ты молодец";
+                        button1.Enabled = true;
+                    });
 
                     // Закрываем соединение с базой данных
                     classDB.CloseDB();
@@ -247,18 +254,33 @@ namespace ExcelMacroAdd
         }
 
         /// <summary>
-        /// Метод для записи логов формиррования паспортов
+        /// Метод для записи логов шапки документа
         /// </summary>
         /// <param name="folder"></param>
-        /// <param name="saveNum"></param>
-        /// <param name="amount"></param>
-        private void Logger(string folder, string saveNum, int amount)
+        private static void Logger(string folder)
         {
+            string patch = folder + @"\log.txt";
+            StreamWriter output = File.AppendText(patch);
+            output.WriteLine("Версия OC:          " + Environment.OSVersion);
+            output.WriteLine("Имя пользователя:   " + Environment.UserName);
+            output.WriteLine("Имя компьютера:     " + Environment.MachineName);
+            output.WriteLine("--------------------------------------------------------------------------------");
+            output.Close();
+        }
+
+            /// <summary>
+            /// Метод для записи логов формиррования паспортов
+            /// </summary>
+            /// <param name="folder"></param>
+            /// <param name="saveNum"></param>
+            /// <param name="amount"></param>
+            private static void Logger(string folder, string saveNum, int amount)
+            {
             string patch = folder + @"\log.txt";
             StreamWriter output = File.AppendText(patch);
             output.WriteLine("{0} | Паспорт {1} сформирован успешно, в паспорте {2} листа", DateTime.Now, saveNum, amount);
             output.Close();
-        }
+            }
 
         private string FuncReplece(string mReplase)                          // Функция замены
         {

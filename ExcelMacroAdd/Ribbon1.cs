@@ -22,7 +22,7 @@ namespace ExcelMacroAdd
             Excel.Application application = (Excel.Application)Marshal.GetActiveObject("Excel.Application");
             Excel.Worksheet worksheet = ((Excel.Worksheet)application.ActiveSheet);
             Excel.Range cell = application.Selection;
-            cell.Value = cell.Value;                    //Удаляем формулы
+            cell.Value = cell.Value;                            //Удаляем формулы
             worksheet.get_Range("A1", Type.Missing).Select();   //Фокус на ячейку А1        
         }
 
@@ -314,7 +314,7 @@ namespace ExcelMacroAdd
             {
                 sheet.Activate();
                 if (!(sheet.Index == 1))
-                {
+                {                  
                     sheet.get_Range("A1", "i500").Cells.Font.Name = "Calibri";
                     sheet.get_Range("A1", "i500").Cells.Font.Size = 11;
                     sheet.get_Range("D1", Type.Missing).EntireColumn.Insert(Excel.XlInsertShiftDirection.xlShiftToRight, Excel.XlInsertFormatOrigin.xlFormatFromRightOrBelow);
@@ -376,7 +376,8 @@ namespace ExcelMacroAdd
                                                     "WHERE article    = '" + sArticle + "'";
 
                                 classDB.MetodDB(queryUpdate, data);   
-                            }                          else
+                            }                         
+                            else
                             {
                                 MessageBox.Show(
                                 "Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n" +

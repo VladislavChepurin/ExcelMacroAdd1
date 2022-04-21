@@ -15,9 +15,7 @@ namespace ExcelMacroAdd
         public string articleTable { get; set; }
         public string executionTable { get; set; }
         public string vendorTable { get; set; }
-
     }
-
 
     /// <summary>
     /// Класс доступа к базе данных
@@ -35,8 +33,7 @@ namespace ExcelMacroAdd
 #endif
         private readonly string _sPatch = "BdMacro.mdb";
 
-        private readonly string _providerData = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=";
-              
+        private readonly string _providerData = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source="; 
         
         public DBConect()
         {     
@@ -65,7 +62,6 @@ namespace ExcelMacroAdd
             myConnection.Dispose();
             myConnection.Close();
         }
-
 
         /// <summary>
         /// Запрашавает настройки в базе данных
@@ -193,5 +189,4 @@ namespace ExcelMacroAdd
             MessageBoxOptions.DefaultDesktopOnly);
         }
     }
-
 }
