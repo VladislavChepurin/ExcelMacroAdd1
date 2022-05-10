@@ -1,12 +1,12 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
+﻿using Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Interop.Word;
+using System;
+using System.IO;
 using System.Reflection;
+using System.Threading;
+using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using Word = Microsoft.Office.Interop.Word;
-using System.IO;
-using System.Threading;
-using Microsoft.Office.Interop.Word;
 
 namespace ExcelMacroAdd
 {
@@ -20,10 +20,10 @@ namespace ExcelMacroAdd
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {    
-            Excel.Application application = (Excel.Application)Marshal.GetActiveObject("Excel.Application");
-            Excel.Worksheet worksheet = ((Excel.Worksheet)application.ActiveSheet);
-            Excel.Range cell = application.Selection;
+        {
+            Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
+            Workbook workBook = Globals.ThisAddIn.GetActiveWorkBook();
+            Excel.Range cell = Globals.ThisAddIn.GetActiveCell();
 
             int firstRow, countRow, endRow;
 
@@ -46,7 +46,7 @@ namespace ExcelMacroAdd
                
                     int progressValue = 0;
 
-                    int iHeihgtMax = Convert.ToInt32(classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sHeihgtMax';"));          // Запрашиваем максимальную высоту навесных шкафов
+                    int iHeihgtMax = Convert.ToInt32(classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sHeihgtMax';", 2));       // Запрашиваем максимальную высоту навесных шкафов
                                                                                                                                            //Инициализируем параметры Word
                     Word.Application applicationWord = new Word.Application();
                     // Переменная объект документа
@@ -79,12 +79,12 @@ namespace ExcelMacroAdd
                         if (int.TryParse(worksheet.Cells[firstRow, 14].Value2.ToString(), out int result) && result < iHeihgtMax)
                         {
                             // переменная для открытия Word
-                            filename = classDB.pPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sWall';");
+                            filename = classDB.pPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sWall';", 2);
                         }
                         else
                         {
                             // переменная для открытия Word
-                            filename = classDB.pPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sFloor';");
+                            filename = classDB.pPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sFloor';", 2);
                         }
 
                         string numberSave = Convert.ToString(worksheet.Cells[firstRow, 21].Value2);

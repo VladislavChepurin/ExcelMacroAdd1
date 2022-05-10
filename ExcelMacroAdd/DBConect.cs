@@ -4,6 +4,17 @@ using System.Windows.Forms;
 
 namespace ExcelMacroAdd
 {
+    interface IDBConect{
+
+        void OpenDB();
+        void CloseDB();
+        string RequestDB(string requestDB, int colum);
+        Boolean CheckReadDB(string dataRequest);
+        void MetodDB(string queryUpdate, string dataRequest);
+        void ReadingDB(string dataRead, ref DBtable dBtable);
+    }
+
+
     public struct DBtable 
     {
         public string ipTable { get; set; }
@@ -20,7 +31,7 @@ namespace ExcelMacroAdd
     /// <summary>
     /// Класс доступа к базе данных
     /// </summary>
-    public class DBConect
+    internal class DBConect: IDBConect
     {
         // Переменная подключения к БД - static
         private static OleDbConnection myConnection;
@@ -64,15 +75,15 @@ namespace ExcelMacroAdd
         }
 
         /// <summary>
-        /// Запрашавает настройки в базе данных
+        /// Запрашавает одно значение из базы данных
         /// </summary>
         /// <param name="_requestDB"></param>
         /// <returns></returns>
-        public string RequestDB(string requestDB)     // Считывание настроек в базе данных 
+        public string RequestDB(string requestDB, int colum)     // Считывание одного значения из базы данных
         {
             try
             {
-                string rt = null;
+                string rt = default;
                 // Собираем запрос к БД
                 OleDbCommand command = new OleDbCommand(requestDB, myConnection);
 
@@ -80,7 +91,7 @@ namespace ExcelMacroAdd
                 // Считываем и возвращаем значение их базы данных
                 while (reader.Read())
                 {
-                    rt = (reader[2].ToString());
+                    rt = (reader[colum].ToString());
                 }
                 return rt;
             }

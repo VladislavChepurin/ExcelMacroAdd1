@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace ExcelMacroAdd
 {
-    public partial class ThisAddIn
+    public sealed partial class ThisAddIn
 
     {       
 
@@ -24,6 +24,28 @@ namespace ExcelMacroAdd
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
         }
+
+        public Excel.Worksheet GetActiveWorksheet()
+        {
+            return (Excel.Worksheet)Application.ActiveSheet;
+        }
+
+        public Excel.Workbook GetActiveWorkBook()
+        {
+            return (Excel.Workbook)Application.ActiveWorkbook;
+        }
+
+        public Excel.Range GetActiveCell()
+        {
+            return (Excel.Range)Application.Selection;
+        }
+
+        public Excel.Application GetApplication()
+        {
+            return Application;
+        }
+
+
 
         #region Код, автоматически созданный VSTO
 

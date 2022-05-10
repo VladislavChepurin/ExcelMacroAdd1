@@ -38,9 +38,9 @@ namespace ExcelMacroAdd
            
         }
 
-        public double USDRate { get; }
-        public double EvroRate { get; }
-        public double CnyRate { get; }
+        public double USDRate { get; private set; }
+        public double EvroRate { get; private set; }
+        public double CnyRate { get; private set; }
 
     }
 }

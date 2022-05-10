@@ -52,6 +52,7 @@
             this.label3 = this.Factory.CreateRibbonLabel();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.button10 = this.Factory.CreateRibbonButton();
+            this.button11 = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.Группа1.SuspendLayout();
             this.group2.SuspendLayout();
@@ -183,6 +184,7 @@
             // group1
             // 
             this.group1.Items.Add(this.button10);
+            this.group1.Items.Add(this.button11);
             this.group1.Name = "group1";
             // 
             // button10
@@ -193,6 +195,15 @@
             this.button10.Name = "button10";
             this.button10.ShowImage = true;
             this.button10.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button10_Click);
+            // 
+            // button11
+            // 
+            this.button11.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button11.Image = ((System.Drawing.Image)(resources.GetObject("button11.Image")));
+            this.button11.Label = "Модульные аппараты (Альфа)";
+            this.button11.Name = "button11";
+            this.button11.ShowImage = true;
+            this.button11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button11_Click);
             // 
             // Ribbon1
             // 
@@ -231,6 +242,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label1;
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label2;
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label3;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button11;
     }
 
     partial class ThisRibbonCollection
