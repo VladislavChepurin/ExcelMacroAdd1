@@ -1,67 +1,59 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <MetaSettings>
-	<Vendor ID="IEK">
-		<NumCode>01</NumCode>
+	<Vendor vendor="IEK">
 		<Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[220131 Прайс.xlsx]Прайс'!$A$13:$K$65536;2;0)</Formula_1>
 		<Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[220131 Прайс.xlsx]Прайс'!$A$13:$K$65536;4;0)</Formula_2>
 		<Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[220131 Прайс.xlsx]Прайс'!$A$13:$J$65536;10;0)</Formula_3>
 		<Discont>35</Discont>
 		<Date>------</Date>
 	</Vendor>
-	<Vendor ID="EKF">
-		<NumCode>02</NumCode>
+	<Vendor vendor="EKF">
 		<Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[EKF-prays_list-10.01.2022.xlsx]Продукция EKF'!$A$12:$I$65536;2;0)</Formula_1>
 		<Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[EKF-prays_list-10.01.2022.xlsx]Продукция EKF'!$A$12:$I$65536;6;0)</Formula_2>
 		<Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[EKF-prays_list-10.01.2022.xlsx]Продукция EKF'!$A$12:$I$65536;7;0)</Formula_3>
 		<Discont>45</Discont>
 		<Date>------</Date>
-	</Vendor>	
-	<Vendor ID="DKC">
-		<NumCode>03</NumCode>
+	</Vendor>
+	<Vendor vendor="DKC">
 		<Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[DKC-Prays_list-ot-14.01.2022.xlsx]Прайс ДКС'!$F$15:$M$65536;2;0)</Formula_1>
 		<Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[DKC-Prays_list-ot-14.01.2022.xlsx]Прайс ДКС'!$F$15:$M$65536;3;0)</Formula_2>
 		<Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[DKC-Prays_list-ot-14.01.2022.xlsx]Прайс ДКС'!$F$15:$N$65536;5;0)</Formula_3>
 		<Discont>35</Discont>
 		<Date>------</Date>
-	</Vendor>	
-	<Vendor ID="KEAZ">
-		<NumCode>04</NumCode>
-		<Formula_1>=ВПР(A13;'C:\Users\ПК\Desktop\Прайсы\[keaz.xls]TDSheet'!$C$15:$I$65536;2;0)</Formula_1>
-		<Formula_2>=ВПР(A13;'C:\Users\ПК\Desktop\Прайсы\[keaz.xls]TDSheet'!$C$14:$I$65536;3;0)</Formula_2>
-		<Formula_3>=ВПР(A13;'C:\Users\ПК\Desktop\Прайсы\[keaz.xls]TDSheet'!$C$14:$I$65536;5;0)</Formula_3>
+	</Vendor>
+	<Vendor vendor="KEAZ">
+		<Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[keaz.xls]TDSheet'!$C$15:$I$65536;2;0)</Formula_1>
+		<Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[keaz.xls]TDSheet'!$C$14:$I$65536;3;0)</Formula_2>
+		<Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[keaz.xls]TDSheet'!$C$14:$I$65536;5;0)</Formula_3>
 		<Discont>23</Discont>
 		<Date>------</Date>
 	</Vendor>
-	
-	<Vendor ID="DEKraft">
-		<NumCode>05</NumCode>
+
+	<Vendor vendor="DEKraft">
 		<Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[Tariff-Moscow-2022-_-1-_01.01.2022_.xlsb]Тариф Москва'!$A$4:$D$65536;2;0)</Formula_1>
 		<Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[Tariff-Moscow-2022-_-1-_01.01.2022_.xlsb]Тариф Москва'!$A$4:$D$65536;4;0)</Formula_2>
 		<Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[Tariff-Moscow-2022-_-1-_01.01.2022_.xlsb]Тариф Москва'!$A$4:$D$65536;3;0)*1,2</Formula_3>
 		<Discont>20</Discont>
 		<Date>------</Date>
 	</Vendor>
-	
-	<Vendor ID="TDM">
-		<NumCode>06</NumCode>
+
+	<Vendor vendor="TDM">
 		<Formula_1>=ВПР(A{0};'C:\Work\Каталог\Прайсы\[200420 Парайс TDM.xls]TDSheet'!$A$14:$E$65536;2;0)</Formula_1>
 		<Formula_2>=ВПР(A{0};'C:\Work\Каталог\Прайсы\[200420 Парайс TDM.xls]TDSheet'!$A$14:$E$65536;5;0)</Formula_2>
 		<Formula_3>=ВПР(A{0};'C:\Work\Каталог\Прайсы\[200420 Парайс TDM.xls]TDSheet'!$A$14:$E$65536;4;0)*1,2</Formula_3>
 		<Discont>0</Discont>
 		<Date>------</Date>
 	</Vendor>
-	
-	<Vendor ID="ABB">
-		<NumCode>07</NumCode>
-		<Formula_1>=ВПР(A7;'C:\Users\ПК\Desktop\Прайсы\[ABB-Prays_list-EL-2022-YAnvar-s-31.01.xlsx]Низковольтное оборудование'!$A$3:$G$65536;3;0)</Formula_1>
-		<Formula_2>=ВПР(A7;'C:\Users\ПК\Desktop\Прайсы\[ABB-Prays_list-EL-2022-YAnvar-s-31.01.xlsx]Низковольтное оборудование'!$A$3:$G$65536;5;0)</Formula_2>
-		<Formula_3>=ВПР(A7;'C:\Users\ПК\Desktop\Прайсы\[ABB-Prays_list-EL-2022-YAnvar-s-31.01.xlsx]Низковольтное оборудование'!$A$3:$G$65536;6;0)*1,2</Formula_3>
+
+	<Vendor vendor="ABB">
+		<Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[ABB-Prays_list-EL-2022-YAnvar-s-31.01.xlsx]Низковольтное оборудование'!$A$3:$G$65536;3;0)</Formula_1>
+		<Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[ABB-Prays_list-EL-2022-YAnvar-s-31.01.xlsx]Низковольтное оборудование'!$A$3:$G$65536;5;0)</Formula_2>
+		<Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[ABB-Prays_list-EL-2022-YAnvar-s-31.01.xlsx]Низковольтное оборудование'!$A$3:$G$65536;6;0)*1,2</Formula_3>
 		<Discont>35</Discont>
 		<Date>------</Date>
 	</Vendor>
-	
-	<Vendor ID="Schneider">
-		<NumCode>08</NumCode>
+
+	<Vendor vendor="Schneider">
 		<Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[Tariff-Moscow-2022-_-1-_01.01.2022_.xlsb]Тариф Москва'!$A$4:$D$65536;2;0)</Formula_1>
 		<Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[Tariff-Moscow-2022-_-1-_01.01.2022_.xlsb]Тариф Москва'!$A$4:$D$65536;4;0)</Formula_2>
 		<Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[Tariff-Moscow-2022-_-1-_01.01.2022_.xlsb]Тариф Москва'!$A$4:$D$65536;3;0)*1,2</Formula_3>

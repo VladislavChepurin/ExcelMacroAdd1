@@ -170,6 +170,7 @@
             this.button2.TabIndex = 14;
             this.button2.Text = "Сохранить";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // pictureBox1
             // 
@@ -334,6 +335,7 @@
             this.button4.TabIndex = 10;
             this.button4.Text = "Сохранить";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // label5
             // 
@@ -454,6 +456,7 @@
             this.button6.TabIndex = 10;
             this.button6.Text = "Сохранить";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // textBox11
             // 
@@ -573,6 +576,7 @@
             this.button8.TabIndex = 10;
             this.button8.Text = "Сохранить";
             this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // label15
             // 
@@ -685,6 +689,7 @@
             this.button10.TabIndex = 10;
             this.button10.Text = "Сохранить";
             this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // label19
             // 
@@ -797,6 +802,7 @@
             this.button12.TabIndex = 10;
             this.button12.Text = "Сохранить";
             this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // label23
             // 
@@ -909,6 +915,7 @@
             this.button14.TabIndex = 10;
             this.button14.Text = "Сохранить";
             this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
             // label27
             // 
@@ -1021,6 +1028,7 @@
             this.button16.TabIndex = 10;
             this.button16.Text = "Сохранить";
             this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // label31
             // 
@@ -1060,6 +1068,7 @@
             this.Name = "Form3";
             this.Padding = new System.Windows.Forms.Padding(3);
             this.Text = "Settings";
+            this.Load += new System.EventHandler(this.Form3_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
