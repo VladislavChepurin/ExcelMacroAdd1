@@ -46,13 +46,14 @@
             this.button2 = this.Factory.CreateRibbonButton();
             this.button7 = this.Factory.CreateRibbonButton();
             this.button5 = this.Factory.CreateRibbonButton();
+            this.separator1 = this.Factory.CreateRibbonSeparator();
+            this.button11 = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.label1 = this.Factory.CreateRibbonLabel();
             this.label2 = this.Factory.CreateRibbonLabel();
             this.label3 = this.Factory.CreateRibbonLabel();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.button10 = this.Factory.CreateRibbonButton();
-            this.button11 = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.Группа1.SuspendLayout();
             this.group2.SuspendLayout();
@@ -78,6 +79,8 @@
             this.Группа1.Items.Add(this.button2);
             this.Группа1.Items.Add(this.button7);
             this.Группа1.Items.Add(this.button5);
+            this.Группа1.Items.Add(this.separator1);
+            this.Группа1.Items.Add(this.button11);
             this.Группа1.Label = "Базовые макросы";
             this.Группа1.Name = "Группа1";
             // 
@@ -158,6 +161,19 @@
             this.button5.Label = "";
             this.button5.Name = "button5";
             // 
+            // separator1
+            // 
+            this.separator1.Name = "separator1";
+            // 
+            // button11
+            // 
+            this.button11.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button11.Image = ((System.Drawing.Image)(resources.GetObject("button11.Image")));
+            this.button11.Label = "Модульные аппараты (Альфа)";
+            this.button11.Name = "button11";
+            this.button11.ShowImage = true;
+            this.button11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button11_Click);
+            // 
             // group2
             // 
             this.group2.Items.Add(this.label1);
@@ -184,7 +200,6 @@
             // group1
             // 
             this.group1.Items.Add(this.button10);
-            this.group1.Items.Add(this.button11);
             this.group1.Name = "group1";
             // 
             // button10
@@ -195,15 +210,6 @@
             this.button10.Name = "button10";
             this.button10.ShowImage = true;
             this.button10.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button10_Click);
-            // 
-            // button11
-            // 
-            this.button11.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button11.Image = ((System.Drawing.Image)(resources.GetObject("button11.Image")));
-            this.button11.Label = "Модульные аппараты (Альфа)";
-            this.button11.Name = "button11";
-            this.button11.ShowImage = true;
-            this.button11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button11_Click);
             // 
             // Ribbon1
             // 
@@ -243,6 +249,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label2;
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label3;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button11;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
     }
 
     partial class ThisRibbonCollection

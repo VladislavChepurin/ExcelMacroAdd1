@@ -12,6 +12,16 @@ using System.Windows.Forms;
 
 namespace ExcelMacroAdd
 {
+    enum ContainerAvt
+    {
+        FirstLineArray,
+        SecondLineArray,
+        ThirdLineArray,
+        FourthLineArray,
+        FifthLineArray,
+        SixthLineArray
+    }
+
     public partial class Form2 : Form
     {
         readonly int CircutIndAvt = 5; // Начальный ток автоматических выключателей
@@ -199,12 +209,11 @@ namespace ExcelMacroAdd
 
                     if (getArticle != "@")
                     {
-                        int.TryParse(texts[rows].Text, out int result);
-                        _ = new WriteExcel(getArticle, tuple.vendor, rows, result, checkBox14.Checked);
-                    }
-                                  
+                        int.TryParse(texts[rows].Text, out int quantity);
+                        WriteExcel writeExcel = new WriteExcel { GetArticle = getArticle, Vendor = tuple.vendor, Rows = rows, Quantity = quantity, Link = checkBox14.Checked };
+                        writeExcel.FuncWrite();
+                    }         
                     classDB.CloseDB();
-
                 }
             }
         }
@@ -221,32 +230,32 @@ namespace ExcelMacroAdd
         #region line1
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-           CheckData(0);
+            CheckData((int)ContainerAvt.FirstLineArray);
         }
 
         private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(0);
+            CheckData((int)ContainerAvt.FirstLineArray);
         }
 
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(0);
+            CheckData((int)ContainerAvt.FirstLineArray);
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(0);
+            CheckData((int)ContainerAvt.FirstLineArray);
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(0);
+            CheckData((int)ContainerAvt.FirstLineArray);
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(0);
+            CheckData((int)ContainerAvt.FirstLineArray);
         }
 
         #endregion
@@ -255,32 +264,32 @@ namespace ExcelMacroAdd
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            CheckData(1);
+            CheckData((int)ContainerAvt.SecondLineArray);
         }
 
         private void comboBox10_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(1);
+            CheckData((int)ContainerAvt.SecondLineArray);
         }
 
         private void comboBox9_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(1);
+            CheckData((int)ContainerAvt.SecondLineArray);
         }
 
         private void comboBox8_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(1);
+            CheckData((int)ContainerAvt.SecondLineArray);
         }
 
         private void comboBox7_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(1);
+            CheckData((int)ContainerAvt.SecondLineArray);
         }
 
         private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(1);
+            CheckData((int)ContainerAvt.SecondLineArray);
         }
 
         #endregion
@@ -288,32 +297,32 @@ namespace ExcelMacroAdd
         #region line3
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
-            CheckData(2);
+            CheckData((int)ContainerAvt.ThirdLineArray);
         }
 
         private void comboBox15_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(2);
+            CheckData((int)ContainerAvt.ThirdLineArray);
         }
 
         private void comboBox14_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(2);
+            CheckData((int)ContainerAvt.ThirdLineArray);
         }
 
         private void comboBox13_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(2);
+            CheckData((int)ContainerAvt.ThirdLineArray);
         }
 
         private void comboBox12_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(2);
+            CheckData((int)ContainerAvt.ThirdLineArray);
         }
 
         private void comboBox11_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(2);
+            CheckData((int)ContainerAvt.ThirdLineArray);
         }
 
         #endregion
@@ -322,32 +331,32 @@ namespace ExcelMacroAdd
 
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
-            CheckData(3);
+            CheckData((int)ContainerAvt.FourthLineArray);
         }
 
         private void comboBox20_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(3);
+            CheckData((int)ContainerAvt.FourthLineArray);
         }
 
         private void comboBox19_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(3);
+            CheckData((int)ContainerAvt.FourthLineArray);
         }
 
         private void comboBox18_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(3);
+            CheckData((int)ContainerAvt.FourthLineArray);
         }
 
         private void comboBox17_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(3);
+            CheckData((int)ContainerAvt.FourthLineArray);
         }
 
         private void comboBox16_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(3);
+            CheckData((int)ContainerAvt.FourthLineArray);
         }
 
         #endregion
@@ -356,32 +365,32 @@ namespace ExcelMacroAdd
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
         {
-            CheckData(4);
+            CheckData((int)ContainerAvt.FifthLineArray);
         }
 
         private void comboBox25_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(4);
+            CheckData((int)ContainerAvt.FifthLineArray);
         }
 
         private void comboBox24_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(4);
+            CheckData((int)ContainerAvt.FifthLineArray);
         }
 
         private void comboBox23_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(4);
+            CheckData((int)ContainerAvt.FifthLineArray);
         }
 
         private void comboBox22_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(4);
+            CheckData((int)ContainerAvt.FifthLineArray);
         }
 
         private void comboBox21_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(4);
+            CheckData((int)ContainerAvt.FifthLineArray);
         }
 
 
@@ -391,32 +400,32 @@ namespace ExcelMacroAdd
 
         private void checkBox6_CheckedChanged(object sender, EventArgs e)
         {
-            CheckData(5);
+            CheckData((int)ContainerAvt.SixthLineArray);
         }
 
         private void comboBox30_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(5);
+            CheckData((int)ContainerAvt.SixthLineArray);
         }
 
         private void comboBox29_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(5);
+            CheckData((int)ContainerAvt.SixthLineArray);
         }
 
         private void comboBox28_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(5);
+            CheckData((int)ContainerAvt.SixthLineArray);
         }
 
         private void comboBox27_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(5);
+            CheckData((int)ContainerAvt.SixthLineArray);
         }
 
         private void comboBox26_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckData(5);
+            CheckData((int)ContainerAvt.SixthLineArray);
         }
 
 

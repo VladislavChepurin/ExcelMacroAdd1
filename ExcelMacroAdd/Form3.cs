@@ -15,14 +15,14 @@ namespace ExcelMacroAdd
 
     enum RowsToArray
     {
-        IekLine = 0,
-        EkfLine = 1,
-        DkcLine = 2,
-        KeazLine = 3,
-        DekraftLine = 4,
-        TdmLine = 5,
-        AbbLine = 6,
-        SchneiderLine =7
+        IekLine,
+        EkfLine,
+        DkcLine,
+        KeazLine,
+        DekraftLine,
+        TdmLine,
+        AbbLine,
+        SchneiderLine
     }
 
     public partial class Form3 : Form
@@ -120,6 +120,13 @@ namespace ExcelMacroAdd
 
         #endregion
 
+
+        private Label[] RetupnLabelArray()
+        {
+            Label[] labels = new Label[] { label33, label34, label35, label36, label37, label38, label39, label40 };
+            return labels;
+        }
+
         private TextBox[,] ReturnTextBoxArray()
         {
             TextBox[,] textBoxes = new TextBox[8, 4]
@@ -170,6 +177,7 @@ namespace ExcelMacroAdd
                                 textBox2.Text = vendor.Element("Formula_2").Value;
                                 textBox3.Text = vendor.Element("Formula_3").Value;
                                 textBox4.Text = vendor.Element("Discont").Value;
+                                label33.Text  = vendor.Element("Date").Value;
                                 break;
 
                             case "EKF":
@@ -177,13 +185,15 @@ namespace ExcelMacroAdd
                                 textBox6.Text = vendor.Element("Formula_2").Value;
                                 textBox7.Text = vendor.Element("Formula_3").Value;
                                 textBox8.Text = vendor.Element("Discont").Value;
+                                label34.Text  = vendor.Element("Date").Value;
                                 break;
 
                             case "DKC":
-                                textBox9.Text = vendor.Element("Formula_1").Value;
+                                textBox9.Text  = vendor.Element("Formula_1").Value;
                                 textBox10.Text = vendor.Element("Formula_2").Value;
                                 textBox11.Text = vendor.Element("Formula_3").Value;
                                 textBox12.Text = vendor.Element("Discont").Value;
+                                label35.Text   = vendor.Element("Date").Value;
                                 break;
 
                             case "KEAZ":
@@ -191,6 +201,7 @@ namespace ExcelMacroAdd
                                 textBox14.Text = vendor.Element("Formula_2").Value;
                                 textBox15.Text = vendor.Element("Formula_3").Value;
                                 textBox16.Text = vendor.Element("Discont").Value;
+                                label36.Text   = vendor.Element("Date").Value;
                                 break;
 
                             case "DEKraft":
@@ -198,6 +209,7 @@ namespace ExcelMacroAdd
                                 textBox18.Text = vendor.Element("Formula_2").Value;
                                 textBox19.Text = vendor.Element("Formula_3").Value;
                                 textBox20.Text = vendor.Element("Discont").Value;
+                                label37.Text   = vendor.Element("Date").Value;
                                 break;
 
                             case "TDM":
@@ -205,6 +217,7 @@ namespace ExcelMacroAdd
                                 textBox22.Text = vendor.Element("Formula_2").Value;
                                 textBox23.Text = vendor.Element("Formula_3").Value;
                                 textBox24.Text = vendor.Element("Discont").Value;
+                                label38.Text   = vendor.Element("Date").Value;
                                 break;
 
                             case "ABB":
@@ -212,6 +225,7 @@ namespace ExcelMacroAdd
                                 textBox26.Text = vendor.Element("Formula_2").Value;
                                 textBox27.Text = vendor.Element("Formula_3").Value;
                                 textBox28.Text = vendor.Element("Discont").Value;
+                                label39.Text   = vendor.Element("Date").Value;
                                 break;
 
                             case "Schneider":
@@ -219,6 +233,7 @@ namespace ExcelMacroAdd
                                 textBox30.Text = vendor.Element("Formula_2").Value;
                                 textBox31.Text = vendor.Element("Formula_3").Value;
                                 textBox32.Text = vendor.Element("Discont").Value;
+                                label40.Text   = vendor.Element("Date").Value;
                                 break;
                         }
                     }
@@ -232,70 +247,72 @@ namespace ExcelMacroAdd
 
             catch (FileNotFoundException) // Востановление файла при его удалении
             {
-                using (FileStream fs = File.Create(file))
-                {
-                    byte[] info = new UTF8Encoding(true).GetBytes("<?xml version = \"1.0\" encoding = \"utf-8\" ?>\n" +
-                                                                  "<MetaSettings>\n" +
-                                                                  "\t <Vendor vendor=\"IEK\">\n" +
-                                                                  "\t \t <Formula_1>-</Formula_1>" +
-                                                                  "\t \t <Formula_2>-</Formula_2>" +
-                                                                  "\t \t <Formula_3>-</Formula_3>" +
-                                                                  "\t \t <Discont>-</Discont>" +
-                                                                  "\t \t <Date>-</Date>" +
-                                                                  "\t </Vendor>\n" +
-                                                                  "\t <Vendor vendor=\"EKF\">\n" +
-                                                                  "\t \t <Formula_1>-</Formula_1>" +
-                                                                  "\t \t <Formula_2>-</Formula_2>" +
-                                                                  "\t \t <Formula_3>-</Formula_3>" +
-                                                                  "\t \t <Discont>-</Discont>" +
-                                                                  "\t \t <Date>-</Date>" +
-                                                                  "\t </Vendor>\n" +
-                                                                  "\t <Vendor vendor=\"DKC\">\n" +
-                                                                  "\t \t <Formula_1>-</Formula_1>" +
-                                                                  "\t \t <Formula_2>-</Formula_2>" +
-                                                                  "\t \t <Formula_3>-</Formula_3>" +
-                                                                  "\t \t <Discont>-</Discont>" +
-                                                                  "\t \t <Date>-</Date>" +
-                                                                  "\t </Vendor>\n" +
-                                                                  "\t <Vendor vendor=\"KEAZ\">\n" +
-                                                                  "\t \t <Formula_1>-</Formula_1>" +
-                                                                  "\t \t <Formula_2>-</Formula_2>" +
-                                                                  "\t \t <Formula_3>-</Formula_3>" +
-                                                                  "\t \t <Discont>-</Discont>" +
-                                                                  "\t \t <Date>-</Date>" +
-                                                                  "\t </Vendor>\n" +
-                                                                  "\t <Vendor vendor=\"DEKraft\">\n" +
-                                                                  "\t \t <Formula_1>-</Formula_1>" +
-                                                                  "\t \t <Formula_2>-</Formula_2>" +
-                                                                  "\t \t <Formula_3>-</Formula_3>" +
-                                                                  "\t \t <Discont>-</Discont>" +
-                                                                  "\t \t <Date>-</Date>" +
-                                                                  "\t </Vendor>\n" +
-                                                                  "\t <Vendor vendor=\"TDM\">\n" +
-                                                                  "\t \t <Formula_1>-</Formula_1>" +
-                                                                  "\t \t <Formula_2>-</Formula_2>" +
-                                                                  "\t \t <Formula_3>-</Formula_3>" +
-                                                                  "\t \t <Discont>-</Discont>" +
-                                                                  "\t \t <Date>-</Date>" +
-                                                                  "\t </Vendor>\n" +
-                                                                  "\t <Vendor vendor=\"ABB\">\n" +
-                                                                  "\t \t <Formula_1>-</Formula_1>" +
-                                                                  "\t \t <Formula_2>-</Formula_2>" +
-                                                                  "\t \t <Formula_3>-</Formula_3>" +
-                                                                  "\t \t <Discont>-</Discont>" +
-                                                                  "\t \t <Date>-</Date>" +
-                                                                  "\t </Vendor>\n" +
-                                                                  "\t <Vendor vendor=\"Schneider\">\n" +
-                                                                  "\t \t <Formula_1>-</Formula_1>" +
-                                                                  "\t \t <Formula_2>-</Formula_2>" +
-                                                                  "\t \t <Formula_3>-</Formula_3>" +
-                                                                  "\t \t <Discont>-</Discont>" +
-                                                                  "\t \t <Date>-</Date>" +
-                                                                  "\t </Vendor>\n" +
-                                                                  "</MetaSettings>");
-                    // Add some information to the file.
-                    fs.Write(info, 0, info.Length);
-                }
+                XDocument xdoc = new XDocument(new XElement("MetaSettings",
+                                 //Поле IEK
+                                 new XElement("Vendor",
+                                 new XAttribute("vendor", "IEK"), 
+                                 new XElement("Formula_1", "none"),
+                                 new XElement("Formula_2", "none"),
+                                 new XElement("Formula_3", "none"),
+                                 new XElement("Discont", "none"),
+                                 new XElement("Date", "none")),
+                                 //Поле EKF
+                                 new XElement("Vendor",
+                                 new XAttribute("vendor", "EKF"),
+                                 new XElement("Formula_1", "none"),
+                                 new XElement("Formula_2", "none"),
+                                 new XElement("Formula_3", "none"),
+                                 new XElement("Discont", "none"),
+                                 new XElement("Date", "none")),
+                                 //Поле DKC
+                                 new XElement("Vendor",
+                                 new XAttribute("vendor", "DKC"),
+                                 new XElement("Formula_1", "none"),
+                                 new XElement("Formula_2", "none"),
+                                 new XElement("Formula_3", "none"),
+                                 new XElement("Discont", "none"),
+                                 new XElement("Date", "none")),
+                                 //Поле KEAZ
+                                 new XElement("Vendor",
+                                 new XAttribute("vendor", "KEAZ"),
+                                 new XElement("Formula_1", "none"),
+                                 new XElement("Formula_2", "none"),
+                                 new XElement("Formula_3", "none"),
+                                 new XElement("Discont", "none"),
+                                 new XElement("Date", "none")),
+                                 //Поле DEKraft
+                                 new XElement("Vendor",
+                                 new XAttribute("vendor", "DEKraft"),
+                                 new XElement("Formula_1", "none"),
+                                 new XElement("Formula_2", "none"),
+                                 new XElement("Formula_3", "none"),
+                                 new XElement("Discont", "none"),
+                                 new XElement("Date", "none")),
+                                 //Поле TDM
+                                 new XElement("Vendor",
+                                 new XAttribute("vendor", "TDM"),
+                                 new XElement("Formula_1", "none"),
+                                 new XElement("Formula_2", "none"),
+                                 new XElement("Formula_3", "none"),
+                                 new XElement("Discont", "none"),
+                                 new XElement("Date", "none")),
+                                 //Поле ABB
+                                 new XElement("Vendor",
+                                 new XAttribute("vendor", "ABB"),
+                                 new XElement("Formula_1", "none"),
+                                 new XElement("Formula_2", "none"),
+                                 new XElement("Formula_3", "none"),
+                                 new XElement("Discont", "none"),
+                                 new XElement("Date", "none")),
+                                 //Поле Schneider
+                                 new XElement("Vendor",
+                                 new XAttribute("vendor", "Schneider"),
+                                 new XElement("Formula_1", "none"),
+                                 new XElement("Formula_2", "none"),
+                                 new XElement("Formula_3", "none"),
+                                 new XElement("Discont", "none"),
+                                 new XElement("Date", "none"))));
+                xdoc.Save(file);
             }
         }                
         /// <summary>
@@ -306,7 +323,7 @@ namespace ExcelMacroAdd
         private void WiterXmlFunc(string vendor, int rowsArray)
         {
             TextBox[,] textBoxes = ReturnTextBoxArray();
-
+            Label[] labels = RetupnLabelArray();
             XDocument xdoc = XDocument.Load(file);
             var index = xdoc.Element("MetaSettings")?.Elements("Vendor").FirstOrDefault(p => p.Attribute("vendor")?.Value == vendor);
             if (index != null)
@@ -327,6 +344,8 @@ namespace ExcelMacroAdd
                 DateTime localDate = DateTime.Now;
                 var date = index.Element("Date");
                 if (date != null) date.Value = localDate.ToString();
+                // Записываем в форму дату обновления
+                labels[rowsArray].Text  = localDate.ToString();
 
                 // Сохраняем документ
                 xdoc.Save(file);
@@ -411,6 +430,11 @@ namespace ExcelMacroAdd
         private void button16_Click(object sender, EventArgs e)
         {
            WiterXmlFunc("Schneider", (int)RowsToArray.SchneiderLine);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
