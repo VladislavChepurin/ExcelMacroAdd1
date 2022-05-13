@@ -20,7 +20,7 @@ namespace ExcelMacroAdd
                 foreach (DataRow row in currency.Rows)
                 {
                     //Поиск доллара
-                    if (row["NumCode"].ToString() == "IEK") USDRate = Math.Round(Convert.ToDouble(row["Value"]), 2);
+                    if (row["CharCode"].ToString() == "USD") USDRate = Math.Round(Convert.ToDouble(row["Value"]), 2);
                   
                     // Поиск ЕВРО
                     if (row["CharCode"].ToString() == "EUR") EvroRate = Math.Round(Convert.ToDouble(row["Value"]), 2);
