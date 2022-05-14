@@ -34,7 +34,6 @@ namespace ExcelMacroAdd
             Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
             Range cell = Globals.ThisAddIn.GetActiveCell();
 
-
             int firstRow, countRow, endRow;
             // Создаем экземпляр класса DBConect
             var classDB = new DBConect();
@@ -404,6 +403,15 @@ namespace ExcelMacroAdd
             });    
         }
 
+        private async void button12_Click(object sender, RibbonControlEventArgs e)
+        {
+            await Task.Run(() =>
+            {
+                Form3 fs = new Form3();
+                fs.ShowDialog();
+                Thread.Sleep(5000);
+            });
+        }
     }
 
 }

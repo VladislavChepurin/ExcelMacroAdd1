@@ -9,11 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.IO;
+using Microsoft.Office.Interop.Excel;
+using Label = System.Windows.Forms.Label;
+using TextBox = System.Windows.Forms.TextBox;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelMacroAdd
 {
-
-    enum RowsToArray
+        enum RowsToArray
     {
         IekLine,
         EkfLine,
@@ -34,8 +37,6 @@ namespace ExcelMacroAdd
         {
             InitializeComponent();
         }
-
-
 
         #region KeyPress
 
@@ -179,7 +180,7 @@ namespace ExcelMacroAdd
                                 textBox2.Text = vendor.Element("Formula_2").Value;
                                 textBox3.Text = vendor.Element("Formula_3").Value;
                                 textBox4.Text = vendor.Element("Discont").Value;
-                                label33.Text  = vendor.Element("Date").Value;
+                                label33.Text = vendor.Element("Date").Value;
                                 break;
 
                             case "EKF":
@@ -187,15 +188,15 @@ namespace ExcelMacroAdd
                                 textBox6.Text = vendor.Element("Formula_2").Value;
                                 textBox7.Text = vendor.Element("Formula_3").Value;
                                 textBox8.Text = vendor.Element("Discont").Value;
-                                label34.Text  = vendor.Element("Date").Value;
+                                label34.Text = vendor.Element("Date").Value;
                                 break;
 
                             case "DKC":
-                                textBox9.Text  = vendor.Element("Formula_1").Value;
+                                textBox9.Text = vendor.Element("Formula_1").Value;
                                 textBox10.Text = vendor.Element("Formula_2").Value;
                                 textBox11.Text = vendor.Element("Formula_3").Value;
                                 textBox12.Text = vendor.Element("Discont").Value;
-                                label35.Text   = vendor.Element("Date").Value;
+                                label35.Text = vendor.Element("Date").Value;
                                 break;
 
                             case "KEAZ":
@@ -203,7 +204,7 @@ namespace ExcelMacroAdd
                                 textBox14.Text = vendor.Element("Formula_2").Value;
                                 textBox15.Text = vendor.Element("Formula_3").Value;
                                 textBox16.Text = vendor.Element("Discont").Value;
-                                label36.Text   = vendor.Element("Date").Value;
+                                label36.Text = vendor.Element("Date").Value;
                                 break;
 
                             case "DEKraft":
@@ -211,7 +212,7 @@ namespace ExcelMacroAdd
                                 textBox18.Text = vendor.Element("Formula_2").Value;
                                 textBox19.Text = vendor.Element("Formula_3").Value;
                                 textBox20.Text = vendor.Element("Discont").Value;
-                                label37.Text   = vendor.Element("Date").Value;
+                                label37.Text = vendor.Element("Date").Value;
                                 break;
 
                             case "TDM":
@@ -219,7 +220,7 @@ namespace ExcelMacroAdd
                                 textBox22.Text = vendor.Element("Formula_2").Value;
                                 textBox23.Text = vendor.Element("Formula_3").Value;
                                 textBox24.Text = vendor.Element("Discont").Value;
-                                label38.Text   = vendor.Element("Date").Value;
+                                label38.Text = vendor.Element("Date").Value;
                                 break;
 
                             case "ABB":
@@ -227,7 +228,7 @@ namespace ExcelMacroAdd
                                 textBox26.Text = vendor.Element("Formula_2").Value;
                                 textBox27.Text = vendor.Element("Formula_3").Value;
                                 textBox28.Text = vendor.Element("Discont").Value;
-                                label39.Text   = vendor.Element("Date").Value;
+                                label39.Text = vendor.Element("Date").Value;
                                 break;
 
                             case "Schneider":
@@ -235,7 +236,7 @@ namespace ExcelMacroAdd
                                 textBox30.Text = vendor.Element("Formula_2").Value;
                                 textBox31.Text = vendor.Element("Formula_3").Value;
                                 textBox32.Text = vendor.Element("Discont").Value;
-                                label40.Text   = vendor.Element("Date").Value;
+                                label40.Text = vendor.Element("Date").Value;
                                 break;
                         }
                     }
@@ -252,71 +253,71 @@ namespace ExcelMacroAdd
                 XDocument xdoc = new XDocument(new XElement("MetaSettings",
                                  //Поле IEK
                                  new XElement("Vendor",
-                                 new XAttribute("vendor", "IEK"), 
-                                 new XElement("Formula_1", "none"),
-                                 new XElement("Formula_2", "none"),
-                                 new XElement("Formula_3", "none"),
-                                 new XElement("Discont", "none"),
-                                 new XElement("Date", "none")),
+                                 new XAttribute("vendor", "IEK"),
+                                 new XElement("Formula_1", "_"),
+                                 new XElement("Formula_2", "_"),
+                                 new XElement("Formula_3", "_"),
+                                 new XElement("Discont", "_"),
+                                 new XElement("Date", "_")),
                                  //Поле EKF
                                  new XElement("Vendor",
                                  new XAttribute("vendor", "EKF"),
-                                 new XElement("Formula_1", "none"),
-                                 new XElement("Formula_2", "none"),
-                                 new XElement("Formula_3", "none"),
-                                 new XElement("Discont", "none"),
-                                 new XElement("Date", "none")),
+                                 new XElement("Formula_1", "_"),
+                                 new XElement("Formula_2", "_"),
+                                 new XElement("Formula_3", "_"),
+                                 new XElement("Discont", "_"),
+                                 new XElement("Date", "_")),
                                  //Поле DKC
                                  new XElement("Vendor",
                                  new XAttribute("vendor", "DKC"),
-                                 new XElement("Formula_1", "none"),
-                                 new XElement("Formula_2", "none"),
-                                 new XElement("Formula_3", "none"),
-                                 new XElement("Discont", "none"),
-                                 new XElement("Date", "none")),
+                                 new XElement("Formula_1", "_"),
+                                 new XElement("Formula_2", "_"),
+                                 new XElement("Formula_3", "_"),
+                                 new XElement("Discont", "_"),
+                                 new XElement("Date", "_")),
                                  //Поле KEAZ
                                  new XElement("Vendor",
                                  new XAttribute("vendor", "KEAZ"),
-                                 new XElement("Formula_1", "none"),
-                                 new XElement("Formula_2", "none"),
-                                 new XElement("Formula_3", "none"),
-                                 new XElement("Discont", "none"),
-                                 new XElement("Date", "none")),
+                                 new XElement("Formula_1", "_"),
+                                 new XElement("Formula_2", "_"),
+                                 new XElement("Formula_3", "_"),
+                                 new XElement("Discont", "_"),
+                                 new XElement("Date", "_")),
                                  //Поле DEKraft
                                  new XElement("Vendor",
                                  new XAttribute("vendor", "DEKraft"),
-                                 new XElement("Formula_1", "none"),
-                                 new XElement("Formula_2", "none"),
-                                 new XElement("Formula_3", "none"),
-                                 new XElement("Discont", "none"),
-                                 new XElement("Date", "none")),
+                                 new XElement("Formula_1", "_"),
+                                 new XElement("Formula_2", "_"),
+                                 new XElement("Formula_3", "_"),
+                                 new XElement("Discont", "_"),
+                                 new XElement("Date", "_")),
                                  //Поле TDM
                                  new XElement("Vendor",
                                  new XAttribute("vendor", "TDM"),
-                                 new XElement("Formula_1", "none"),
-                                 new XElement("Formula_2", "none"),
-                                 new XElement("Formula_3", "none"),
-                                 new XElement("Discont", "none"),
-                                 new XElement("Date", "none")),
+                                 new XElement("Formula_1", "_"),
+                                 new XElement("Formula_2", "_"),
+                                 new XElement("Formula_3", "_"),
+                                 new XElement("Discont", "_"),
+                                 new XElement("Date", "_")),
                                  //Поле ABB
                                  new XElement("Vendor",
                                  new XAttribute("vendor", "ABB"),
-                                 new XElement("Formula_1", "none"),
-                                 new XElement("Formula_2", "none"),
-                                 new XElement("Formula_3", "none"),
-                                 new XElement("Discont", "none"),
-                                 new XElement("Date", "none")),
+                                 new XElement("Formula_1", "_"),
+                                 new XElement("Formula_2", "_"),
+                                 new XElement("Formula_3", "_"),
+                                 new XElement("Discont", "_"),
+                                 new XElement("Date", "_")),
                                  //Поле Schneider
                                  new XElement("Vendor",
                                  new XAttribute("vendor", "Schneider"),
-                                 new XElement("Formula_1", "none"),
-                                 new XElement("Formula_2", "none"),
-                                 new XElement("Formula_3", "none"),
-                                 new XElement("Discont", "none"),
-                                 new XElement("Date", "none"))));
+                                 new XElement("Formula_1", "_"),
+                                 new XElement("Formula_2", "_"),
+                                 new XElement("Formula_3", "_"),
+                                 new XElement("Discont", "_"),
+                                 new XElement("Date", "_"))));
                 xdoc.Save(file);
             }
-        }                
+        }
         /// <summary>
         /// Функция записи в Xml, первый параметр - вендор в настройках, второй - номер строки в двумерном массиве TextBox[,]
         /// </summary>
@@ -332,7 +333,7 @@ namespace ExcelMacroAdd
             {
                 // Записываем первую формулу
                 var formula_1 = index.Element("Formula_1");
-                if (formula_1 != null) formula_1.Value = textBoxes[rowsArray,0].Text;
+                if (formula_1 != null) formula_1.Value = textBoxes[rowsArray, 0].Text;
                 // Записываем вторую формулу
                 var formula_2 = index.Element("Formula_2");
                 if (formula_2 != null) formula_2.Value = textBoxes[rowsArray, 1].Text;
@@ -347,12 +348,43 @@ namespace ExcelMacroAdd
                 var date = index.Element("Date");
                 if (date != null) date.Value = localDate.ToString();
                 // Записываем в форму дату обновления
-                labels[rowsArray].Text  = localDate.ToString();
+                labels[rowsArray].Text = localDate.ToString();
 
                 // Сохраняем документ
                 xdoc.Save(file);
             }
         }
+
+        private void ReadExcelFunc(int rowsArray)
+        {
+            Excel.Application application = Globals.ThisAddIn.GetApplication();
+            Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
+            Range cell = Globals.ThisAddIn.GetActiveCell();
+
+            TextBox[,] textBoxes = ReturnTextBoxArray();
+
+            int firstRow = cell.Row;
+
+            // Read Cells "B_" if value not empty then continue our work
+            string formula_1 = worksheet.Cells[firstRow, 2]?.FormulaLocal;                    
+            if (formula_1 != String.Empty) 
+            {
+                textBoxes[rowsArray, 0].Text = Replace.VprFormulaReplace(formula_1, firstRow);
+            }
+            // Read Cells "D_" if value not empty then continue our work
+            string formula_2 = worksheet.Cells[firstRow, 4]?.FormulaLocal;
+            if (formula_2 != String.Empty)
+            {
+                textBoxes[rowsArray, 1].Text = Replace.VprFormulaReplace(formula_2, firstRow);
+            }
+            // Read Cells "G_" if value not empty then continue our work
+            string formula_3 = worksheet.Cells[firstRow, 7]?.FormulaLocal;
+            if (formula_3 != String.Empty)
+            {
+                textBoxes[rowsArray, 2].Text = Replace.VprFormulaReplace(formula_3, firstRow);
+            }
+        }
+
 
         /// <summary>
         /// Write IEK settings to xml
@@ -431,12 +463,79 @@ namespace ExcelMacroAdd
         /// <param name="e"></param>
         private void button16_Click(object sender, EventArgs e)
         {
-           WiterXmlFunc("Schneider", (int)RowsToArray.SchneiderLine);
+            WiterXmlFunc("Schneider", (int)RowsToArray.SchneiderLine);
         }
-
+        /// <summary>
+        /// Read IEK formula in ExcelSheets
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-
+            ReadExcelFunc((int)RowsToArray.IekLine);
+        }
+        /// <summary>
+        /// Read EKF formula in ExcelSheets
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ReadExcelFunc((int)RowsToArray.EkfLine);
+        }
+        /// <summary>
+        /// Read DKC formula in ExcelSheets
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button5_Click(object sender, EventArgs e)
+        {
+            ReadExcelFunc((int)RowsToArray.DkcLine);
+        }
+        /// <summary>
+        /// Read KEAZ formula in ExcelSheets
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button7_Click(object sender, EventArgs e)
+        {
+            ReadExcelFunc((int)RowsToArray.KeazLine);
+        }
+        /// <summary>
+        /// Read DEKraft formula in ExcelSheets
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button9_Click(object sender, EventArgs e)
+        {
+            ReadExcelFunc((int)RowsToArray.DekraftLine);
+        }
+        /// <summary>
+        /// Read TDM formula in ExcelSheets
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button11_Click(object sender, EventArgs e)
+        {
+            ReadExcelFunc((int)RowsToArray.TdmLine);
+        }
+        /// <summary>
+        /// Read ABB formula in ExcelSheets
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button13_Click(object sender, EventArgs e)
+        {
+            ReadExcelFunc((int)RowsToArray.AbbLine);
+        }
+        /// <summary>
+        /// Read Schneider formula in ExcelSheets
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button15_Click(object sender, EventArgs e)
+        {
+            ReadExcelFunc((int)RowsToArray.SchneiderLine);
         }
     }
 }

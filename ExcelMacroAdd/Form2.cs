@@ -111,7 +111,7 @@ namespace ExcelMacroAdd
                              vendor: comboBoxes[rowsCheck, 4].SelectedItem.ToString());
                 // Переменная запроса SQL
                 string setRequest = String.Format("SELECT {0} FROM modul WHERE s_in = '{1}' AND kurve = '{2}' AND icu = '{3}' AND quantity = '{4}';",
-                                               FuncReplece(tuple.vendor), tuple.cirkut, tuple.kurve, tuple.icu, tuple.polus);
+                                               Replace.FuncReplece(tuple.vendor), tuple.cirkut, tuple.kurve, tuple.icu, tuple.polus);
                 //Работа с базой данных
                 DBConect classDB = new DBConect();
                 classDB.OpenDB();
@@ -174,11 +174,7 @@ namespace ExcelMacroAdd
             return comboBoxes;
         }
 
-        private string FuncReplece(string mReplase)                          // Функция замены // индус заплачит от умиления IEK ВА47 - кирилица, IEK BA47М - латиница Переписать!!!
-        {
-            return mReplase.Replace("IEK ВА47", "iek_va47").Replace("IEK BA47М", "iek_va47m").Replace("EKF PROxima", "ekf_proxima").Replace("ABB", "abb").Replace("EKF AVERS", "ekf_avers").
-                Replace("KEAZ", "keaz").Replace("DKC", "dkc").Replace("DEKraft", "dekraft").Replace("Schneider", "schneider").Replace("TDM", "tdm");
-        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             for (int rows = 0; rows < 6; rows++)
@@ -200,7 +196,7 @@ namespace ExcelMacroAdd
                                  vendor: comboBoxes[rows, 4].SelectedItem.ToString());
                     // Переменная запроса SQL
                     string setRequest = String.Format("SELECT {0} FROM modul WHERE s_in = '{1}' AND kurve = '{2}' AND icu = '{3}' AND quantity = '{4}';",
-                                                   FuncReplece(tuple.vendor), tuple.cirkut, tuple.kurve, tuple.icu, tuple.polus);
+                                                   Replace.FuncReplece(tuple.vendor), tuple.cirkut, tuple.kurve, tuple.icu, tuple.polus);
                     //Работа с базой данных
                     DBConect classDB = new DBConect();
                     classDB.OpenDB();

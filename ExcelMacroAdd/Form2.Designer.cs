@@ -213,7 +213,6 @@
             this.checkBox12 = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.checkBox14 = new System.Windows.Forms.CheckBox();
-            this.button2 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -2057,7 +2056,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 545);
+            this.button1.Location = new System.Drawing.Point(12, 540);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(102, 29);
             this.button1.TabIndex = 2;
@@ -2068,29 +2067,18 @@
             // checkBox14
             // 
             this.checkBox14.AutoSize = true;
-            this.checkBox14.Location = new System.Drawing.Point(146, 552);
+            this.checkBox14.Location = new System.Drawing.Point(160, 547);
             this.checkBox14.Name = "checkBox14";
-            this.checkBox14.Size = new System.Drawing.Size(99, 17);
+            this.checkBox14.Size = new System.Drawing.Size(142, 17);
             this.checkBox14.TabIndex = 4;
-            this.checkBox14.Text = "Авторазметка";
+            this.checkBox14.Text = "Авторазметка расчета";
             this.checkBox14.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(416, 545);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(102, 29);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Настройки";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(527, 590);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.checkBox14);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
@@ -2331,6 +2319,5 @@
         private System.Windows.Forms.CheckBox checkBox12;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox checkBox14;
-        private System.Windows.Forms.Button button2;
     }
 }
