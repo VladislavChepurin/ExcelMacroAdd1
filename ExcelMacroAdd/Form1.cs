@@ -1,8 +1,10 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using Microsoft.CSharp.RuntimeBinder;
+using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Interop.Word;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -39,11 +41,10 @@ namespace ExcelMacroAdd
             {
                 var classDB = new DBConect();
 
-                try
-                {
+             
                     // Открываем соединение с базой данных    
                     classDB.OpenDB();
-               
+
                     int progressValue = 0;
 
                     int iHeihgtMax = Convert.ToInt32(classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sHeihgtMax';", 2));       // Запрашиваем максимальную высоту навесных шкафов
@@ -71,6 +72,8 @@ namespace ExcelMacroAdd
                     Object xmlTransform = Type.Missing;
                     Object replaceTypeObj = Word.WdReplace.wdReplaceAll;
 
+                try
+                {
                     // Цикл переборки строк
                     do
                     {
@@ -208,11 +211,11 @@ namespace ExcelMacroAdd
                             drInfo.Create();
                             Logger(folderName);
                         }
-                            
+
                         document.SaveAs(folderName + @"\Паспорт " + numberSave + ".docx");
                         //document.ExportAsFixedFormat(folderName + @"\Паспорт " + numberSave + ".pdf", WdExportFormat.wdExportFormatPDF);
 
-                        int amountSheet= document.ComputeStatistics(WdStatistic.wdStatisticPages, false);
+                        int amountSheet = document.ComputeStatistics(WdStatistic.wdStatisticPages, false);
                         // Вызов логгера
                         Logger(folderName, numberSave, amountSheet);
 
@@ -220,7 +223,8 @@ namespace ExcelMacroAdd
                         firstRow++;
 
                         // Работа с элементами формы через делегат
-                        this.Invoke((MethodInvoker)delegate () {
+                        this.Invoke((MethodInvoker)delegate ()
+                        {
                             progressBar1.PerformStep();
                             label1.Text = "Подождите пожайлуста, идет заполнение паспортов " + ++progressValue + "/" + countRow;
                         });
@@ -229,16 +233,43 @@ namespace ExcelMacroAdd
                     while (endRow > firstRow);
 
                     // Работа с элементами формы через делегат
-                    this.Invoke((MethodInvoker)delegate () {
+                    this.Invoke((MethodInvoker)delegate ()
+                    {
                         label1.Text = "Паспота заполнены. Ты молодец";
                         button1.Enabled = true;
                     });
 
                     // Закрываем соединение с базой данных
                     classDB.CloseDB();
-                    applicationWord.Quit();                
+                    applicationWord.Quit();
 
                 }
+                catch (COMException)
+                {
+                    MessageBox.Show(
+                    "Проверьте имя проекта внимательно,\n экстрасенсы говорят что проблема в первом столбце.",
+                    "Ошибка надстройки",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.DefaultDesktopOnly);
+
+                    if (applicationWord != null) applicationWord.Quit();
+                }
+
+                catch (RuntimeBinderException)
+                {
+                    MessageBox.Show(
+                    "Проверьте заполнение всех столбцов,\n где-то нехватает данных.",
+                    "Ошибка надстройки",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.DefaultDesktopOnly);
+
+                    if (applicationWord != null) applicationWord.Quit();
+                }
+
                 catch (Exception exception)
                 {
                     MessageBox.Show(
@@ -248,6 +279,8 @@ namespace ExcelMacroAdd
                     MessageBoxIcon.Error,
                     MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.DefaultDesktopOnly);
+
+                    if (applicationWord != null) applicationWord.Quit();
                 }
 
             }).Start();
@@ -268,19 +301,19 @@ namespace ExcelMacroAdd
             output.Close();
         }
 
-            /// <summary>
-            /// Метод для записи логов формиррования паспортов
-            /// </summary>
-            /// <param name="folder"></param>
-            /// <param name="saveNum"></param>
-            /// <param name="amount"></param>
-            private static void Logger(string folder, string saveNum, int amount)
-            {
+        /// <summary>
+        /// Метод для записи логов формиррования паспортов
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <param name="saveNum"></param>
+        /// <param name="amount"></param>
+        private static void Logger(string folder, string saveNum, int amount)
+        {
             string patch = folder + @"\log.txt";
             StreamWriter output = File.AppendText(patch);
             output.WriteLine("{0} | Паспорт {1} сформирован успешно, в паспорте {2} листа", DateTime.Now, saveNum, amount);
             output.Close();
-            }
+        }
 
         private string FuncReplece(string mReplase)                          // Функция замены
         {

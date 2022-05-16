@@ -16,7 +16,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelMacroAdd
 {
-        enum RowsToArray
+    enum RowsToArray
     {
         IekLine,
         EkfLine,

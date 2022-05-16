@@ -20,13 +20,24 @@ namespace ExcelMacroAdd
                 foreach (DataRow row in currency.Rows)
                 {
                     //Поиск доллара
-                    if (row["CharCode"].ToString() == "USD") USDRate = Math.Round(Convert.ToDouble(row["Value"]), 2);
-                  
+                    if (row["CharCode"].ToString() == "USD")
+                    {
+                        int nominal = Convert.ToInt32(row["Nominal"]);
+                        USDRate = Math.Round(Convert.ToDouble(row["Value"])/nominal, 2);
+                    }
+
                     // Поиск ЕВРО
-                    if (row["CharCode"].ToString() == "EUR") EvroRate = Math.Round(Convert.ToDouble(row["Value"]), 2);
-                    
+                    if (row["CharCode"].ToString() == "EUR")
+                    {
+                        int nominal = Convert.ToInt32(row["Nominal"]);
+                        EvroRate = Math.Round(Convert.ToDouble(row["Value"])/nominal, 2);
+                    }
                     // Поиск Юаня
-                    if (row["CharCode"].ToString() == "CNY") CnyRate = Math.Round(Convert.ToDouble(row["Value"]), 2);                
+                    if (row["CharCode"].ToString() == "CNY")
+                    {
+                        int nominal = Convert.ToInt32(row["Nominal"]);
+                        CnyRate = Math.Round(Convert.ToDouble(row["Value"])/nominal, 2);
+                    }
                 }
             }
             catch (WebException)
