@@ -412,6 +412,59 @@ namespace ExcelMacroAdd
                 Thread.Sleep(5000);
             });
         }
+
+        private void button13_Click(object sender, RibbonControlEventArgs e)
+        {
+            VprWrireExcel("IEK");
+        }
+
+        private void button14_Click(object sender, RibbonControlEventArgs e)
+        {
+            VprWrireExcel("EKF");
+        }
+
+        private void button15_Click(object sender, RibbonControlEventArgs e)
+        {
+            VprWrireExcel("DKC");
+        }
+
+        private void button16_Click(object sender, RibbonControlEventArgs e)
+        {
+            VprWrireExcel("KEAZ");
+        }
+        /// <summary>
+        /// Функция для написания формулы
+        /// </summary>
+        /// <param name="vendor"></param>
+        private void VprWrireExcel(string vendor)
+        {
+            Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
+            Range cell = Globals.ThisAddIn.GetActiveCell();
+
+            int firstRow = cell.Row;                 // Вычисляем верхний элемент
+            int countRow = cell.Rows.Count;          // Вычисляем кол-во выделенных строк
+            int endRow = firstRow + countRow;
+
+            DataInXml dataInXml = new DataInXml();
+
+            do
+            {                         
+                worksheet.get_Range("B" + firstRow).FormulaLocal = String.Format(
+                    dataInXml.GetDataInXml(vendor, "Formula_1"), firstRow);    //Столбец "Описание". Вызывает формулу Formula_1
+                
+                worksheet.get_Range("D" + firstRow).FormulaLocal = String.Format(
+                    dataInXml.GetDataInXml(vendor, "Formula_2"), firstRow);    //Столбец "Кратность". Вызывает формулу Formula_2
+                worksheet.get_Range("E" + firstRow).Value2 = Replace.RepleceVendorTable(vendor);
+                worksheet.get_Range("F" + firstRow).Value2 = dataInXml.GetDataInXml(vendor, "Discont");         //Столбец "Скидка". Вызывает значение Discont
+                worksheet.get_Range("G" + firstRow).FormulaLocal = String.Format(
+                    dataInXml.GetDataInXml(vendor, "Formula_3"), firstRow);     //Столбец "Цена". Вызывает формулу Formula_3
+                worksheet.get_Range("H" + firstRow).Formula = String.Format("=G{0}*(100-F{0})/100", firstRow);
+                worksheet.get_Range("I" + firstRow).Formula = String.Format("=H{0}*C{0}", firstRow);
+
+                firstRow++;
+            }
+            while (endRow > firstRow);
+        }
     }
 
 }

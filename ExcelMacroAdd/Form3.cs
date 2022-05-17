@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using System.IO;
-using Microsoft.Office.Interop.Excel;
+using Excel = Microsoft.Office.Interop.Excel;
 using Label = System.Windows.Forms.Label;
 using TextBox = System.Windows.Forms.TextBox;
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelMacroAdd
 {
@@ -165,7 +159,7 @@ namespace ExcelMacroAdd
         private void Form3_Load(object sender, EventArgs e)
         {
             try
-            {
+            { // преписать!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 XDocument xdoc = XDocument.Load(file);
                 // получаем корневой узел
                 XElement dataRow = xdoc.Element("MetaSettings");
@@ -250,72 +244,8 @@ namespace ExcelMacroAdd
 
             catch (FileNotFoundException) // Востановление файла при его удалении
             {
-                XDocument xdoc = new XDocument(new XElement("MetaSettings",
-                                 //Поле IEK
-                                 new XElement("Vendor",
-                                 new XAttribute("vendor", "IEK"),
-                                 new XElement("Formula_1", "_"),
-                                 new XElement("Formula_2", "_"),
-                                 new XElement("Formula_3", "_"),
-                                 new XElement("Discont", "_"),
-                                 new XElement("Date", "_")),
-                                 //Поле EKF
-                                 new XElement("Vendor",
-                                 new XAttribute("vendor", "EKF"),
-                                 new XElement("Formula_1", "_"),
-                                 new XElement("Formula_2", "_"),
-                                 new XElement("Formula_3", "_"),
-                                 new XElement("Discont", "_"),
-                                 new XElement("Date", "_")),
-                                 //Поле DKC
-                                 new XElement("Vendor",
-                                 new XAttribute("vendor", "DKC"),
-                                 new XElement("Formula_1", "_"),
-                                 new XElement("Formula_2", "_"),
-                                 new XElement("Formula_3", "_"),
-                                 new XElement("Discont", "_"),
-                                 new XElement("Date", "_")),
-                                 //Поле KEAZ
-                                 new XElement("Vendor",
-                                 new XAttribute("vendor", "KEAZ"),
-                                 new XElement("Formula_1", "_"),
-                                 new XElement("Formula_2", "_"),
-                                 new XElement("Formula_3", "_"),
-                                 new XElement("Discont", "_"),
-                                 new XElement("Date", "_")),
-                                 //Поле DEKraft
-                                 new XElement("Vendor",
-                                 new XAttribute("vendor", "DEKraft"),
-                                 new XElement("Formula_1", "_"),
-                                 new XElement("Formula_2", "_"),
-                                 new XElement("Formula_3", "_"),
-                                 new XElement("Discont", "_"),
-                                 new XElement("Date", "_")),
-                                 //Поле TDM
-                                 new XElement("Vendor",
-                                 new XAttribute("vendor", "TDM"),
-                                 new XElement("Formula_1", "_"),
-                                 new XElement("Formula_2", "_"),
-                                 new XElement("Formula_3", "_"),
-                                 new XElement("Discont", "_"),
-                                 new XElement("Date", "_")),
-                                 //Поле ABB
-                                 new XElement("Vendor",
-                                 new XAttribute("vendor", "ABB"),
-                                 new XElement("Formula_1", "_"),
-                                 new XElement("Formula_2", "_"),
-                                 new XElement("Formula_3", "_"),
-                                 new XElement("Discont", "_"),
-                                 new XElement("Date", "_")),
-                                 //Поле Schneider
-                                 new XElement("Vendor",
-                                 new XAttribute("vendor", "Schneider"),
-                                 new XElement("Formula_1", "_"),
-                                 new XElement("Formula_2", "_"),
-                                 new XElement("Formula_3", "_"),
-                                 new XElement("Discont", "_"),
-                                 new XElement("Date", "_"))));
-                xdoc.Save(file);
+                DataInXml dataInXml = new DataInXml();
+                dataInXml.XmlFileCreate();
             }
         }
         /// <summary>
