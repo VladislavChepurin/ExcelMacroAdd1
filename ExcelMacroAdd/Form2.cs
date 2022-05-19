@@ -106,21 +106,35 @@ namespace ExcelMacroAdd
                 // Переменная запроса SQL
                 string setRequest = String.Format("SELECT {0} FROM modul WHERE s_in = '{1}' AND kurve = '{2}' AND icu = '{3}' AND quantity = '{4}';",
                                                Replace.FuncReplece(tuple.vendor), tuple.cirkut, tuple.kurve, tuple.icu, tuple.polus);
-                //Работа с базой данных
-                DBConect classDB = new DBConect();
-                classDB.OpenDB();
 
-                string getArticle = classDB.RequestDB(setRequest, 0);
 
-                if (getArticle != "@")
+                //Обращение к БД в новом потоке, что бы не тормозил интерфейс
+                new Thread(() =>
                 {
-                    pictures[rowsCheck].BackColor = Color.Green;
-                }
-                else
-                {
-                    pictures[rowsCheck].BackColor = Color.IndianRed;
-                }
-                classDB.CloseDB();
+                    //Работа с базой данных
+                    DBConect classDB = new DBConect();
+                    classDB.OpenDB();
+
+                    string getArticle = classDB.RequestDB(setRequest, 0);
+
+                    if (getArticle != "@")
+                    {
+                        //Запуск через делегат, т.к. другой поток
+                        this.Invoke((MethodInvoker)delegate ()
+                        {
+                            pictures[rowsCheck].BackColor = Color.Green;
+                        });
+                    }
+                    else
+                    {
+                        //Запуск через делегат, т.к. другой поток
+                        this.Invoke((MethodInvoker)delegate ()
+                        {
+                            pictures[rowsCheck].BackColor = Color.IndianRed;
+                        });
+                    }
+                    classDB.CloseDB();
+                }).Start();
             }
         }
 
@@ -171,14 +185,14 @@ namespace ExcelMacroAdd
 
         private void button1_Click(object sender, EventArgs e)
         {
+            CheckBox[] checks = ReturnCheckBoxArray();
+
+            ComboBox[,] comboBoxes = ReturnComboBoxArray();
+
+            TextBox[] texts = TextBoxesArray();
+
             for (int rows = 0; rows < 6; rows++)
             {
-                CheckBox[] checks = ReturnCheckBoxArray();
-
-                ComboBox[,] comboBoxes = ReturnComboBoxArray();
-
-                TextBox[] texts = TextBoxesArray();
-
                 // Если стоит галочка в CheckBox, то условие истина
                 if (checks[rows].Checked)
                 {
@@ -191,6 +205,8 @@ namespace ExcelMacroAdd
                     // Переменная запроса SQL
                     string setRequest = String.Format("SELECT {0} FROM modul WHERE s_in = '{1}' AND kurve = '{2}' AND icu = '{3}' AND quantity = '{4}';",
                                                    Replace.FuncReplece(tuple.vendor), tuple.cirkut, tuple.kurve, tuple.icu, tuple.polus);
+
+                    //Обращение к БД в новом потоке, что бы не тормозил интерфейс
                     //Работа с базой данных
                     DBConect classDB = new DBConect();
                     classDB.OpenDB();
@@ -199,10 +215,11 @@ namespace ExcelMacroAdd
 
                     if (getArticle != "@")
                     {
+                        int ii = rows;
                         int.TryParse(texts[rows].Text, out int quantity);
                         WriteExcel writeExcel = new WriteExcel { GetArticle = getArticle, Vendor = tuple.vendor, Rows = rows, Quantity = quantity, Link = checkBox14.Checked };
                         writeExcel.FuncWrite();
-                    }         
+                    }
                     classDB.CloseDB();
                 }
             }

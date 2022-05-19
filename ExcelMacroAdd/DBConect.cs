@@ -38,7 +38,7 @@ namespace ExcelMacroAdd
 
         // Путь к базе данных
 #if DEBUG
-        private readonly string _pPatch = @"C:\Users\ПК\Desktop\Прайсы\Макро\";
+        private readonly string _pPatch = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Прайсы\Макро\";
 #else
         private readonly string _pPatch = @"\\192.168.100.100\ftp\Info_A\FTP\Производство Абиэлт\Инженеры\"; // Путь к базе данных
 #endif
@@ -60,11 +60,25 @@ namespace ExcelMacroAdd
         /// </summary>
         public void OpenDB()
         {
-            myConnection = new OleDbConnection(_providerData + _pPatch + _sPatch + ";");
-            // открываем соединение с БД
-            myConnection.Open();
+            try
+            {
+                myConnection = new OleDbConnection(_providerData + _pPatch + _sPatch + ";");
+                // открываем соединение с БД
+                myConnection.Open();
         }
-        
+            catch(OleDbException)
+            {
+                MessageBox.Show(
+                "База данных не найдена, убедитесь в наличии файла базы данных и сетевого подключения. " +
+                "Файл " + _pPatch + _sPatch + " не найден в предпологаемом местонахождении.",
+                "Ошибка базы данных",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error,
+                MessageBoxDefaultButton.Button1,
+                MessageBoxOptions.DefaultDesktopOnly);
+            }
+}
+
         /// <summary>
         /// Закрытие соединения с БД
         /// </summary>
@@ -98,8 +112,13 @@ namespace ExcelMacroAdd
             catch (OleDbException exception)
             {
                 Message(exception);
-                return null;
-            }            
+                return default;
+            }       
+            catch (InvalidOperationException) 
+            {
+                return default;
+            }
+
         }
 
         /// <summary>
