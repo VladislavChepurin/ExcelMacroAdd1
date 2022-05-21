@@ -465,6 +465,63 @@ namespace ExcelMacroAdd
             }
             while (endRow > firstRow);
         }
+
+        /// <summary>
+        /// Разметка границ листа
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button17_Click(object sender, RibbonControlEventArgs e)
+        {
+            Excel.Application application = Globals.ThisAddIn.GetApplication();
+
+            var excelcells = application.Selection;
+            Excel.XlBordersIndex borderIndex;
+
+            borderIndex = Excel.XlBordersIndex.xlEdgeLeft; //Левая граница
+            excelcells.Borders[borderIndex].Weight = Excel.XlBorderWeight.xlThin;
+            excelcells.Borders[borderIndex].LineStyle = Excel.XlLineStyle.xlContinuous;
+            excelcells.Borders[borderIndex].ColorIndex = 0;
+
+            borderIndex = Excel.XlBordersIndex.xlEdgeTop; //Верхняя граница
+            excelcells.Borders[borderIndex].Weight = Excel.XlBorderWeight.xlThin;
+            excelcells.Borders[borderIndex].LineStyle = Excel.XlLineStyle.xlContinuous;
+            excelcells.Borders[borderIndex].ColorIndex = 0;
+
+            borderIndex = Excel.XlBordersIndex.xlEdgeBottom; //Нижняя граница
+            excelcells.Borders[borderIndex].Weight = Excel.XlBorderWeight.xlThin;
+            excelcells.Borders[borderIndex].LineStyle = Excel.XlLineStyle.xlContinuous;
+            excelcells.Borders[borderIndex].ColorIndex = 0;
+
+            borderIndex = Excel.XlBordersIndex.xlEdgeRight;  //Правая граница
+            excelcells.Borders[borderIndex].Weight = Excel.XlBorderWeight.xlThin;
+            excelcells.Borders[borderIndex].LineStyle = Excel.XlLineStyle.xlContinuous;
+            excelcells.Borders[borderIndex].ColorIndex = 0;
+
+            borderIndex = Excel.XlBordersIndex.xlInsideHorizontal;  //Внутренняя горизонтальня граница
+            excelcells.Borders[borderIndex].Weight = Excel.XlBorderWeight.xlThin;
+            excelcells.Borders[borderIndex].LineStyle = Excel.XlLineStyle.xlContinuous;
+            excelcells.Borders[borderIndex].ColorIndex = 0;
+
+            borderIndex = Excel.XlBordersIndex.xlInsideVertical;  //Внутренняя горизонтальня граница
+            excelcells.Borders[borderIndex].Weight = Excel.XlBorderWeight.xlThin;
+            excelcells.Borders[borderIndex].LineStyle = Excel.XlLineStyle.xlContinuous;
+            excelcells.Borders[borderIndex].ColorIndex = 0;
+        }
+        /// <summary>
+        /// Правка шрифта на Calibri 11 пт
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button18_Click(object sender, RibbonControlEventArgs e)
+        {
+            Excel.Application application = Globals.ThisAddIn.GetApplication();
+
+            var excelcells = application.Selection;
+
+            excelcells.Font.Name = "Calibri";
+            excelcells.Font.Size = 11;          
+        }
     }
 
 }

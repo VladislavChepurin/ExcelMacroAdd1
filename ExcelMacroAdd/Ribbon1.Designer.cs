@@ -37,12 +37,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon1));
             this.tab1 = this.Factory.CreateRibbonTab();
             this.Группа1 = this.Factory.CreateRibbonGroup();
+            this.separator1 = this.Factory.CreateRibbonSeparator();
+            this.group3 = this.Factory.CreateRibbonGroup();
+            this.separator2 = this.Factory.CreateRibbonSeparator();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.label1 = this.Factory.CreateRibbonLabel();
             this.label2 = this.Factory.CreateRibbonLabel();
             this.label3 = this.Factory.CreateRibbonLabel();
             this.group1 = this.Factory.CreateRibbonGroup();
-            this.separator2 = this.Factory.CreateRibbonSeparator();
             this.button6 = this.Factory.CreateRibbonButton();
             this.button1 = this.Factory.CreateRibbonButton();
             this.button8 = this.Factory.CreateRibbonButton();
@@ -52,6 +54,8 @@
             this.button2 = this.Factory.CreateRibbonButton();
             this.button7 = this.Factory.CreateRibbonButton();
             this.button5 = this.Factory.CreateRibbonButton();
+            this.button17 = this.Factory.CreateRibbonButton();
+            this.button18 = this.Factory.CreateRibbonButton();
             this.button13 = this.Factory.CreateRibbonButton();
             this.button14 = this.Factory.CreateRibbonButton();
             this.button15 = this.Factory.CreateRibbonButton();
@@ -59,12 +63,11 @@
             this.button11 = this.Factory.CreateRibbonButton();
             this.button12 = this.Factory.CreateRibbonButton();
             this.button10 = this.Factory.CreateRibbonButton();
-            this.group3 = this.Factory.CreateRibbonGroup();
             this.tab1.SuspendLayout();
             this.Группа1.SuspendLayout();
+            this.group3.SuspendLayout();
             this.group2.SuspendLayout();
             this.group1.SuspendLayout();
-            this.group3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
@@ -87,8 +90,31 @@
             this.Группа1.Items.Add(this.button2);
             this.Группа1.Items.Add(this.button7);
             this.Группа1.Items.Add(this.button5);
+            this.Группа1.Items.Add(this.separator1);
+            this.Группа1.Items.Add(this.button17);
+            this.Группа1.Items.Add(this.button18);
             this.Группа1.Label = "Базовые макросы";
             this.Группа1.Name = "Группа1";
+            // 
+            // separator1
+            // 
+            this.separator1.Name = "separator1";
+            // 
+            // group3
+            // 
+            this.group3.Items.Add(this.button13);
+            this.group3.Items.Add(this.button14);
+            this.group3.Items.Add(this.button15);
+            this.group3.Items.Add(this.button16);
+            this.group3.Items.Add(this.separator2);
+            this.group3.Items.Add(this.button11);
+            this.group3.Items.Add(this.button12);
+            this.group3.Label = "Макросы для расчетов";
+            this.group3.Name = "group3";
+            // 
+            // separator2
+            // 
+            this.separator2.Name = "separator2";
             // 
             // group2
             // 
@@ -117,10 +143,6 @@
             // 
             this.group1.Items.Add(this.button10);
             this.group1.Name = "group1";
-            // 
-            // separator2
-            // 
-            this.separator2.Name = "separator2";
             // 
             // button6
             // 
@@ -199,6 +221,22 @@
             this.button5.Label = "";
             this.button5.Name = "button5";
             // 
+            // button17
+            // 
+            this.button17.Image = ((System.Drawing.Image)(resources.GetObject("button17.Image")));
+            this.button17.Label = "Границы";
+            this.button17.Name = "button17";
+            this.button17.ShowImage = true;
+            this.button17.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button17_Click);
+            // 
+            // button18
+            // 
+            this.button18.Image = ((System.Drawing.Image)(resources.GetObject("button18.Image")));
+            this.button18.Label = "Шрифт";
+            this.button18.Name = "button18";
+            this.button18.ShowImage = true;
+            this.button18.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button18_Click);
+            // 
             // button13
             // 
             this.button13.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -262,18 +300,6 @@
             this.button10.ShowImage = true;
             this.button10.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button10_Click);
             // 
-            // group3
-            // 
-            this.group3.Items.Add(this.button13);
-            this.group3.Items.Add(this.button14);
-            this.group3.Items.Add(this.button15);
-            this.group3.Items.Add(this.button16);
-            this.group3.Items.Add(this.separator2);
-            this.group3.Items.Add(this.button11);
-            this.group3.Items.Add(this.button12);
-            this.group3.Label = "Макросы для расчетов";
-            this.group3.Name = "group3";
-            // 
             // Ribbon1
             // 
             this.Name = "Ribbon1";
@@ -284,12 +310,12 @@
             this.tab1.PerformLayout();
             this.Группа1.ResumeLayout(false);
             this.Группа1.PerformLayout();
+            this.group3.ResumeLayout(false);
+            this.group3.PerformLayout();
             this.group2.ResumeLayout(false);
             this.group2.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
-            this.group3.ResumeLayout(false);
-            this.group3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -321,6 +347,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button15;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button16;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button17;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button18;
     }
 
     partial class ThisRibbonCollection
