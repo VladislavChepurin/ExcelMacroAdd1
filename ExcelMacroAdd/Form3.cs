@@ -27,6 +27,8 @@ namespace ExcelMacroAdd
         // Folders AppData content Settings.xml
         readonly string file = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\AddIns\ExcelMacroAdd\Settings.xml";
 
+        readonly string directory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\AddIns\ExcelMacroAdd\";
+
         public Form3()
         {
             InitializeComponent();
@@ -247,7 +249,21 @@ namespace ExcelMacroAdd
                 DataInXml dataInXml = new DataInXml();
                 dataInXml.XmlFileCreate();
             }
+
+            catch (DirectoryNotFoundException)
+            {
+                //Создаем папку если ее нет
+                DirectoryInfo dirInfo = new DirectoryInfo(directory);
+                if (!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                }
+                //Создаем файл
+                DataInXml dataInXml = new DataInXml();
+                dataInXml.XmlFileCreate();
+            }
         }
+
         /// <summary>
         /// Функция записи в Xml, первый параметр - вендор в настройках, второй - номер строки в двумерном массиве TextBox[,]
         /// </summary>

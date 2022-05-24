@@ -45,7 +45,7 @@ namespace ExcelMacroAdd
             //Массивы параметров выключателей нагрузки
             string[] circutVn = new string[10] { "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
             string[] polusVn = new string[4] { "1", "2", "3", "4" };
-            string[] vendorVn = new string[8] { "IEK", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DEKraft", "Schneider Electric", "TDM" };
+            string[] vendorVn = new string[8] { "IEK", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DEKraft", "Schneider", "TDM" };
 
             //Создание массивов ComboBox для автоматических выключателей
             ComboBox[] comboBoxItCircut = new ComboBox[6] { comboBox5, comboBox10, comboBox15, comboBox20, comboBox25, comboBox30 };
@@ -86,27 +86,61 @@ namespace ExcelMacroAdd
                 comboBoxItVendorVn[i].SelectedIndex = VendorIndVn;
             }
         }
-
-        private void CheckData(int rowsCheck, Boolean writeExcel = false)
+        /// <summary>
+        /// Проверка элемента в базе данных
+        /// </summary>
+        /// <param name="rowsCheck"></param>
+        /// <param name="writeExcel"></param>
+        private void CheckData(int rowsCheck)
         {
-            PictureBox[] pictures = PictureBoxes();
+            PictureBox[] pictures = default;
 
-            CheckBox[] checks = ReturnCheckBoxArray();
+            CheckBox[] checks= default;
 
-            ComboBox[,] comboBoxes = ReturnComboBoxArray();
+            ComboBox[,] comboBoxes= default;
+
+            if (tabControl1.SelectedTab == tabPage1)
+            {
+                 pictures = PictureBoxesCircutBreak();
+
+                 checks = CheckBoxArrayCircutBreak();
+
+                 comboBoxes = ComboBoxArrayCircutBreaker();
+            }
+            else if (tabControl1.SelectedTab == tabPage2)
+            {
+                pictures = PictureBoxesSwitch();
+
+                checks = CheckBoxArraySwitch();
+
+                comboBoxes = ComboBoxArraySwitch();
+            }
+
             // Если стоит галочка в CheckBox, то условие истина
             if (checks[rowsCheck].Checked)
             {
-                // создаем кортеж для сборки запроса SQL
-                var tuple = (cirkut: comboBoxes[rowsCheck, 0].SelectedItem.ToString(),
-                              kurve: comboBoxes[rowsCheck, 1].SelectedItem.ToString(),
-                                icu: comboBoxes[rowsCheck, 2].SelectedItem.ToString(),
-                              polus: comboBoxes[rowsCheck, 3].SelectedItem.ToString(),
-                             vendor: comboBoxes[rowsCheck, 4].SelectedItem.ToString());
-                // Переменная запроса SQL
-                string setRequest = String.Format("SELECT {0} FROM modul WHERE s_in = '{1}' AND kurve = '{2}' AND icu = '{3}' AND quantity = '{4}';",
-                                               Replace.FuncReplece(tuple.vendor), tuple.cirkut, tuple.kurve, tuple.icu, tuple.polus);
-
+                string setRequest = default;
+                if (tabControl1.SelectedTab == tabPage1)
+                {
+                    // создаем кортеж для сборки запроса SQL
+                    var tuple = (cirkut: comboBoxes[rowsCheck, 0].SelectedItem.ToString(),
+                                  kurve: comboBoxes[rowsCheck, 1].SelectedItem.ToString(),
+                                    icu: comboBoxes[rowsCheck, 2].SelectedItem.ToString(),
+                                  polus: comboBoxes[rowsCheck, 3].SelectedItem.ToString(),
+                                 vendor: comboBoxes[rowsCheck, 4].SelectedItem.ToString());
+                    // Переменная запроса SQL
+                    setRequest = String.Format("SELECT {0} FROM modul WHERE s_in = '{1}' AND kurve = '{2}' AND icu = '{3}' AND quantity = '{4}';",
+                                                   Replace.FuncReplece(tuple.vendor), tuple.cirkut, tuple.kurve, tuple.icu, tuple.polus);
+                }
+                else if (tabControl1.SelectedTab == tabPage2)
+                {
+                    var tuple = (cirkut: comboBoxes[rowsCheck, 0].SelectedItem.ToString(),                             
+                                  polus: comboBoxes[rowsCheck, 1].SelectedItem.ToString(),
+                                 vendor: comboBoxes[rowsCheck, 2].SelectedItem.ToString());
+                    // Переменная запроса SQL
+                    setRequest = String.Format("SELECT {0} FROM switch WHERE s_in = '{1}' AND quantity = '{2}';",
+                                                   Replace.FuncReplece(tuple.vendor), tuple.cirkut, tuple.polus);
+                }
 
                 //Обращение к БД в новом потоке, что бы не тормозил интерфейс
                 new Thread(() =>
@@ -137,26 +171,137 @@ namespace ExcelMacroAdd
                 }).Start();
             }
         }
+        /// <summary>
+        /// Данный метод предназначен для извленчения уже заполненых данных из БД и заппуска метода заполнения листа Excel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            PictureBox[] pictures = default;
 
-        private PictureBox[] PictureBoxes()
+            CheckBox[] checks = default;
+
+            ComboBox[,] comboBoxes = default;
+
+            TextBox[] texts  = default;
+
+            if (tabControl1.SelectedTab == tabPage1)
+            {
+                pictures = PictureBoxesCircutBreak();
+
+                checks = CheckBoxArrayCircutBreak();
+
+                comboBoxes = ComboBoxArrayCircutBreaker();
+
+                texts = TextBoxesArrayCircutBreak();
+            }
+            else if (tabControl1.SelectedTab == tabPage2)
+            {
+                pictures = PictureBoxesSwitch();
+
+                checks = CheckBoxArraySwitch();
+
+                comboBoxes = ComboBoxArraySwitch();
+
+                texts = TextBoxesArraySwitch();
+            }
+
+            for (int rows = 0; rows < 6; rows++)
+            {
+                // Если стоит галочка в CheckBox, то условие истина
+                if (checks[rows].Checked)
+                {
+                    string setRequest = default;
+                    string vendor = default;
+                    
+                    if (tabControl1.SelectedTab == tabPage1)
+                    {
+                        // создаем кортеж для сборки запроса SQL
+                        var tuple = (cirkut: comboBoxes[rows, 0].SelectedItem.ToString(),
+                                      kurve: comboBoxes[rows, 1].SelectedItem.ToString(),
+                                        icu: comboBoxes[rows, 2].SelectedItem.ToString(),
+                                      polus: comboBoxes[rows, 3].SelectedItem.ToString(),
+                                     vendor: comboBoxes[rows, 4].SelectedItem.ToString());
+                        // Переменная запроса SQL
+                        setRequest = String.Format("SELECT {0} FROM modul WHERE s_in = '{1}' AND kurve = '{2}' AND icu = '{3}' AND quantity = '{4}';",
+                                                       Replace.FuncReplece(tuple.vendor), tuple.cirkut, tuple.kurve, tuple.icu, tuple.polus);
+                        vendor = tuple.vendor;
+                    }
+                    else if (tabControl1.SelectedTab == tabPage2)
+                    {
+                        var tuple = (cirkut: comboBoxes[rows, 0].SelectedItem.ToString(),
+                                      polus: comboBoxes[rows, 1].SelectedItem.ToString(),
+                                     vendor: comboBoxes[rows, 2].SelectedItem.ToString());
+                        // Переменная запроса SQL
+                        setRequest = String.Format("SELECT {0} FROM switch WHERE s_in = '{1}' AND quantity = '{2}';",
+                                                       Replace.FuncReplece(tuple.vendor), tuple.cirkut, tuple.polus);
+                        vendor = tuple.vendor;
+                    }
+
+                    //Работа с базой данных
+                    DBConect classDB = new DBConect();
+                    classDB.OpenDB();
+
+                    string getArticle = classDB.RequestDB(setRequest, 0);
+
+                    if (getArticle != "@")
+                    {
+                        int.TryParse(texts[rows].Text, out int quantity);
+                        WriteExcel writeExcel = new WriteExcel { GetArticle = getArticle, Vendor = vendor, Rows = rows, Quantity = quantity, Link = checkBox14.Checked };
+                        writeExcel.FuncWrite();
+                    }
+                    classDB.CloseDB();
+                }
+            }
+        }
+        private async void button2_Click(object sender, EventArgs e)
+        {
+            await Task.Run(() =>
+            {
+                Form3 settings  = new Form3();
+                settings.ShowDialog();
+                Thread.Sleep(5000);
+            });
+        }
+
+        private PictureBox[] PictureBoxesCircutBreak()
         {
             PictureBox[] pictures = new PictureBox[6] { pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6 };
             return pictures;
         }
 
-        private TextBox[] TextBoxesArray()
+        private PictureBox[] PictureBoxesSwitch()
+        {
+            PictureBox[] pictures = new PictureBox[6] { pictureBox7, pictureBox8, pictureBox9, pictureBox10, pictureBox11, pictureBox12 };
+            return pictures;
+        }
+
+        private TextBox[] TextBoxesArrayCircutBreak()
         {
             TextBox[] texts = new TextBox[6] { textBox1, textBox2, textBox3, textBox4, textBox5, textBox6 };
             return texts;
         }
 
-        private CheckBox[] ReturnCheckBoxArray()
+        private TextBox[] TextBoxesArraySwitch()
+        {
+            TextBox[] texts = new TextBox[6] { textBox7, textBox8, textBox9, textBox10, textBox11, textBox12 };
+            return texts;
+        }
+
+        private CheckBox[] CheckBoxArrayCircutBreak()
         {
             CheckBox[] checks = new CheckBox[6] { checkBox1, checkBox2, checkBox3, checkBox4, checkBox5, checkBox6 };
             return checks;
         }
 
-        private ComboBox[,] ReturnComboBoxArray()
+        private CheckBox[] CheckBoxArraySwitch()
+        {
+            CheckBox[] checks = new CheckBox[6] { checkBox7, checkBox8, checkBox9, checkBox10, checkBox11, checkBox12 };
+            return checks;
+        }
+
+        private ComboBox[,] ComboBoxArrayCircutBreaker()
         {
             ComboBox[,] comboBoxes = new ComboBox[,]
             {
@@ -182,59 +327,35 @@ namespace ExcelMacroAdd
             return comboBoxes;
         }
 
-
-        private void button1_Click(object sender, EventArgs e)
+        private ComboBox[,] ComboBoxArraySwitch()
         {
-            CheckBox[] checks = ReturnCheckBoxArray();
-
-            ComboBox[,] comboBoxes = ReturnComboBoxArray();
-
-            TextBox[] texts = TextBoxesArray();
-
-            for (int rows = 0; rows < 6; rows++)
+            ComboBox[,] comboBoxes = new ComboBox[,]
             {
-                // Если стоит галочка в CheckBox, то условие истина
-                if (checks[rows].Checked)
                 {
-                    // создаем кортеж для сборки запроса SQL
-                    var tuple = (cirkut: comboBoxes[rows, 0].SelectedItem.ToString(),
-                                  kurve: comboBoxes[rows, 1].SelectedItem.ToString(),
-                                    icu: comboBoxes[rows, 2].SelectedItem.ToString(),
-                                  polus: comboBoxes[rows, 3].SelectedItem.ToString(),
-                                 vendor: comboBoxes[rows, 4].SelectedItem.ToString());
-                    // Переменная запроса SQL
-                    string setRequest = String.Format("SELECT {0} FROM modul WHERE s_in = '{1}' AND kurve = '{2}' AND icu = '{3}' AND quantity = '{4}';",
-                                                   Replace.FuncReplece(tuple.vendor), tuple.cirkut, tuple.kurve, tuple.icu, tuple.polus);
-
-                    //Обращение к БД в новом потоке, что бы не тормозил интерфейс
-                    //Работа с базой данных
-                    DBConect classDB = new DBConect();
-                    classDB.OpenDB();
-
-                    string getArticle = classDB.RequestDB(setRequest, 0);
-
-                    if (getArticle != "@")
-                    {
-                        int ii = rows;
-                        int.TryParse(texts[rows].Text, out int quantity);
-                        WriteExcel writeExcel = new WriteExcel { GetArticle = getArticle, Vendor = tuple.vendor, Rows = rows, Quantity = quantity, Link = checkBox14.Checked };
-                        writeExcel.FuncWrite();
-                    }
-                    classDB.CloseDB();
+                    comboBox35, comboBox32, comboBox31
+                },
+                {
+                    comboBox40, comboBox37, comboBox36
+                },
+                {
+                    comboBox45, comboBox42, comboBox41
+                },
+                {
+                    comboBox50, comboBox47, comboBox46
+                },
+                {
+                    comboBox55, comboBox52, comboBox51
+                },
+                {
+                    comboBox60, comboBox57, comboBox56
                 }
-            }
-        }
-        private async void button2_Click(object sender, EventArgs e)
-        {
-            await Task.Run(() =>
-            {
-                Form3 settings  = new Form3();
-                settings.ShowDialog();
-                Thread.Sleep(5000);
-            });
+            };
+            return comboBoxes;
         }
 
-        #region line1
+
+
+        #region line1_CircutBreak
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             CheckData((int)ContainerAvt.FirstLineArray);
@@ -267,7 +388,7 @@ namespace ExcelMacroAdd
 
         #endregion
 
-        #region line2
+        #region line2_CircutBreak
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
@@ -301,7 +422,7 @@ namespace ExcelMacroAdd
 
         #endregion
 
-        #region line3
+        #region line3_CircutBreak
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
             CheckData((int)ContainerAvt.ThirdLineArray);
@@ -334,7 +455,7 @@ namespace ExcelMacroAdd
 
         #endregion
 
-        #region line4
+        #region line4_CircutBreak
 
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
@@ -368,7 +489,7 @@ namespace ExcelMacroAdd
 
         #endregion
 
-        #region line5
+        #region line5_CircutBreak
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
         {
@@ -403,7 +524,7 @@ namespace ExcelMacroAdd
 
         #endregion
 
-        #region line6
+        #region line6_CircutBreak
 
         private void checkBox6_CheckedChanged(object sender, EventArgs e)
         {
@@ -435,6 +556,113 @@ namespace ExcelMacroAdd
             CheckData((int)ContainerAvt.SixthLineArray);
         }
 
+        #endregion
+
+        #region line1_Switch
+        private void comboBox35_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.FirstLineArray);
+        }
+
+        private void comboBox32_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.FirstLineArray);
+        }
+
+        private void comboBox31_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.FirstLineArray);
+        }
+
+        #endregion
+
+        #region line2_Switch
+        private void comboBox40_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.SecondLineArray);
+        }
+
+        private void comboBox37_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.SecondLineArray);
+        }
+
+        private void comboBox36_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.SecondLineArray);
+        }
+
+        #endregion
+
+        #region line3_Switch
+        private void comboBox45_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.ThirdLineArray);
+        }
+
+        private void comboBox42_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.ThirdLineArray);
+        }
+
+        private void comboBox41_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.ThirdLineArray);
+        }
+
+        #endregion
+
+        #region line4_Switch
+        private void comboBox50_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.FourthLineArray);
+        }
+
+        private void comboBox47_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.FourthLineArray);
+        }
+
+        private void comboBox46_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.FourthLineArray);
+        }
+
+        #endregion
+
+        #region line5_Switch
+        private void comboBox55_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.FifthLineArray);
+        }
+
+        private void comboBox52_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.FifthLineArray);
+        }
+
+        private void comboBox51_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.FifthLineArray);
+        }
+
+        #endregion
+
+        #region line6_Switch
+        private void comboBox60_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.SixthLineArray);
+        }
+
+        private void comboBox57_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.SixthLineArray);
+        }
+
+        private void comboBox56_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckData((int)ContainerAvt.SixthLineArray);
+        }
 
         #endregion
 
@@ -499,6 +727,70 @@ namespace ExcelMacroAdd
                 e.Handled = true;
             }
         }
+                            
+        private void textBox7_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+
+            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void textBox8_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+
+            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void textBox9_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+
+            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void textBox10_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+
+            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void textBox11_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+
+            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void textBox12_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+
+            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
+            {
+                e.Handled = true;
+            }
+        }
+
+
+
+
 
 
         #endregion
