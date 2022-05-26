@@ -54,6 +54,7 @@
             this.button2 = this.Factory.CreateRibbonButton();
             this.button7 = this.Factory.CreateRibbonButton();
             this.button5 = this.Factory.CreateRibbonButton();
+            this.button19 = this.Factory.CreateRibbonButton();
             this.button17 = this.Factory.CreateRibbonButton();
             this.button18 = this.Factory.CreateRibbonButton();
             this.button13 = this.Factory.CreateRibbonButton();
@@ -91,6 +92,7 @@
             this.Группа1.Items.Add(this.button7);
             this.Группа1.Items.Add(this.button5);
             this.Группа1.Items.Add(this.separator1);
+            this.Группа1.Items.Add(this.button19);
             this.Группа1.Items.Add(this.button17);
             this.Группа1.Items.Add(this.button18);
             this.Группа1.Label = "Базовые макросы";
@@ -221,6 +223,14 @@
             this.button5.Label = "";
             this.button5.Name = "button5";
             // 
+            // button19
+            // 
+            this.button19.Image = global::ExcelMacroAdd.Properties.Resources._970;
+            this.button19.Label = "Расчет";
+            this.button19.Name = "button19";
+            this.button19.ShowImage = true;
+            this.button19.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button19_Click);
+            // 
             // button17
             // 
             this.button17.Image = ((System.Drawing.Image)(resources.GetObject("button17.Image")));
@@ -350,6 +360,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button17;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button18;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button19;
     }
 
     partial class ThisRibbonCollection
