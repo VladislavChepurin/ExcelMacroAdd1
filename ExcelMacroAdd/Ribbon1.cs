@@ -531,7 +531,7 @@ namespace ExcelMacroAdd
         {
             Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet(); 
 
-            if (worksheet.Cells[1, 1].Value2 == null) //Проверка по ячейке A1, потом переписать на проверку по диапазону
+            if (FuncCheckCellNull()) //Проверка по ячейке A1, потом переписать на проверку по диапазону
             {
                 //состовляем надписи колонок           
                 worksheet.get_Range("A1", Type.Missing).Value2 = "Наименование проекта";
@@ -614,5 +614,23 @@ namespace ExcelMacroAdd
                 MessageBoxOptions.DefaultDesktopOnly);
             }
         }
+
+        private Boolean FuncCheckCellNull ()
+        {
+            Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
+
+            for (int column = 1; column <= 9; column++)
+            {
+                for (int row = 1; row <= 8; row++)
+                {
+                    if (!(worksheet.Cells[column, row].Value2 == null))
+                    {
+                        return false;
+                    }
+                }
+            }            
+            return true;
+        }
+
     }
 }
