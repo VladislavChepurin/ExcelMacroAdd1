@@ -549,17 +549,24 @@ namespace ExcelMacroAdd
                 worksheet.get_Range("B2", Type.Missing).Interior.Color = Excel.XlRgbColor.rgbGreen;
 
                 //увеличиваем размер по ширине диапазон ячеек
-                worksheet.get_Range("A1", Type.Missing).EntireColumn.ColumnWidth = 25;
-                worksheet.get_Range("B1", Type.Missing).EntireColumn.ColumnWidth = 60;
-                worksheet.get_Range("C1", Type.Missing).EntireColumn.ColumnWidth = 31;
+                worksheet.get_Range("A1", Type.Missing).EntireColumn.ColumnWidth = 22;
+                worksheet.get_Range("B1", Type.Missing).EntireColumn.ColumnWidth = 50;
+                worksheet.get_Range("C1", Type.Missing).EntireColumn.ColumnWidth = 40;
                 worksheet.get_Range("D1", "G1").EntireColumn.ColumnWidth = 10;
                 worksheet.get_Range("H1", Type.Missing).EntireColumn.ColumnWidth = 45;
+
+                //Вставка формул
+                for (int i = 4; i < 10; i++)
+                {
+                    worksheet.get_Range("F"+ i, Type.Missing).Formula =String .Format("=D{0}*E{0}", i, i);
+                    worksheet.get_Range("A" + i, Type.Missing).Value2 = (i - 3).ToString();
+                }
 
                 //размечаем границы и правим шрифты
                 worksheet.get_Range("A1", "H100").Cells.Font.Name = "Calibri";
                 worksheet.get_Range("A1", "H100").Cells.Font.Size = 11;
 
-                var excelcells = worksheet.get_Range("A1", "H10");
+                var excelcells = worksheet.get_Range("A1", "H9");
 
                 excelcells.Rows.AutoFit();
                 excelcells.WrapText = true;
