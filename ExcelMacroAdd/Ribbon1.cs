@@ -529,9 +529,21 @@ namespace ExcelMacroAdd
         /// <param name="e"></param>
         private void button19_Click(object sender, RibbonControlEventArgs e)
         {
-            Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet(); 
-
-            if (FuncCheckCellNull()) //Проверка по ячейке A1, потом переписать на проверку по диапазону
+            Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
+            //Проверяем наличие данных в таблице, A1:H9
+            Boolean resultCellNull = true;
+            for (int column = 1; column <= 9; column++)
+            {
+                for (int row = 1; row <= 8; row++)
+                {
+                    if (!(worksheet.Cells[column, row].Value2 == null))
+                    {
+                        resultCellNull = false;
+                    }
+                }
+            }
+            //Проверяем результат переменной
+            if (resultCellNull)
             {
                 //состовляем надписи колонок           
                 worksheet.get_Range("A1", Type.Missing).Value2 = "Наименование проекта";
@@ -614,23 +626,5 @@ namespace ExcelMacroAdd
                 MessageBoxOptions.DefaultDesktopOnly);
             }
         }
-
-        private Boolean FuncCheckCellNull ()
-        {
-            Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
-
-            for (int column = 1; column <= 9; column++)
-            {
-                for (int row = 1; row <= 8; row++)
-                {
-                    if (!(worksheet.Cells[column, row].Value2 == null))
-                    {
-                        return false;
-                    }
-                }
-            }            
-            return true;
-        }
-
     }
 }
