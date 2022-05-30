@@ -234,6 +234,8 @@ namespace ExcelMacroAdd
                                 textBox32.Text = vendor.Element("Discont").Value;
                                 label40.Text = vendor.Element("Date").Value;
                                 break;
+                            default:
+                                throw new NullReferenceException();
                         }
                     }
                 }
@@ -241,7 +243,15 @@ namespace ExcelMacroAdd
 
             catch (NullReferenceException)
             {
-                //Здесь написать код починки файла Settings.xml
+                MessageBox.Show(
+                "Внимание! Возникла ошибка в файле Settings.xml,\n" +
+                "удалите этот файл в ручную и заново откройте форму,\n" +
+                "чтобы восстановить настройки",
+                "Ошибка файла Settings.xml",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error,
+                MessageBoxDefaultButton.Button1,
+                MessageBoxOptions.DefaultDesktopOnly);
             }
 
             catch (FileNotFoundException) // Востановление файла при его удалении
@@ -330,7 +340,6 @@ namespace ExcelMacroAdd
                 textBoxes[rowsArray, 2].Text = Replace.VprFormulaReplace(formula_3, firstRow);
             }
         }
-
 
         /// <summary>
         /// Write IEK settings to xml
