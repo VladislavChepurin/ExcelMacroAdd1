@@ -140,9 +140,10 @@ namespace ExcelMacroAdd
                         {                            
                             if (classDB.CheckReadDB("SELECT * FROM base WHERE Article = '" + sArticle + "'"))
                                 { 
-                                string commandText = "INSERT INTO base (ip, klima, reserve, height, width, depth, article, execution, vendor)" +
-                                      " VALUES ('" + sIP + "', '" + sKlima + "','" + sReserve + "','" + sHeinght + "','" + sWidth + "','" + sDepth + "','" + sArticle + "','" + sExecution + "','None');";
-
+                                //Сборка запроса к БД
+                                string commandText = String.Format($"INSERT INTO base (ip, klima, reserve, height, width, depth, article, execution, vendor)" +
+                                      $" VALUES ('{sIP }', '{sKlima}', '{sReserve}', '{sHeinght}', '{sWidth}', '{sDepth}', '{sArticle}', '{sExecution}', 'None');");
+                                //Оправка запроса к БД
                                 classDB.MetodDB("SELECT * FROM base", commandText);
                                 worksheet.get_Range("Z" + firstRow).Interior.ColorIndex = 0;
 
@@ -218,7 +219,12 @@ namespace ExcelMacroAdd
             // Проверка по имени книги
             if (application.ActiveWorkbook.Name == classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2))
             {
-                OpenForm();
+                new Thread(() =>
+                {
+                    Form1 fs = new Form1();
+                    fs.ShowDialog();
+                    Thread.Sleep(100);
+                }).Start();
             }
             else
             {
@@ -232,18 +238,6 @@ namespace ExcelMacroAdd
             }
             classDB.CloseDB();
         }
-
-
-        private async void OpenForm()
-        {
-            await Task.Run(() =>
-            {
-                Form1 fs = new Form1();
-                fs.ShowDialog();
-                Thread.Sleep(100);
-            });
-        }
-
 
         private void button7_Click(object sender, RibbonControlEventArgs e)  // "Прическа" расчетов
         {
@@ -261,8 +255,28 @@ namespace ExcelMacroAdd
                     sheet.get_Range("D1", Type.Missing).EntireColumn.ColumnWidth = 10;
                 }             
             }
-        }                  
-              
+        }
+
+        /// <summary>
+        /// Удаление формул на всех листах кроме первого
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button8_Click(object sender, RibbonControlEventArgs e)
+        {
+            Workbook workBook = Globals.ThisAddIn.GetActiveWorkBook();
+
+            foreach (Excel.Worksheet sheet in workBook.Sheets)
+            {
+                sheet.Activate();
+                if (!(sheet.Index == 1))
+                {
+                    sheet.get_Range("A2", "G500").Value = sheet.get_Range("A2", "G500").Value;
+                    sheet.get_Range("A1", Type.Missing).Select();   //Фокус на ячейку А1
+                }
+            }
+        }
+
         private void button9_Click(object sender, RibbonControlEventArgs e)   // Корректировка записей БД
         {
 
@@ -304,16 +318,9 @@ namespace ExcelMacroAdd
                             {                               
                                 string queryUpdate = "SELECT * FROM base";
                                 // Собираем запрос к БД   
-                                string data = @"UPDATE base " +
-                                                    "  SET ip         = '" + sIP + "'," +
-                                                    "      klima      = '" + sKlima + "'," +
-                                                    "      reserve    = '" + sReserve + "'," +
-                                                    "      height     = '" + sHeinght + "'," +
-                                                    "      width      = '" + sWidth + "'," +
-                                                    "      depth      = '" + sDepth + "'," +
-                                                    "      execution  = '" + sExecution + "'" +
-                                                    "WHERE article    = '" + sArticle + "'";
-
+                                string data = String.Format($"UPDATE base SET ip = '{sIP}', klima = '{sKlima}', reserve = '{sReserve}', height = '{sHeinght}'" +
+                                    $", width = '{sWidth}', depth = '{sDepth}', execution = '{sExecution}' WHERE article = '{sArticle}';");
+                                // Записываем в базу
                                 classDB.MetodDB(queryUpdate, data);   
                             }                         
                             else
@@ -356,27 +363,7 @@ namespace ExcelMacroAdd
                     MessageBoxOptions.DefaultDesktopOnly);
                 }               
             }
-        }
-
-        /// <summary>
-        /// Удаление формул на всех листах кроме первого
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button8_Click(object sender, RibbonControlEventArgs e)
-        {
-            Workbook workBook = Globals.ThisAddIn.GetActiveWorkBook();
-
-            foreach (Excel.Worksheet sheet in workBook.Sheets)
-            {
-               sheet.Activate();
-               if (!(sheet.Index == 1))
-               {                   
-                    sheet.get_Range("A2", "G500").Value = sheet.get_Range("A2", "G500").Value;
-                    sheet.get_Range("A1", Type.Missing).Select();   //Фокус на ячейку А1
-                }
-            }
-        }
+        }             
 
         /// <summary>
         /// Запуск "О программе" в отдельном процессе
@@ -432,6 +419,7 @@ namespace ExcelMacroAdd
         {
             VprWrireExcel("KEAZ");
         }
+
         /// <summary>
         /// Функция для написания формулы
         /// </summary>
