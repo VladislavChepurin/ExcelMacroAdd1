@@ -41,7 +41,7 @@ namespace ExcelMacroAdd
             string[] kurveAvt = new string[3] { "B", "C", "D" };
             string[] icuAvt = new string[3] { "4,5", "6", "10" };
             string[] polusAvt = new string[4] { "1", "2", "3", "4" };
-            string[] vendorAvt = new string[10] { "IEK ВА47", "IEK BA47М", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DKC", "DEKraft", "Schneider", "TDM" };
+            string[] vendorAvt = new string[11] { "IEK ВА47", "IEK BA47М", "IEK Armat", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DKC", "DEKraft", "Schneider", "TDM" };
             //Массивы параметров выключателей нагрузки
             string[] circutVn = new string[10] { "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
             string[] polusVn = new string[4] { "1", "2", "3", "4" };
