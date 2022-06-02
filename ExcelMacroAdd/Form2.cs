@@ -37,10 +37,10 @@ namespace ExcelMacroAdd
         private void Form1_Load(object sender, EventArgs e)
         {
             //Массивы параметров модульных автоматов
-            string[] circutAvt = new string[16] { "1", "2", "3", "4", "5", "6", "8", "10", "13", "16", "20", "25", "32", "40", "50", "63" };
-            string[] kurveAvt = new string[3] { "B", "C", "D" };
-            string[] icuAvt = new string[3] { "4,5", "6", "10" };
-            string[] polusAvt = new string[4] { "1", "2", "3", "4" };
+            string[] circutAvt = new string[19] { "1", "2", "3", "4", "5", "6", "8", "10", "13", "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
+            string[] kurveAvt = new string[6] { "B", "C", "D", "K", "L", "Z" };
+            string[] icuAvt = new string[4] { "4,5", "6", "10", "15" };
+            string[] polusAvt = new string[6] { "1", "2", "3", "4", "2N", "4N"};
             string[] vendorAvt = new string[11] { "IEK ВА47", "IEK BA47М", "IEK Armat", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DKC", "DEKraft", "Schneider", "TDM" };
             //Массивы параметров выключателей нагрузки
             string[] circutVn = new string[10] { "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
