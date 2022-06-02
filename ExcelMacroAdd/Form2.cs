@@ -149,7 +149,7 @@ namespace ExcelMacroAdd
                     DBConect classDB = new DBConect();
                     classDB.OpenDB();
 
-                    string getArticle = classDB.RequestDB(setRequest, 0);
+                    string getArticle = classDB.RequestDB(setRequest, 0) ?? "@";
 
                     if (getArticle != "@")
                     {
@@ -243,7 +243,7 @@ namespace ExcelMacroAdd
                     DBConect classDB = new DBConect();
                     classDB.OpenDB();
 
-                    string getArticle = classDB.RequestDB(setRequest, 0);
+                    string getArticle = classDB.RequestDB(setRequest, 0) ?? "@";
 
                     if (getArticle != "@")
                     {
