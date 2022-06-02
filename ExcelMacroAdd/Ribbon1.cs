@@ -13,10 +13,24 @@ namespace ExcelMacroAdd
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {
             GetValuteTSB getRate = new GetValuteTSB();
-            this.label1.Label = "Доллар = " + getRate.USDRate;
-            this.label2.Label = "ЕВРО     = " + getRate.EvroRate;
-            this.label3.Label = "Юань    = " + getRate.CnyRate;
+            getRate.ValuteUSDHandler = ShowValitePrice;
+            //В новом потоке запускаем метод получения данных от Центробанка
+            new Thread(() =>
+            {
+                getRate.Start();
+                Thread.Sleep(100);
+            }).Start();                                               
         }
+
+        private void ShowValitePrice(double usdValute, double evroValute, double cnhValute)
+        {
+            this.label1.Label = "Доллар = " + usdValute;
+            this.label2.Label = "ЕВРО     = " + evroValute;
+            this.label3.Label = "Юань    = " + cnhValute;
+        }
+
+
+
         private void button1_Click(object sender, RibbonControlEventArgs e) //Удаление формул
         {
             Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();

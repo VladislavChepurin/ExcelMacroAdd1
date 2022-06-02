@@ -1,57 +1,64 @@
 ﻿using System;
 using System.Data;
 using System.Net;
+using System.Threading;
 
 namespace ExcelMacroAdd
 {
     /// <summary>
     /// Класс запроса курса валют
     /// </summary>
-    internal class GetValuteTSB
+    public class GetValuteTSB
     {
-        public GetValuteTSB()
+        public delegate void ValuteUSD(double usdValute, double evroValute, double cnhValute);
+
+        public ValuteUSD ValuteUSDHandler { get; set; }
+
+        public void Start()
         {
-            try 
+            while (true)
             {
-                string url = "http://www.cbr.ru/scripts/XML_daily.asp";       
-                DataSet ds = new DataSet();
-                ds.ReadXml(url);
-                DataTable currency = ds.Tables["Valute"];
-                foreach (DataRow row in currency.Rows)
+                try
                 {
-                    //Поиск доллара
-                    if (row["CharCode"].ToString() == "USD")
-                    {
-                        int nominal = Convert.ToInt32(row["Nominal"]);
-                        USDRate = Math.Round(Convert.ToDouble(row["Value"])/nominal, 2);
-                    }
+                    double usdPrice = default,
+                           evroPrice = default,
+                           cnyPrice = default;
 
-                    // Поиск ЕВРО
-                    if (row["CharCode"].ToString() == "EUR")
+                    string url = "http://www.cbr.ru/scripts/XML_daily.asp";
+                    DataSet ds = new DataSet();
+                    ds.ReadXml(url);
+                    DataTable currency = ds.Tables["Valute"];
+                    foreach (DataRow row in currency.Rows)
                     {
-                        int nominal = Convert.ToInt32(row["Nominal"]);
-                        EvroRate = Math.Round(Convert.ToDouble(row["Value"])/nominal, 2);
+
+                        //Поиск доллара
+                        if (row["CharCode"].ToString() == "USD")
+                        {
+                            int nominal = Convert.ToInt32(row["Nominal"]);
+                            usdPrice = Math.Round(Convert.ToDouble(row["Value"]) / nominal, 2);
+                        }
+
+                        // Поиск ЕВРО
+                        if (row["CharCode"].ToString() == "EUR")
+                        {
+                            int nominal = Convert.ToInt32(row["Nominal"]);
+                            evroPrice = Math.Round(Convert.ToDouble(row["Value"]) / nominal, 2);
+                        }
+                        // Поиск Юаня
+                        if (row["CharCode"].ToString() == "CNY")
+                        {
+                            int nominal = Convert.ToInt32(row["Nominal"]);
+                            cnyPrice = Math.Round(Convert.ToDouble(row["Value"]) / nominal, 2);
+                        }
                     }
-                    // Поиск Юаня
-                    if (row["CharCode"].ToString() == "CNY")
-                    {
-                        int nominal = Convert.ToInt32(row["Nominal"]);
-                        CnyRate = Math.Round(Convert.ToDouble(row["Value"])/nominal, 2);
-                    }
+                    ValuteUSDHandler(usdPrice, evroPrice, cnyPrice);
                 }
-            }
-            catch (WebException)
-            {
-                USDRate = 0;
-                EvroRate = 0;
-                CnyRate = 0;
-            }
-           
-        }
-
-        public double USDRate { get; private set; }
-        public double EvroRate { get; private set; }
-        public double CnyRate { get; private set; }
-
+                catch (WebException)
+                {
+                    ValuteUSDHandler(0.0, 0.0, 0.0);
+                }
+                Thread.Sleep(30000);
+            }       
+        }    
     }
 }
