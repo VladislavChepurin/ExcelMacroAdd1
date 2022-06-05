@@ -42,9 +42,9 @@ namespace ExcelMacroAdd
 #else
         private readonly string _pPatch = @"\\192.168.100.100\ftp\Info_A\FTP\Производство Абиэлт\Инженеры\"; // Путь к базе данных
 #endif
-        private readonly string _sPatch = "BdMacro.mdb";
+        private readonly string _sPatch = "BdMacro.accdb";
 
-        private readonly string _providerData = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source="; 
+        private readonly string _providerData = "Provider=Microsoft.ACE.OLEDB.16.0; Data Source="; 
         
         public DBConect()
         {     

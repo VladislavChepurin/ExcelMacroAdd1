@@ -34,7 +34,7 @@
     <PublishUrl>опубликовать\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>1.5.6.4</ApplicationVersion>
+    <ApplicationVersion>1.5.6.5</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -238,6 +238,7 @@
     </Compile>
     <EmbeddedResource Include="Ribbon1.resx">
       <DependentUpon>Ribbon1.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ExcelMacroAdd_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
@@ -313,6 +314,54 @@
   <ItemGroup>
     <None Include="Resources\970.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\306.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\308.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\301.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\303.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\307.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\302.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\305.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\901.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\902.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\iek.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ekf.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dkc.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\keaz.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\501.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\502.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\201.png" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -325,7 +374,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>CA1D5945D2D9C367E99E35A77B1DFDBD66236933</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>498AA62A9E50CFC42F4EEBAB554D1052AB20D1CD</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
