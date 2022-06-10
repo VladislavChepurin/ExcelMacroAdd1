@@ -12,6 +12,12 @@ namespace ExcelMacroAdd
     {     
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {
+            // Вставка формул 
+            button13.Click += (s, a) => { VprWrireExcel("IEK"); };
+            button14.Click += (s, a) => { VprWrireExcel("EKF"); };
+            button15.Click += (s, a) => { VprWrireExcel("DKC"); };
+            button16.Click += (s, a) => { VprWrireExcel("KEAZ"); };
+
             GetValuteTSB getRate = new GetValuteTSB();
             getRate.ValuteUSDHandler = ShowValitePrice;
             //В новом потоке запускаем метод получения данных от Центробанка
@@ -28,8 +34,6 @@ namespace ExcelMacroAdd
             this.label2.Label = "ЕВРО     = " + evroValute;
             this.label3.Label = "Юань    = " + cnhValute;
         }
-
-
 
         private void button1_Click(object sender, RibbonControlEventArgs e) //Удаление формул
         {
@@ -61,8 +65,7 @@ namespace ExcelMacroAdd
                     firstRow = cell.Row;                 // Вычисляем верхний элемент
                     countRow = cell.Rows.Count;          // Вычисляем кол-во выделенных строк
                     endRow = firstRow + countRow;
-                    // Инициализируем структуру для записи                
-                    DBtable dBtable = new DBtable();  
+                    // Инициализируем структуру для записи                 
                     do
                     {
                         string sArticle = Convert.ToString(worksheet.Cells[firstRow, 26].Value2);
@@ -75,15 +78,15 @@ namespace ExcelMacroAdd
                         else
                         {
                             // Передеем структуру по референсной ссылке в библиотечный метод 
-                            classDB.ReadingDB(query,ref dBtable);                  
+                            var table = classDB.ReadingDB(query);                  
                             // Присваеваем ячейкам данные из массива
-                            worksheet.get_Range("K" + firstRow).Value2  = dBtable.ipTable        ?? String.Empty;
-                            worksheet.get_Range("L" + firstRow).Value2  = dBtable.klimaTable     ?? String.Empty;
-                            worksheet.get_Range("M" + firstRow).Value2  = dBtable.reserveTable   ?? String.Empty;
-                            worksheet.get_Range("N" + firstRow).Value2  = dBtable.heightTable    ?? String.Empty;
-                            worksheet.get_Range("O" + firstRow).Value2  = dBtable.widthTable     ?? String.Empty;
-                            worksheet.get_Range("P" + firstRow).Value2  = dBtable.depthTable     ?? String.Empty;
-                            worksheet.get_Range("AC" + firstRow).Value2 = dBtable.executionTable ?? String.Empty;
+                            worksheet.get_Range("K" + firstRow).Value2  = table.ipTable        ?? String.Empty;
+                            worksheet.get_Range("L" + firstRow).Value2  = table.klimaTable     ?? String.Empty;
+                            worksheet.get_Range("M" + firstRow).Value2  = table.reserveTable   ?? String.Empty;
+                            worksheet.get_Range("N" + firstRow).Value2  = table.heightTable    ?? String.Empty;
+                            worksheet.get_Range("O" + firstRow).Value2  = table.widthTable     ?? String.Empty;
+                            worksheet.get_Range("P" + firstRow).Value2  = table.depthTable     ?? String.Empty;
+                            worksheet.get_Range("AC" + firstRow).Value2 = table.executionTable ?? String.Empty;
                         }                      
                         
                         firstRow++;
@@ -412,27 +415,7 @@ namespace ExcelMacroAdd
                 fs.ShowDialog();
                 Thread.Sleep(5000);
             });
-        }
-
-        private void button13_Click(object sender, RibbonControlEventArgs e)
-        {
-            VprWrireExcel("IEK");
-        }
-
-        private void button14_Click(object sender, RibbonControlEventArgs e)
-        {
-            VprWrireExcel("EKF");
-        }
-
-        private void button15_Click(object sender, RibbonControlEventArgs e)
-        {
-            VprWrireExcel("DKC");
-        }
-
-        private void button16_Click(object sender, RibbonControlEventArgs e)
-        {
-            VprWrireExcel("KEAZ");
-        }
+        }      
 
         /// <summary>
         /// Функция для написания формулы

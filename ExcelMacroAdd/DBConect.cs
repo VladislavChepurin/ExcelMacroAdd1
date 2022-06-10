@@ -3,18 +3,7 @@ using System.Data.OleDb;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd
-{
-    interface IDBConect{
-
-        void OpenDB();
-        void CloseDB();
-        string RequestDB(string requestDB, int colum);
-        Boolean CheckReadDB(string dataRequest);
-        void MetodDB(string queryUpdate, string dataRequest);
-        void ReadingDB(string dataRead, ref DBtable dBtable);
-    }
-
-
+{   
     public struct DBtable 
     {
         public string ipTable { get; set; }
@@ -31,7 +20,7 @@ namespace ExcelMacroAdd
     /// <summary>
     /// Класс доступа к базе данных
     /// </summary>
-    internal class DBConect: IDBConect
+    public class DBConect
     {
         // Переменная подключения к БД - static
         private static OleDbConnection myConnection;
@@ -178,10 +167,11 @@ namespace ExcelMacroAdd
         /// </summary>
         /// <param name="dataRead"></param>
         /// <param name="dBtable"></param>
-        public void ReadingDB(string dataRead, ref DBtable dBtable)
+        public DBtable ReadingDB(string dataRead)
         {
             try
             {
+                DBtable dBtable = new DBtable();
                 OleDbCommand command = new OleDbCommand(dataRead, myConnection);
                 OleDbDataReader reader = command.ExecuteReader();
                 // Чтение из базы данных и поэлементная запись в массив
@@ -197,10 +187,12 @@ namespace ExcelMacroAdd
                     dBtable.executionTable = reader[8].ToString();
                     dBtable.vendorTable    = reader[9].ToString();
                 }
+                return dBtable;
             }
             catch (OleDbException exception)
-            {
+            {                
                 Message(exception);
+                return default;
             }
         }
 
