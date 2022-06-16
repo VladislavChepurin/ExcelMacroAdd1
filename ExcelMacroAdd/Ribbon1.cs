@@ -17,6 +17,7 @@ namespace ExcelMacroAdd
             button14.Click += (s, a) => { VprWrireExcel("EKF"); };
             button15.Click += (s, a) => { VprWrireExcel("DKC"); };
             button16.Click += (s, a) => { VprWrireExcel("KEAZ"); };
+            button20.Click += (s, a) => { VprWrireExcel("DEKraft"); };
 
             GetValuteTSB getRate = new GetValuteTSB();
             getRate.ValuteUSDHandler = ShowValitePrice;
