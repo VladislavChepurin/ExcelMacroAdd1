@@ -8,16 +8,25 @@ namespace ExcelMacroAdd
     {
         // Folders AppData content Settings.xml
         readonly string file = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\AddIns\ExcelMacroAdd\Settings.xml";
+        private readonly OpenExcel _openExcel;
+        public string Vendor { get; set; }
 
-        public string GetDataInXml(string vendor, string element)
+        public DataInXml() { }
+
+        public DataInXml(OpenExcel openExcel)
         {
+            _openExcel = openExcel;
+        }
+
+        public string GetDataInXml(string element)
+        {   
             string middle = default;
             try
-            {
+            {    
                 XDocument xdoc = XDocument.Load(file);
                 var toDiscont = xdoc.Element("MetaSettings")?   // получаем корневой узел MetaSettings
                     .Elements("Vendor")                         // получаем все элементы Vendor                               
-                    .Where(p => p.Attribute("vendor")?.Value == Replace.RepleceVendorTable(vendor))
+                    .Where(p => p.Attribute("vendor")?.Value == Replace.RepleceVendorTable(Vendor))
                     .Select(p => new                            // для каждого объекта создаем анонимный объект
                     {
                         dataXml = p.Element(element)?.Value

@@ -248,12 +248,11 @@ namespace ExcelMacroAdd
                     if (getArticle != "@")
                     {
                         int.TryParse(texts[rows].Text, out int quantity);
-                        WriteExcel writeExcel = new WriteExcel { GetArticle = getArticle, Vendor = vendor, Rows = rows, Quantity = quantity, Link = checkBox14.Checked };
-                        writeExcel.FuncWrite();
+                        new WriteExcel(new DataInXml() { Vendor = vendor }, rows, getArticle, quantity, checkBox14.Checked);
                     }
                     classDB.CloseDB();
                 }
-            }
+            } 
         }
         private async void button2_Click(object sender, EventArgs e)
         {

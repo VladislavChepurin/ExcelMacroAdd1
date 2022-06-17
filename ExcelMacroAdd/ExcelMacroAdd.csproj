@@ -209,6 +209,7 @@
     </Compile>
     <Compile Include="GetValuteTSB.cs" />
     <Compile Include="Linker.cs" />
+    <Compile Include="OpenExcel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

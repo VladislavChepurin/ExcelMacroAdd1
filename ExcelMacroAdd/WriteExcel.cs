@@ -5,57 +5,46 @@ namespace ExcelMacroAdd
 {
     internal class WriteExcel
     {
-
-        public WriteExcel()
+        public WriteExcel(DataInXml dataInXml, int rowsLine = default, string getArticle = null, int quantity = default, bool link = false)
         {
-            // Конструктор класса, прям Капитан Очевидность
-        }
-        public void FuncWrite()
-        {
-            string _getArticle= GetArticle;
-            string _vendor = Vendor;
-            int _quantity = Quantity;
-            int _rows = Rows;
-            Boolean _link = Link;
+            int endRow = default;
             //Стороки подключения к Excel
             Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
-            Workbook workBook = Globals.ThisAddIn.GetActiveWorkBook();
             Range cell = Globals.ThisAddIn.GetActiveCell();
             //Вычисляем столбец на который установлен фокус
-            int firstRow = cell.Row; 
+            int firstRow = cell.Row;
             if (firstRow == 1) firstRow++;
-            int lastRow = _rows + firstRow;
-
-            //Создаем экземпляр класса
-            DataInXml dataInXml = new DataInXml();
-           
+            int countRow = cell.Rows.Count;          // Вычисляем кол-во выделенных строк
+            if (countRow == 1 || !(getArticle is null))
+            {
+                firstRow += rowsLine ;
+            }
+            else
+            {
+                endRow = firstRow + countRow;
+            }                   
             // Заполняем таблицу
-            worksheet.get_Range("A" + lastRow).Value2 = _getArticle;
-            worksheet.get_Range("B" + lastRow).FormulaLocal = String.Format(
-                dataInXml.GetDataInXml(_vendor, "Formula_1"), lastRow);    //Столбец "Описание". Вызывает формулу Formula_1
-            worksheet.get_Range("C" + lastRow).Value2 = _quantity;
-            worksheet.get_Range("D" + lastRow).FormulaLocal = String.Format(
-                dataInXml.GetDataInXml(_vendor, "Formula_2"), lastRow);    //Столбец "Кратность". Вызывает формулу Formula_2
-            worksheet.get_Range("E" + lastRow).Value2 = Replace.RepleceVendorTable(_vendor);
-            worksheet.get_Range("F" + lastRow).Value2 = dataInXml.GetDataInXml(_vendor, "Discont");         //Столбец "Скидка". Вызывает значение Discont
-            worksheet.get_Range("G" + lastRow).FormulaLocal = String.Format(
-                dataInXml.GetDataInXml(_vendor, "Formula_3"), lastRow);     //Столбец "Цена". Вызывает формулу Formula_3
-            worksheet.get_Range("H" + lastRow).Formula = String.Format("=G{0}*(100-F{0})/100", lastRow);
-            worksheet.get_Range("I" + lastRow).Formula = String.Format("=H{0}*C{0}", lastRow);
-
-            if (_link) _ = new Linker();                          // Если стоит галочка, то запускается разметчик листов
+            do
+            {
+                if (!(getArticle is null))
+                {
+                    worksheet.get_Range("A" + firstRow).Value2 = getArticle;
+                }
+                worksheet.get_Range("B" + firstRow).FormulaLocal = String.Format(
+                    dataInXml.GetDataInXml("Formula_1"), firstRow);    //Столбец "Описание". Вызывает формулу Formula_1
+                if (!(quantity == 0)) worksheet.get_Range("C" + firstRow).Value2 = quantity;
+                worksheet.get_Range("D" + firstRow).FormulaLocal = String.Format(
+                    dataInXml.GetDataInXml("Formula_2"), firstRow);    //Столбец "Кратность". Вызывает формулу Formula_2
+                worksheet.get_Range("E" + firstRow).Value2 = Replace.RepleceVendorTable(dataInXml.Vendor);
+                worksheet.get_Range("F" + firstRow).Value2 = dataInXml.GetDataInXml("Discont");         //Столбец "Скидка". Вызывает значение Discont
+                worksheet.get_Range("G" + firstRow).FormulaLocal = String.Format(
+                    dataInXml.GetDataInXml("Formula_3"), firstRow);     //Столбец "Цена". Вызывает формулу Formula_3
+                worksheet.get_Range("H" + firstRow).Formula = String.Format("=G{0}*(100-F{0})/100", firstRow);
+                worksheet.get_Range("I" + firstRow).Formula = String.Format("=H{0}*C{0}", firstRow);
+                firstRow++;
+            }
+            while (endRow > firstRow);
+            if (link) _ = new Linker();                          // Если стоит галочка, то запускается разметчик листов
         }
-        
-
-        public string GetArticle { get; set; }
-
-        public string Vendor { get; set; }
-
-        public int Rows { get; set; }
-
-        public int Quantity { get; set; }
-
-        public Boolean Link { get; set; }
-
     }
 }
