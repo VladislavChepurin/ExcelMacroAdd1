@@ -82,12 +82,12 @@ namespace ExcelMacroAdd
                         if (int.TryParse(worksheet.Cells[firstRow, 14].Value2.ToString(), out int result) && result < iHeihgtMax)
                         {
                             // переменная для открытия Word
-                            filename = classDB.pPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sWall';", 2);
+                            filename = classDB.PPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sWall';", 2);
                         }
                         else
                         {
                             // переменная для открытия Word
-                            filename = classDB.pPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sFloor';", 2);
+                            filename = classDB.PPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sFloor';", 2);
                         }
 
                         string numberSave = Convert.ToString(worksheet.Cells[firstRow, 21].Value2);

@@ -35,6 +35,14 @@ namespace ExcelMacroAdd
 
         private readonly string _providerData = "Provider=Microsoft.ACE.OLEDB.16.0; Data Source=";
 
+
+        public DBConect()
+        {
+            PPatch = _pPatch;
+        }
+
+        public string PPatch { get; }
+
         /// <summary>
         /// Отрытие соединения с базой данных
         /// </summary>
