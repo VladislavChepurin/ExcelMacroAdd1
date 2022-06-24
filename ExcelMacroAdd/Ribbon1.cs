@@ -11,15 +11,13 @@ namespace ExcelMacroAdd
     public partial class Ribbon1
     {     
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
-        {
-            OpenExcel open = new OpenExcel();
-
+        {            
             // Вставка формул 
-            button13.Click += (s, a) => { new WriteExcel(new DataInXml(open) { Vendor = "IEK" }); };
-            button14.Click += (s, a) => { new WriteExcel(new DataInXml(open) { Vendor = "EKF" }); };
-            button15.Click += (s, a) => { new WriteExcel(new DataInXml(open) { Vendor = "DKC" }); };
-            button16.Click += (s, a) => { new WriteExcel(new DataInXml(open) { Vendor = "KEAZ" }); };
-            button20.Click += (s, a) => { new WriteExcel(new DataInXml(open) { Vendor = "DEKraft" }); };
+            button13.Click += (s, a) => { new WriteExcel(new DataInXml() { Vendor = "IEK" }); };
+            button14.Click += (s, a) => { new WriteExcel(new DataInXml() { Vendor = "EKF" }); };
+            button15.Click += (s, a) => { new WriteExcel(new DataInXml() { Vendor = "DKC" }); };
+            button16.Click += (s, a) => { new WriteExcel(new DataInXml() { Vendor = "KEAZ" }); };
+            button20.Click += (s, a) => { new WriteExcel(new DataInXml() { Vendor = "DEKraft" }); };
 
             GetValuteTSB getRate = new GetValuteTSB
             {

@@ -33,16 +33,7 @@ namespace ExcelMacroAdd
 #endif
         private readonly string _sPatch = "BdMacro.accdb";
 
-        private readonly string _providerData = "Provider=Microsoft.ACE.OLEDB.16.0; Data Source="; 
-        
-        public DBConect()
-        {     
-            pPatch = _pPatch;
-            sPatch = _sPatch;
-        }
-                   
-        public string pPatch { get; }
-        public string sPatch { get; }
+        private readonly string _providerData = "Provider=Microsoft.ACE.OLEDB.16.0; Data Source=";
 
         /// <summary>
         /// Отрытие соединения с базой данных
@@ -54,8 +45,8 @@ namespace ExcelMacroAdd
                 myConnection = new OleDbConnection(_providerData + _pPatch + _sPatch + ";");
                 // открываем соединение с БД
                 myConnection.Open();
-        }
-            catch(OleDbException)
+            }
+            catch (OleDbException)
             {
                 MessageBox.Show(
                 "База данных не найдена, убедитесь в наличии файла базы данных и сетевого подключения. " +
@@ -66,7 +57,7 @@ namespace ExcelMacroAdd
                 MessageBoxDefaultButton.Button1,
                 MessageBoxOptions.DefaultDesktopOnly);
             }
-}
+        }
 
         /// <summary>
         /// Закрытие соединения с БД

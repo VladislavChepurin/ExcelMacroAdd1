@@ -8,16 +8,8 @@ namespace ExcelMacroAdd
     {
         // Folders AppData content Settings.xml
         readonly string file = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\AddIns\ExcelMacroAdd\Settings.xml";
-        private readonly OpenExcel _openExcel;
-        public string Vendor { get; set; }
-
-        public DataInXml() { }
-
-        public DataInXml(OpenExcel openExcel)
-        {
-            _openExcel = openExcel;
-        }
-
+        public string Vendor { get; set; }  
+             
         public string GetDataInXml(string element)
         {   
             string middle = default;
