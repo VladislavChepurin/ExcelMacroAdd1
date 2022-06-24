@@ -83,13 +83,13 @@ namespace ExcelMacroAdd
                             // Передеем структуру по референсной ссылке в библиотечный метод 
                             var table = classDB.ReadingDB(query);                  
                             // Присваеваем ячейкам данные из массива
-                            worksheet.get_Range("K" + firstRow).Value2  = table.ipTable        ?? String.Empty;
-                            worksheet.get_Range("L" + firstRow).Value2  = table.klimaTable     ?? String.Empty;
-                            worksheet.get_Range("M" + firstRow).Value2  = table.reserveTable   ?? String.Empty;
-                            worksheet.get_Range("N" + firstRow).Value2  = table.heightTable    ?? String.Empty;
-                            worksheet.get_Range("O" + firstRow).Value2  = table.widthTable     ?? String.Empty;
-                            worksheet.get_Range("P" + firstRow).Value2  = table.depthTable     ?? String.Empty;
-                            worksheet.get_Range("AC" + firstRow).Value2 = table.executionTable ?? String.Empty;
+                            worksheet.get_Range("K" + firstRow).Value2  = table.IpTable        ?? String.Empty;
+                            worksheet.get_Range("L" + firstRow).Value2  = table.KlimaTable     ?? String.Empty;
+                            worksheet.get_Range("M" + firstRow).Value2  = table.ReserveTable   ?? String.Empty;
+                            worksheet.get_Range("N" + firstRow).Value2  = table.HeightTable    ?? String.Empty;
+                            worksheet.get_Range("O" + firstRow).Value2  = table.WidthTable     ?? String.Empty;
+                            worksheet.get_Range("P" + firstRow).Value2  = table.DepthTable     ?? String.Empty;
+                            worksheet.get_Range("AC" + firstRow).Value2 = table.ExecutionTable ?? String.Empty;
                         }                      
                         
                         firstRow++;

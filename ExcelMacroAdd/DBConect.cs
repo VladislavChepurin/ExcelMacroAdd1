@@ -1,29 +1,35 @@
 ﻿using System;
+using System.Data.Linq;
 using System.Data.OleDb;
 using System.Windows.Forms;
+using ExcelMacroAdd.DBEntity;
+using System.Data.Linq.Mapping;
+
 
 namespace ExcelMacroAdd
-{   
-    public struct DBtable 
-    {
-        public string ipTable { get; set; }
-        public string klimaTable { get; set; }
-        public string reserveTable { get; set; }
-        public string heightTable { get; set; }
-        public string widthTable { get; set; }
-        public string depthTable { get; set; }
-        public string articleTable { get; set; }
-        public string executionTable { get; set; }
-        public string vendorTable { get; set; }
-    }
+{
 
     /// <summary>
     /// Класс доступа к базе данных
     /// </summary>
     public class DBConect
     {
+        public struct DBtable
+        {
+            public string IpTable { get; set; }
+            public string KlimaTable { get; set; }
+            public string ReserveTable { get; set; }
+            public string HeightTable { get; set; }
+            public string WidthTable { get; set; }
+            public string DepthTable { get; set; }
+            public string ArticleTable { get; set; }
+            public string ExecutionTable { get; set; }
+            public string VendorTable { get; set; }
+        }
         // Переменная подключения к БД - static
         private static OleDbConnection myConnection;
+
+        private DataContext db;
 
         // Путь к базе данных
 #if DEBUG
@@ -35,13 +41,22 @@ namespace ExcelMacroAdd
 
         private readonly string _providerData = "Provider=Microsoft.ACE.OLEDB.16.0; Data Source=";
 
+        public string PPatch {get;}
+
+        public DBConect()
+        {
+            PPatch = _pPatch;
+        }
+
         /// <summary>
         /// Отрытие соединения с базой данных
         /// </summary>
         public void OpenDB()
-        {
+        {        
             try
             {
+                db = new DataContext(_pPatch + _sPatch );
+
                 myConnection = new OleDbConnection(_providerData + _pPatch + _sPatch + ";");
                 // открываем соединение с БД
                 myConnection.Open();
@@ -64,6 +79,9 @@ namespace ExcelMacroAdd
         /// </summary>
         public void CloseDB()
         {
+         //   db.Dispose();
+
+
             myConnection.Dispose();
             myConnection.Close();
         }
@@ -77,6 +95,25 @@ namespace ExcelMacroAdd
         {
             try
             {
+
+          
+                Table<Settings> settings = db.GetTable<Settings>();
+
+                if (!(settings == null))
+                {
+                    foreach (var item in settings)
+                    {
+                        Console.WriteLine(item.SetName +"   "  + item.SetOption);
+                    }
+                }
+             /*
+                var result = from u in db.GetTable<Settings>()
+                             where u.SetName == requestDB
+                                select u;
+
+                */
+
+
                 string rt = default;
                 // Собираем запрос к БД
                 OleDbCommand command = new OleDbCommand(requestDB, myConnection);
@@ -162,21 +199,21 @@ namespace ExcelMacroAdd
         {
             try
             {
-                DBtable dBtable = new DBtable();
+                DBtable dBtable = default;
                 OleDbCommand command = new OleDbCommand(dataRead, myConnection);
                 OleDbDataReader reader = command.ExecuteReader();
                 // Чтение из базы данных и поэлементная запись в массив
                 while (reader.Read())
                 {
-                    dBtable.ipTable        = reader[1].ToString();
-                    dBtable.heightTable    = reader[2].ToString();
-                    dBtable.klimaTable     = reader[3].ToString();
-                    dBtable.reserveTable   = reader[4].ToString();
-                    dBtable.widthTable     = reader[5].ToString();
-                    dBtable.depthTable     = reader[6].ToString();
-                    dBtable.articleTable   = reader[7].ToString();
-                    dBtable.executionTable = reader[8].ToString();
-                    dBtable.vendorTable    = reader[9].ToString();
+                    dBtable.IpTable        = reader[1].ToString();
+                    dBtable.HeightTable    = reader[2].ToString();
+                    dBtable.KlimaTable     = reader[3].ToString();
+                    dBtable.ReserveTable   = reader[4].ToString();
+                    dBtable.WidthTable     = reader[5].ToString();
+                    dBtable.DepthTable     = reader[6].ToString();
+                    dBtable.ArticleTable   = reader[7].ToString();
+                    dBtable.ExecutionTable = reader[8].ToString();
+                    dBtable.VendorTable    = reader[9].ToString();
                 }
                 return dBtable;
             }
