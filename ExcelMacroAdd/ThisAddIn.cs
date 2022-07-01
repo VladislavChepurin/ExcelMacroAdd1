@@ -9,6 +9,7 @@ using Microsoft.Office.Tools.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Microsoft.Office.Core;
 
 namespace ExcelMacroAdd
 {
@@ -44,8 +45,6 @@ namespace ExcelMacroAdd
         {
             return Application;
         }
-
-
 
         #region Код, автоматически созданный VSTO
 

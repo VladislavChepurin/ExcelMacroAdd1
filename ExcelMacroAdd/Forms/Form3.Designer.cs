@@ -1,4 +1,4 @@
-﻿namespace ExcelMacroAdd
+﻿namespace ExcelMacroAdd.Forms
 {
     partial class Form3
     {

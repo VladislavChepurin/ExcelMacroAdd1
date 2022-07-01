@@ -1,4 +1,5 @@
-﻿using Microsoft.CSharp.RuntimeBinder;
+﻿using ExcelMacroAdd.Servises;
+using Microsoft.CSharp.RuntimeBinder;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Interop.Word;
 using System;
@@ -10,14 +11,16 @@ using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using Word = Microsoft.Office.Interop.Word;
 
-namespace ExcelMacroAdd
+namespace ExcelMacroAdd.Forms
 {
     public partial class Form1 : Form
     {
         Object wordMissing = Missing.Value;
+        private readonly Lazy<DBConect> dBConect;
 
-        public Form1()
+        public Form1(Lazy<DBConect> dBConect)
         {
+            this.dBConect = dBConect;
             InitializeComponent();
         }
 
@@ -39,38 +42,35 @@ namespace ExcelMacroAdd
 
             new Thread(() =>
             {
-                var classDB = new DBConect();
+                // Открываем соединение с базой данных    
+                dBConect.Value.OpenDB();
 
-             
-                    // Открываем соединение с базой данных    
-                    classDB.OpenDB();
+                int progressValue = 0;
 
-                    int progressValue = 0;
+                int iHeihgtMax = Convert.ToInt32(dBConect.Value.RequestDB("SELECT * FROM settings WHERE set_name = 'sHeihgtMax';", 2));       // Запрашиваем максимальную высоту навесных шкафов
+                                                                                                                                        //Инициализируем параметры Word
+                Word.Application applicationWord = new Word.Application();
+                // Переменная объект документа
+                Word.Document document;
 
-                    int iHeihgtMax = Convert.ToInt32(classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sHeihgtMax';", 2));       // Запрашиваем максимальную высоту навесных шкафов
-                                                                                                                                           //Инициализируем параметры Word
-                    Word.Application applicationWord = new Word.Application();
-                    // Переменная объект документа
-                    Word.Document document;
-
-                    // Переменные иницализации                   
-                    Object confirmConversions = false;
-                    Object readOnly = false;
-                    Object addToRecentFiles = false;
-                    Object passwordDocument = Type.Missing;
-                    Object passwordTemplate = Type.Missing;
-                    Object revert = false;
-                    Object writePasswordDocument = Type.Missing;
-                    Object writePasswordTemplate = Type.Missing;
-                    Object format = Type.Missing;
-                    Object encoding = Type.Missing;
-                    Object oVisible = Type.Missing;
-                    Object openConflictDocument = Type.Missing;
-                    Object openAndRepair = Type.Missing;
-                    Object documentDirection = Type.Missing;
-                    Object noEncodingDialog = false;
-                    Object xmlTransform = Type.Missing;
-                    Object replaceTypeObj = Word.WdReplace.wdReplaceAll;
+                // Переменные иницализации                   
+                Object confirmConversions = false;
+                Object readOnly = false;
+                Object addToRecentFiles = false;
+                Object passwordDocument = Type.Missing;
+                Object passwordTemplate = Type.Missing;
+                Object revert = false;
+                Object writePasswordDocument = Type.Missing;
+                Object writePasswordTemplate = Type.Missing;
+                Object format = Type.Missing;
+                Object encoding = Type.Missing;
+                Object oVisible = Type.Missing;
+                Object openConflictDocument = Type.Missing;
+                Object openAndRepair = Type.Missing;
+                Object documentDirection = Type.Missing;
+                Object noEncodingDialog = false;
+                Object xmlTransform = Type.Missing;
+                Object replaceTypeObj = Word.WdReplace.wdReplaceAll;
 
                 try
                 {
@@ -82,14 +82,13 @@ namespace ExcelMacroAdd
                         if (int.TryParse(worksheet.Cells[firstRow, 14].Value2.ToString(), out int result) && result < iHeihgtMax)
                         {
                             // переменная для открытия Word
-                            filename = classDB.PPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sWall';", 2);
+                            filename = dBConect.Value.PPatch + dBConect.Value.RequestDB("SELECT * FROM settings WHERE set_name = 'sWall';", 2);
                         }
                         else
                         {
                             // переменная для открытия Word
-                            filename = classDB.PPatch + classDB.RequestDB("SELECT * FROM settings WHERE set_name = 'sFloor';", 2);
+                            filename = dBConect.Value.PPatch + dBConect.Value.RequestDB("SELECT * FROM settings WHERE set_name = 'sFloor';", 2);
                         }
-
                         string numberSave = Convert.ToString(worksheet.Cells[firstRow, 21].Value2);
                         string sTY = Convert.ToString(worksheet.Cells[firstRow, 8].Value2);
                         string sIcu = (Convert.ToString(worksheet.Cells[firstRow, 10].Value2));
@@ -228,7 +227,6 @@ namespace ExcelMacroAdd
                             progressBar1.PerformStep();
                             label1.Text = "Подождите пожайлуста, идет заполнение паспортов " + ++progressValue + "/" + countRow;
                         });
-
                     }
                     while (endRow > firstRow);
 
@@ -240,9 +238,8 @@ namespace ExcelMacroAdd
                     });
 
                     // Закрываем соединение с базой данных
-                    classDB.CloseDB();
+                    dBConect.Value.CloseDB();
                     applicationWord.Quit();
-
                 }
                 catch (COMException)
                 {
@@ -292,7 +289,7 @@ namespace ExcelMacroAdd
         /// <param name="folder"></param>
         private static void Logger(string folder)
         {
-            string patch = folder + @"\log.txt";
+            string patch = Path.Combine(folder, "log.txt");
             StreamWriter output = File.AppendText(patch);
             output.WriteLine("Версия OC:          " + Environment.OSVersion);
             output.WriteLine("Имя пользователя:   " + Environment.UserName);
@@ -309,7 +306,7 @@ namespace ExcelMacroAdd
         /// <param name="amount"></param>
         private static void Logger(string folder, string saveNum, int amount)
         {
-            string patch = folder + @"\log.txt";
+            string patch = Path.Combine(folder, "log.txt");
             StreamWriter output = File.AppendText(patch);
             output.WriteLine("{0} | Паспорт {1} сформирован успешно, в паспорте {2} листа", DateTime.Now, saveNum, amount);
             output.Close();

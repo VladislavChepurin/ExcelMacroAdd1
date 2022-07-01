@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ExcelMacroAdd
+namespace ExcelMacroAdd.Forms
 {
     partial class AboutBox1 : Form
     {
@@ -105,6 +105,11 @@ namespace ExcelMacroAdd
         private void AboutBox1_Load(object sender, EventArgs e)
         {
             
-        }        
+        }
+
+        private void okButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

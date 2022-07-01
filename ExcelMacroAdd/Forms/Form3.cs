@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using ExcelMacroAdd.Servises;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.IO;
 using System.Linq;
@@ -8,7 +9,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Label = System.Windows.Forms.Label;
 using TextBox = System.Windows.Forms.TextBox;
 
-namespace ExcelMacroAdd
+namespace ExcelMacroAdd.Forms
 {
     enum RowsToArray
     {
@@ -274,6 +275,7 @@ namespace ExcelMacroAdd
             }
         }
 
+        //переписать для этого есть класс DataInXml
         /// <summary>
         /// Функция записи в Xml, первый параметр - вендор в настройках, второй - номер строки в двумерном массиве TextBox[,]
         /// </summary>

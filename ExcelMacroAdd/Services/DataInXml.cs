@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 
-namespace ExcelMacroAdd
+namespace ExcelMacroAdd.Servises
 {
     internal class DataInXml
     {

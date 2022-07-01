@@ -1,22 +1,18 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
-using Excel = Microsoft.Office.Interop.Excel;
 
 
-namespace ExcelMacroAdd
+namespace ExcelMacroAdd.Functions
 {
-    internal class Linker
+    internal class Linker : AbstractFunctions
     {
-        public Linker()
-        {
-            Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
-            Workbook workBook = Globals.ThisAddIn.GetActiveWorkBook();
-
+        public override void Start()
+        {    
             //Создаем коллекцию
             List<int> L = new List<int>();
             // В коллекцию помещаем парсированые имена листов
-            foreach (Excel.Worksheet sheet in workBook.Sheets)
+            foreach (Worksheet sheet in workBook.Sheets)
             {
                 int.TryParse(sheet.Name, out int result);
                 L.Add(result);
@@ -50,36 +46,36 @@ namespace ExcelMacroAdd
             worksheet.get_Range("A1", "i500").Cells.Font.Size = 11;
 
             var excelcells = worksheet.get_Range("A1", "I11");
-            Excel.XlBordersIndex borderIndex;
+            XlBordersIndex borderIndex;
 
-            borderIndex = Excel.XlBordersIndex.xlEdgeLeft; //Левая граница
-            excelcells.Borders[borderIndex].Weight = Excel.XlBorderWeight.xlThin;
-            excelcells.Borders[borderIndex].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderIndex = XlBordersIndex.xlEdgeLeft; //Левая граница
+            excelcells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
+            excelcells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
             excelcells.Borders[borderIndex].ColorIndex = 0;
 
-            borderIndex = Excel.XlBordersIndex.xlEdgeTop; //Верхняя граница
-            excelcells.Borders[borderIndex].Weight = Excel.XlBorderWeight.xlThin;
-            excelcells.Borders[borderIndex].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderIndex = XlBordersIndex.xlEdgeTop; //Верхняя граница
+            excelcells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
+            excelcells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
             excelcells.Borders[borderIndex].ColorIndex = 0;
 
-            borderIndex = Excel.XlBordersIndex.xlEdgeBottom; //Нижняя граница
-            excelcells.Borders[borderIndex].Weight = Excel.XlBorderWeight.xlThin;
-            excelcells.Borders[borderIndex].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderIndex = XlBordersIndex.xlEdgeBottom; //Нижняя граница
+            excelcells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
+            excelcells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
             excelcells.Borders[borderIndex].ColorIndex = 0;
 
-            borderIndex = Excel.XlBordersIndex.xlEdgeRight;  //Правая граница
-            excelcells.Borders[borderIndex].Weight = Excel.XlBorderWeight.xlThin;
-            excelcells.Borders[borderIndex].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderIndex = XlBordersIndex.xlEdgeRight;  //Правая граница
+            excelcells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
+            excelcells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
             excelcells.Borders[borderIndex].ColorIndex = 0;
 
-            borderIndex = Excel.XlBordersIndex.xlInsideHorizontal;  //Внутренняя горизонтальня граница
-            excelcells.Borders[borderIndex].Weight = Excel.XlBorderWeight.xlThin;
-            excelcells.Borders[borderIndex].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderIndex = XlBordersIndex.xlInsideHorizontal;  //Внутренняя горизонтальня граница
+            excelcells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
+            excelcells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
             excelcells.Borders[borderIndex].ColorIndex = 0;
 
-            borderIndex = Excel.XlBordersIndex.xlInsideVertical;  //Внутренняя горизонтальня граница
-            excelcells.Borders[borderIndex].Weight = Excel.XlBorderWeight.xlThin;
-            excelcells.Borders[borderIndex].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderIndex = XlBordersIndex.xlInsideVertical;  //Внутренняя горизонтальня граница
+            excelcells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
+            excelcells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
             excelcells.Borders[borderIndex].ColorIndex = 0;
         }
     }

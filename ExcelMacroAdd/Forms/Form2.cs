@@ -1,10 +1,12 @@
-﻿using System;
+﻿using ExcelMacroAdd.Functions;
+using ExcelMacroAdd.Servises;
+using System;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ExcelMacroAdd
+namespace ExcelMacroAdd.Forms
 {
     enum ContainerAvt
     {
@@ -28,11 +30,12 @@ namespace ExcelMacroAdd
         readonly int PolusIndVn = 0;  // Начальная кол-во полюсов выключателей нагрузки
         readonly int VendorIndVn = 0; // Начальный вендор выключателей нагрузки
 
-        public Form2()
+        private readonly Lazy<DBConect> dBConect;
+        public Form2(Lazy<DBConect> dBConect)
         {
+            this.dBConect = dBConect;
             InitializeComponent();
         }
-
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -146,10 +149,9 @@ namespace ExcelMacroAdd
                 new Thread(() =>
                 {
                     //Работа с базой данных
-                    DBConect classDB = new DBConect();
-                    classDB.OpenDB();
+                    dBConect.Value.OpenDB();
 
-                    string getArticle = classDB.RequestDB(setRequest, 0) ?? "@";
+                    string getArticle = dBConect.Value.RequestDB(setRequest, 0) ?? "@";
 
                     if (getArticle != "@")
                     {
@@ -167,7 +169,7 @@ namespace ExcelMacroAdd
                             pictures[rowsCheck].BackColor = Color.IndianRed;
                         });
                     }
-                    classDB.CloseDB();
+                    dBConect.Value.CloseDB();
                 }).Start();
             }
         }
@@ -240,17 +242,17 @@ namespace ExcelMacroAdd
                     }
 
                     //Работа с базой данных
-                    DBConect classDB = new DBConect();
-                    classDB.OpenDB();
+                    dBConect.Value.OpenDB();
 
-                    string getArticle = classDB.RequestDB(setRequest, 0) ?? "@";
+                    string getArticle = dBConect.Value.RequestDB(setRequest, 0) ?? "@";
 
                     if (getArticle != "@")
                     {
                         int.TryParse(texts[rows].Text, out int quantity);
-                        new WriteExcel(new DataInXml() { Vendor = vendor }, rows, getArticle, quantity, checkBox14.Checked);
+                        WriteExcel writeExcel = new WriteExcel(new Lazy<DataInXml>(), vendor, rows, getArticle, quantity);
+                        writeExcel.Start();                      
                     }
-                    classDB.CloseDB();
+                    dBConect.Value.CloseDB();
                 }
             } 
         }

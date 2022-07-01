@@ -1,33 +1,22 @@
-﻿using System;
+﻿using ExcelMacroAdd.UserVariables;
+using System;
 using System.Data.OleDb;
+using System.IO;
 using System.Windows.Forms;
 
-namespace ExcelMacroAdd
+namespace ExcelMacroAdd.Servises
 {   
     /// <summary>
     /// Класс доступа к базе данных
     /// </summary>
     public class DBConect
-    {
-        public struct DBtable
-        {
-            public string IpTable { get; set; }
-            public string KlimaTable { get; set; }
-            public string ReserveTable { get; set; }
-            public string HeightTable { get; set; }
-            public string WidthTable { get; set; }
-            public string DepthTable { get; set; }
-            public string ArticleTable { get; set; }
-            public string ExecutionTable { get; set; }
-            public string VendorTable { get; set; }
-        }
-
+    {     
         // Переменная подключения к БД - static
         private static OleDbConnection myConnection;
 
         // Путь к базе данных
 #if DEBUG
-        private readonly string _pPatch = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Прайсы\Макро\";
+        private readonly string _pPatch = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"Прайсы\Макро\");
 #else
         private readonly string _pPatch = @"\\192.168.100.100\ftp\Info_A\FTP\Производство Абиэлт\Инженеры\"; // Путь к базе данных
 #endif
@@ -50,7 +39,7 @@ namespace ExcelMacroAdd
         {
             try
             {
-                myConnection = new OleDbConnection(_providerData + _pPatch + _sPatch + ";");
+                myConnection = new OleDbConnection(_providerData + Path.Combine(_pPatch, _sPatch) + ";");
                 // открываем соединение с БД
                 myConnection.Open();
             }
@@ -58,7 +47,7 @@ namespace ExcelMacroAdd
             {
                 MessageBox.Show(
                 "База данных не найдена, убедитесь в наличии файла базы данных и сетевого подключения. " +
-                "Файл " + _pPatch + _sPatch + " не найден в предпологаемом местонахождении.",
+                "Файл " + Path.Combine(_pPatch, _sPatch).ToString() + " не найден в предпологаемом местонахождении.",
                 "Ошибка базы данных",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error,
@@ -170,7 +159,7 @@ namespace ExcelMacroAdd
         {
             try
             {
-                DBtable dBtable = default;
+                DBtable dBtable = new DBtable();
                 OleDbCommand command = new OleDbCommand(dataRead, myConnection);
                 OleDbDataReader reader = command.ExecuteReader();
                 // Чтение из базы данных и поэлементная запись в массив

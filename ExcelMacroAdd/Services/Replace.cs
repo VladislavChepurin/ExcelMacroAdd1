@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExcelMacroAdd
+namespace ExcelMacroAdd.Servises
 {
     internal static class Replace
     {

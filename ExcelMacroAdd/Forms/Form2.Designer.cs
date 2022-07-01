@@ -1,4 +1,4 @@
-﻿namespace ExcelMacroAdd
+﻿namespace ExcelMacroAdd.Forms
 {
     partial class Form2
     {
@@ -212,7 +212,6 @@
             this.comboBox60 = new System.Windows.Forms.ComboBox();
             this.checkBox12 = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.checkBox14 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -2088,22 +2087,11 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // checkBox14
-            // 
-            this.checkBox14.AutoSize = true;
-            this.checkBox14.Location = new System.Drawing.Point(160, 547);
-            this.checkBox14.Name = "checkBox14";
-            this.checkBox14.Size = new System.Drawing.Size(142, 17);
-            this.checkBox14.TabIndex = 4;
-            this.checkBox14.Text = "Авторазметка расчета";
-            this.checkBox14.UseVisualStyleBackColor = true;
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(527, 590);
-            this.Controls.Add(this.checkBox14);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -2152,7 +2140,6 @@
             this.groupBox12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -2342,6 +2329,5 @@
         private System.Windows.Forms.ComboBox comboBox60;
         private System.Windows.Forms.CheckBox checkBox12;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.CheckBox checkBox14;
     }
 }
