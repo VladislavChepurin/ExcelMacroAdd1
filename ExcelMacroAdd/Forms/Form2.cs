@@ -31,9 +31,12 @@ namespace ExcelMacroAdd.Forms
         readonly int VendorIndVn = 0; // Начальный вендор выключателей нагрузки
 
         private readonly Lazy<DBConect> dBConect;
-        public Form2(Lazy<DBConect> dBConect)
+        private readonly Lazy<DataInXml> dataInXml;
+
+        public Form2(Lazy<DBConect> dBConect, Lazy<DataInXml> dataInXml)
         {
             this.dBConect = dBConect;
+            this.dataInXml = dataInXml;
             InitializeComponent();
         }
 
@@ -249,7 +252,7 @@ namespace ExcelMacroAdd.Forms
                     if (getArticle != "@")
                     {
                         int.TryParse(texts[rows].Text, out int quantity);
-                        WriteExcel writeExcel = new WriteExcel(new Lazy<DataInXml>(), vendor, rows, getArticle, quantity);
+                        WriteExcel writeExcel = new WriteExcel(dataInXml, vendor, rows, getArticle, quantity);
                         writeExcel.Start();                      
                     }
                     dBConect.Value.CloseDB();
@@ -260,7 +263,7 @@ namespace ExcelMacroAdd.Forms
         {
             await Task.Run(() =>
             {
-                Form3 settings  = new Form3();
+                Form3 settings  = new Form3(dataInXml);
                 settings.ShowDialog();
                 Thread.Sleep(5000);
             });

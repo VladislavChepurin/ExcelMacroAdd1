@@ -44,14 +44,14 @@ namespace ExcelMacroAdd.Functions
                     worksheet.get_Range("A" + firstRow).Value2 = getArticle;
                 }
                 worksheet.get_Range("B" + firstRow).FormulaLocal = String.Format(
-                    dataInXml.Value.GetDataInXml("Formula_1"), firstRow);    //Столбец "Описание". Вызывает формулу Formula_1
+                    dataInXml.Value.ReadFileXml("Formula_1"), firstRow);    //Столбец "Описание". Вызывает формулу Formula_1
                 if (!(quantity == 0)) worksheet.get_Range("C" + firstRow).Value2 = quantity;
                 worksheet.get_Range("D" + firstRow).FormulaLocal = String.Format(
-                    dataInXml.Value.GetDataInXml("Formula_2"), firstRow);    //Столбец "Кратность". Вызывает формулу Formula_2
+                    dataInXml.Value.ReadFileXml("Formula_2"), firstRow);    //Столбец "Кратность". Вызывает формулу Formula_2
                 worksheet.get_Range("E" + firstRow).Value2 = Replace.RepleceVendorTable(vendor);
-                worksheet.get_Range("F" + firstRow).Value2 = dataInXml.Value.GetDataInXml("Discont");         //Столбец "Скидка". Вызывает значение Discont
+                worksheet.get_Range("F" + firstRow).Value2 = dataInXml.Value.ReadFileXml("Discont");         //Столбец "Скидка". Вызывает значение Discont
                 worksheet.get_Range("G" + firstRow).FormulaLocal = String.Format(
-                    dataInXml.Value.GetDataInXml("Formula_3"), firstRow);     //Столбец "Цена". Вызывает формулу Formula_3
+                    dataInXml.Value.ReadFileXml("Formula_3"), firstRow);     //Столбец "Цена". Вызывает формулу Formula_3
                 worksheet.get_Range("H" + firstRow).Formula = String.Format("=G{0}*(100-F{0})/100", firstRow);
                 worksheet.get_Range("I" + firstRow).Formula = String.Format("=H{0}*C{0}", firstRow);
                 firstRow++;

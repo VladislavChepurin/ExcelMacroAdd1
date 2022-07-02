@@ -230,7 +230,9 @@
     </Compile>
     <Compile Include="Services\Replace.cs" />
     <Compile Include="Functions\WriteExcel.cs" />
+    <Compile Include="UserVariables\StructXml.cs" />
     <Compile Include="UserVariables\DBtable.cs" />
+    <Compile Include="UserVariables\Vendor.cs" />
     <EmbeddedResource Include="Forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>

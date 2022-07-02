@@ -1,5 +1,4 @@
 ﻿using ExcelMacroAdd.Servises;
-using Microsoft.Office.Interop.Excel;
 using System;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -8,7 +7,6 @@ namespace ExcelMacroAdd.Functions
 {
     internal class BoxShield : AbstractFunctions
     {
-       // private readonly DBConect dBConect;
         private readonly Lazy<DBConect> dBConect;
         public BoxShield(Lazy<DBConect> dBConect)
         {

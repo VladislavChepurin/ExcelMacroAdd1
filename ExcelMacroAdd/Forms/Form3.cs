@@ -26,13 +26,18 @@ namespace ExcelMacroAdd.Forms
     public partial class Form3 : Form
     {
         // Folders AppData content Settings.xml
-        readonly string file = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\AddIns\ExcelMacroAdd\Settings.xml";
+       readonly string file = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\AddIns\ExcelMacroAdd\Settings.xml";
 
         readonly string directory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\AddIns\ExcelMacroAdd\";
 
-        public Form3()
+        private readonly Lazy<DataInXml> dataInXml;
+
+
+
+        public Form3(Lazy<DataInXml> dataInXml)
         {
             InitializeComponent();
+            this.dataInXml = dataInXml;
         }
 
         #region KeyPress
@@ -236,7 +241,7 @@ namespace ExcelMacroAdd.Forms
                                 label40.Text = vendor.Element("Date").Value;
                                 break;
                             default:
-                                throw new NullReferenceException();
+                                throw new NullReferenceException("Не коректное значение в классе Form3");
                         }
                     }
                 }
@@ -257,8 +262,8 @@ namespace ExcelMacroAdd.Forms
 
             catch (FileNotFoundException) // Востановление файла при его удалении
             {
-                DataInXml dataInXml = new DataInXml();
-                dataInXml.XmlFileCreate();
+              //  DataInXml dataInXml = new DataInXml();
+                dataInXml.Value.XmlFileCreate();
             }
 
             catch (DirectoryNotFoundException)
@@ -270,8 +275,8 @@ namespace ExcelMacroAdd.Forms
                     dirInfo.Create();
                 }
                 //Создаем файл
-                DataInXml dataInXml = new DataInXml();
-                dataInXml.XmlFileCreate();
+             //  DataInXml dataInXml = new DataInXml();
+                dataInXml.Value.XmlFileCreate();
             }
         }
 

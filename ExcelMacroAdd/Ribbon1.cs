@@ -111,7 +111,7 @@ namespace ExcelMacroAdd
             {
                 await Task.Run(() =>
                 {
-                    Form2 fs = new Form2(dBConect);
+                    Form2 fs = new Form2(dBConect, dataInXml);
                     fs.ShowDialog();
                     Thread.Sleep(5000);
                 });
@@ -121,7 +121,7 @@ namespace ExcelMacroAdd
             {
                 await Task.Run(() =>
                 {
-                    Form3 fs = new Form3();
+                    Form3 fs = new Form3(dataInXml);
                     fs.ShowDialog();
                     Thread.Sleep(5000);
                 });
@@ -145,7 +145,7 @@ namespace ExcelMacroAdd
             new Thread(() =>
             {
                 getRate.Start();
-                Thread.Sleep(100);
+                //Thread.Sleep(100);
             }).Start();          
         }
             

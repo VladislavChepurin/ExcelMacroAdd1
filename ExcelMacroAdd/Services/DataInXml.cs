@@ -1,16 +1,19 @@
-﻿using System;
+﻿using ExcelMacroAdd.UserVariables;
+using System;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace ExcelMacroAdd.Servises
 {
-    internal class DataInXml
+    public class DataInXml
     {
         // Folders AppData content Settings.xml
-        readonly string file = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\AddIns\ExcelMacroAdd\Settings.xml";
+        readonly string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Microsoft\AddIns\ExcelMacroAdd\Settings.xml");
         public string Vendor { get; set; }  
              
-        public string GetDataInXml(string element)
+        public string ReadFileXml(string element)
         {   
             string middle = default;
             try
@@ -39,74 +42,59 @@ namespace ExcelMacroAdd.Servises
             }
         }
 
-        public void XmlFileCreate()
+        public Vendor[] ReadFileXmlNew()
         {
-            XDocument xdoc = new XDocument(new XElement("MetaSettings",
-                 //Поле IEK
-                 new XElement("Vendor",
-                 new XAttribute("vendor", "IEK"),
-                 new XElement("Formula_1", "_"),
-                 new XElement("Formula_2", "_"),
-                 new XElement("Formula_3", "_"),
-                 new XElement("Discont", "_"),
-                 new XElement("Date", "_")),
-                 //Поле EKF
-                 new XElement("Vendor",
-                 new XAttribute("vendor", "EKF"),
-                 new XElement("Formula_1", "_"),
-                 new XElement("Formula_2", "_"),
-                 new XElement("Formula_3", "_"),
-                 new XElement("Discont", "_"),
-                 new XElement("Date", "_")),
-                 //Поле DKC
-                 new XElement("Vendor",
-                 new XAttribute("vendor", "DKC"),
-                 new XElement("Formula_1", "_"),
-                 new XElement("Formula_2", "_"),
-                 new XElement("Formula_3", "_"),
-                 new XElement("Discont", "_"),
-                 new XElement("Date", "_")),
-                 //Поле KEAZ
-                 new XElement("Vendor",
-                 new XAttribute("vendor", "KEAZ"),
-                 new XElement("Formula_1", "_"),
-                 new XElement("Formula_2", "_"),
-                 new XElement("Formula_3", "_"),
-                 new XElement("Discont", "_"),
-                 new XElement("Date", "_")),
-                 //Поле DEKraft
-                 new XElement("Vendor",
-                 new XAttribute("vendor", "DEKraft"),
-                 new XElement("Formula_1", "_"),
-                 new XElement("Formula_2", "_"),
-                 new XElement("Formula_3", "_"),
-                 new XElement("Discont", "_"),
-                 new XElement("Date", "_")),
-                 //Поле TDM
-                 new XElement("Vendor",
-                 new XAttribute("vendor", "TDM"),
-                 new XElement("Formula_1", "_"),
-                 new XElement("Formula_2", "_"),
-                 new XElement("Formula_3", "_"),
-                 new XElement("Discont", "_"),
-                 new XElement("Date", "_")),
-                 //Поле ABB
-                 new XElement("Vendor",
-                 new XAttribute("vendor", "ABB"),
-                 new XElement("Formula_1", "_"),
-                 new XElement("Formula_2", "_"),
-                 new XElement("Formula_3", "_"),
-                 new XElement("Discont", "_"),
-                 new XElement("Date", "_")),
-                 //Поле Schneider
-                 new XElement("Vendor",
-                 new XAttribute("vendor", "Schneider"),
-                 new XElement("Formula_1", "_"),
-                 new XElement("Formula_2", "_"),
-                 new XElement("Formula_3", "_"),
-                 new XElement("Discont", "_"),
-                 new XElement("Date", "_"))));
-            xdoc.Save(file);
+            //  throw new Exception("Метод не реализован");
+
+            XmlAttributes attrs = new XmlAttributes();
+            XmlAttributeOverrides xOver = new XmlAttributeOverrides();
+            XmlRootAttribute xRoot = new XmlRootAttribute
+            {
+                // Set a new Namespace and ElementName for the root element.
+                ElementName = "MetaSettings"
+            };
+            attrs.XmlRoot = xRoot;
+            xOver.Add(typeof(Vendor[]), attrs);
+
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Vendor[]), xOver);
+
+            // десериализуем объект
+            using (FileStream fs = new FileStream("person.xml", FileMode.OpenOrCreate))
+            {
+              return  xmlSerializer.Deserialize(fs) as Vendor[];                
+            }
+        }
+
+        public void XmlFileCreate()
+        {    
+            XmlAttributes attrs = new XmlAttributes();
+            XmlAttributeOverrides xOver = new XmlAttributeOverrides();
+            XmlRootAttribute xRoot = new XmlRootAttribute
+            {
+                // Set a new Namespace and ElementName for the root element.
+                ElementName = "MetaSettings"
+            };
+            attrs.XmlRoot = xRoot;
+            xOver.Add(typeof(Vendor[]), attrs);           
+
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Vendor[]), xOver);
+
+            Vendor[] vendor = new Vendor[8]
+            {
+                new Vendor("IEK", "_", "_", "_", 0, DateTime.Now.ToString()),
+                new Vendor("EKF", "_", "_", "_", 0, DateTime.Now.ToString()),
+                new Vendor("DKC", "_", "_", "_", 0, DateTime.Now.ToString()),
+                new Vendor("KEAZ", "_", "_", "_", 0, DateTime.Now.ToString()),
+                new Vendor("DEKraft", "_", "_", "_", 0, DateTime.Now.ToString()),
+                new Vendor("TDM", "_", "_", "_", 0, DateTime.Now.ToString()),
+                new Vendor("ABB", "_", "_", "_", 0, DateTime.Now.ToString()),
+                new Vendor("Schneider", "_", "_", "_", 0, DateTime.Now.ToString())
+            };
+            // получаем поток, куда будем записывать сериализованный объект
+            using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
+            {
+                xmlSerializer.Serialize(fs, vendor);    
+            }
         }
     }
 }
