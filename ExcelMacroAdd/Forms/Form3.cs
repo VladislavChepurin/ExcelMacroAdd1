@@ -1,4 +1,5 @@
 ﻿using ExcelMacroAdd.Servises;
+using ExcelMacroAdd.UserVariables;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.IO;
@@ -24,16 +25,8 @@ namespace ExcelMacroAdd.Forms
     }
 
     public partial class Form3 : Form
-    {
-        // Folders AppData content Settings.xml
-       readonly string file = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\AddIns\ExcelMacroAdd\Settings.xml";
-
-        readonly string directory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\AddIns\ExcelMacroAdd\";
-
+    {    
         private readonly Lazy<DataInXml> dataInXml;
-
-
-
         public Form3(Lazy<DataInXml> dataInXml)
         {
             InitializeComponent();
@@ -167,157 +160,85 @@ namespace ExcelMacroAdd.Forms
         private void Form3_Load(object sender, EventArgs e)
         {
             try
-            { // преписать!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                XDocument xdoc = XDocument.Load(file);
-                // получаем корневой узел
-                XElement dataRow = xdoc.Element("MetaSettings");
-                if (dataRow != null)
+            { // Загружаем в форму файл Settings.xml
+                foreach (Vendor vendor in dataInXml.Value.ReadFileXml())
                 {
-                    foreach (XElement vendor in dataRow.Elements("Vendor"))
+                    switch (vendor.VendorAttribute)
                     {
-                        switch ((vendor.Attribute("vendor")).Value)
-                        {
-                            case "IEK":
-                                textBox1.Text = vendor.Element("Formula_1").Value;
-                                textBox2.Text = vendor.Element("Formula_2").Value;
-                                textBox3.Text = vendor.Element("Formula_3").Value;
-                                textBox4.Text = vendor.Element("Discont").Value;
-                                label33.Text = vendor.Element("Date").Value;
-                                break;
-
-                            case "EKF":
-                                textBox5.Text = vendor.Element("Formula_1").Value;
-                                textBox6.Text = vendor.Element("Formula_2").Value;
-                                textBox7.Text = vendor.Element("Formula_3").Value;
-                                textBox8.Text = vendor.Element("Discont").Value;
-                                label34.Text = vendor.Element("Date").Value;
-                                break;
-
-                            case "DKC":
-                                textBox9.Text = vendor.Element("Formula_1").Value;
-                                textBox10.Text = vendor.Element("Formula_2").Value;
-                                textBox11.Text = vendor.Element("Formula_3").Value;
-                                textBox12.Text = vendor.Element("Discont").Value;
-                                label35.Text = vendor.Element("Date").Value;
-                                break;
-
-                            case "KEAZ":
-                                textBox13.Text = vendor.Element("Formula_1").Value;
-                                textBox14.Text = vendor.Element("Formula_2").Value;
-                                textBox15.Text = vendor.Element("Formula_3").Value;
-                                textBox16.Text = vendor.Element("Discont").Value;
-                                label36.Text = vendor.Element("Date").Value;
-                                break;
-
-                            case "DEKraft":
-                                textBox17.Text = vendor.Element("Formula_1").Value;
-                                textBox18.Text = vendor.Element("Formula_2").Value;
-                                textBox19.Text = vendor.Element("Formula_3").Value;
-                                textBox20.Text = vendor.Element("Discont").Value;
-                                label37.Text = vendor.Element("Date").Value;
-                                break;
-
-                            case "TDM":
-                                textBox21.Text = vendor.Element("Formula_1").Value;
-                                textBox22.Text = vendor.Element("Formula_2").Value;
-                                textBox23.Text = vendor.Element("Formula_3").Value;
-                                textBox24.Text = vendor.Element("Discont").Value;
-                                label38.Text = vendor.Element("Date").Value;
-                                break;
-
-                            case "ABB":
-                                textBox25.Text = vendor.Element("Formula_1").Value;
-                                textBox26.Text = vendor.Element("Formula_2").Value;
-                                textBox27.Text = vendor.Element("Formula_3").Value;
-                                textBox28.Text = vendor.Element("Discont").Value;
-                                label39.Text = vendor.Element("Date").Value;
-                                break;
-
-                            case "Schneider":
-                                textBox29.Text = vendor.Element("Formula_1").Value;
-                                textBox30.Text = vendor.Element("Formula_2").Value;
-                                textBox31.Text = vendor.Element("Formula_3").Value;
-                                textBox32.Text = vendor.Element("Discont").Value;
-                                label40.Text = vendor.Element("Date").Value;
-                                break;
-                            default:
-                                throw new NullReferenceException("Не коректное значение в классе Form3");
-                        }
+                        case "IEK":
+                            textBox1.Text = vendor.Formula_1;
+                            textBox2.Text = vendor.Formula_2;
+                            textBox3.Text = vendor.Formula_3;
+                            textBox4.Text = vendor.Discont.ToString();
+                            label33.Text = vendor.Date;
+                            break;
+                        case "EKF":
+                            textBox5.Text = vendor.Formula_1;
+                            textBox6.Text = vendor.Formula_2;
+                            textBox7.Text = vendor.Formula_3;
+                            textBox8.Text = vendor.Discont.ToString();
+                            label34.Text = vendor.Date;
+                            break;
+                        case "DKC":
+                            textBox9.Text = vendor.Formula_1;
+                            textBox10.Text = vendor.Formula_2;
+                            textBox11.Text = vendor.Formula_3;
+                            textBox12.Text = vendor.Discont.ToString();
+                            label35.Text = vendor.Date;
+                            break;
+                        case "KEAZ":
+                            textBox13.Text = vendor.Formula_1;
+                            textBox14.Text = vendor.Formula_2;
+                            textBox15.Text = vendor.Formula_3;
+                            textBox16.Text = vendor.Discont.ToString();
+                            label36.Text = vendor.Date;
+                            break;
+                        case "DEKraft":
+                            textBox17.Text = vendor.Formula_1;
+                            textBox18.Text = vendor.Formula_2;
+                            textBox19.Text = vendor.Formula_3;
+                            textBox20.Text = vendor.Discont.ToString();
+                            label37.Text = vendor.Date;
+                            break;
+                        case "TDM":
+                            textBox21.Text = vendor.Formula_1;
+                            textBox22.Text = vendor.Formula_2;
+                            textBox23.Text = vendor.Formula_3;
+                            textBox24.Text = vendor.Discont.ToString();
+                            label38.Text = vendor.Date;
+                            break;
+                        case "ABB":
+                            textBox25.Text = vendor.Formula_1;
+                            textBox26.Text = vendor.Formula_2;
+                            textBox27.Text = vendor.Formula_3;
+                            textBox28.Text = vendor.Discont.ToString();
+                            label39.Text = vendor.Date;
+                            break;
+                        case "Schneider":
+                            textBox29.Text = vendor.Formula_1;
+                            textBox30.Text = vendor.Formula_2;
+                            textBox31.Text = vendor.Formula_3;
+                            textBox32.Text = vendor.Discont.ToString();
+                            label40.Text = vendor.Date;
+                            break;
+                        default:
+                            throw new NullReferenceException("Не коректное значение в классе Form3");
                     }
                 }
             }
-
             catch (NullReferenceException)
             {
                 MessageBox.Show(
                 "Внимание! Возникла ошибка в файле Settings.xml,\n" +
-                "удалите этот файл в ручную и заново откройте форму,\n" +
-                "чтобы восстановить настройки",
+                "файл будет восстановлен автоматически.",
                 "Ошибка файла Settings.xml",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error,
                 MessageBoxDefaultButton.Button1,
                 MessageBoxOptions.DefaultDesktopOnly);
-            }
-
-            catch (FileNotFoundException) // Востановление файла при его удалении
-            {
-              //  DataInXml dataInXml = new DataInXml();
-                dataInXml.Value.XmlFileCreate();
-            }
-
-            catch (DirectoryNotFoundException)
-            {
-                //Создаем папку если ее нет
-                DirectoryInfo dirInfo = new DirectoryInfo(directory);
-                if (!dirInfo.Exists)
-                {
-                    dirInfo.Create();
-                }
-                //Создаем файл
-             //  DataInXml dataInXml = new DataInXml();
-                dataInXml.Value.XmlFileCreate();
-            }
+            }          
         }
-
-        //переписать для этого есть класс DataInXml
-        /// <summary>
-        /// Функция записи в Xml, первый параметр - вендор в настройках, второй - номер строки в двумерном массиве TextBox[,]
-        /// </summary>
-        /// <param name="vendor"></param>
-        /// <param name="rowsArray"></param>
-        private void WiterXmlFunc(string vendor, int rowsArray)
-        {
-            TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = RetupnLabelArray();
-            XDocument xdoc = XDocument.Load(file);
-            var index = xdoc.Element("MetaSettings")?.Elements("Vendor").FirstOrDefault(p => p.Attribute("vendor")?.Value == vendor);
-            if (index != null)
-            {
-                // Записываем первую формулу
-                var formula_1 = index.Element("Formula_1");
-                if (formula_1 != null) formula_1.Value = textBoxes[rowsArray, 0].Text;
-                // Записываем вторую формулу
-                var formula_2 = index.Element("Formula_2");
-                if (formula_2 != null) formula_2.Value = textBoxes[rowsArray, 1].Text;
-                // Записываем третью формулу
-                var formula_3 = index.Element("Formula_3");
-                if (formula_3 != null) formula_3.Value = textBoxes[rowsArray, 2].Text;
-                // Записываем скидку
-                var discont = index.Element("Discont");
-                if (discont != null) discont.Value = textBoxes[rowsArray, 3].Text;
-                // Записываем дату и время
-                DateTime localDate = DateTime.Now;
-                var date = index.Element("Date");
-                if (date != null) date.Value = localDate.ToString();
-                // Записываем в форму дату обновления
-                labels[rowsArray].Text = localDate.ToString();
-
-                // Сохраняем документ
-                xdoc.Save(file);
-            }
-        }
-
+        
         private void ReadExcelFunc(int rowsArray)
         {
             Excel.Application application = Globals.ThisAddIn.GetApplication();
@@ -355,7 +276,18 @@ namespace ExcelMacroAdd.Forms
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            WiterXmlFunc("IEK", (int)RowsToArray.IekLine);
+            int line = (int)RowsToArray.IekLine;
+
+            TextBox[,] textBoxes = ReturnTextBoxArray();
+            Label[] labels = RetupnLabelArray();
+
+            DateTime localDate = DateTime.Now;
+            dataInXml.Value.WriteXml("IEK", textBoxes[line, 0].Text ?? String.Empty,
+                                            textBoxes[line, 1].Text ?? String.Empty,
+                                            textBoxes[line, 2].Text ?? String.Empty,
+                                            textBoxes[line, 3].Text ?? String.Empty,
+                                            localDate.ToString());    
+            labels[line].Text = localDate.ToString();
         }
 
         /// <summary>
@@ -365,7 +297,18 @@ namespace ExcelMacroAdd.Forms
         /// <param name="e"></param>
         private void button4_Click(object sender, EventArgs e)
         {
-            WiterXmlFunc("EKF", (int)RowsToArray.EkfLine);
+            int line = (int)RowsToArray.EkfLine;
+
+            TextBox[,] textBoxes = ReturnTextBoxArray();
+            Label[] labels = RetupnLabelArray();
+
+            DateTime localDate = DateTime.Now;
+            dataInXml.Value.WriteXml("EKF", textBoxes[line, 0].Text ?? String.Empty,
+                                            textBoxes[line, 1].Text ?? String.Empty,
+                                            textBoxes[line, 2].Text ?? String.Empty,
+                                            textBoxes[line, 3].Text ?? String.Empty,
+                                            localDate.ToString());
+            labels[line].Text = localDate.ToString();
         }
 
         /// <summary>
@@ -375,7 +318,18 @@ namespace ExcelMacroAdd.Forms
         /// <param name="e"></param>
         private void button6_Click(object sender, EventArgs e)
         {
-            WiterXmlFunc("DKC", (int)RowsToArray.DkcLine);
+            int line = (int)RowsToArray.DkcLine;
+
+            TextBox[,] textBoxes = ReturnTextBoxArray();
+            Label[] labels = RetupnLabelArray();
+
+            DateTime localDate = DateTime.Now;
+            dataInXml.Value.WriteXml("DKC", textBoxes[line, 0].Text ?? String.Empty,
+                                            textBoxes[line, 1].Text ?? String.Empty,
+                                            textBoxes[line, 2].Text ?? String.Empty,
+                                            textBoxes[line, 3].Text ?? String.Empty,
+                                            localDate.ToString());
+            labels[line].Text = localDate.ToString();
         }
 
         /// <summary>
@@ -385,7 +339,18 @@ namespace ExcelMacroAdd.Forms
         /// <param name="e"></param>
         private void button8_Click(object sender, EventArgs e)
         {
-            WiterXmlFunc("KEAZ", (int)RowsToArray.KeazLine);
+            int line = (int)RowsToArray.KeazLine;
+
+            TextBox[,] textBoxes = ReturnTextBoxArray();
+            Label[] labels = RetupnLabelArray();
+
+            DateTime localDate = DateTime.Now;
+            dataInXml.Value.WriteXml("KEAZ", textBoxes[line, 0].Text ?? String.Empty,
+                                            textBoxes[line, 1].Text ?? String.Empty,
+                                            textBoxes[line, 2].Text ?? String.Empty,
+                                            textBoxes[line, 3].Text ?? String.Empty,
+                                            localDate.ToString());
+            labels[line].Text = localDate.ToString();
         }
 
         /// <summary>
@@ -395,7 +360,18 @@ namespace ExcelMacroAdd.Forms
         /// <param name="e"></param>
         private void button10_Click(object sender, EventArgs e)
         {
-            WiterXmlFunc("DEKraft", (int)RowsToArray.DekraftLine);
+            int line = (int)RowsToArray.DekraftLine;
+
+            TextBox[,] textBoxes = ReturnTextBoxArray();
+            Label[] labels = RetupnLabelArray();
+
+            DateTime localDate = DateTime.Now;
+            dataInXml.Value.WriteXml("DEKraft", textBoxes[line, 0].Text ?? String.Empty,
+                                            textBoxes[line, 1].Text ?? String.Empty,
+                                            textBoxes[line, 2].Text ?? String.Empty,
+                                            textBoxes[line, 3].Text ?? String.Empty,
+                                            localDate.ToString());
+            labels[line].Text = localDate.ToString();
         }
 
         /// <summary>
@@ -405,7 +381,18 @@ namespace ExcelMacroAdd.Forms
         /// <param name="e"></param>
         private void button12_Click(object sender, EventArgs e)
         {
-            WiterXmlFunc("TDM", (int)RowsToArray.TdmLine);
+            int line = (int)RowsToArray.TdmLine;
+
+            TextBox[,] textBoxes = ReturnTextBoxArray();
+            Label[] labels = RetupnLabelArray();
+
+            DateTime localDate = DateTime.Now;
+            dataInXml.Value.WriteXml("TDM", textBoxes[line, 0].Text ?? String.Empty,
+                                            textBoxes[line, 1].Text ?? String.Empty,
+                                            textBoxes[line, 2].Text ?? String.Empty,
+                                            textBoxes[line, 3].Text ?? String.Empty,
+                                            localDate.ToString());
+            labels[line].Text = localDate.ToString();
         }
 
         /// <summary>
@@ -415,7 +402,18 @@ namespace ExcelMacroAdd.Forms
         /// <param name="e"></param>
         private void button14_Click(object sender, EventArgs e)
         {
-            WiterXmlFunc("ABB", (int)RowsToArray.AbbLine);
+            int line = (int)RowsToArray.AbbLine;
+
+            TextBox[,] textBoxes = ReturnTextBoxArray();
+            Label[] labels = RetupnLabelArray();
+
+            DateTime localDate = DateTime.Now;
+            dataInXml.Value.WriteXml("ABB", textBoxes[line, 0].Text ?? String.Empty,
+                                            textBoxes[line, 1].Text ?? String.Empty,
+                                            textBoxes[line, 2].Text ?? String.Empty,
+                                            textBoxes[line, 3].Text ?? String.Empty,
+                                            localDate.ToString());
+            labels[line].Text = localDate.ToString();
         }
 
         /// <summary>
@@ -425,7 +423,18 @@ namespace ExcelMacroAdd.Forms
         /// <param name="e"></param>
         private void button16_Click(object sender, EventArgs e)
         {
-            WiterXmlFunc("Schneider", (int)RowsToArray.SchneiderLine);
+            int line = (int)RowsToArray.SchneiderLine;
+
+            TextBox[,] textBoxes = ReturnTextBoxArray();
+            Label[] labels = RetupnLabelArray();
+
+            DateTime localDate = DateTime.Now;
+            dataInXml.Value.WriteXml("Schneider", textBoxes[line, 0].Text ?? String.Empty,
+                                            textBoxes[line, 1].Text ?? String.Empty,
+                                            textBoxes[line, 2].Text ?? String.Empty,
+                                            textBoxes[line, 3].Text ?? String.Empty,
+                                            localDate.ToString());
+            labels[line].Text = localDate.ToString();
         }
         /// <summary>
         /// Read IEK formula in ExcelSheets

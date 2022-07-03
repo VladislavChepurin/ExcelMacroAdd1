@@ -10,42 +10,46 @@ namespace ExcelMacroAdd.Servises
     public class DataInXml
     {
         // Folders AppData content Settings.xml
-        readonly string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Microsoft\AddIns\ExcelMacroAdd\Settings.xml");
-        public string Vendor { get; set; }  
-             
-        public string ReadFileXml(string element)
-        {   
-            string middle = default;
+        readonly string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Microsoft\AddIns\ExcelMacroAdd\Settings.xml");            
+        public string ReadElementXml(string element, string vendor)
+        {
             try
-            {    
-                XDocument xdoc = XDocument.Load(file);
-                var toDiscont = xdoc.Element("MetaSettings")?   // получаем корневой узел MetaSettings
-                    .Elements("Vendor")                         // получаем все элементы Vendor                               
-                    .Where(p => p.Attribute("vendor")?.Value == Replace.RepleceVendorTable(Vendor))
-                    .Select(p => new                            // для каждого объекта создаем анонимный объект
-                    {
-                        dataXml = p.Element(element)?.Value
-                    });
-
-                if (toDiscont != null)
+            {
+                string result = default;             
+                foreach (var item in from p in ReadFileXml() // передаем каждый элемент из people в переменную p
+                                     where (p.VendorAttribute == Replace.RepleceVendorTable(vendor)) //фильтрация по критерию
+                                     select p) // выбираем объект в создаваемую коллекцию)
                 {
-                    foreach (var data in toDiscont)
+                    switch (element)
                     {
-                        middle = data.dataXml;
+                        case "Formula_1":
+                            result = item.Formula_1;
+                            break;
+                        case "Formula_2":
+                            result = item.Formula_2;
+                            break;
+                        case "Formula_3":
+                            result = item.Formula_3;
+                            break;
+                        case "Discont":
+                            result = item.Discont.ToString();
+                            break;
+                        case "Date":
+                            result = item.Date.ToString();
+                            break;
                     }
                 }
-                return middle ?? String.Empty;
+                return result;
             }
-            catch (Exception)
+
+            catch (ArgumentNullException)
             {
                 return String.Empty;
             }
         }
 
-        public Vendor[] ReadFileXmlNew()
-        {
-            //  throw new Exception("Метод не реализован");
-
+        public Vendor[] ReadFileXml()
+        {      
             XmlAttributes attrs = new XmlAttributes();
             XmlAttributeOverrides xOver = new XmlAttributeOverrides();
             XmlRootAttribute xRoot = new XmlRootAttribute
@@ -55,13 +59,46 @@ namespace ExcelMacroAdd.Servises
             };
             attrs.XmlRoot = xRoot;
             xOver.Add(typeof(Vendor[]), attrs);
-
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(Vendor[]), xOver);
-
-            // десериализуем объект
-            using (FileStream fs = new FileStream("person.xml", FileMode.OpenOrCreate))
+            try 
             {
-              return  xmlSerializer.Deserialize(fs) as Vendor[];                
+                // десериализуем объект
+                using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
+                {
+                    return xmlSerializer.Deserialize(fs) as Vendor[];                  
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                XmlFileCreate();
+                return default;
+            }
+        }
+
+        public void WriteXml(string vendor, params string[] data)
+        {
+            XDocument xdoc = XDocument.Load(file);
+            var index = xdoc.Element("MetaSettings")?.Elements("Vendor").FirstOrDefault(p => p.Attribute("vendor")?.Value == vendor);
+            if (index != null)
+            {
+                // Записываем первую формулу
+                var formula_1 = index.Element("Formula_1");
+                if (formula_1 != null) formula_1.Value = data[0];
+                // Записываем вторую формулу
+                var formula_2 = index.Element("Formula_2");
+                if (formula_2 != null) formula_2.Value = data[1];
+                // Записываем третью формулу
+                var formula_3 = index.Element("Formula_3");
+                if (formula_3 != null) formula_3.Value = data[2];
+                // Записываем скидку
+                var discont = index.Element("Discont");
+                if (discont != null) discont.Value = data[3];
+                // Записываем дату и время
+                DateTime localDate = DateTime.Now;
+                var date = index.Element("Date");
+                if (date != null) date.Value = data[4];        
+                // Сохраняем документ
+                xdoc.Save(file);
             }
         }
 
