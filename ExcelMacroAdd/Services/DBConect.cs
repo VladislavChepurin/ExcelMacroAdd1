@@ -78,14 +78,15 @@ namespace ExcelMacroAdd.Servises
                 string rt = default;
                 // Собираем запрос к БД
                 OleDbCommand command = new OleDbCommand(requestDB, myConnection);
-
-                OleDbDataReader reader = command.ExecuteReader();
-                // Считываем и возвращаем значение их базы данных
-                while (reader.Read())
+                using (OleDbDataReader reader = command.ExecuteReader())
                 {
-                    rt = (reader[colum].ToString());
+                    // Считываем и возвращаем значение их базы данных
+                    while (reader.Read())
+                    {
+                        rt = (reader[colum].ToString());
+                    }
+                    return rt;
                 }
-                return rt;
             }
             catch (OleDbException exception)
             {
@@ -133,21 +134,23 @@ namespace ExcelMacroAdd.Servises
             {
                 DBtable dBtable = new DBtable();
                 OleDbCommand command = new OleDbCommand(dataRead, myConnection);
-                OleDbDataReader reader = command.ExecuteReader();
-                // Чтение из базы данных и поэлементная запись в массив
-                while (reader.Read())
+                using (OleDbDataReader reader = command.ExecuteReader())
                 {
-                    dBtable.IpTable        = reader[1].ToString();
-                    dBtable.HeightTable    = reader[2].ToString();
-                    dBtable.KlimaTable     = reader[3].ToString();
-                    dBtable.ReserveTable   = reader[4].ToString();
-                    dBtable.WidthTable     = reader[5].ToString();
-                    dBtable.DepthTable     = reader[6].ToString();
-                    dBtable.ArticleTable   = reader[7].ToString();
-                    dBtable.ExecutionTable = reader[8].ToString();
-                    dBtable.VendorTable    = reader[9].ToString();
+                    // Чтение из базы данных и поэлементная запись в массив
+                    while (reader.Read())
+                    {
+                        dBtable.IpTable = reader[1].ToString();
+                        dBtable.HeightTable = reader[2].ToString();
+                        dBtable.KlimaTable = reader[3].ToString();
+                        dBtable.ReserveTable = reader[4].ToString();
+                        dBtable.WidthTable = reader[5].ToString();
+                        dBtable.DepthTable = reader[6].ToString();
+                        dBtable.ArticleTable = reader[7].ToString();
+                        dBtable.ExecutionTable = reader[8].ToString();
+                        dBtable.VendorTable = reader[9].ToString();
+                    }
+                    return dBtable;
                 }
-                return dBtable;
             }
             catch (OleDbException exception)
             {                

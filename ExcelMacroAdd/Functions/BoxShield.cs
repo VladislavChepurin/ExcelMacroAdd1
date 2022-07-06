@@ -31,9 +31,10 @@ namespace ExcelMacroAdd.Functions
                     do
                     {
                         string sArticle = Convert.ToString(worksheet.Cells[firstRow, 26].Value2);
-                        string query = "SELECT * FROM base WHERE article = '" + sArticle + "'";
+                        string query = $"SELECT * FROM base WHERE article = '{sArticle}';";
                         //Если не возвращается значение, то этой записи нет
                         //Костыль но работает, прекрасно
+                        //Точно ли необходим этот метод? Или можно обойтись одним ReadSeveralNotesDB.
                         if (dBConect?.ReadOnlyOneNoteDB(query, 1) is null)
                         {
                             worksheet.get_Range("Z" + firstRow).Interior.Color = Excel.XlRgbColor.rgbPaleGoldenrod;

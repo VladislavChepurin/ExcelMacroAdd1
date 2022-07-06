@@ -202,7 +202,7 @@ namespace ExcelMacroAdd.Forms
                         }
 
                         //Путь к папке Рабочего стола                                     
-                        string folderName = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Паспорта " + folderSafe;
+                        string folderName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Паспорта", folderSafe);
                         DirectoryInfo drInfo = new DirectoryInfo(folderName);
                         // Проверяем есть ли папка, если нет создаем
                         if (!drInfo.Exists)
@@ -290,12 +290,13 @@ namespace ExcelMacroAdd.Forms
         private static void Logger(string folder)
         {
             string patch = Path.Combine(folder, "log.txt");
-            StreamWriter output = File.AppendText(patch);
-            output.WriteLine("Версия OC:          " + Environment.OSVersion);
-            output.WriteLine("Имя пользователя:   " + Environment.UserName);
-            output.WriteLine("Имя компьютера:     " + Environment.MachineName);
-            output.WriteLine("--------------------------------------------------------------------------------");
-            output.Close();
+            using (StreamWriter output = File.AppendText(patch))
+            {
+                output.WriteLine("Версия OC:          " + Environment.OSVersion);
+                output.WriteLine("Имя пользователя:   " + Environment.UserName);
+                output.WriteLine("Имя компьютера:     " + Environment.MachineName);
+                output.WriteLine("--------------------------------------------------------------------------------");
+            }
         }
 
         /// <summary>
@@ -307,9 +308,10 @@ namespace ExcelMacroAdd.Forms
         private static void Logger(string folder, string saveNum, int amount)
         {
             string patch = Path.Combine(folder, "log.txt");
-            StreamWriter output = File.AppendText(patch);
-            output.WriteLine("{0} | Паспорт {1} сформирован успешно, в паспорте {2} листа", DateTime.Now, saveNum, amount);
-            output.Close();
+            using (StreamWriter output = File.AppendText(patch))
+            {
+                output.WriteLine($"{DateTime.Now} | Паспорт {saveNum} сформирован успешно, в паспорте {amount} листа");
+            }
         }
 
         private string FuncReplece(string mReplase)                          // Функция замены
