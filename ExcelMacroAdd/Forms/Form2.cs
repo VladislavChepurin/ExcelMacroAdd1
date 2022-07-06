@@ -1,4 +1,5 @@
 ﻿using ExcelMacroAdd.Functions;
+using ExcelMacroAdd.Interfaces;
 using ExcelMacroAdd.Servises;
 using System;
 using System.Drawing;
@@ -30,10 +31,10 @@ namespace ExcelMacroAdd.Forms
         readonly int PolusIndVn = 0;  // Начальная кол-во полюсов выключателей нагрузки
         readonly int VendorIndVn = 0; // Начальный вендор выключателей нагрузки
 
-        private readonly Lazy<DBConect> dBConect;
+        private readonly IDBConect dBConect;
         private readonly Lazy<DataInXml> dataInXml;
 
-        public Form2(Lazy<DBConect> dBConect, Lazy<DataInXml> dataInXml)
+        public Form2(IDBConect dBConect, Lazy<DataInXml> dataInXml)
         {
             this.dBConect = dBConect;
             this.dataInXml = dataInXml;
@@ -152,9 +153,9 @@ namespace ExcelMacroAdd.Forms
                 new Thread(() =>
                 {
                     //Работа с базой данных
-                    dBConect.Value.OpenDB();
+                    dBConect.OpenDB();
 
-                    string getArticle = dBConect.Value.RequestDB(setRequest, 0) ?? "@";
+                    string getArticle = dBConect.ReadOnlyOneNoteDB(setRequest, 0) ?? "@";
 
                     if (getArticle != "@")
                     {
@@ -172,7 +173,7 @@ namespace ExcelMacroAdd.Forms
                             pictures[rowsCheck].BackColor = Color.IndianRed;
                         });
                     }
-                    dBConect.Value.CloseDB();
+                    dBConect.CloseDB();
                 }).Start();
             }
         }
@@ -245,9 +246,8 @@ namespace ExcelMacroAdd.Forms
                     }
 
                     //Работа с базой данных
-                    dBConect.Value.OpenDB();
-
-                    string getArticle = dBConect.Value.RequestDB(setRequest, 0) ?? "@";
+                    dBConect.OpenDB();
+                    string getArticle = dBConect.ReadOnlyOneNoteDB(setRequest, 0) ?? "@";
 
                     if (getArticle != "@")
                     {
@@ -255,7 +255,7 @@ namespace ExcelMacroAdd.Forms
                         WriteExcel writeExcel = new WriteExcel(dataInXml, vendor, rows, getArticle, quantity);
                         writeExcel.Start();                      
                     }
-                    dBConect.Value.CloseDB();
+                    dBConect.CloseDB();
                 }
             } 
         }

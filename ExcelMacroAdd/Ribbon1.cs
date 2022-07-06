@@ -1,5 +1,6 @@
 ﻿using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Functions;
+using ExcelMacroAdd.Services;
 using ExcelMacroAdd.Servises;
 using Microsoft.Office.Tools.Ribbon;
 using System;
@@ -11,9 +12,9 @@ namespace ExcelMacroAdd
     public partial class Ribbon1
     {     
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
-        {
-            Lazy<DBConect> dBConect = new Lazy<DBConect>();         
-            Lazy<DataInXml> dataInXml = new Lazy<DataInXml>();            
+        {             
+            Lazy<DataInXml> dataInXml = new Lazy<DataInXml>();
+            DBConectProxy dBConect = new DBConectProxy(new Lazy<DBConect>());
 
             // Заполнение паспортов
             button1.Click += (s, a) =>

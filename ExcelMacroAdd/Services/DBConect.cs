@@ -1,4 +1,5 @@
-﻿using ExcelMacroAdd.UserVariables;
+﻿using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.UserVariables;
 using System;
 using System.Data.OleDb;
 using System.IO;
@@ -9,7 +10,7 @@ namespace ExcelMacroAdd.Servises
     /// <summary>
     /// Класс доступа к базе данных
     /// </summary>
-    public class DBConect
+    public class DBConect: IDBConect
     {     
         // Переменная подключения к БД - static
         private static OleDbConnection myConnection;
@@ -30,7 +31,7 @@ namespace ExcelMacroAdd.Servises
             PPatch = _pPatch;
         }
 
-        public string PPatch { get; }
+        public string PPatch { get;}
 
         /// <summary>
         /// Отрытие соединения с базой данных
@@ -70,7 +71,7 @@ namespace ExcelMacroAdd.Servises
         /// </summary>
         /// <param name="_requestDB"></param>
         /// <returns></returns>
-        public string RequestDB(string requestDB, int colum)     // Считывание одного значения из базы данных
+        public string ReadOnlyOneNoteDB(string requestDB, int colum)     // Считывание одного значения из базы данных
         {
             try
             {
@@ -95,43 +96,14 @@ namespace ExcelMacroAdd.Servises
             {
                 return default;
             }
-
-        }
-
-        /// <summary>
-        /// Запрашивает наличие записи в базе данных
-        /// </summary>
-        /// <param name="dataRequest"></param>
-        /// <returns></returns>
-        public Boolean CheckReadDB(string dataRequest)
-        {
-            try
-            {
-                OleDbCommand commandRead = new OleDbCommand(dataRequest, myConnection);
-                if (commandRead.ExecuteScalar() == null)
-                {
-                    commandRead.Dispose();
-                    return true;
-                }
-                else
-                {
-                    commandRead.Dispose();
-                    return false;
-                }
-            }
-            catch (OleDbException exception)
-            {
-                Message(exception);
-                return false;
-            }           
-        }
+        }    
 
         /// <summary>
         /// Отправляет запрос в БД без возрращаемого значения (UPDATE)
         /// </summary>
         /// <param name="queryUpdate"></param>
         /// <param name="dataRequest"></param>
-        public void MetodDB(string queryUpdate, string dataRequest)
+        public void UpdateNotesDB(string queryUpdate, string dataRequest)
         {
             try
             {
@@ -155,7 +127,7 @@ namespace ExcelMacroAdd.Servises
         /// </summary>
         /// <param name="dataRead"></param>
         /// <param name="dBtable"></param>
-        public DBtable ReadingDB(string dataRead)
+        public DBtable ReadSeveralNotesDB(string dataRead)
         {
             try
             {

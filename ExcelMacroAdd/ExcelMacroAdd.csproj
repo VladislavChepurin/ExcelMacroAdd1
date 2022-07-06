@@ -192,6 +192,7 @@
     <Compile Include="Forms\AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IDBConect.cs" />
     <Compile Include="Services\DataInXml.cs" />
     <Compile Include="Functions\AddBoxDB.cs" />
     <Compile Include="Functions\BordersTable.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\DBConectProxy.cs" />
     <Compile Include="Services\Replace.cs" />
     <Compile Include="Functions\WriteExcel.cs" />
     <Compile Include="UserVariables\DBtable.cs" />

@@ -1,4 +1,4 @@
-﻿using ExcelMacroAdd.Servises;
+﻿using ExcelMacroAdd.Interfaces;
 using Microsoft.CSharp.RuntimeBinder;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Interop.Word;
@@ -16,9 +16,9 @@ namespace ExcelMacroAdd.Forms
     public partial class Form1 : Form
     {
         Object wordMissing = Missing.Value;
-        private readonly Lazy<DBConect> dBConect;
+        private readonly IDBConect dBConect;
 
-        public Form1(Lazy<DBConect> dBConect)
+        public Form1(IDBConect dBConect)
         {
             this.dBConect = dBConect;
             InitializeComponent();
@@ -43,11 +43,11 @@ namespace ExcelMacroAdd.Forms
             new Thread(() =>
             {
                 // Открываем соединение с базой данных    
-                dBConect.Value.OpenDB();
+                dBConect.OpenDB();
 
                 int progressValue = 0;
 
-                int iHeihgtMax = Convert.ToInt32(dBConect.Value.RequestDB("SELECT * FROM settings WHERE set_name = 'sHeihgtMax';", 2));       // Запрашиваем максимальную высоту навесных шкафов
+                int iHeihgtMax = Convert.ToInt32(dBConect.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sHeihgtMax';", 2));       // Запрашиваем максимальную высоту навесных шкафов
                                                                                                                                         //Инициализируем параметры Word
                 Word.Application applicationWord = new Word.Application();
                 // Переменная объект документа
@@ -82,12 +82,12 @@ namespace ExcelMacroAdd.Forms
                         if (int.TryParse(worksheet.Cells[firstRow, 14].Value2.ToString(), out int result) && result < iHeihgtMax)
                         {
                             // переменная для открытия Word
-                            filename = dBConect.Value.PPatch + dBConect.Value.RequestDB("SELECT * FROM settings WHERE set_name = 'sWall';", 2);
+                            filename = dBConect.PPatch + dBConect.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sWall';", 2);
                         }
                         else
                         {
                             // переменная для открытия Word
-                            filename = dBConect.Value.PPatch + dBConect.Value.RequestDB("SELECT * FROM settings WHERE set_name = 'sFloor';", 2);
+                            filename = dBConect.PPatch + dBConect.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sFloor';", 2);
                         }
                         string numberSave = Convert.ToString(worksheet.Cells[firstRow, 21].Value2);
                         string sTY = Convert.ToString(worksheet.Cells[firstRow, 8].Value2);
@@ -238,7 +238,7 @@ namespace ExcelMacroAdd.Forms
                     });
 
                     // Закрываем соединение с базой данных
-                    dBConect.Value.CloseDB();
+                    dBConect.CloseDB();
                     applicationWord.Quit();
                 }
                 catch (COMException)

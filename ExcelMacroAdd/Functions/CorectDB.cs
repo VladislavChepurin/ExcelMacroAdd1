@@ -1,4 +1,5 @@
-﻿using ExcelMacroAdd.Servises;
+﻿using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.Servises;
 using System;
 using System.Windows.Forms;
 
@@ -7,9 +8,9 @@ namespace ExcelMacroAdd.Functions
     internal class CorectDB : AbstractFunctions
     {
        
-        private readonly Lazy<DBConect> dBConect;
+        private readonly IDBConect dBConect;
 
-        public CorectDB(Lazy<DBConect> dBConect)
+        public CorectDB(IDBConect dBConect)
         {
             this.dBConect = dBConect;
         }
@@ -25,15 +26,16 @@ namespace ExcelMacroAdd.Functions
                 try
                 {
                     // Открываем соединение с базой данных    
-                    dBConect.Value.OpenDB();
+                    dBConect?.OpenDB();
 
-                    if (application.ActiveWorkbook.Name == dBConect.Value.RequestDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2))            // Проверка по имени книги
+                    if (application.ActiveWorkbook.Name == dBConect?.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2))            // Проверка по имени книги
                     {
                         firstRow = cell.Row;                 // Вычисляем верхний элемент
                         sArticle = Convert.ToString(worksheet.Cells[firstRow, 26].Value2);
 
-                        if (!(dBConect.Value.CheckReadDB("SELECT * FROM base WHERE Article = '" + sArticle + "'")))
+                        if (dBConect?.ReadOnlyOneNoteDB($"SELECT * FROM base WHERE Article = '{sArticle}';", 1) != null)
                         {
+                            //Переписать! для этого есть структура DBTable
                             sIP = Convert.ToString(worksheet.Cells[firstRow, 11].Value2);
                             sKlima = Convert.ToString(worksheet.Cells[firstRow, 12].Value2);
                             sReserve = Convert.ToString(worksheet.Cells[firstRow, 13].Value2);
@@ -52,7 +54,7 @@ namespace ExcelMacroAdd.Functions
                                 string data = String.Format($"UPDATE base SET ip = '{sIP}', klima = '{sKlima}', reserve = '{sReserve}', height = '{sHeinght}'" +
                                     $", width = '{sWidth}', depth = '{sDepth}', execution = '{sExecution}' WHERE article = '{sArticle}';");
                                 // Записываем в базу
-                                dBConect.Value.MetodDB(queryUpdate, data);
+                                dBConect?.UpdateNotesDB(queryUpdate, data);
                             }
                             else
                             {
@@ -66,7 +68,7 @@ namespace ExcelMacroAdd.Functions
                                 MessageBoxOptions.DefaultDesktopOnly);
                             }
                             // Закрываем соединение с базой данных
-                            dBConect.Value.CloseDB();
+                            dBConect?.CloseDB();
                         }
                         else
                         {

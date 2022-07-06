@@ -1,4 +1,5 @@
-﻿using ExcelMacroAdd.Servises;
+﻿using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.Servises;
 using System;
 using System.Windows.Forms;
 
@@ -6,9 +7,9 @@ namespace ExcelMacroAdd.Functions
 {
     internal class AddBoxDB : AbstractFunctions
     {
-        private readonly Lazy<DBConect> dBConect;
+        private readonly IDBConect dBConect;
 
-        public AddBoxDB(Lazy<DBConect> dBConect)
+        public AddBoxDB(IDBConect dBConect)
         {
             this.dBConect = dBConect;
         }
@@ -20,15 +21,16 @@ namespace ExcelMacroAdd.Functions
             try
             {
                 // Открываем соединение с базой данных    
-                dBConect.Value.OpenDB();
+                dBConect.OpenDB();
                 // Проверка по имени книги
-                if (application.ActiveWorkbook.Name == dBConect.Value.RequestDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2))
+                if (application.ActiveWorkbook.Name == dBConect.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2))
                 {
                     firstRow = cell.Row;                 // Вычисляем верхний элемент
                     countRow = cell.Rows.Count;          // Вычисляем кол-во выделенных строк
                     endRow = firstRow + countRow;
                     do
                     {
+                        //Переписать! Для этого есть структура DBTable
                         sIP = Convert.ToString(worksheet.Cells[firstRow, 11].Value2);
                         sKlima = Convert.ToString(worksheet.Cells[firstRow, 12].Value2);
                         sReserve = Convert.ToString(worksheet.Cells[firstRow, 13].Value2);
@@ -42,13 +44,13 @@ namespace ExcelMacroAdd.Functions
                         if (sIP != null && sKlima != null && sReserve != null && sHeinght != null
                             && sWidth != null && sDepth != null && sArticle != null && sExecution != null)
                         {
-                            if (dBConect.Value.CheckReadDB("SELECT * FROM base WHERE Article = '" + sArticle + "'"))
+                            if (dBConect.ReadOnlyOneNoteDB($"SELECT * FROM base WHERE Article = '{sArticle}';", 1) is null)
                             {
                                 //Сборка запроса к БД
                                 string commandText = String.Format($"INSERT INTO base (ip, klima, reserve, height, width, depth, article, execution, vendor)" +
                                       $" VALUES ('{sIP}', '{sKlima}', '{sReserve}', '{sHeinght}', '{sWidth}', '{sDepth}', '{sArticle}', '{sExecution}', 'None');");
                                 //Оправка запроса к БД
-                                dBConect.Value.MetodDB("SELECT * FROM base", commandText);
+                                dBConect.UpdateNotesDB("SELECT * FROM base", commandText);
                                 worksheet.get_Range("Z" + firstRow).Interior.ColorIndex = 0;
 
                                 MessageBox.Show(
@@ -90,7 +92,7 @@ namespace ExcelMacroAdd.Functions
                 else
                 {
                     MessageBox.Show(
-                    "Программа работает только в файле " + dBConect.Value.RequestDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2) + "\n Пожайлуста откройте целевую книгу и запустите программу.",
+                    "Программа работает только в файле " + dBConect.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2) + "\n Пожайлуста откройте целевую книгу и запустите программу.",
                     "Ошибка вызова",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information,
@@ -98,7 +100,7 @@ namespace ExcelMacroAdd.Functions
                     MessageBoxOptions.DefaultDesktopOnly);
                 }
                 // Закрываем соединение с базой данных
-                dBConect.Value.CloseDB();
+                dBConect.CloseDB();
             }
             catch (Exception exception)
             {
