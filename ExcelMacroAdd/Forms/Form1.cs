@@ -202,7 +202,7 @@ namespace ExcelMacroAdd.Forms
                         }
 
                         //Путь к папке Рабочего стола                                     
-                        string folderName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Паспорта", folderSafe);
+                        string folderName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Паспорта" + folderSafe);
                         DirectoryInfo drInfo = new DirectoryInfo(folderName);
                         // Проверяем есть ли папка, если нет создаем
                         if (!drInfo.Exists)
