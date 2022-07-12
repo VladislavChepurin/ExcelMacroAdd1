@@ -13,12 +13,12 @@ using Word = Microsoft.Office.Interop.Word;
 
 namespace ExcelMacroAdd.Forms
 {
-    public partial class Form1 : Form
+    internal partial class Form1 : Form
     {
         Object wordMissing = Missing.Value;
         private readonly IDBConect dBConect;
 
-        public Form1(IDBConect dBConect)
+        internal Form1(IDBConect dBConect)
         {
             this.dBConect = dBConect;
             InitializeComponent();
@@ -106,7 +106,7 @@ namespace ExcelMacroAdd.Forms
                         string sSklon = FuncReplece(sZapol ?? String.Empty); // ссылка на метод замены
                         string sIsp = Convert.ToString(worksheet.Cells[firstRow, 27].Value2);
                         string sKorp = Convert.ToString(worksheet.Cells[firstRow, 29].Value2);
-                        string folderSafe = Convert.ToString(worksheet.Cells[firstRow, 1].Value2);
+                        string nameFolderSafe = Convert.ToString(worksheet.Cells[firstRow, 1].Value2);
 
                         //Открываем Word
                         document = applicationWord.Documents.Open(filename, confirmConversions, readOnly, addToRecentFiles, passwordDocument, passwordTemplate,
@@ -202,7 +202,7 @@ namespace ExcelMacroAdd.Forms
                         }
 
                         //Путь к папке Рабочего стола                                     
-                        string folderName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Паспорта " + folderSafe);
+                        string folderName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Паспорта " + nameFolderSafe);
                         DirectoryInfo drInfo = new DirectoryInfo(folderName);
                         // Проверяем есть ли папка, если нет создаем
                         if (!drInfo.Exists)
@@ -211,7 +211,7 @@ namespace ExcelMacroAdd.Forms
                             Logger(folderName);
                         }
 
-                        document.SaveAs(folderName + @"\Паспорт " + numberSave + ".docx");
+                        document.SaveAs($@"{folderName}\Паспорт {numberSave}.docx");
                         //document.ExportAsFixedFormat(folderName + @"\Паспорт " + numberSave + ".pdf", WdExportFormat.wdExportFormatPDF);
 
                         int amountSheet = document.ComputeStatistics(WdStatistic.wdStatisticPages, false);
@@ -225,7 +225,7 @@ namespace ExcelMacroAdd.Forms
                         this.Invoke((MethodInvoker)delegate ()
                         {
                             progressBar1.PerformStep();
-                            label1.Text = "Подождите пожайлуста, идет заполнение паспортов " + ++progressValue + "/" + countRow;
+                            label1.Text = $"Подождите пожайлуста, идет заполнение паспортов {++progressValue}/{countRow}.";
                         });
                     }
                     while (endRow > firstRow);
@@ -279,7 +279,6 @@ namespace ExcelMacroAdd.Forms
 
                     if (applicationWord != null) applicationWord.Quit();
                 }
-
             }).Start();
         }
 

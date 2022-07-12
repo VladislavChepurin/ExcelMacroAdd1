@@ -30,7 +30,6 @@ namespace ExcelMacroAdd.Servises
                     DataTable currency = ds.Tables["Valute"];
                     foreach (DataRow row in currency.Rows)
                     {
-
                         //Поиск доллара
                         if (row["CharCode"].ToString() == "USD")
                         {

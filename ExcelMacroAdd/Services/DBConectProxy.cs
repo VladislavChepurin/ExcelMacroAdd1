@@ -44,11 +44,11 @@ namespace ExcelMacroAdd.Services
 
         public void UpdateNotesDB(string queryUpdate, string dataRequest)
         {
+            _cacheSeveralNotesDB.Clear();
             //обновление записей проксируем напрямую
             _dBConect.Value.UpdateNotesDB(queryUpdate, dataRequest);
         }
-
-        //Коллекция не очищается будет утечка памяти
+      
         public DBtable ReadSeveralNotesDB(string dataRead)
         {
             if (!_cacheSeveralNotesDB.ContainsKey(dataRead))

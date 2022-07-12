@@ -24,10 +24,10 @@ namespace ExcelMacroAdd.Forms
         SchneiderLine
     }
 
-    public partial class Form3 : Form
+    internal partial class Form3 : Form
     {    
         private readonly Lazy<DataInXml> dataInXml;
-        public Form3(Lazy<DataInXml> dataInXml)
+        internal Form3(Lazy<DataInXml> dataInXml)
         {
             InitializeComponent();
             this.dataInXml = dataInXml;

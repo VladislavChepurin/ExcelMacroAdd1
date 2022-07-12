@@ -1,6 +1,6 @@
 ﻿namespace ExcelMacroAdd.UserVariables
 {
-    public struct DBtable
+    internal struct DBtable
     {
         internal string IpTable { get; set; }
         internal string KlimaTable { get; set; }

@@ -19,7 +19,7 @@ namespace ExcelMacroAdd.Forms
         SixthLineArray
     }
 
-    public partial class Form2 : Form
+    internal partial class Form2 : Form
     {
         readonly int CircutIndAvt = 5; // Начальный ток автоматических выключателей
         readonly int KurveIndAvt = 1;  // Начальная кривая автоматических выключателей
@@ -34,7 +34,7 @@ namespace ExcelMacroAdd.Forms
         private readonly IDBConect dBConect;
         private readonly Lazy<DataInXml> dataInXml;
 
-        public Form2(IDBConect dBConect, Lazy<DataInXml> dataInXml)
+        internal Form2(IDBConect dBConect, Lazy<DataInXml> dataInXml)
         {
             this.dBConect = dBConect;
             this.dataInXml = dataInXml;

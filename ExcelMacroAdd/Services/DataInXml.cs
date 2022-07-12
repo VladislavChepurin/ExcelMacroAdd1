@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace ExcelMacroAdd.Servises
 {
-    public class DataInXml
+    internal class DataInXml
     {
         // Folders AppData content Settings.xml
         readonly string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Microsoft\AddIns\ExcelMacroAdd\Settings.xml");            
@@ -16,7 +16,7 @@ namespace ExcelMacroAdd.Servises
             try
             {
                 string result = default;             
-                foreach (var item in from p in ReadFileXml() // передаем каждый элемент из people в переменную p
+                foreach (var item in from p in ReadFileXml() // передаем каждый элемент из item в переменную p
                                      where (p.VendorAttribute == Replace.RepleceVendorTable(vendor)) //фильтрация по критерию
                                      select p) // выбираем объект в создаваемую коллекцию)
                 {
@@ -41,7 +41,6 @@ namespace ExcelMacroAdd.Servises
                 }
                 return result;
             }
-
             catch (ArgumentNullException)
             {
                 return String.Empty;

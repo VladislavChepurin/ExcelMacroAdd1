@@ -10,21 +10,18 @@ namespace ExcelMacroAdd.Servises
     /// <summary>
     /// Класс доступа к базе данных
     /// </summary>
-    public class DBConect: IDBConect
+    internal class DBConect: IDBConect
     {     
         // Переменная подключения к БД - static
         private static OleDbConnection myConnection;
-
         // Путь к базе данных
-#if DEBUG
+//#if DEBUG
         private readonly string _pPatch = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"Прайсы\Макро\");
-#else
-        private readonly string _pPatch = @"\\192.168.100.100\ftp\Info_A\FTP\Производство Абиэлт\Инженеры\"; // Путь к базе данных
-#endif
+//#else
+//        private readonly string _pPatch = @"\\192.168.100.100\ftp\Info_A\FTP\Производство Абиэлт\Инженеры\"; // Путь к базе данных
+//#endif
         private readonly string _sPatch = "BdMacro.accdb";
-
         private readonly string _providerData = "Provider=Microsoft.ACE.OLEDB.16.0; Data Source=";
-
 
         public DBConect()
         {

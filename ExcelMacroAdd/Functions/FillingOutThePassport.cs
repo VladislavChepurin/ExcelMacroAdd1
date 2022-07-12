@@ -18,27 +18,20 @@ namespace ExcelMacroAdd.Functions
 
         public override void Start()
         {
-            dBConect.OpenDB();
-            // Проверка по имени книги
-            if (application.ActiveWorkbook.Name == dBConect.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2))
+            dBConect?.OpenDB();
+            if (application.ActiveWorkbook.Name != dBConect?.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2)) // Проверка по имени книги
             {
-                new Thread(() =>
-                {
-                    Form1 fs = new Form1(dBConect);
-                    fs.ShowDialog();
-                    Thread.Sleep(100);
-                }).Start();
+                MessageWrongNameJournal();
+                dBConect?.CloseDB();
+                return;
             }
-            else
+            new Thread(() =>
             {
-                MessageBox.Show(
-                "Программа работает только в файле " + dBConect.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2) + "\n Пожайлуста откройте целевую книгу и запустите программу.",
-                "Ошибка вызова",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning,
-                MessageBoxDefaultButton.Button1,
-                MessageBoxOptions.DefaultDesktopOnly);
-            }
+                Form1 fs = new Form1(dBConect);
+                fs.ShowDialog();
+                Thread.Sleep(100);
+            }).Start();
+
             dBConect.CloseDB();
         }
     }
