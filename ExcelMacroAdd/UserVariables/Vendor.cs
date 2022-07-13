@@ -6,7 +6,7 @@ namespace ExcelMacroAdd.UserVariables
     [Serializable]
 
     [XmlRoot("MetaSettings")]
-    internal class Vendor
+    public class Vendor
     {
         [XmlAttribute("vendor")]
         public string VendorAttribute { get; set; }
