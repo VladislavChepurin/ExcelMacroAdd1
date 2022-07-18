@@ -6,7 +6,7 @@ namespace ExcelMacroAdd.Functions
 {
     internal class CalculationMarkup : AbstractFunctions
     {
-        public override void Start()
+        protected internal override void Start()
         {
             //Проверяем наличие данных в таблице, A1:H9
             Boolean resultCellNull = true;
@@ -95,13 +95,8 @@ namespace ExcelMacroAdd.Functions
             }
             else
             {
-                MessageBox.Show(
-                "Внимание! На листе есть данные",
-                "Ошибка разметки",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning,
-                MessageBoxDefaultButton.Button1,
-                MessageBoxOptions.DefaultDesktopOnly);
+                MessageWarning("Внимание! На листе есть данные",
+                    "Ошибка разметки");
             }
         }
     }

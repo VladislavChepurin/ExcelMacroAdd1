@@ -118,7 +118,6 @@ namespace ExcelMacroAdd.Forms
 
         #endregion
 
-
         private Label[] RetupnLabelArray()
         {
             Label[] labels = new Label[] { label33, label34, label35, label36, label37, label38, label39, label40 };
@@ -156,7 +155,6 @@ namespace ExcelMacroAdd.Forms
             };
             return textBoxes;
         }
-
         private void Form3_Load(object sender, EventArgs e)
         {
             try
@@ -237,8 +235,7 @@ namespace ExcelMacroAdd.Forms
                 MessageBoxDefaultButton.Button1,
                 MessageBoxOptions.DefaultDesktopOnly);
             }          
-        }
-        
+        }        
         private void ReadExcelFunc(int rowsArray)
         {
             Excel.Application application = Globals.ThisAddIn.GetApplication();

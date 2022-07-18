@@ -40,7 +40,6 @@ namespace ExcelMacroAdd.Forms
             this.dataInXml = dataInXml;
             InitializeComponent();
         }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             //Массивы параметров модульных автоматов
@@ -101,28 +100,20 @@ namespace ExcelMacroAdd.Forms
         private void CheckData(int rowsCheck)
         {
             PictureBox[] pictures = default;
-
             CheckBox[] checks= default;
-
             ComboBox[,] comboBoxes= default;
-
             if (tabControl1.SelectedTab == tabPage1)
             {
                  pictures = PictureBoxesCircutBreak();
-
                  checks = CheckBoxArrayCircutBreak();
-
                  comboBoxes = ComboBoxArrayCircutBreaker();
             }
             else if (tabControl1.SelectedTab == tabPage2)
             {
                 pictures = PictureBoxesSwitch();
-
                 checks = CheckBoxArraySwitch();
-
                 comboBoxes = ComboBoxArraySwitch();
             }
-
             // Если стоит галочка в CheckBox, то условие истина
             if (checks[rowsCheck].Checked)
             {
@@ -185,31 +176,21 @@ namespace ExcelMacroAdd.Forms
         private void button1_Click(object sender, EventArgs e)
         {
             PictureBox[] pictures = default;
-
             CheckBox[] checks = default;
-
             ComboBox[,] comboBoxes = default;
-
             TextBox[] texts  = default;
-
             if (tabControl1.SelectedTab == tabPage1)
             {
                 pictures = PictureBoxesCircutBreak();
-
                 checks = CheckBoxArrayCircutBreak();
-
                 comboBoxes = ComboBoxArrayCircutBreaker();
-
                 texts = TextBoxesArrayCircutBreak();
             }
             else if (tabControl1.SelectedTab == tabPage2)
             {
                 pictures = PictureBoxesSwitch();
-
                 checks = CheckBoxArraySwitch();
-
                 comboBoxes = ComboBoxArraySwitch();
-
                 texts = TextBoxesArraySwitch();
             }
 
@@ -268,43 +249,36 @@ namespace ExcelMacroAdd.Forms
                 Thread.Sleep(5000);
             });
         }
-
         private PictureBox[] PictureBoxesCircutBreak()
         {
             PictureBox[] pictures = new PictureBox[6] { pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6 };
             return pictures;
         }
-
         private PictureBox[] PictureBoxesSwitch()
         {
             PictureBox[] pictures = new PictureBox[6] { pictureBox7, pictureBox8, pictureBox9, pictureBox10, pictureBox11, pictureBox12 };
             return pictures;
         }
-
         private TextBox[] TextBoxesArrayCircutBreak()
         {
             TextBox[] texts = new TextBox[6] { textBox1, textBox2, textBox3, textBox4, textBox5, textBox6 };
             return texts;
         }
-
         private TextBox[] TextBoxesArraySwitch()
         {
             TextBox[] texts = new TextBox[6] { textBox7, textBox8, textBox9, textBox10, textBox11, textBox12 };
             return texts;
         }
-
         private CheckBox[] CheckBoxArrayCircutBreak()
         {
             CheckBox[] checks = new CheckBox[6] { checkBox1, checkBox2, checkBox3, checkBox4, checkBox5, checkBox6 };
             return checks;
         }
-
         private CheckBox[] CheckBoxArraySwitch()
         {
             CheckBox[] checks = new CheckBox[6] { checkBox7, checkBox8, checkBox9, checkBox10, checkBox11, checkBox12 };
             return checks;
         }
-
         private ComboBox[,] ComboBoxArrayCircutBreaker()
         {
             ComboBox[,] comboBoxes = new ComboBox[,]
@@ -330,7 +304,6 @@ namespace ExcelMacroAdd.Forms
             };
             return comboBoxes;
         }
-
         private ComboBox[,] ComboBoxArraySwitch()
         {
             ComboBox[,] comboBoxes = new ComboBox[,]
@@ -356,8 +329,6 @@ namespace ExcelMacroAdd.Forms
             };
             return comboBoxes;
         }
-
-
 
         #region line1_CircutBreak
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -798,7 +769,5 @@ namespace ExcelMacroAdd.Forms
 
 
         #endregion
-
     }
-
 }

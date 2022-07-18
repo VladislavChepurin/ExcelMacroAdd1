@@ -13,12 +13,13 @@ namespace ExcelMacroAdd.Functions
             this.dBConect = dBConect;
         }
 
-        public override void Start()
+        protected internal override void Start()
         {
             dBConect?.OpenDB();
             if (application.ActiveWorkbook.Name != dBConect?.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2)) // Проверка по имени книги
             {
-                MessageWrongNameJournal();
+                MessageWarning("Функция работает только в \"Журнале учета НКУ\" текущего года. \n Пожайлуста откройте необходимую книгу Excel.",
+                     "Имя книги не совпадает с целевой");
                 dBConect?.CloseDB();
                 return;
             }
@@ -58,42 +59,27 @@ namespace ExcelMacroAdd.Functions
                                 $", width = '{sWidth}', depth = '{sDepth}', execution = '{sExecution}' WHERE article = '{sArticle}';";
                             // Записываем в базу
                             dBConect?.UpdateNotesDB(queryUpdate, data);
+                            MessageInformation($"Запись успешно изменена! \nПоздравляем! \nАртикул = {sArticle}",
+                                "Запись успешна!");
                         }
                         else
                         {
-                            MessageBox.Show(
-                            "Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n" +
-                            "Артикул = " + sArticle,
-                            "Ошибка записи",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning,
-                            MessageBoxDefaultButton.Button1,
-                            MessageBoxOptions.DefaultDesktopOnly);
+                            MessageWarning($"Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n Артикул = {sArticle}",
+                                "Ошибка записи");
                         }
                         // Закрываем соединение с базой данных
                         dBConect?.CloseDB();
                     }
                     else
                     {
-                        MessageBox.Show(
-                        "В базе данных такого артикула нет.\n Необходимо сначала его занести. \n" +
-                        "Артикул = " + sArticle,
-                        "Ошибка записи!",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning,
-                        MessageBoxDefaultButton.Button1,
-                        MessageBoxOptions.DefaultDesktopOnly);
+                        MessageWarning($"В базе данных такого артикула нет.\n Необходимо сначала его занести. \nАртикул = {sArticle}",
+                            "Ошибка записи!");
                     }
                 }
                 catch (Exception exception)
                 {
-                    MessageBox.Show(
-                    exception.ToString(),
-                    "Ошибка надстройки",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly);
+                    MessageError(exception.ToString(),
+                        "Ошибка надсройки");
                 }
             }
         }

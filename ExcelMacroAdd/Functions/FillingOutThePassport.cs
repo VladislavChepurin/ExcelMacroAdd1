@@ -1,9 +1,6 @@
 ﻿using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Interfaces;
-using ExcelMacroAdd.Servises;
-using System;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Functions
 {
@@ -16,12 +13,13 @@ namespace ExcelMacroAdd.Functions
             this.dBConect = dBConect;
         }
 
-        public override void Start()
+        protected internal override void Start()
         {
             dBConect?.OpenDB();
             if (application.ActiveWorkbook.Name != dBConect?.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2)) // Проверка по имени книги
             {
-                MessageWrongNameJournal();
+                MessageWarning("Функция работает только в \"Журнале учета НКУ\" текущего года. \n Пожайлуста откройте необходимую книгу Excel.",
+                            "Имя книги не совпадает с целевой");
                 dBConect?.CloseDB();
                 return;
             }

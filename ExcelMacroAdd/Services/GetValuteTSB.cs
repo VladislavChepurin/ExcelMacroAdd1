@@ -56,7 +56,7 @@ namespace ExcelMacroAdd.Servises
                 {
                     ValuteUSDHandler(0.0, 0.0, 0.0);
                 }
-                Thread.Sleep(30000);
+                Thread.Sleep(60000);
             }       
         }    
     }

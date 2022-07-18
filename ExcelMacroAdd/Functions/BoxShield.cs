@@ -1,7 +1,5 @@
 ﻿using ExcelMacroAdd.Interfaces;
-using ExcelMacroAdd.Servises;
 using System;
-using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelMacroAdd.Functions
@@ -14,12 +12,13 @@ namespace ExcelMacroAdd.Functions
             this.dBConect = dBConect;
         }
 
-        public override void Start()
+        protected internal override void Start()
         {
             dBConect?.OpenDB();
             if (application.ActiveWorkbook.Name != dBConect?.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2)) // Проверка по имени книги
             {
-                MessageWrongNameJournal();
+                MessageWarning("Функция работает только в \"Журнале учета НКУ\" текущего года. \n Пожайлуста откройте необходимую книгу Excel.",
+                    "Имя книги не совпадает с целевой");
                 dBConect?.CloseDB();
                 return;
             }
@@ -63,13 +62,8 @@ namespace ExcelMacroAdd.Functions
             }
             catch (Exception exception)
             {
-                MessageBox.Show(
-                exception.ToString(),
-                "Ошибка надстройки",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error,
-                MessageBoxDefaultButton.Button1,
-                MessageBoxOptions.DefaultDesktopOnly);
+                MessageError(exception.ToString(),
+                    "Ошибка надсройки");
             }
         }
     }

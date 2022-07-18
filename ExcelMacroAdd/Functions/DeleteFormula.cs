@@ -4,7 +4,7 @@ namespace ExcelMacroAdd.Functions
 {
     internal class DeleteFormula : AbstractFunctions
     {
-        public override void Start()
+        protected internal override void Start()
         {
             cell.Value = cell.Value;                            //Удаляем формулы
             worksheet.get_Range("A1", Type.Missing).Select();   //Фокус на ячейку А1   

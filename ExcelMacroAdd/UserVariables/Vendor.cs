@@ -4,8 +4,6 @@ using System.Xml.Serialization;
 namespace ExcelMacroAdd.UserVariables
 {
     [Serializable]
-
-    [XmlRoot("MetaSettings")]
     public class Vendor
     {
         [XmlAttribute("vendor")]

@@ -8,8 +8,8 @@ namespace ExcelMacroAdd.Services
 {
     internal class DBConectProxy : IDBConect
     {
-        private IDictionary<string, string> _cacheOnlyOneNoteDB = new Dictionary<string, string>();
-        private IDictionary<string, DBtable> _cacheSeveralNotesDB = new Dictionary<string, DBtable>();
+        private readonly IDictionary<string, string> _cacheOnlyOneNoteDB = new Dictionary<string, string>();
+        private readonly IDictionary<string, DBtable> _cacheSeveralNotesDB = new Dictionary<string, DBtable>();
         private readonly Lazy<DBConect> _dBConect;
 
         public DBConectProxy(Lazy<DBConect> dBConect)

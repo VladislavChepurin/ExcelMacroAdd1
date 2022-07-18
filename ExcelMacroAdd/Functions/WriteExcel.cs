@@ -20,7 +20,7 @@ namespace ExcelMacroAdd.Functions
             this.quantity = quantity;
         }
 
-        public override void Start()
+        protected internal override void Start()
         {         
             int endRow = default;          
             //Вычисляем столбец на который установлен фокус

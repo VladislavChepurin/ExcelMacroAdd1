@@ -1,7 +1,5 @@
 ﻿using ExcelMacroAdd.Interfaces;
-using ExcelMacroAdd.Servises;
 using System;
-using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Functions
 {
@@ -13,13 +11,13 @@ namespace ExcelMacroAdd.Functions
         {
             this.dBConect = dBConect;
         }
-
-        public override void Start()
+        protected internal override void Start()
         {
             dBConect?.OpenDB();
             if (application.ActiveWorkbook.Name != dBConect?.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sJornal';", 2)) // Проверка по имени книги
             {
-                MessageWrongNameJournal();
+                MessageWarning("Функция работает только в \"Журнале учета НКУ\" текущего года. \n Пожайлуста откройте необходимую книгу Excel.",
+                    "Имя книги не совпадает с целевой");
                 dBConect?.CloseDB();
                 return;
             }
@@ -50,43 +48,24 @@ namespace ExcelMacroAdd.Functions
                         if (dBConect.ReadOnlyOneNoteDB($"SELECT * FROM base WHERE Article = '{sArticle}';", 1) is null)
                         {
                             //Сборка запроса к БД
-                            string commandText = String.Format($"INSERT INTO base (ip, klima, reserve, height, width, depth, article, execution, vendor)" +
-                                  $" VALUES ('{sIP}', '{sKlima}', '{sReserve}', '{sHeinght}', '{sWidth}', '{sDepth}', '{sArticle}', '{sExecution}', 'None');");
+                            string commandText = $"INSERT INTO base (ip, klima, reserve, height, width, depth, article, execution, vendor)" +
+                                  $" VALUES ('{sIP}', '{sKlima}', '{sReserve}', '{sHeinght}', '{sWidth}', '{sDepth}', '{sArticle}', '{sExecution}', 'None');";
                             //Оправка запроса к БД
                             dBConect.UpdateNotesDB("SELECT * FROM base", commandText);
                             worksheet.get_Range("Z" + firstRow).Interior.ColorIndex = 0;
-
-                            MessageBox.Show(
-                            "Успешно записано в базу данных. Теперь доступна новая запись. \n Поздравляем!  \n" +
-                            "Артикул = " + sArticle,
-                            "Запись успешна!",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information,
-                            MessageBoxDefaultButton.Button1,
-                            MessageBoxOptions.DefaultDesktopOnly);
+                            MessageInformation($"Успешно записано в базу данных. Теперь доступна новая запись.\n Поздравляем! \nАртикул = {sArticle}",
+                                "Запись успешна!");
                         }
                         else
-                        {
-                            MessageBox.Show(
-                            "В базе данных уже есть такой артикул.\n Создавать новую запись не нужно. \n" +
-                            "Артикул = " + sArticle,
-                            "Ошибка записи!",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information,
-                            MessageBoxDefaultButton.Button1,
-                            MessageBoxOptions.DefaultDesktopOnly);
+                        { 
+                            MessageWarning($"В базе данных уже есть такой артикул.\n Создавать новую запись не нужно. \nАртикул = {sArticle}",
+                                "Ошибка записи!");
                         }
                     }
                     else
                     {
-                        MessageBox.Show(
-                        "Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n" +
-                        "Артикул = " + sArticle,
-                        "Ошибка записи",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information,
-                        MessageBoxDefaultButton.Button1,
-                        MessageBoxOptions.DefaultDesktopOnly);
+                        MessageWarning($"Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \nАртикул = {sArticle}",
+                            "Ошибка записи!");
                     }
                     firstRow++;
                 }
@@ -95,13 +74,8 @@ namespace ExcelMacroAdd.Functions
             }
             catch (Exception exception)
             {
-                MessageBox.Show(
-                exception.ToString(),
-                "Ошибка надсройки",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information,
-                MessageBoxDefaultButton.Button1,
-                MessageBoxOptions.DefaultDesktopOnly);
+                MessageError(exception.ToString(),
+                    "Ошибка надсройки");
             }
         }
     }

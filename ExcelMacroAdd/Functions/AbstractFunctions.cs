@@ -9,14 +9,34 @@ namespace ExcelMacroAdd.Functions
         protected readonly Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
         protected readonly Range cell = Globals.ThisAddIn.GetActiveCell();
         protected readonly Workbook workBook = Globals.ThisAddIn.GetActiveWorkBook();
-        public abstract void Start();
-        public void MessageWrongNameJournal()
+        protected internal abstract void Start();
+
+        protected internal void MessageInformation(string textMessage, string textAtribute)
         {
-            MessageBox.Show(
-                "Функция работает только в \"Журнале учета НКУ\" текущего года. \n Пожайлуста откройте необходимую книгу Excel.",
-                "Имя книги не совпадает с целевой",
+            MessageBox.Show(textMessage,
+                textAtribute,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information,
+                MessageBoxDefaultButton.Button1,
+                MessageBoxOptions.DefaultDesktopOnly);
+        }
+
+        protected internal void MessageWarning(string textMessage, string textAtribute)
+        {
+            MessageBox.Show(textMessage,
+                textAtribute,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button1,
+                MessageBoxOptions.DefaultDesktopOnly);
+        }
+
+        protected internal void MessageError(string textMessage, string textAtribute)
+        {
+            MessageBox.Show(textMessage,
+                textAtribute,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error,
                 MessageBoxDefaultButton.Button1,
                 MessageBoxOptions.DefaultDesktopOnly);
         }

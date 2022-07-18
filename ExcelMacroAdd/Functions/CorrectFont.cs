@@ -2,7 +2,7 @@
 {
     internal class CorrectFont : AbstractFunctions
     {
-        public override void Start()
+        protected internal override void Start()
         {
             var excelcells = application.Selection;
             excelcells.Font.Name = "Calibri";
