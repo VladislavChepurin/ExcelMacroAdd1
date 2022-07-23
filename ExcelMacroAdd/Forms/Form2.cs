@@ -32,9 +32,9 @@ namespace ExcelMacroAdd.Forms
         readonly int VendorIndVn = 0; // Начальный вендор выключателей нагрузки
 
         private readonly IDBConect dBConect;
-        private readonly Lazy<DataInXml> dataInXml;
+        private readonly IDataInXml dataInXml;
 
-        internal Form2(IDBConect dBConect, Lazy<DataInXml> dataInXml)
+        internal Form2(IDBConect dBConect, IDataInXml dataInXml)
         {
             this.dBConect = dBConect;
             this.dataInXml = dataInXml;

@@ -1,4 +1,5 @@
-﻿using ExcelMacroAdd.UserVariables;
+﻿using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.UserVariables;
 using System;
 using System.IO;
 using System.Linq;
@@ -7,43 +8,19 @@ using System.Xml.Serialization;
 
 namespace ExcelMacroAdd.Servises
 {
-    internal class DataInXml
+    internal class DataInXml: IDataInXml
     {
         // Folders AppData content Settings.xml
         readonly string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Microsoft\AddIns\ExcelMacroAdd\Settings.xml");            
-        public string ReadElementXml(string element, string vendor)
+        public Vendor ReadElementXml(string vendor)
         {
             try
-            {
-                string result = default;             
-                foreach (var item in from p in ReadFileXml() // передаем каждый элемент из item в переменную p
-                                     where (p.VendorAttribute == Replace.RepleceVendorTable(vendor)) //фильтрация по критерию
-                                     select p) // выбираем объект в создаваемую коллекцию)
-                {
-                    switch (element)
-                    {
-                        case "Formula_1":
-                            result = item.Formula_1;
-                            break;
-                        case "Formula_2":
-                            result = item.Formula_2;
-                            break;
-                        case "Formula_3":
-                            result = item.Formula_3;
-                            break;
-                        case "Discont":
-                            result = item.Discont.ToString();
-                            break;
-                        case "Date":
-                            result = item.Date.ToString();
-                            break;
-                    }
-                }
-                return result;
+            {               
+                return ReadFileXml().Where(p => p.VendorAttribute == Replace.RepleceVendorTable(vendor)).Last();
             }
             catch (ArgumentNullException)
             {
-                return String.Empty;
+                return null;
             }
         }
 

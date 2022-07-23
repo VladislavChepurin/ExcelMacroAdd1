@@ -1,5 +1,6 @@
 ﻿using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Functions;
+using ExcelMacroAdd.ProxyObjects;
 using ExcelMacroAdd.Services;
 using ExcelMacroAdd.Servises;
 using Microsoft.Office.Tools.Ribbon;
@@ -13,7 +14,7 @@ namespace ExcelMacroAdd
     {     
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {             
-            Lazy<DataInXml> dataInXml = new Lazy<DataInXml>();
+            DataInXmlProxy dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());
             DBConectProxy dBConect = new DBConectProxy(new Lazy<DBConect>());
 
             // Заполнение паспортов

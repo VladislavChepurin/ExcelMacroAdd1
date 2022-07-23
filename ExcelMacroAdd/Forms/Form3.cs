@@ -1,11 +1,9 @@
-﻿using ExcelMacroAdd.Servises;
+﻿using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.Servises;
 using ExcelMacroAdd.UserVariables;
 using Microsoft.Office.Interop.Excel;
 using System;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
-using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 using Label = System.Windows.Forms.Label;
 using TextBox = System.Windows.Forms.TextBox;
@@ -26,8 +24,8 @@ namespace ExcelMacroAdd.Forms
 
     internal partial class Form3 : Form
     {    
-        private readonly Lazy<DataInXml> dataInXml;
-        internal Form3(Lazy<DataInXml> dataInXml)
+        private readonly IDataInXml dataInXml;
+        internal Form3(IDataInXml dataInXml)
         {
             InitializeComponent();
             this.dataInXml = dataInXml;
@@ -159,7 +157,7 @@ namespace ExcelMacroAdd.Forms
         {
             try
             { // Загружаем в форму файл Settings.xml
-                foreach (Vendor vendor in dataInXml.Value.ReadFileXml())
+                foreach (Vendor vendor in dataInXml.ReadFileXml())
                 {
                     switch (vendor.VendorAttribute)
                     {
@@ -279,7 +277,7 @@ namespace ExcelMacroAdd.Forms
             Label[] labels = RetupnLabelArray();
 
             DateTime localDate = DateTime.Now;
-            dataInXml.Value.WriteXml("IEK", textBoxes[line, 0].Text ?? String.Empty,
+            dataInXml.WriteXml("IEK", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
@@ -300,7 +298,7 @@ namespace ExcelMacroAdd.Forms
             Label[] labels = RetupnLabelArray();
 
             DateTime localDate = DateTime.Now;
-            dataInXml.Value.WriteXml("EKF", textBoxes[line, 0].Text ?? String.Empty,
+            dataInXml.WriteXml("EKF", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
@@ -321,7 +319,7 @@ namespace ExcelMacroAdd.Forms
             Label[] labels = RetupnLabelArray();
 
             DateTime localDate = DateTime.Now;
-            dataInXml.Value.WriteXml("DKC", textBoxes[line, 0].Text ?? String.Empty,
+            dataInXml.WriteXml("DKC", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
@@ -342,7 +340,7 @@ namespace ExcelMacroAdd.Forms
             Label[] labels = RetupnLabelArray();
 
             DateTime localDate = DateTime.Now;
-            dataInXml.Value.WriteXml("KEAZ", textBoxes[line, 0].Text ?? String.Empty,
+            dataInXml.WriteXml("KEAZ", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
@@ -363,7 +361,7 @@ namespace ExcelMacroAdd.Forms
             Label[] labels = RetupnLabelArray();
 
             DateTime localDate = DateTime.Now;
-            dataInXml.Value.WriteXml("DEKraft", textBoxes[line, 0].Text ?? String.Empty,
+            dataInXml.WriteXml("DEKraft", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
@@ -384,7 +382,7 @@ namespace ExcelMacroAdd.Forms
             Label[] labels = RetupnLabelArray();
 
             DateTime localDate = DateTime.Now;
-            dataInXml.Value.WriteXml("TDM", textBoxes[line, 0].Text ?? String.Empty,
+            dataInXml.WriteXml("TDM", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
@@ -405,7 +403,7 @@ namespace ExcelMacroAdd.Forms
             Label[] labels = RetupnLabelArray();
 
             DateTime localDate = DateTime.Now;
-            dataInXml.Value.WriteXml("ABB", textBoxes[line, 0].Text ?? String.Empty,
+            dataInXml.WriteXml("ABB", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
@@ -426,7 +424,7 @@ namespace ExcelMacroAdd.Forms
             Label[] labels = RetupnLabelArray();
 
             DateTime localDate = DateTime.Now;
-            dataInXml.Value.WriteXml("Schneider", textBoxes[line, 0].Text ?? String.Empty,
+            dataInXml.WriteXml("Schneider", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
