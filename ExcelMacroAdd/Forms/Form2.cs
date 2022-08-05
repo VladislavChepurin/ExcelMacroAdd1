@@ -31,6 +31,8 @@ namespace ExcelMacroAdd.Forms
         readonly int PolusIndVn = 0;  // Начальная кол-во полюсов выключателей нагрузки
         readonly int VendorIndVn = 0; // Начальный вендор выключателей нагрузки
 
+        Mutex mutexObj = new Mutex();
+
         private readonly IDBConect dBConect;
         private readonly IDataInXml dataInXml;
 
@@ -143,6 +145,7 @@ namespace ExcelMacroAdd.Forms
                 //Обращение к БД в новом потоке, что бы не тормозил интерфейс
                 new Thread(() =>
                 {
+                    mutexObj.WaitOne();     // приостанавливаем поток до получения мьютекса
                     //Работа с базой данных
                     dBConect.OpenDB();
 
@@ -165,6 +168,7 @@ namespace ExcelMacroAdd.Forms
                         });
                     }
                     dBConect.CloseDB();
+                    mutexObj.ReleaseMutex();    // освобождаем мьютекс
                 }).Start();
             }
         }
@@ -174,21 +178,18 @@ namespace ExcelMacroAdd.Forms
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
-        {
-            PictureBox[] pictures = default;
+        {        
             CheckBox[] checks = default;
             ComboBox[,] comboBoxes = default;
             TextBox[] texts  = default;
             if (tabControl1.SelectedTab == tabPage1)
             {
-                pictures = PictureBoxesCircutBreak();
                 checks = CheckBoxArrayCircutBreak();
                 comboBoxes = ComboBoxArrayCircutBreaker();
                 texts = TextBoxesArrayCircutBreak();
             }
             else if (tabControl1.SelectedTab == tabPage2)
             {
-                pictures = PictureBoxesSwitch();
                 checks = CheckBoxArraySwitch();
                 comboBoxes = ComboBoxArraySwitch();
                 texts = TextBoxesArraySwitch();
@@ -769,5 +770,60 @@ namespace ExcelMacroAdd.Forms
 
 
         #endregion
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            var comboBoxes = ComboBoxArrayCircutBreaker();
+            for (int i = 1; i < 5; i++)
+            {
+                comboBoxes[1, i].SelectedIndex = comboBoxes[0, i].SelectedIndex;
+                comboBoxes[2, i].SelectedIndex = comboBoxes[0, i].SelectedIndex;
+                comboBoxes[3, i].SelectedIndex = comboBoxes[0, i].SelectedIndex;
+                comboBoxes[4, i].SelectedIndex = comboBoxes[0, i].SelectedIndex;
+                comboBoxes[5, i].SelectedIndex = comboBoxes[0, i].SelectedIndex;
+            } 
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            var comboBoxes = ComboBoxArrayCircutBreaker();
+            for (int i = 1; i < 5; i++)
+            {             
+                comboBoxes[2, i].SelectedIndex = comboBoxes[1, i].SelectedIndex;
+                comboBoxes[3, i].SelectedIndex = comboBoxes[1, i].SelectedIndex;
+                comboBoxes[4, i].SelectedIndex = comboBoxes[1, i].SelectedIndex;
+                comboBoxes[5, i].SelectedIndex = comboBoxes[1, i].SelectedIndex;
+            }        
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            var comboBoxes = ComboBoxArrayCircutBreaker();
+            for (int i = 1; i < 5; i++)
+            {
+                comboBoxes[3, i].SelectedIndex = comboBoxes[2, i].SelectedIndex;
+                comboBoxes[4, i].SelectedIndex = comboBoxes[2, i].SelectedIndex;
+                comboBoxes[5, i].SelectedIndex = comboBoxes[2, i].SelectedIndex;
+            }
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            var comboBoxes = ComboBoxArrayCircutBreaker();
+            for (int i = 1; i < 5; i++)
+            {
+                comboBoxes[4, i].SelectedIndex = comboBoxes[3, i].SelectedIndex;
+                comboBoxes[5, i].SelectedIndex = comboBoxes[3, i].SelectedIndex;
+            }
+        }
+
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+            var comboBoxes = ComboBoxArrayCircutBreaker();
+            for (int i = 1; i < 5; i++)
+            {
+                comboBoxes[5, i].SelectedIndex = comboBoxes[4, i].SelectedIndex;
+            }
+        }
     }
 }
