@@ -17,11 +17,11 @@ namespace ExcelMacroAdd.ProxyObjects
             _dataXml = dataXml;
         }
 
-        public Vendor ReadElementXml(string vendor)
+        public Vendor ReadElementXml(string vendor, Vendor[] dataXmlContinue)
         {
             if (!_cacheSeveralXmlrecords.ContainsKey(vendor))
             {
-                var value = _dataXml.Value.ReadElementXml(vendor);
+                var value = _dataXml.Value.ReadElementXml(vendor, _dataXml.Value.ReadFileXml());
                 _cacheSeveralXmlrecords.Add(vendor, value);
                 return value;
             }

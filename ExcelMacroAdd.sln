@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelMacroAdd", "ExcelMacroAdd\ExcelMacroAdd.csproj", "{C02824CF-DD45-4ACC-BE8A-ABF0DBE546F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExelMacroAdd.Tests", "ExelMacroAdd.Tests\ExelMacroAdd.Tests.csproj", "{ED2F89E9-BE78-44AD-B550-DE229A1A624E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C02824CF-DD45-4ACC-BE8A-ABF0DBE546F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C02824CF-DD45-4ACC-BE8A-ABF0DBE546F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C02824CF-DD45-4ACC-BE8A-ABF0DBE546F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED2F89E9-BE78-44AD-B550-DE229A1A624E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED2F89E9-BE78-44AD-B550-DE229A1A624E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED2F89E9-BE78-44AD-B550-DE229A1A624E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED2F89E9-BE78-44AD-B550-DE229A1A624E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

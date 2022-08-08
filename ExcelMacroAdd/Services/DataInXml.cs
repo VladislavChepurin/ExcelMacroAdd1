@@ -8,15 +8,15 @@ using System.Xml.Serialization;
 
 namespace ExcelMacroAdd.Servises
 {
-    internal class DataInXml: IDataInXml
+    public class DataInXml: IDataInXml
     {
         // Folders AppData content Settings.xml
-        readonly string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Microsoft\AddIns\ExcelMacroAdd\Settings.xml");            
-        public Vendor ReadElementXml(string vendor)
+        readonly string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Microsoft\AddIns\ExcelMacroAdd\Settings.xml");
+        public Vendor ReadElementXml(string vendor, Vendor[] dataXmlContinue)
         {
             try
             {               
-                return ReadFileXml().Where(p => p.VendorAttribute == Replace.RepleceVendorTable(vendor)).Last();
+                return dataXmlContinue.Where(p => p.VendorAttribute == vendor).Single();
             }
             catch (ArgumentNullException)
             {
@@ -36,6 +36,7 @@ namespace ExcelMacroAdd.Servises
             attrs.XmlRoot = xRoot;
             xOver.Add(typeof(Vendor[]), attrs);
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(Vendor[]), xOver);
+
             try 
             {
                 // десериализуем объект

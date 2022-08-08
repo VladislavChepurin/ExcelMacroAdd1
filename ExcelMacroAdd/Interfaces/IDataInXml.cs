@@ -2,9 +2,9 @@
 
 namespace ExcelMacroAdd.Interfaces
 {
-    interface IDataInXml
+    public interface IDataInXml
     {
-        Vendor ReadElementXml(string vendor);
+        Vendor ReadElementXml(string vendor, Vendor[] dataXmlContinue);
         Vendor[] ReadFileXml();
         void WriteXml(string vendor, params string[] data);
         void XmlFileCreate();

@@ -45,7 +45,7 @@ namespace ExcelMacroAdd.Functions
                  * =ВПР(A{0};'C:\Users\..
                  * Функция String.Format подставляет вместо {0} числовое значение firstRow
                 */
-                var objectVendor = dataInXml.ReadElementXml(vendor);
+                var objectVendor = dataInXml.ReadElementXml(vendor, dataInXml.ReadFileXml());
                 worksheet.get_Range("B" + firstRow).FormulaLocal = String.Format(objectVendor.Formula_1, firstRow);    //Столбец "Описание". Вызывает формулу Formula_1            
                 if (!(quantity == 0)) worksheet.get_Range("C" + firstRow).Value2 = quantity;
                 worksheet.get_Range("D" + firstRow).FormulaLocal = String.Format(objectVendor.Formula_2, firstRow);    //Столбец "Кратность". Вызывает формулу Formula_2

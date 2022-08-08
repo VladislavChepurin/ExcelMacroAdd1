@@ -643,131 +643,90 @@ namespace ExcelMacroAdd.Forms
         #endregion
 
         #region KeyPress
-
+        
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
-                e.Handled = true;
-            }
+            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace        
+                e.Handled = true;         
         }
-
+        
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-
             if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
                 e.Handled = true;
-            }
         }
 
         private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-
             if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
                 e.Handled = true;
-            }
         }
 
         private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-
             if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
                 e.Handled = true;
-            }
         }
 
         private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-
             if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
                 e.Handled = true;
-            }
         }
 
         private void textBox6_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-
             if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
                 e.Handled = true;
-            }
         }
                             
         private void textBox7_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-
             if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
                 e.Handled = true;
-            }
         }
 
         private void textBox8_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-
             if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
                 e.Handled = true;
-            }
         }
 
         private void textBox9_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-
             if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
                 e.Handled = true;
-            }
         }
 
         private void textBox10_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-
             if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
                 e.Handled = true;
-            }
         }
 
         private void textBox11_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-
             if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
                 e.Handled = true;
-            }
         }
 
         private void textBox12_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-
             if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
                 e.Handled = true;
-            }
         }
-
-
-
-
-
 
         #endregion
 

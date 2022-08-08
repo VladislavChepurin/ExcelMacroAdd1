@@ -8,8 +8,7 @@
         /// <param name="mReplase"></param>
         /// <returns></returns>
         public static string RepleceVendorTable(string mReplase)                          // Функция замены // индус заплачит от умиления IEK ВА47 - кирилица, IEK BA47М - латиница Переписать!!!
-        {
-            //Функция несет двойную задачу, это неправильно.
+        {        
             return mReplase.Replace("IEK ВА47", "IEK").Replace("IEK BA47М", "IEK").Replace("EKF PROxima", "EKF").Replace("EKF AVERS", "EKF").Replace("Schneider", "SE").Replace("IEK Armat", "IEK");
         }
         /// <summary>
