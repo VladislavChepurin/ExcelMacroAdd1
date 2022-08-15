@@ -14,14 +14,7 @@ namespace ExcelMacroAdd.Servises
         readonly string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Microsoft\AddIns\ExcelMacroAdd\Settings.xml");
         public Vendor ReadElementXml(string vendor, Vendor[] dataXmlContinue)
         {
-            try
-            {               
-                return dataXmlContinue.Where(p => p.VendorAttribute == vendor).Single();
-            }
-            catch (ArgumentNullException)
-            {
-                return null;
-            }
+            return dataXmlContinue.Where(p => p.VendorAttribute == Replace.RepleceVendorTable(vendor)).Single();
         }
 
         public Vendor[] ReadFileXml()

@@ -11,24 +11,21 @@ namespace ExcelMacroAdd.Servises
     /// Класс доступа к базе данных
     /// </summary>
     internal class DBConect: IDBConect
-    {     
+    {
+        private static DBConect Connection;
         // Переменная подключения к БД - static
         private static OleDbConnection myConnection;
         // Путь к базе данных
-#if DEBUG
-        private readonly string _pPatch = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"Прайсы\Макро\");
-#else
-        private readonly string _pPatch = @"\\192.168.100.100\ftp\Info_A\FTP\Производство Абиэлт\Инженеры\"; // Путь к базе данных
-#endif
-        private readonly string _sPatch = "BdMacro.accdb";
-        private readonly string _providerData = "Provider=Microsoft.ACE.OLEDB.16.0; Data Source=";
-
-        public DBConect()
+        public string PPatch { get; private set; }
+        public string SPatch { get; private set; }
+        public string ProviderData { get; private set; }
+  
+        public DBConect(string pPatch, string sPatch, string providerData)
         {
-            PPatch = _pPatch;
-        }
-
-        public string PPatch { get;}
+            PPatch = pPatch;
+            SPatch = sPatch;
+            ProviderData = providerData;
+        }              
 
         /// <summary>
         /// Отрытие соединения с базой данных
@@ -37,7 +34,7 @@ namespace ExcelMacroAdd.Servises
         {
             try
             {
-                myConnection = new OleDbConnection(_providerData + Path.Combine(_pPatch, _sPatch) + ";");
+                myConnection = new OleDbConnection(ProviderData + Path.Combine(PPatch, SPatch) + ";");
                 // открываем соединение с БД
                 myConnection.Open();
             }
@@ -45,7 +42,7 @@ namespace ExcelMacroAdd.Servises
             {
                 MessageBox.Show(
                 "База данных не найдена, убедитесь в наличии файла базы данных и сетевого подключения. " +
-                "Файл " + Path.Combine(_pPatch, _sPatch).ToString() + " не найден в предпологаемом местонахождении.",
+                "Файл " + Path.Combine(PPatch, SPatch).ToString() + " не найден в предпологаемом местонахождении.",
                 "Ошибка базы данных",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error,
@@ -169,6 +166,13 @@ namespace ExcelMacroAdd.Servises
             MessageBoxIcon.Error,
             MessageBoxDefaultButton.Button1,
             MessageBoxOptions.DefaultDesktopOnly);
+        }
+
+        internal static DBConect GetConnectionInstance(string pPatch, string sPatch, string providerData)
+        {
+            if (Connection == null)
+                Connection = new DBConect(pPatch, sPatch, providerData);
+            return Connection;
         }
     }
 }
