@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 namespace ExcelMacroAdd.UserVariables
 {
     [Serializable]
-    public class VendorIEK : ICurrentVendor
+    public class VendorSE : ICurrentVendor
     {
         [XmlAttribute("vendor")]
         public string VendorAttribute { get; set; }
@@ -25,9 +25,9 @@ namespace ExcelMacroAdd.UserVariables
         [XmlElement("Date")]
         public string Date { get; set; }
 
-        public VendorIEK() { }
+        public VendorSE() { }
 
-        public VendorIEK(string vendorAttribute, string formula_1, string formula_2, string formula_3, int discont, string date)
+        public VendorSE(string vendorAttribute, string formula_1, string formula_2, string formula_3, int discont, string date)
         {
             VendorAttribute = vendorAttribute;
             Formula_1 = formula_1;

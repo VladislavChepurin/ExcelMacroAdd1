@@ -192,6 +192,7 @@
     <Compile Include="Forms\AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\ICurrentVendor.cs" />
     <Compile Include="Interfaces\IDataInXml.cs" />
     <Compile Include="Interfaces\IDBConect.cs" />
     <Compile Include="ProxyObjects\DataInXmlProxy.cs" />
@@ -236,7 +237,14 @@
     <Compile Include="Functions\WriteExcel.cs" />
     <Compile Include="UserVariables\DBtable.cs" />
     <Compile Include="UserVariables\Vendor.cs" />
+    <Compile Include="UserVariables\VendorABB.cs" />
+    <Compile Include="UserVariables\VendorDEK.cs" />
+    <Compile Include="UserVariables\VendorDKC.cs" />
+    <Compile Include="UserVariables\VendorEKF.cs" />
     <Compile Include="UserVariables\VendorIEK.cs" />
+    <Compile Include="UserVariables\VendorKEAZ.cs" />
+    <Compile Include="UserVariables\VendorSE.cs" />
+    <Compile Include="UserVariables\VendorTDM.cs" />
     <EmbeddedResource Include="Forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>
