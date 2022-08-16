@@ -236,6 +236,7 @@
     <Compile Include="Functions\WriteExcel.cs" />
     <Compile Include="UserVariables\DBtable.cs" />
     <Compile Include="UserVariables\Vendor.cs" />
+    <Compile Include="UserVariables\VendorIEK.cs" />
     <EmbeddedResource Include="Forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>
