@@ -17,7 +17,7 @@ namespace ExcelMacroAdd.ProxyObjects
             _dataXml = dataXml;
         }
 
-        public ICurrentVendor ReadElementXml(string vendor, Vendor[] dataXmlContinue)
+        public Vendor ReadElementXml(string vendor, Vendor[] dataXmlContinue)
         {
             if (!_cacheSeveralXmlrecords.ContainsKey(vendor))
             {

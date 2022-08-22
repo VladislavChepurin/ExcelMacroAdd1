@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ExcelMacroAdd
 {
-    public partial class Ribbon1
+    public partial class MainRibbon
     {
         // Путь к базе данных
 #if DEBUG
@@ -24,8 +24,7 @@ namespace ExcelMacroAdd
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {             
-            DataInXmlProxy dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());
-            // DBConectProxy dBConect = new DBConectProxy(new Lazy<DBConect>());
+            DataInXmlProxy dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());           
             DBConectProxy dBConect = new DBConectProxy(DBConect.GetConnectionInstance(_pPatch, _sPatch, _providerData));
 
             // Заполнение паспортов
