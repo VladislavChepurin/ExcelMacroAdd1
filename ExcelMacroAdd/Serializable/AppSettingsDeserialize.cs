@@ -1,26 +1,24 @@
-﻿using ExcelMacroAdd.Serializable;
-using System;
+﻿using System.Diagnostics;
 using System.IO;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Threading.Tasks;
+//using System.Text.Encodings.Web;
+//using System.Text.Json;
 
-namespace Searilizator
+namespace ExcelMacroAdd.Serializable
 {
-    /// <summary>
-    /// Вспомогательная программа для создания JSON файла
-    /// Она не участвует в работе основной программы.
-    /// </summary>
-    internal class Program
+    public class AppSettingsDeserialize
     {
-        static void Main(string[] args)
-        {           
-            MainAsync().GetAwaiter().GetResult();
-        }
+        private readonly string _jsonPatch;
 
-        private static async Task MainAsync()
+        public AppSettingsDeserialize(string jsonPatch)
         {
-           /* string[] circuitBreakerCurrent = new string[19] { "1", "2", "3", "4", "5", "6", "8", "10", "13", "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
+            _jsonPatch = jsonPatch;
+        }
+            
+        public void GetSettingsModels()
+        {           
+      
+
+            string[] circuitBreakerCurrent = new string[19] { "1", "2", "3", "4", "5", "6", "8", "10", "13", "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
             string[] circuitBreakerCurve = new string[6] { "B", "C", "D", "K", "L", "Z" };
             string[] maxCircuitBreakerCurrent = new string[4] { "4,5", "6", "10", "15" };
             string[] amountOfPolesCircuitBreaker = new string[6] { "1", "2", "3", "4", "1N", "3N" };
@@ -38,29 +36,31 @@ namespace Searilizator
             string nameFileDB = "BdMacro.accdb";
             string realseDirectoryDB = @"\\192.168.100.100\ftp\Info_A\FTP\Производство Абиэлт\Инженеры\";
             string debugDirectoryDB = @"Прайсы\Макро\";
-            StringResourcesMainRibbon stringResourcesMainRibbon = new StringResourcesMainRibbon(providerData, nameFileDB, realseDirectoryDB, debugDirectoryDB);            
 
+            StringResourcesMainRibbon stringResourcesMainRibbon = new StringResourcesMainRibbon(providerData, nameFileDB, realseDirectoryDB, debugDirectoryDB);
             AppSettings appSettings = new AppSettings(stringResourcesForm2, stringResourcesMainRibbon);
+                 
+            //JsonSerializerOptions options = new JsonSerializerOptions()
+            //{
+            //    WriteIndented = true, //добавляем пробелы для красоты
+            //    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping //не экранируем символы в строках
+            //};
 
-            JsonSerializerOptions options = new JsonSerializerOptions()
+            //using (FileStream fs = new FileStream("appSettings.json", FileMode.OpenOrCreate))
+            //{
+            //    await JsonSerializer.SerializeAsync<AppSettings>(fs, appSettings, options);
+            //    // Console.WriteLine("Data has been saved to file");
+            //}
+
+            Debug.Print("");
+
+            /*
+            using (FileStream fs = new FileStream(_jsonPatch, FileMode.OpenOrCreate))
             {
-                WriteIndented = true, //добавляем пробелы для красоты
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping //не экранируем символы в строках
-            };
-
-            using (FileStream fs = new FileStream("appSettings.json", FileMode.OpenOrCreate))
-            {
-                await JsonSerializer.SerializeAsync<AppSettings>(fs, appSettings, options);
-                Console.WriteLine("Data has been saved to file");
-            }*/
-
-            using (FileStream fs = new FileStream("appSettings.json", FileMode.OpenOrCreate))
-            {
-                AppSettings deserialize = await JsonSerializer.DeserializeAsync<AppSettings>(fs);
-                Console.WriteLine(deserialize.StringResourcesMainRibbon.ProviderData);
-            }
-
-            Console.ReadKey();
+                var deserialize = JsonSerializer.Deserialize<AppSettings>(fs);
+                Debug.Print("");
+              //  return deserialize;
+            }  */
         }
     }
 }

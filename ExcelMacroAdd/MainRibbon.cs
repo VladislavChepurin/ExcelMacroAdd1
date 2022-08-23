@@ -1,6 +1,7 @@
 ﻿using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.ProxyObjects;
+using ExcelMacroAdd.Serializable;
 using ExcelMacroAdd.Services;
 using ExcelMacroAdd.Servises;
 using Microsoft.Office.Tools.Ribbon;
@@ -13,18 +14,36 @@ namespace ExcelMacroAdd
 {
     public partial class MainRibbon
     {
+
+        
         // Путь к базе данных
 #if DEBUG
         private readonly string _pPatch = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"Прайсы\Макро\");
 #else
         private readonly string _pPatch = @"\\192.168.100.100\ftp\Info_A\FTP\Производство Абиэлт\Инженеры\"; // Путь к базе данных
 #endif
+     
         private readonly string _sPatch = "BdMacro.accdb";
         private readonly string _providerData = "Provider=Microsoft.ACE.OLEDB.16.0; Data Source=";
-
+           
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
-        {             
-            DataInXmlProxy dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());           
+        {
+            AppSettingsDeserialize app= new AppSettingsDeserialize(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Microsoft\AddIns\ExcelMacroAdd\appSettings.json"));
+            
+            app.GetSettingsModels();
+
+            /*
+
+#if DEBUG
+            string pPatch = appSettings.StringResourcesMainRibbon.DebugDirectoryDB;
+#else
+            string pPatch = appSettings.StringResourcesMainRibbon.RealseDirectoryDB;
+#endif
+            string sPatch = appSettings.StringResourcesMainRibbon.NameFileDB;
+            string providerData = appSettings.StringResourcesMainRibbon.ProviderData;
+            */
+            
+            DataInXmlProxy dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());       
             DBConectProxy dBConect = new DBConectProxy(DBConect.GetConnectionInstance(_pPatch, _sPatch, _providerData));
 
             // Заполнение паспортов
