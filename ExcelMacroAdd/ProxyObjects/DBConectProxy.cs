@@ -14,12 +14,8 @@ namespace ExcelMacroAdd.Services
         public DBConectProxy(DBConect dBConect)
         {
             _dBConect = dBConect;
-        }
-               
-        public string PPatch => _dBConect.PPatch;
-        public string SPatch => _dBConect.SPatch;
-        public string ProviderData => _dBConect.ProviderData;
-
+        }              
+       
         public void OpenDB()
         {
             //Проксируем подключение
@@ -43,11 +39,11 @@ namespace ExcelMacroAdd.Services
             return _cacheOnlyOneNoteDB[requestDB];
         }
 
-        public void UpdateNotesDB(string queryUpdate, string dataRequest)
+        public void UpdateNotesDB(string dataRequest)
         {
             _cacheSeveralNotesDB.Clear();
             //обновление записей проксируем напрямую
-            _dBConect.UpdateNotesDB(queryUpdate, dataRequest);
+            _dBConect.UpdateNotesDB(dataRequest);
         }
       
         public DBtable ReadSeveralNotesDB(string dataRead)

@@ -17,9 +17,12 @@ namespace ExcelMacroAdd.Forms
     {
         Object wordMissing = Missing.Value;
         private readonly IDBConect dBConect;
+        private readonly IResourcesForm1 resources;
+        private readonly string PPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
 
-        internal Form1(IDBConect dBConect)
+        internal Form1(IDBConect dBConect, IResourcesForm1 resources)
         {
+            this.resources = resources;
             this.dBConect = dBConect;
             InitializeComponent();
         }
@@ -41,13 +44,8 @@ namespace ExcelMacroAdd.Forms
             progressBar1.Step = 1;
 
             new Thread(() =>
-            {
-                // Открываем соединение с базой данных    
-                dBConect.OpenDB();
-
-                int progressValue = 0;
-
-                int iHeihgtMax = Convert.ToInt32(dBConect.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sHeihgtMax';", 2));       // Запрашиваем максимальную высоту навесных шкафов
+            {     
+                int progressValue = 0;               
                                                                                                                                         //Инициализируем параметры Word
                 Word.Application applicationWord = new Word.Application();
                 // Переменная объект документа
@@ -74,20 +72,22 @@ namespace ExcelMacroAdd.Forms
 
                 try
                 {
+                    // Открываем соединение с базой данных    
+                    dBConect.OpenDB();
                     // Цикл переборки строк
                     do
                     {
                         Object filename;
                         // Преобразование типов для определения формата сохранения 
-                        if (int.TryParse(worksheet.Cells[firstRow, 14].Value2.ToString(), out int result) && result < iHeihgtMax)
+                        if (int.TryParse(worksheet.Cells[firstRow, 14].Value2.ToString(), out int result) && result < resources.HeihgtMaxBox)
                         {
                             // переменная для открытия Word
-                            filename = dBConect.PPatch + dBConect.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sWall';", 2);
+                            filename = Path.Combine(PPath, resources.TempleteWall);
                         }
                         else
                         {
                             // переменная для открытия Word
-                            filename = dBConect.PPatch + dBConect.ReadOnlyOneNoteDB("SELECT * FROM settings WHERE set_name = 'sFloor';", 2);
+                            filename = Path.Combine(PPath, resources.TempleteFloor);
                         }
                         string numberSave = Convert.ToString(worksheet.Cells[firstRow, 21].Value2);
                         string sTY = Convert.ToString(worksheet.Cells[firstRow, 8].Value2);
@@ -211,8 +211,7 @@ namespace ExcelMacroAdd.Forms
                             Logger(folderName);
                         }
 
-                        document.SaveAs($@"{folderName}\Паспорт {numberSave}.docx");
-                        //document.ExportAsFixedFormat(folderName + @"\Паспорт " + numberSave + ".pdf", WdExportFormat.wdExportFormatPDF);
+                        document.SaveAs($@"{folderName}\Паспорт {numberSave}.docx");                        
 
                         int amountSheet = document.ComputeStatistics(WdStatistic.wdStatisticPages, false);
                         // Вызов логгера
@@ -251,9 +250,8 @@ namespace ExcelMacroAdd.Forms
                     MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.DefaultDesktopOnly);
 
-                    if (applicationWord != null) applicationWord.Quit();
+                    if (!(applicationWord is null)) applicationWord.Quit();
                 }
-
                 catch (RuntimeBinderException)
                 {
                     MessageBox.Show(
@@ -264,9 +262,8 @@ namespace ExcelMacroAdd.Forms
                     MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.DefaultDesktopOnly);
 
-                    if (applicationWord != null) applicationWord.Quit();
+                    if (!(applicationWord is null)) applicationWord.Quit();
                 }
-
                 catch (Exception exception)
                 {
                     MessageBox.Show(
@@ -277,7 +274,7 @@ namespace ExcelMacroAdd.Forms
                     MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.DefaultDesktopOnly);
 
-                    if (applicationWord != null) applicationWord.Quit();
+                    if (!(applicationWord is null)) applicationWord.Quit();
                 }
             }).Start();
         }

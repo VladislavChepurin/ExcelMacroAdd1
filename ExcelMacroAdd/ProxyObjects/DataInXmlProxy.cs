@@ -22,7 +22,7 @@ namespace ExcelMacroAdd.ProxyObjects
             if (!_cacheSeveralXmlrecords.ContainsKey(vendor))
             {
                 var value = _dataXml.Value.ReadElementXml(vendor, _dataXml.Value.ReadFileXml());
-                _cacheSeveralXmlrecords.Add(vendor, value);
+                _cacheSeveralXmlrecords.Add(vendor, (Vendor)value);
                 return value;
             }
             return _cacheSeveralXmlrecords[vendor];

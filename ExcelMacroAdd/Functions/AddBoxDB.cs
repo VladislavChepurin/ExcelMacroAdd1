@@ -51,7 +51,7 @@ namespace ExcelMacroAdd.Functions
                             string commandText = $"INSERT INTO base (ip, klima, reserve, height, width, depth, article, execution, vendor)" +
                                   $" VALUES ('{sIP}', '{sKlima}', '{sReserve}', '{sHeinght}', '{sWidth}', '{sDepth}', '{sArticle}', '{sExecution}', 'None');";
                             //Оправка запроса к БД
-                            dBConect.UpdateNotesDB("SELECT * FROM base", commandText);
+                            dBConect.UpdateNotesDB(commandText);
                             worksheet.get_Range("Z" + firstRow).Interior.ColorIndex = 0;
                             MessageInformation($"Успешно записано в базу данных. Теперь доступна новая запись.\n Поздравляем! \nАртикул = {sArticle}",
                                 "Запись успешна!");
