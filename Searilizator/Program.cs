@@ -1,8 +1,8 @@
 ﻿using ExcelMacroAdd.Serializable;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Text.Encodings.Web;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Searilizator
@@ -12,15 +12,10 @@ namespace Searilizator
     /// Она не участвует в работе основной программы.
     /// </summary>
     internal class Program
-    {
+    {  
         static void Main(string[] args)
-        {           
-            MainAsync().GetAwaiter().GetResult();
-        }
-
-        private static async Task MainAsync()
         {
-           /* string[] circuitBreakerCurrent = new string[19] { "1", "2", "3", "4", "5", "6", "8", "10", "13", "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
+            string[] circuitBreakerCurrent = new string[19] { "1", "2", "3", "4", "5", "6", "8", "10", "13", "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
             string[] circuitBreakerCurve = new string[6] { "B", "C", "D", "K", "L", "Z" };
             string[] maxCircuitBreakerCurrent = new string[4] { "4,5", "6", "10", "15" };
             string[] amountOfPolesCircuitBreaker = new string[6] { "1", "2", "3", "4", "1N", "3N" };
@@ -29,38 +24,36 @@ namespace Searilizator
             string[] loadSwitchCurrent = new string[10] { "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
             string[] amountOfPolesLoadSwitch = new string[4] { "1", "2", "3", "4" };
             string[] loadSwitchVendor = new string[8] { "IEK", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DEKraft", "Schneider", "TDM" };
-            StringResourcesForm2 stringResourcesForm2 = new StringResourcesForm2(circuitBreakerCurrent, circuitBreakerCurve,
+            ResourcesForm2 resourcesForm2 = new ResourcesForm2(circuitBreakerCurrent, circuitBreakerCurve,
                                                                                  maxCircuitBreakerCurrent, amountOfPolesCircuitBreaker,
                                                                                  circuitBreakerVendor, loadSwitchCurrent,
                                                                                  amountOfPolesLoadSwitch, loadSwitchVendor);
 
             string providerData = "Provider=Microsoft.ACE.OLEDB.16.0; Data Source=";
             string nameFileDB = "BdMacro.accdb";
-            string realseDirectoryDB = @"\\192.168.100.100\ftp\Info_A\FTP\Производство Абиэлт\Инженеры\";
-            string debugDirectoryDB = @"Прайсы\Макро\";
-            StringResourcesMainRibbon stringResourcesMainRibbon = new StringResourcesMainRibbon(providerData, nameFileDB, realseDirectoryDB, debugDirectoryDB);            
+            int heihgtMaxBox = 1500;
 
-            AppSettings appSettings = new AppSettings(stringResourcesForm2, stringResourcesMainRibbon);
+            string templeteWall = "Паспорт_навесные.docx";
+            string templeteFloor = "Паспорт_напольные.docx";
 
-            JsonSerializerOptions options = new JsonSerializerOptions()
+            ResourcesDBConect resourcesDBConect = new ResourcesDBConect(providerData, nameFileDB);
+            ResourcesForm1 resourcesForm1 = new ResourcesForm1(heihgtMaxBox, templeteWall, templeteFloor);
+
+            AppSettings appSettings = new AppSettings( resourcesForm1, resourcesForm2, resourcesDBConect);
+
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Converters.Add(new JavaScriptDateTimeConverter());
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+
+            using (StreamWriter sw = new StreamWriter("appSettings.json"))
             {
-                WriteIndented = true, //добавляем пробелы для красоты
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping //не экранируем символы в строках
-            };
-
-            using (FileStream fs = new FileStream("appSettings.json", FileMode.OpenOrCreate))
-            {
-                await JsonSerializer.SerializeAsync<AppSettings>(fs, appSettings, options);
-                Console.WriteLine("Data has been saved to file");
-            }*/
-
-            using (FileStream fs = new FileStream("appSettings.json", FileMode.OpenOrCreate))
-            {
-                AppSettings deserialize = await JsonSerializer.DeserializeAsync<AppSettings>(fs);
-                Console.WriteLine(deserialize.StringResourcesMainRibbon.ProviderData);
-            }
+                using (JsonWriter writer = new JsonTextWriter(sw) { Formatting = Formatting.Indented })
+                {
+                    serializer.Serialize(writer, appSettings);
+                }
+            }              
 
             Console.ReadKey();
-        }
+        }       
     }
 }

@@ -6,10 +6,12 @@ namespace ExcelMacroAdd.Functions
 {
     internal class FillingOutThePassport : AbstractFunctions
     {
-        private IDBConect dBConect;
+        private readonly IDBConect dBConect;
+        private readonly IResourcesForm1 resources;
 
-        public FillingOutThePassport(IDBConect dBConect)
+        public FillingOutThePassport(IDBConect dBConect, IResourcesForm1 resources)
         {
+            this.resources = resources;
             this.dBConect = dBConect;
         }
 
@@ -25,7 +27,7 @@ namespace ExcelMacroAdd.Functions
             }
             new Thread(() =>
             {
-                Form1 fs = new Form1(dBConect);
+                Form1 fs = new Form1(dBConect, resources);
                 fs.ShowDialog();
                 Thread.Sleep(100);
             }).Start();

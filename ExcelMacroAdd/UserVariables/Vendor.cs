@@ -1,11 +1,10 @@
-﻿using ExcelMacroAdd.Interfaces;
-using System;
+﻿using System;
 using System.Xml.Serialization;
 
 namespace ExcelMacroAdd.UserVariables
 {
     [Serializable]
-    public class Vendor : ICurrentVendor
+    public class Vendor
     {
         [XmlAttribute("vendor")]
         public string VendorAttribute { get; set; }

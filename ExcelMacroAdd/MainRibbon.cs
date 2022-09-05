@@ -14,42 +14,23 @@ namespace ExcelMacroAdd
 {
     public partial class MainRibbon
     {
+        private readonly string _jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appSettings.json");         
 
-        
-        // Путь к базе данных
-#if DEBUG
-        private readonly string _pPatch = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"Прайсы\Макро\");
-#else
-        private readonly string _pPatch = @"\\192.168.100.100\ftp\Info_A\FTP\Производство Абиэлт\Инженеры\"; // Путь к базе данных
-#endif
-     
-        private readonly string _sPatch = "BdMacro.accdb";
-        private readonly string _providerData = "Provider=Microsoft.ACE.OLEDB.16.0; Data Source=";
-           
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {
-            AppSettingsDeserialize app= new AppSettingsDeserialize(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Microsoft\AddIns\ExcelMacroAdd\appSettings.json"));
-            
-            app.GetSettingsModels();
+            AppSettingsDeserialize app= new AppSettingsDeserialize(_jsonFilePath);       
+            var settings = app.GetSettingsModels();
+            var resourcesForm1 = settings.ResourcesForm1;
+            var resourcesForm2 = settings.ResourcesForm2;
+            var resourcesDBConect = settings.ResourcesDBConect;
 
-            /*
-
-#if DEBUG
-            string pPatch = appSettings.StringResourcesMainRibbon.DebugDirectoryDB;
-#else
-            string pPatch = appSettings.StringResourcesMainRibbon.RealseDirectoryDB;
-#endif
-            string sPatch = appSettings.StringResourcesMainRibbon.NameFileDB;
-            string providerData = appSettings.StringResourcesMainRibbon.ProviderData;
-            */
-            
-            DataInXmlProxy dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());       
-            DBConectProxy dBConect = new DBConectProxy(DBConect.GetConnectionInstance(_pPatch, _sPatch, _providerData));
+            DataInXmlProxy dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());          
+            DBConectProxy dBConect = new DBConectProxy(DBConect.GetConnectionInstance(resourcesDBConect));
 
             // Заполнение паспортов
             button1.Click += (s, a) =>
             {
-                FillingOutThePassport fillingOutThePassport = new FillingOutThePassport(dBConect);
+                FillingOutThePassport fillingOutThePassport = new FillingOutThePassport(dBConect, resourcesForm1);
                 fillingOutThePassport.Start();
             };
 
@@ -142,7 +123,7 @@ namespace ExcelMacroAdd
             {
                 await Task.Run(() =>
                 {
-                    Form2 fs = new Form2(dBConect, dataInXml);
+                    Form2 fs = new Form2(dBConect, dataInXml, resourcesForm2);
                     fs.ShowDialog();
                     Thread.Sleep(5000);
                 });
@@ -179,7 +160,7 @@ namespace ExcelMacroAdd
                 //Thread.Sleep(100);
             }).Start();          
         }
-            
+        
         private void ShowValitePrice(double usdValute, double evroValute, double cnhValute)
         {
             this.label1.Label = "Доллар = " + usdValute;

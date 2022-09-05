@@ -5,13 +5,15 @@ namespace ExcelMacroAdd.Serializable
     [Serializable]
     public class AppSettings
     {
-        public StringResourcesForm2 StringResourcesForm2 { get; set; }
-        public StringResourcesMainRibbon StringResourcesMainRibbon { get; set; }
+        public ResourcesForm1 ResourcesForm1 { get; set; }
+        public ResourcesForm2 ResourcesForm2 { get; set; }
+        public ResourcesDBConect ResourcesDBConect { get; set; }
 
-        public AppSettings(StringResourcesForm2 stringResourcesForm2, StringResourcesMainRibbon stringResourcesMainRibbon)
+        public AppSettings(ResourcesForm1 resourcesForm1, ResourcesForm2 resourcesForm2, ResourcesDBConect resourcesDBConect)
         {
-            StringResourcesForm2 = stringResourcesForm2;
-            StringResourcesMainRibbon = stringResourcesMainRibbon;
+            ResourcesForm1 = resourcesForm1;
+            ResourcesForm2 = resourcesForm2;
+            ResourcesDBConect = resourcesDBConect;          
         }
     }
 }

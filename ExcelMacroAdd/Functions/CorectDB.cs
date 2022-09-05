@@ -52,13 +52,12 @@ namespace ExcelMacroAdd.Functions
                         // Если хоть одно поле не заполнено, то записи в базу нет
                         if (sIP != null && sKlima != null && sReserve != null && sHeinght != null
                             && sWidth != null && sDepth != null && sArticle != null && sExecution != null)
-                        {
-                            string queryUpdate = "SELECT * FROM base";
+                        {                          
                             // Собираем запрос к БД   
                             string data = $"UPDATE base SET ip = '{sIP}', klima = '{sKlima}', reserve = '{sReserve}', height = '{sHeinght}'" +
                                 $", width = '{sWidth}', depth = '{sDepth}', execution = '{sExecution}' WHERE article = '{sArticle}';";
                             // Записываем в базу
-                            dBConect?.UpdateNotesDB(queryUpdate, data);
+                            dBConect?.UpdateNotesDB(data);
                             MessageInformation($"Запись успешно изменена! \nПоздравляем! \nАртикул = {sArticle}",
                                 "Запись успешна!");
                         }

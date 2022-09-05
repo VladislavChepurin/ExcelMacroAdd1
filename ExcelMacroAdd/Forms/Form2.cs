@@ -35,25 +35,27 @@ namespace ExcelMacroAdd.Forms
 
         private readonly IDBConect dBConect;
         private readonly IDataInXml dataInXml;
+        private readonly IResourcesForm2 resources;
 
-        internal Form2(IDBConect dBConect, IDataInXml dataInXml)
+        internal Form2(IDBConect dBConect, IDataInXml dataInXml, IResourcesForm2 resources)
         {
             this.dBConect = dBConect;
             this.dataInXml = dataInXml;
+            this.resources = resources;
             InitializeComponent();
         }
         private void Form1_Load(object sender, EventArgs e)
         {
             //Массивы параметров модульных автоматов
-            string[] circuitBreakerCurrent = new string[19] { "1", "2", "3", "4", "5", "6", "8", "10", "13", "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
-            string[] circuitBreakerCurve = new string[6] { "B", "C", "D", "K", "L", "Z" };
-            string[] maxCircuitBreakerCurrent = new string[4] { "4,5", "6", "10", "15" };
-            string[] amountOfPolesCircuitBreaker = new string[6] { "1", "2", "3", "4", "1N", "3N"};
-            string[] circuitBreakerVendor = new string[11] { "IEK ВА47", "IEK BA47М", "IEK Armat", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DKC", "DEKraft", "Schneider", "TDM" };
+            string[] circuitBreakerCurrent = resources.CircuitBreakerCurrent;
+            string[] circuitBreakerCurve = resources.CircuitBreakerCurve;
+            string[] maxCircuitBreakerCurrent = resources.MaxCircuitBreakerCurrent;
+            string[] amountOfPolesCircuitBreaker = resources.AmountOfPolesCircuitBreaker;
+            string[] circuitBreakerVendor = resources.CircuitBreakerVendor;
             //Массивы параметров выключателей нагрузки
-            string[] loadSwitchCurrent = new string[10] { "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
-            string[] amountOfPolesLoadSwitch = new string[4] { "1", "2", "3", "4" };
-            string[] loadSwitchVendor = new string[8] { "IEK", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DEKraft", "Schneider", "TDM" };
+            string[] loadSwitchCurrent = resources.LoadSwitchCurrent;
+            string[] amountOfPolesLoadSwitch = resources.AmountOfPolesLoadSwitch;
+            string[] loadSwitchVendor = resources.LoadSwitchVendor;
 
             //Создание массивов ComboBox для автоматических выключателей
             ComboBox[] comboBoxItCircut = new ComboBox[6] { comboBox5, comboBox10, comboBox15, comboBox20, comboBox25, comboBox30 };
@@ -147,6 +149,9 @@ namespace ExcelMacroAdd.Forms
                 {
                     mutexObj.WaitOne();     // приостанавливаем поток до получения мьютекса
                     //Работа с базой данных
+
+
+
                     dBConect.OpenDB();
 
                     string getArticle = dBConect.ReadOnlyOneNoteDB(setRequest, 0) ?? "@";

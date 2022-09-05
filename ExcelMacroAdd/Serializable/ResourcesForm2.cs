@@ -1,9 +1,10 @@
-﻿using System;
+﻿using ExcelMacroAdd.Interfaces;
+using System;
 
 namespace ExcelMacroAdd.Serializable
 {
     [Serializable]
-    public class StringResourcesForm2
+    public class ResourcesForm2 : IResourcesForm2
     {
         public string[] CircuitBreakerCurrent { get; set;}
         public string[] CircuitBreakerCurve { get; set; }
@@ -14,7 +15,7 @@ namespace ExcelMacroAdd.Serializable
         public string[] AmountOfPolesLoadSwitch { get; set; }
         public string[] LoadSwitchVendor { get; set; }
 
-        public StringResourcesForm2(string[] circuitBreakerCurrent, string[] circuitBreakerCurve, string[] maxCircuitBreakerCurrent, string[] amountOfPolesCircuitBreaker,
+        public ResourcesForm2(string[] circuitBreakerCurrent, string[] circuitBreakerCurve, string[] maxCircuitBreakerCurrent, string[] amountOfPolesCircuitBreaker,
                                     string[] circuitBreakerVendor, string[] loadSwitchCurrent, string[] amountOfPolesLoadSwitch, string[] loadSwitchVendor)
         {
             CircuitBreakerCurrent = circuitBreakerCurrent;

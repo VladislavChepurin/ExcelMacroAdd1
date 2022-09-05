@@ -6,7 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Servises
-{   
+{
     /// <summary>
     /// Класс доступа к базе данных
     /// </summary>
@@ -16,15 +16,13 @@ namespace ExcelMacroAdd.Servises
         // Переменная подключения к БД - static
         private static OleDbConnection myConnection;
         // Путь к базе данных
-        public string PPatch { get; private set; }
-        public string SPatch { get; private set; }
-        public string ProviderData { get; private set; }
-  
-        public DBConect(string pPatch, string sPatch, string providerData)
+
+        private readonly string PPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");     
+        private readonly IResourcesDBConect resources;
+
+        public DBConect(IResourcesDBConect resources)
         {
-            PPatch = pPatch;
-            SPatch = sPatch;
-            ProviderData = providerData;
+            this.resources = resources;    
         }              
 
         /// <summary>
@@ -34,7 +32,7 @@ namespace ExcelMacroAdd.Servises
         {
             try
             {
-                myConnection = new OleDbConnection(ProviderData + Path.Combine(PPatch, SPatch) + ";");
+                myConnection = new OleDbConnection(resources.ProviderData + Path.Combine(PPath, resources.NameFileDB) + ";");
                 // открываем соединение с БД
                 myConnection.Open();
             }
@@ -42,7 +40,7 @@ namespace ExcelMacroAdd.Servises
             {
                 MessageBox.Show(
                 "База данных не найдена, убедитесь в наличии файла базы данных и сетевого подключения. " +
-                "Файл " + Path.Combine(PPatch, SPatch).ToString() + " не найден в предпологаемом местонахождении.",
+                "Файл " + Path.Combine(PPath, resources.NameFileDB).ToString() + " не найден в предпологаемом местонахождении.",
                 "Ошибка базы данных",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error,
@@ -94,29 +92,32 @@ namespace ExcelMacroAdd.Servises
         }    
 
         /// <summary>
-        /// Отправляет запрос в БД без возрращаемого значения (UPDATE)
+        /// Отправляет запрос в БД без возрращаемого значения Запись/обновление
         /// </summary>
-        /// <param name="queryUpdate"></param>
         /// <param name="dataRequest"></param>
-        public void UpdateNotesDB(string queryUpdate, string dataRequest)
+        public void UpdateNotesDB(string dataRequest)
         {
             try
             {
-                OleDbCommand commandUpdate = new OleDbCommand(queryUpdate, myConnection)
+
+
+
+                using (OleDbCommand commandUpdate = new OleDbCommand(dataRequest, myConnection))
                 {
-                    Connection = myConnection,
-                    // Строка запроса SQL
-                    CommandText = dataRequest
-                };
-                commandUpdate.ExecuteNonQuery();
-                // Освобождаем процессы
-                commandUpdate.Dispose();
+                    commandUpdate.ExecuteNonQuery();
+                }   
+                
+
+
+
+
             }
             catch (OleDbException exception)
             {
                 Message(exception);
             }     
         }
+
         /// <summary>
         /// Пишет в структуру передан по референсной ссылке данные из базы данных
         /// </summary>
@@ -167,11 +168,11 @@ namespace ExcelMacroAdd.Servises
             MessageBoxDefaultButton.Button1,
             MessageBoxOptions.DefaultDesktopOnly);
         }
-
-        internal static DBConect GetConnectionInstance(string pPatch, string sPatch, string providerData)
+        
+        internal static DBConect GetConnectionInstance(IResourcesDBConect resourcesDB)
         {
             if (Connection == null)
-                Connection = new DBConect(pPatch, sPatch, providerData);
+                Connection = new DBConect(resourcesDB);
             return Connection;
         }
     }
