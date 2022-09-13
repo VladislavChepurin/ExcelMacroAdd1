@@ -106,6 +106,10 @@ namespace ExcelMacroAdd.Forms
             PictureBox[] pictures = default;
             CheckBox[] checks= default;
             ComboBox[,] comboBoxes= default;
+
+
+
+
             if (tabControl1.SelectedTab == tabPage1)
             {
                  pictures = PictureBoxesCircutBreak();
@@ -118,9 +122,17 @@ namespace ExcelMacroAdd.Forms
                 checks = CheckBoxArraySwitch();
                 comboBoxes = ComboBoxArraySwitch();
             }
+
+
+
+
             // Если стоит галочка в CheckBox, то условие истина
             if (checks[rowsCheck].Checked)
             {
+
+            }
+                /*
+                
                 string setRequest = default;
                 if (tabControl1.SelectedTab == tabPage1)
                 {
@@ -143,6 +155,10 @@ namespace ExcelMacroAdd.Forms
                     setRequest = String.Format("SELECT {0} FROM switch WHERE s_in = '{1}' AND quantity = '{2}';",
                                                    Replace.FuncReplece(tuple.vendor), tuple.cirkut, tuple.polus);
                 }
+
+
+
+
 
                 //Обращение к БД в новом потоке, что бы не тормозил интерфейс
                 new Thread(() =>
@@ -175,7 +191,13 @@ namespace ExcelMacroAdd.Forms
                     dBConect.CloseDB();
                     mutexObj.ReleaseMutex();    // освобождаем мьютекс
                 }).Start();
+
+            
             }
+
+
+            */
+
         }
         /// <summary>
         /// Данный метод предназначен для извленчения уже заполненых данных из БД и заппуска метода заполнения листа Excel

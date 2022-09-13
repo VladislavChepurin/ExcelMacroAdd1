@@ -15,15 +15,31 @@ namespace ExcelMacroAdd.Forms
 {
     internal partial class Form1 : Form
     {
-        Object wordMissing = Missing.Value;
-        private readonly IDBConect dBConect;
-        private readonly IResourcesForm1 resources;
+        // Переменные иницализации                   
+        private object confirmConversions = false;
+        private object readOnly = false;
+        private object addToRecentFiles = false;
+        private object passwordDocument = Type.Missing;
+        private object passwordTemplate = Type.Missing;
+        private object revert = false;
+        private object writePasswordDocument = Type.Missing;
+        private object writePasswordTemplate = Type.Missing;
+        private object format = Type.Missing;
+        private object encoding = Type.Missing;
+        private object oVisible = Type.Missing;
+        private object openConflictDocument = Type.Missing;
+        private object openAndRepair = Type.Missing;
+        private object documentDirection = Type.Missing;
+        private object noEncodingDialog = false;
+        private object xmlTransform = Type.Missing;
+        private object replaceTypeObj = Word.WdReplace.wdReplaceAll;
+        private object wordMissing = Missing.Value;
+        private readonly IResources resources;
         private readonly string PPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
 
-        internal Form1(IDBConect dBConect, IResourcesForm1 resources)
+        internal Form1(IResources resources)
         {
-            this.resources = resources;
-            this.dBConect = dBConect;
+            this.resources = resources;            
             InitializeComponent();
         }
 
@@ -46,34 +62,13 @@ namespace ExcelMacroAdd.Forms
             new Thread(() =>
             {     
                 int progressValue = 0;               
-                                                                                                                                        //Инициализируем параметры Word
+               //Инициализируем параметры Word
                 Word.Application applicationWord = new Word.Application();
                 // Переменная объект документа
-                Word.Document document;
-
-                // Переменные иницализации                   
-                Object confirmConversions = false;
-                Object readOnly = false;
-                Object addToRecentFiles = false;
-                Object passwordDocument = Type.Missing;
-                Object passwordTemplate = Type.Missing;
-                Object revert = false;
-                Object writePasswordDocument = Type.Missing;
-                Object writePasswordTemplate = Type.Missing;
-                Object format = Type.Missing;
-                Object encoding = Type.Missing;
-                Object oVisible = Type.Missing;
-                Object openConflictDocument = Type.Missing;
-                Object openAndRepair = Type.Missing;
-                Object documentDirection = Type.Missing;
-                Object noEncodingDialog = false;
-                Object xmlTransform = Type.Missing;
-                Object replaceTypeObj = Word.WdReplace.wdReplaceAll;
+                Word.Document document;               
 
                 try
                 {
-                    // Открываем соединение с базой данных    
-                    dBConect.OpenDB();
                     // Цикл переборки строк
                     do
                     {
@@ -89,6 +84,7 @@ namespace ExcelMacroAdd.Forms
                             // переменная для открытия Word
                             filename = Path.Combine(PPath, resources.TempleteFloor);
                         }
+
                         string numberSave = Convert.ToString(worksheet.Cells[firstRow, 21].Value2);
                         string sTY = Convert.ToString(worksheet.Cells[firstRow, 8].Value2);
                         string sIcu = (Convert.ToString(worksheet.Cells[firstRow, 10].Value2));
@@ -235,9 +231,6 @@ namespace ExcelMacroAdd.Forms
                         label1.Text = "Паспота заполнены. Ты молодец";
                         button1.Enabled = true;
                     });
-
-                    // Закрываем соединение с базой данных
-                    dBConect.CloseDB();
                     applicationWord.Quit();
                 }
                 catch (COMException)

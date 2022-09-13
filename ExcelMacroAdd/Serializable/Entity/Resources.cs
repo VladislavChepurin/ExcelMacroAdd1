@@ -1,15 +1,17 @@
 ﻿using ExcelMacroAdd.Interfaces;
 
-namespace ExcelMacroAdd.Serializable
+namespace ExcelMacroAdd.Serializable.Entity
 {
-    public class ResourcesForm1 : IResourcesForm1
+    public class Resources : IResources
     {
+        public string NameFileJornal { get; set; }
         public int HeihgtMaxBox { get; set; }
         public string TempleteWall { get; set; }
         public string TempleteFloor { get; set; }
 
-        public ResourcesForm1(int heihgtMaxBox, string templeteWall, string templeteFloor)
+        public Resources(string nameFileJornal, int heihgtMaxBox, string templeteWall, string templeteFloor)
         {
+            NameFileJornal = nameFileJornal;
             HeihgtMaxBox = heihgtMaxBox;
             TempleteWall = templeteWall;
             TempleteFloor = templeteFloor;

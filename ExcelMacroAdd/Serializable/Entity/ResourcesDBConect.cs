@@ -1,7 +1,7 @@
 ﻿using ExcelMacroAdd.Interfaces;
 using System;
 
-namespace ExcelMacroAdd.Serializable
+namespace ExcelMacroAdd.Serializable.Entity
 {
     [Serializable]
     public class ResourcesDBConect : IResourcesDBConect

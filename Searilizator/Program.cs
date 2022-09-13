@@ -1,4 +1,4 @@
-﻿using ExcelMacroAdd.Serializable;
+﻿using ExcelMacroAdd.Serializable.Entity;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using System;
@@ -13,7 +13,7 @@ namespace Searilizator
     /// </summary>
     internal class Program
     {  
-        static void Main(string[] args)
+        static void Main()
         {
             string[] circuitBreakerCurrent = new string[19] { "1", "2", "3", "4", "5", "6", "8", "10", "13", "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
             string[] circuitBreakerCurve = new string[6] { "B", "C", "D", "K", "L", "Z" };
@@ -29,6 +29,8 @@ namespace Searilizator
                                                                                  circuitBreakerVendor, loadSwitchCurrent,
                                                                                  amountOfPolesLoadSwitch, loadSwitchVendor);
 
+
+            string nameFileJornal = "Книга1";
             string providerData = "Provider=Microsoft.ACE.OLEDB.16.0; Data Source=";
             string nameFileDB = "BdMacro.accdb";
             int heihgtMaxBox = 1500;
@@ -36,8 +38,9 @@ namespace Searilizator
             string templeteWall = "Паспорт_навесные.docx";
             string templeteFloor = "Паспорт_напольные.docx";
 
+
             ResourcesDBConect resourcesDBConect = new ResourcesDBConect(providerData, nameFileDB);
-            ResourcesForm1 resourcesForm1 = new ResourcesForm1(heihgtMaxBox, templeteWall, templeteFloor);
+            Resources resourcesForm1 = new Resources(nameFileJornal, heihgtMaxBox, templeteWall, templeteFloor);
 
             AppSettings appSettings = new AppSettings( resourcesForm1, resourcesForm2, resourcesDBConect);
 

@@ -17,7 +17,7 @@ namespace ExcelMacroAdd.Servises
         private static OleDbConnection myConnection;
         // Путь к базе данных
 
-        private readonly string PPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");     
+        private readonly string FolderDB = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase");     
         private readonly IResourcesDBConect resources;
 
         public DBConect(IResourcesDBConect resources)
@@ -32,7 +32,7 @@ namespace ExcelMacroAdd.Servises
         {
             try
             {
-                myConnection = new OleDbConnection(resources.ProviderData + Path.Combine(PPath, resources.NameFileDB) + ";");
+                myConnection = new OleDbConnection(resources.ProviderData + Path.Combine(FolderDB, resources.NameFileDB) + ";");
                 // открываем соединение с БД
                 myConnection.Open();
             }
@@ -40,7 +40,7 @@ namespace ExcelMacroAdd.Servises
             {
                 MessageBox.Show(
                 "База данных не найдена, убедитесь в наличии файла базы данных и сетевого подключения. " +
-                "Файл " + Path.Combine(PPath, resources.NameFileDB).ToString() + " не найден в предпологаемом местонахождении.",
+                "Файл " + Path.Combine(FolderDB, resources.NameFileDB).ToString() + " не найден в предпологаемом местонахождении.",
                 "Ошибка базы данных",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error,
@@ -99,18 +99,10 @@ namespace ExcelMacroAdd.Servises
         {
             try
             {
-
-
-
                 using (OleDbCommand commandUpdate = new OleDbCommand(dataRequest, myConnection))
                 {
                     commandUpdate.ExecuteNonQuery();
-                }   
-                
-
-
-
-
+                }                   
             }
             catch (OleDbException exception)
             {
