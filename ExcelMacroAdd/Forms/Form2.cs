@@ -1,8 +1,11 @@
-﻿using ExcelMacroAdd.Functions;
+﻿using ExcelMacroAdd.DataLayer.Entity;
+using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Interfaces;
 using ExcelMacroAdd.Servises;
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -103,35 +106,75 @@ namespace ExcelMacroAdd.Forms
         /// <param name="writeExcel"></param>
         private void CheckData(int rowsCheck)
         {
-            PictureBox[] pictures = default;
-            CheckBox[] checks= default;
-            ComboBox[,] comboBoxes= default;
 
-
-
+            Debug.Print("");
 
             if (tabControl1.SelectedTab == tabPage1)
             {
-                 pictures = PictureBoxesCircutBreak();
-                 checks = CheckBoxArrayCircutBreak();
-                 comboBoxes = ComboBoxArrayCircutBreaker();
+                PictureBox[] pictures = PictureBoxesCircutBreak();
+                CheckBox[] checks = CheckBoxArrayCircutBreak();
+                ComboBox[,] comboBoxes = ComboBoxArrayCircutBreak();
+                // Если стоит галочка в CheckBox, то условие истина
+                if (checks[rowsCheck].Checked)
+                {
+                    
+                
+
+
+
+
+
+
+                
+                
+                
+                }
             }
             else if (tabControl1.SelectedTab == tabPage2)
             {
-                pictures = PictureBoxesSwitch();
-                checks = CheckBoxArraySwitch();
-                comboBoxes = ComboBoxArraySwitch();
+                PictureBox[] pictures = PictureBoxesSwitch();
+                CheckBox[] checks = CheckBoxArraySwitch();
+                ComboBox[,] comboBoxes = ComboBoxArraySwitch();
+
+
+                Debug.Print("");
+                if (checks[rowsCheck].Checked)
+                {
+                    using (DataContext db = new DataContext())
+                    {
+                       // var switchs = db.Switch;
+
+                        var switches = db.Switch.Where(p => p.Current == comboBoxes[rowsCheck, 0].SelectedItem.ToString() && p.Quantity == comboBoxes[rowsCheck, 1].SelectedItem.ToString()).ToArray();
+
+                        /*
+
+                        setRequest = String.Format("SELECT {0} FROM switch WHERE s_in = '{1}' AND quantity = '{2}';",
+                                                       Replace.FuncReplece(tuple.vendor), tuple.cirkut, tuple.polus);
+
+                        */
+
+                        Debug.Print("");
+
+                    }
+
+
+
+
+
+
+
+
+
+
+                }
             }
 
 
 
 
-            // Если стоит галочка в CheckBox, то условие истина
-            if (checks[rowsCheck].Checked)
-            {
+            /*
 
-            }
-                /*
+
                 
                 string setRequest = default;
                 if (tabControl1.SelectedTab == tabPage1)
@@ -155,8 +198,6 @@ namespace ExcelMacroAdd.Forms
                     setRequest = String.Format("SELECT {0} FROM switch WHERE s_in = '{1}' AND quantity = '{2}';",
                                                    Replace.FuncReplece(tuple.vendor), tuple.cirkut, tuple.polus);
                 }
-
-
 
 
 
@@ -192,13 +233,18 @@ namespace ExcelMacroAdd.Forms
                     mutexObj.ReleaseMutex();    // освобождаем мьютекс
                 }).Start();
 
-            
-            }
-
-
             */
-
+      
         }
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// Данный метод предназначен для извленчения уже заполненых данных из БД и заппуска метода заполнения листа Excel
         /// </summary>
@@ -212,7 +258,7 @@ namespace ExcelMacroAdd.Forms
             if (tabControl1.SelectedTab == tabPage1)
             {
                 checks = CheckBoxArrayCircutBreak();
-                comboBoxes = ComboBoxArrayCircutBreaker();
+                comboBoxes = ComboBoxArrayCircutBreak();
                 texts = TextBoxesArrayCircutBreak();
             }
             else if (tabControl1.SelectedTab == tabPage2)
@@ -277,12 +323,12 @@ namespace ExcelMacroAdd.Forms
                 Thread.Sleep(5000);
             });
         }
-        private PictureBox[] PictureBoxesCircutBreak()
+        protected PictureBox[] PictureBoxesCircutBreak()
         {
             PictureBox[] pictures = new PictureBox[6] { pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6 };
             return pictures;
         }
-        private PictureBox[] PictureBoxesSwitch()
+        protected PictureBox[] PictureBoxesSwitch()
         {
             PictureBox[] pictures = new PictureBox[6] { pictureBox7, pictureBox8, pictureBox9, pictureBox10, pictureBox11, pictureBox12 };
             return pictures;
@@ -302,12 +348,12 @@ namespace ExcelMacroAdd.Forms
             CheckBox[] checks = new CheckBox[6] { checkBox1, checkBox2, checkBox3, checkBox4, checkBox5, checkBox6 };
             return checks;
         }
-        private CheckBox[] CheckBoxArraySwitch()
+        protected CheckBox[] CheckBoxArraySwitch()
         {
             CheckBox[] checks = new CheckBox[6] { checkBox7, checkBox8, checkBox9, checkBox10, checkBox11, checkBox12 };
             return checks;
         }
-        private ComboBox[,] ComboBoxArrayCircutBreaker()
+        private ComboBox[,] ComboBoxArrayCircutBreak()
         {
             ComboBox[,] comboBoxes = new ComboBox[,]
             {
@@ -332,7 +378,7 @@ namespace ExcelMacroAdd.Forms
             };
             return comboBoxes;
         }
-        private ComboBox[,] ComboBoxArraySwitch()
+        protected ComboBox[,] ComboBoxArraySwitch()
         {
             ComboBox[,] comboBoxes = new ComboBox[,]
             {
@@ -650,7 +696,7 @@ namespace ExcelMacroAdd.Forms
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            var comboBoxes = ComboBoxArrayCircutBreaker();
+            var comboBoxes = ComboBoxArrayCircutBreak();
             for (int i = 1; i < 5; i++)
             {
                 comboBoxes[1, i].SelectedIndex = comboBoxes[0, i].SelectedIndex;
@@ -663,7 +709,7 @@ namespace ExcelMacroAdd.Forms
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            var comboBoxes = ComboBoxArrayCircutBreaker();
+            var comboBoxes = ComboBoxArrayCircutBreak();
             for (int i = 1; i < 5; i++)
             {             
                 comboBoxes[2, i].SelectedIndex = comboBoxes[1, i].SelectedIndex;
@@ -675,7 +721,7 @@ namespace ExcelMacroAdd.Forms
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
-            var comboBoxes = ComboBoxArrayCircutBreaker();
+            var comboBoxes = ComboBoxArrayCircutBreak();
             for (int i = 1; i < 5; i++)
             {
                 comboBoxes[3, i].SelectedIndex = comboBoxes[2, i].SelectedIndex;
@@ -686,7 +732,7 @@ namespace ExcelMacroAdd.Forms
 
         private void pictureBox4_Click(object sender, EventArgs e)
         {
-            var comboBoxes = ComboBoxArrayCircutBreaker();
+            var comboBoxes = ComboBoxArrayCircutBreak();
             for (int i = 1; i < 5; i++)
             {
                 comboBoxes[4, i].SelectedIndex = comboBoxes[3, i].SelectedIndex;
@@ -696,7 +742,7 @@ namespace ExcelMacroAdd.Forms
 
         private void pictureBox5_Click(object sender, EventArgs e)
         {
-            var comboBoxes = ComboBoxArrayCircutBreaker();
+            var comboBoxes = ComboBoxArrayCircutBreak();
             for (int i = 1; i < 5; i++)
             {
                 comboBoxes[5, i].SelectedIndex = comboBoxes[4, i].SelectedIndex;
