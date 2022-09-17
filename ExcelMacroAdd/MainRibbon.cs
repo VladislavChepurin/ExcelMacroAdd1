@@ -1,8 +1,8 @@
-﻿using ExcelMacroAdd.Forms;
+﻿using ExcelMacroAdd.AccessLayer;
+using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.ProxyObjects;
 using ExcelMacroAdd.Serializable;
-using ExcelMacroAdd.Services;
 using ExcelMacroAdd.Servises;
 using Microsoft.Office.Tools.Ribbon;
 using System;
@@ -24,8 +24,8 @@ namespace ExcelMacroAdd
             var resourcesForm2 = settings.ResourcesForm2;
             var resourcesDBConect = settings.ResourcesDBConect;
 
-            DataInXmlProxy dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());          
-            DBConectProxy dBConect = new DBConectProxy(DBConect.GetConnectionInstance(resourcesDBConect));
+            DataInXmlProxy dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());
+            AccessData accessData = new AccessData();
 
             // Заполнение паспортов
             button1.Click += (s, a) =>
@@ -49,19 +49,19 @@ namespace ExcelMacroAdd
        
             //Корпуса щитов
             button4.Click += (s, a) => {
-                BoxShield boxShield = new BoxShield(resources);
+                BoxShield boxShield = new BoxShield(accessData, resources);
                 boxShield.Start();
             };
           
             // Занесение в базу данных корпуса
             button5.Click += (s, a) => {
-                AddBoxDB addBoxDB = new AddBoxDB(resources);
+                AddBoxDB addBoxDB = new AddBoxDB(accessData, resources);
                 addBoxDB.Start();
             };
             // Корректировка записей в БД
             button6.Click += (s, a) =>
             {
-                CorectDB corectDB = new CorectDB(resources);
+                CorectDB corectDB = new CorectDB(accessData, resources);
                 corectDB.Start();
             };
             //Разметка расчетов
@@ -123,7 +123,7 @@ namespace ExcelMacroAdd
             {
                 await Task.Run(() =>
                 {
-                    Form2 fs = new Form2(dBConect, dataInXml, resourcesForm2);
+                    Form2 fs = new Form2(accessData, dataInXml, resourcesForm2);
                     fs.ShowDialog();
                     Thread.Sleep(5000);
                 });

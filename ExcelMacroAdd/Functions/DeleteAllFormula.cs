@@ -5,7 +5,7 @@ namespace ExcelMacroAdd.Functions
 {
     internal class DeleteAllFormula : AbstractFunctions
     {
-        protected internal override void Start()
+        public sealed override void Start()
         {
             foreach (Excel.Worksheet sheet in workBook.Sheets)
             {

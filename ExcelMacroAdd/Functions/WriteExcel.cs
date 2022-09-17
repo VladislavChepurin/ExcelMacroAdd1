@@ -1,6 +1,7 @@
 ﻿using ExcelMacroAdd.Interfaces;
 using ExcelMacroAdd.Servises;
 using System;
+using System.Collections.Generic;
 
 namespace ExcelMacroAdd.Functions
 {
@@ -21,7 +22,7 @@ namespace ExcelMacroAdd.Functions
             this.quantity = quantity;
         }
 
-        protected internal override void Start()
+        public sealed override void Start()
         {         
             int endRow = default;          
             //Вычисляем столбец на который установлен фокус
@@ -49,7 +50,7 @@ namespace ExcelMacroAdd.Functions
                 worksheet.get_Range("B" + firstRow).FormulaLocal = String.Format(objectVendor.Formula_1, firstRow);    //Столбец "Описание". Вызывает формулу Formula_1            
                 if (!(quantity == 0)) worksheet.get_Range("C" + firstRow).Value2 = quantity;
                 worksheet.get_Range("D" + firstRow).FormulaLocal = String.Format(objectVendor.Formula_2, firstRow);    //Столбец "Кратность". Вызывает формулу Formula_2
-                worksheet.get_Range("E" + firstRow).Value2 = Replace.RepleceVendorTable(vendor);
+                worksheet.get_Range("E" + firstRow).Value2 = RepleceVendorTable()[vendor];
                 worksheet.get_Range("F" + firstRow).Value2 = objectVendor.Discont;         //Столбец "Скидка". Вызывает значение Discont
                 worksheet.get_Range("G" + firstRow).FormulaLocal = String.Format(objectVendor.Formula_3, firstRow);     //Столбец "Цена". Вызывает формулу Formula_3
                 worksheet.get_Range("H" + firstRow).Formula = String.Format("=G{0}*(100-F{0})/100", firstRow);
@@ -57,6 +58,26 @@ namespace ExcelMacroAdd.Functions
                 firstRow++;
             }
             while (endRow > firstRow);          
+        }
+
+        public static IDictionary<string, string> RepleceVendorTable()
+        {
+            Dictionary<string, string> disconaryVendor = new Dictionary<string, string>()
+            {
+                {"Iek", "IEK"},
+                {"IekVa47", "IEK"},
+                {"IekVa47m", "IEK"},
+                {"IekArmat", "IEK"},
+                {"EkfProxima", "EKF"},
+                {"EkfAvers", "EKF"},
+                {"Abb", "ABB"},
+                {"Keaz", "KEAZ"},
+                {"Dkc", "DKC"},
+                {"Dekraft", "DEKraft"},
+                {"Schneider", "Schneider"},
+                {"Tdm", "TDM"}
+            };
+            return disconaryVendor;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace ExcelMacroAdd.Functions
         protected readonly Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
         protected readonly Range cell = Globals.ThisAddIn.GetActiveCell();
         protected readonly Workbook workBook = Globals.ThisAddIn.GetActiveWorkBook();
-        protected internal abstract void Start();
+        public abstract void Start();
 
         protected internal void MessageInformation(string textMessage, string textAtribute)
         {

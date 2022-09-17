@@ -41,6 +41,7 @@ namespace ExcelMacroAdd.DataLayer.Entity
             modelBuilder.Entity<Modul>().Property(p => p.Id).HasColumnName("id");
             modelBuilder.Entity<Modul>().Property(p => p.MaxCurrent).HasColumnName("max_current");
             modelBuilder.Entity<Modul>().Property(p => p.Current).HasColumnName("current");
+            modelBuilder.Entity<Modul>().Property(p => p.Kurve).HasColumnName("kurve");
             modelBuilder.Entity<Modul>().Property(p => p.Quantity).HasColumnName("quantity");
             modelBuilder.Entity<Modul>().Property(p => p.IekVa47).HasColumnName("iek_va47");
             modelBuilder.Entity<Modul>().Property(p => p.IekVa47m).HasColumnName("iek_va47m");

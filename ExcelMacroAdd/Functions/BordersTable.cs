@@ -4,7 +4,7 @@ namespace ExcelMacroAdd.Functions
 {
     internal class BordersTable : AbstractFunctions
     {
-        protected internal override void Start()
+        public sealed override void Start()
         {
             var excelcells = application.Selection;
             XlBordersIndex borderIndex;

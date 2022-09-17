@@ -19,7 +19,7 @@ namespace Searilizator
             string[] circuitBreakerCurve = new string[6] { "B", "C", "D", "K", "L", "Z" };
             string[] maxCircuitBreakerCurrent = new string[4] { "4,5", "6", "10", "15" };
             string[] amountOfPolesCircuitBreaker = new string[6] { "1", "2", "3", "4", "1N", "3N" };
-            string[] circuitBreakerVendor = new string[11] { "IEK ВА47", "IEK BA47М", "IEK Armat", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DKC", "DEKraft", "Schneider", "TDM" };
+            string[] circuitBreakerVendor = new string[11] { "IEK BA47", "IEK BA47М", "IEK Armat", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DKC", "DEKraft", "Schneider", "TDM" };
             //Массивы параметров выключателей нагрузки
             string[] loadSwitchCurrent = new string[10] { "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
             string[] amountOfPolesLoadSwitch = new string[4] { "1", "2", "3", "4" };

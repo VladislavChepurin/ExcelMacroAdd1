@@ -1,6 +1,8 @@
-﻿namespace ExcelMacroAdd.DataLayer.Entity
+﻿using ExcelMacroAdd.DataLayer.Interfaces;
+
+namespace ExcelMacroAdd.DataLayer.Entity
 {
-    public class JornalNKU
+    public class JornalNKU : IJornalNKU
     {
         public int Id { get; set; }
         public int Ip { get; set; }       

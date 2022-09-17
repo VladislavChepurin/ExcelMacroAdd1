@@ -1,6 +1,8 @@
-﻿namespace ExcelMacroAdd.DataLayer.Entity
+﻿using ExcelMacroAdd.DataLayer.Interfaces;
+
+namespace ExcelMacroAdd.DataLayer.Entity
 {
-    public class Switch
+    public class Switch : ISwitch
     {
         public int Id { get; set; }
         public string Current { get; set; }

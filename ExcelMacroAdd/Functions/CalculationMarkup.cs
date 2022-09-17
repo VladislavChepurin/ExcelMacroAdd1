@@ -6,7 +6,7 @@ namespace ExcelMacroAdd.Functions
 {
     internal class CalculationMarkup : AbstractFunctions
     {
-        protected internal override void Start()
+        public sealed override void Start()
         {
             //Проверяем наличие данных в таблице, A1:H9
             Boolean resultCellNull = true;

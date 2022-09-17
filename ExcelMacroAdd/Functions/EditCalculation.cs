@@ -5,7 +5,7 @@ namespace ExcelMacroAdd.Functions
 {
     internal class EditCalculation : AbstractFunctions
     {
-        protected internal override void Start()
+        public sealed override void Start()
         {
             foreach (Worksheet sheet in workBook.Sheets)
             {

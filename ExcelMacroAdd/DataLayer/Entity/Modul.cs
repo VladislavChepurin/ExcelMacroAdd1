@@ -1,10 +1,13 @@
-﻿namespace ExcelMacroAdd.DataLayer.Entity
+﻿using ExcelMacroAdd.DataLayer.Interfaces;
+
+namespace ExcelMacroAdd.DataLayer.Entity
 {
-    public class Modul
+    public class Modul : IModul
     {
         public int Id { get; set; }
         public string MaxCurrent { get; set; }
         public string Current { get; set; }
+        public string Kurve { get; set; }
         public string Quantity { get; set; }
         public string IekVa47 { get; set; }
         public string IekVa47m { get; set; }

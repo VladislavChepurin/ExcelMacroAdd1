@@ -229,10 +229,16 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="AccessLayer\AccessData.cs" />
+    <Compile Include="AccessLayer\Interfaces\IJornalData.cs" />
+    <Compile Include="AccessLayer\Interfaces\IForm2Data.cs" />
     <Compile Include="DataLayer\Entity\JornalNKU.cs" />
     <Compile Include="DataLayer\Entity\DataContext.cs" />
     <Compile Include="DataLayer\Entity\Modul.cs" />
     <Compile Include="DataLayer\Entity\Switch.cs" />
+    <Compile Include="DataLayer\Interfaces\IJornalNKU.cs" />
+    <Compile Include="DataLayer\Interfaces\IModul.cs" />
+    <Compile Include="DataLayer\Interfaces\ISwitch.cs" />
     <Compile Include="Forms\AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -240,7 +246,6 @@
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IDataInXml.cs" />
-    <Compile Include="Interfaces\IDBConect.cs" />
     <Compile Include="Interfaces\IResourcesDBConect.cs" />
     <Compile Include="Interfaces\IResources.cs" />
     <Compile Include="Interfaces\IResourcesForm2.cs" />
@@ -261,7 +266,6 @@
     <Compile Include="Functions\EditCalculation.cs" />
     <Compile Include="Functions\FillingOutThePassport.cs" />
     <Compile Include="Functions\AbstractFunctions.cs" />
-    <Compile Include="Services\DBConect.cs" />
     <Compile Include="Forms\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -286,10 +290,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProxyObjects\DBConectProxy.cs" />
-    <Compile Include="Services\Replace.cs" />
     <Compile Include="Functions\WriteExcel.cs" />
-    <Compile Include="UserVariables\DBtable.cs" />
     <Compile Include="UserVariables\Vendor.cs" />
     <EmbeddedResource Include="Forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
@@ -457,9 +458,6 @@
     <None Include="Resources\560.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataLayer\DataBase\BdMacro.accdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Settings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

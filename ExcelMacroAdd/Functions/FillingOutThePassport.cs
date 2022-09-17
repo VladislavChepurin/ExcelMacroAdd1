@@ -13,7 +13,7 @@ namespace ExcelMacroAdd.Functions
             this.resources = resources;
         }
 
-        protected internal override void Start()
+        public sealed override void Start()
         {
             if (application.ActiveWorkbook.Name != resources.NameFileJornal) // Проверка по имени книги
             {

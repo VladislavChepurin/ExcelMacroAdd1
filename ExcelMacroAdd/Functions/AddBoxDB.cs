@@ -1,21 +1,22 @@
-﻿using ExcelMacroAdd.DataLayer.Entity;
+﻿using ExcelMacroAdd.AccessLayer.Interfaces;
+using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Interfaces;
 using System;
 using System.Data;
-using System.Linq;
 
 namespace ExcelMacroAdd.Functions
 {
     internal class AddBoxDB : AbstractFunctions
     {
-        private JornalNKU jornalNKU;
         private readonly IResources resources;
+        private readonly IJornalData jornalData;
 
-        public AddBoxDB(IResources resources)
+        public AddBoxDB(IJornalData jornalData, IResources resources)
         {
+            this.jornalData = jornalData;
             this.resources = resources;
         }
-        protected internal override void Start()
+        public sealed override void Start()
         {
             if (application.ActiveWorkbook.Name != resources.NameFileJornal) // Проверка по имени книги
             {
@@ -29,34 +30,21 @@ namespace ExcelMacroAdd.Functions
             firstRow = cell.Row;                 // Вычисляем верхний элемент
             countRow = cell.Rows.Count;          // Вычисляем кол-во выделенных строк
             endRow = firstRow + countRow;
-            using (DataContext db = new DataContext())
+
+            do
             {
-                var jornalNKUs = db.JornalNKU;
-                do
+                try
                 {
-                    try
+                    sArticle = Convert.ToString(worksheet.Cells[firstRow, 26].Value2);
+
+                    var jornalNKU = jornalData.GetEntityJornal(sArticle);
+
+                    if (!(jornalNKU is null))
                     {
-                        sArticle = Convert.ToString(worksheet.Cells[firstRow, 26].Value2);
-                        jornalNKU = jornalNKUs.Where(p => p.Article == sArticle).FirstOrDefault();
-                        if (!(jornalNKU is null))
-                        {
-                            MessageWarning($"В базе данных уже есть такой артикул.\n Создавать новую запись не нужно. \nАртикул = {sArticle}",
+                        MessageWarning($"В базе данных уже есть такой артикул.\n Создавать новую запись не нужно. \nАртикул = {sArticle}",
                             "Ошибка записи!");
-                            firstRow++;
-                            continue;
-                        }
-                    }
-                    catch (DataException)
-                    {
-                        MessageError("Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",
-                            "Ошибка базы данных");
-                        return;
-                    }
-                    catch (Exception e)
-                    {
-                        MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {e.Message}",
-                            "Ошибка базы данных");
-                        return;
+                        firstRow++;
+                        continue;
                     }
 
                     int.TryParse(Convert.ToString(worksheet.Cells[firstRow, 11].Value2), out int sIP);
@@ -76,16 +64,39 @@ namespace ExcelMacroAdd.Functions
                         continue;
                     }
 
-                    JornalNKU jornal = new JornalNKU() { Ip = sIP, Klima = sKlima, Reserve = sReserve, Height = sHeinght, 
-                        Width = sWidth, Depth = sDepth, Article = sArticle, Execution = sExecution, Vendor = "None" };
-                    db.JornalNKU.Add(jornal);
-                    db.SaveChanges();
+                    JornalNKU jornal = new JornalNKU()
+                    {
+                        Ip = sIP,
+                        Klima = sKlima,
+                        Reserve = sReserve,
+                        Height = sHeinght,
+                        Width = sWidth,
+                        Depth = sDepth,
+                        Article = sArticle,
+                        Execution = sExecution,
+                        Vendor = "None"
+                    };
+
+                    jornalData.AddValueDB(jornal);
+
                     MessageInformation($"Успешно записано в базу данных. Теперь доступна новая запись.\n Поздравляем! \nАртикул = {sArticle}",
                                "Запись успешна!");
-                    firstRow++;
                 }
-                while (endRow > firstRow);          
+                catch (DataException)
+                {
+                    MessageError("Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",
+                        "Ошибка базы данных");
+                    return;
+                }
+                catch (Exception e)
+                {
+                    MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {e.Message}",
+                        "Ошибка базы данных");
+                    return;
+                }            
+                firstRow++;
             }
+            while (endRow > firstRow);
         }
     }
 }

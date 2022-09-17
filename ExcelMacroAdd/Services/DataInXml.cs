@@ -1,6 +1,7 @@
 ﻿using ExcelMacroAdd.Interfaces;
 using ExcelMacroAdd.UserVariables;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -14,7 +15,7 @@ namespace ExcelMacroAdd.Servises
         readonly string file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings.xml");
         public Vendor ReadElementXml(string vendor, Vendor[] dataXmlContinue)
         {
-            return dataXmlContinue.Where(p => p.VendorAttribute == Replace.RepleceVendorTable(vendor)).Single();
+            return dataXmlContinue.Where(p => p.VendorAttribute == RepleceVendorTable()[vendor]).Single();
         }
 
         public Vendor[] ReadFileXml()
@@ -102,6 +103,31 @@ namespace ExcelMacroAdd.Servises
             {
                 xmlSerializer.Serialize(fs, vendor);    
             }
+        }
+
+        /// <summary>
+        /// Функция замены для вставки вендора и запроса из XML
+        /// </summary>
+        /// <param name="mReplase"></param>
+        /// <returns></returns>
+        public static IDictionary<string, string> RepleceVendorTable()                         
+        {
+            Dictionary<string, string> disconaryVendor = new Dictionary<string, string>()
+            {
+                {"Iek", "IEK"},
+                {"IekVa47", "IEK"},
+                {"IekVa47m", "IEK"},
+                {"IekArmat", "IEK"},
+                {"EkfProxima", "EKF"},
+                {"EkfAvers", "EKF"},
+                {"Abb", "ABB"},
+                {"Keaz", "KEAZ"},
+                {"Dkc", "DKC"},
+                {"Dekraft", "DEKraft"},
+                {"Schneider", "Schneider"},
+                {"Tdm", "TDM"}               
+            };
+            return disconaryVendor;
         }
     }
 }
