@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 
 namespace ExcelMacroAdd.DataLayer.Entity
 {
@@ -6,6 +7,8 @@ namespace ExcelMacroAdd.DataLayer.Entity
     {
         public DataContext() : base("Context")
         {
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            AppDomain.CurrentDomain.SetData("DataDirectory", path);
         }
 
         public DbSet<JornalNKU> JornalNKU { get; set; }
@@ -13,7 +16,7 @@ namespace ExcelMacroAdd.DataLayer.Entity
         public DbSet<Modul> Modul { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
+        {          
             //Настройка таблицы JornalNKUs
             modelBuilder.Entity<JornalNKU>().Property(p => p.Id).HasColumnName("id");
             modelBuilder.Entity<JornalNKU>().Property(p => p.Ip).HasColumnName("ip");
@@ -25,6 +28,7 @@ namespace ExcelMacroAdd.DataLayer.Entity
             modelBuilder.Entity<JornalNKU>().Property(p => p.Article).HasColumnName("article");
             modelBuilder.Entity<JornalNKU>().Property(p => p.Execution).HasColumnName("execution");
             modelBuilder.Entity<JornalNKU>().Property(p => p.Vendor).HasColumnName("vendor");
+            
             //Настройка таблицы Switchs
             modelBuilder.Entity<Switch>().Property(p => p.Id).HasColumnName("id");
             modelBuilder.Entity<Switch>().Property(p => p.Current).HasColumnName("current");
@@ -54,7 +58,6 @@ namespace ExcelMacroAdd.DataLayer.Entity
             modelBuilder.Entity<Modul>().Property(p => p.Schneider).HasColumnName("schneider");
             modelBuilder.Entity<Modul>().Property(p => p.Tdm).HasColumnName("tdm");
             modelBuilder.Entity<Modul>().Property(p => p.IekArmat).HasColumnName("iek_armat");
-
             base.OnModelCreating(modelBuilder);
         }
     }

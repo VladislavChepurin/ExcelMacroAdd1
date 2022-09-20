@@ -8,8 +8,7 @@ using System.Windows.Forms;
 namespace ExcelMacroAdd.Functions
 {
     internal class CorectDB : AbstractFunctions
-    {
-       // private JornalNKU jornalNKU;
+    {       
         private readonly IJornalData jornalData;
         private readonly IResources resources;
 
@@ -19,7 +18,7 @@ namespace ExcelMacroAdd.Functions
             this.resources = resources;
         }
 
-        public sealed override void Start()
+        public sealed override async void Start()
         {
      
             if (application.ActiveWorkbook.Name != resources.NameFileJornal) // Проверка по имени книги
@@ -38,12 +37,9 @@ namespace ExcelMacroAdd.Functions
                 firstRow = cell.Row;                 // Вычисляем верхний элемент
                 sArticle = Convert.ToString(worksheet.Cells[firstRow, 26].Value2);
 
-                //using (DataContext db = new DataContext())
-                //{
-                //    var jornalNKUs = db.JornalNKU;
                 try
                 {
-                    var jornalNKU = jornalData.GetEntityJornal(sArticle);
+                    var jornalNKU = await jornalData.GetEntityJornal(sArticle);
                     if (jornalNKU is null)
                     {
                         MessageWarning($"В базе данных такого артикула нет.\n Необходимо сначала его занести. \nАртикул = {sArticle}",

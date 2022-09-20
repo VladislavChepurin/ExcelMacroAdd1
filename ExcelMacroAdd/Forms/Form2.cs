@@ -1,14 +1,17 @@
 ﻿using ExcelMacroAdd.AccessLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
+using ExcelMacroAdd.DataLayer.Interfaces;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Switch = ExcelMacroAdd.DataLayer.Entity.Switch;
 
 namespace ExcelMacroAdd.Forms
 {
@@ -98,7 +101,7 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-        private void CheckDataCircutBreak(int rowsCheck)
+        private async void CheckDataCircutBreakAsync(int rowsCheck)
         {
             PictureBox[] pictures = PictureBoxesCircutBreak();
             CheckBox[] checks = CheckBoxArrayCircutBreak();
@@ -117,7 +120,7 @@ namespace ExcelMacroAdd.Forms
 
             try
             {
-                var modulses = accessData.GetEntityModul(current, kurve, maxCurrent, polus);
+                var  modulses = await accessData.GetEntityModul(current, kurve, maxCurrent, polus);        
 
                 if (modulses is null)
                 {
@@ -152,7 +155,7 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-        private void CheckDataSwitch(int rowsCheck)
+        private async void CheckDataSwitchAsync(int rowsCheck)
         {
             PictureBox[] pictures = PictureBoxesSwitch();
             CheckBox[] checks = CheckBoxArraySwitch();
@@ -169,7 +172,7 @@ namespace ExcelMacroAdd.Forms
 
             try
             {
-                var switches = accessData.GetEntitySwitch(current, polus);
+                var switches = await accessData.GetEntitySwitch(current, polus);             
 
                 if (switches is null)
                 {
@@ -213,15 +216,15 @@ namespace ExcelMacroAdd.Forms
         {
             if (tabControl1.SelectedTab == tabPage1)
             {
-                CreateFillInCircutBreak();
+                CreateFillInCircutBreakAsync();
             }
             else if (tabControl1.SelectedTab == tabPage2)
             {
-                CreateFillInSwitch();
+                CreateFillInSwitchAsync();
             }
         }
 
-        public void CreateFillInCircutBreak()
+        public async void CreateFillInCircutBreakAsync()
         {
             CheckBox[] checks = CheckBoxArrayCircutBreak();
             ComboBox[,] comboBoxes = ComboBoxArrayCircutBreak();
@@ -240,7 +243,7 @@ namespace ExcelMacroAdd.Forms
 
                     try
                     {
-                        var modulses = accessData.GetEntityModul(current, kurve, maxCurrent, polus);
+                        var modulses = await accessData.GetEntityModul(current, kurve, maxCurrent, polus);
 
                         Type myType = typeof(Modul);
                         // получаем свойство
@@ -271,7 +274,7 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-        public void CreateFillInSwitch()
+        public async void CreateFillInSwitchAsync()
         {
             CheckBox[] checks = CheckBoxArraySwitch();
             ComboBox[,] comboBoxes = ComboBoxArraySwitch();
@@ -288,7 +291,7 @@ namespace ExcelMacroAdd.Forms
 
                     try
                     {
-                        var switches = accessData.GetEntitySwitch(current, polus);
+                        var switches = await accessData.GetEntitySwitch(current, polus);
 
                         Type myType = typeof(Switch);
                         // получаем свойство
@@ -447,226 +450,226 @@ namespace ExcelMacroAdd.Forms
         #region line1_CircutBreak
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FirstLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FirstLineArray);
 
         private void comboBox5_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FirstLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FirstLineArray);
 
 
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FirstLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FirstLineArray);
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FirstLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FirstLineArray);
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FirstLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FirstLineArray);
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FirstLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FirstLineArray);
 
         #endregion
 
         #region line2_CircutBreak
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.SecondLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.SecondLineArray);
 
         private void comboBox10_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.SecondLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.SecondLineArray);
 
         private void comboBox9_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.SecondLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.SecondLineArray);
 
         private void comboBox8_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.SecondLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.SecondLineArray);
 
         private void comboBox7_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.SecondLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.SecondLineArray);
 
         private void comboBox6_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.SecondLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.SecondLineArray);
 
         #endregion
 
         #region line3_CircutBreak
         private void checkBox3_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.ThirdLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.ThirdLineArray);
 
         private void comboBox15_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.ThirdLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.ThirdLineArray);
 
 
         private void comboBox14_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.ThirdLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.ThirdLineArray);
 
         private void comboBox13_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.ThirdLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.ThirdLineArray);
 
         private void comboBox12_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.ThirdLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.ThirdLineArray);
 
         private void comboBox11_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.ThirdLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.ThirdLineArray);
 
         #endregion
 
         #region line4_CircutBreak
 
         private void checkBox4_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FourthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FourthLineArray);
 
         private void comboBox20_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FourthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FourthLineArray);
 
         private void comboBox19_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FourthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FourthLineArray);
 
         private void comboBox18_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FourthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FourthLineArray);
 
         private void comboBox17_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FourthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FourthLineArray);
 
         private void comboBox16_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FourthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FourthLineArray);
 
         #endregion
 
         #region line5_CircutBreak
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FifthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FifthLineArray);
 
         private void comboBox25_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FifthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FifthLineArray);
 
         private void comboBox24_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FifthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FifthLineArray);
 
         private void comboBox23_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FifthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FifthLineArray);
 
         private void comboBox22_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FifthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FifthLineArray);
 
         private void comboBox21_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.FifthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.FifthLineArray);
 
         #endregion
 
         #region line6_CircutBreak
 
         private void checkBox6_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.SixthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.SixthLineArray);
 
         private void comboBox30_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.SixthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.SixthLineArray);
 
         private void comboBox29_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.SixthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.SixthLineArray);
 
         private void comboBox28_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.SixthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.SixthLineArray);
 
         private void comboBox27_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.SixthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.SixthLineArray);
 
         private void comboBox26_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircutBreak((int)ContainerAvt.SixthLineArray);
+            CheckDataCircutBreakAsync((int)ContainerAvt.SixthLineArray);
 
         #endregion
 
         #region line1_Switch
 
         private void checkBox7_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.FirstLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.FirstLineArray);
 
         private void comboBox35_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.FirstLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.FirstLineArray);
 
         private void comboBox32_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.FirstLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.FirstLineArray);
         private void comboBox31_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.FirstLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.FirstLineArray);
 
         #endregion
 
         #region line2_Switch
 
         private void checkBox8_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.SecondLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.SecondLineArray);
 
         private void comboBox40_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.SecondLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.SecondLineArray);
 
         private void comboBox37_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.SecondLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.SecondLineArray);
 
         private void comboBox36_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.SecondLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.SecondLineArray);
 
         #endregion
 
         #region line3_Switch
 
         private void checkBox9_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.ThirdLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.ThirdLineArray);
 
         private void comboBox45_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.ThirdLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.ThirdLineArray);
 
         private void comboBox42_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.ThirdLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.ThirdLineArray);
 
         private void comboBox41_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.ThirdLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.ThirdLineArray);
 
         #endregion
 
         #region line4_Switch
 
         private void checkBox10_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.FourthLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.FourthLineArray);
 
         private void comboBox50_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.FourthLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.FourthLineArray);
 
         private void comboBox47_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.FourthLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.FourthLineArray);
 
         private void comboBox46_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.FourthLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.FourthLineArray);
 
         #endregion
 
         #region line5_Switch
         private void checkBox11_CheckedChanged(object sender, EventArgs e) =>
-           CheckDataSwitch((int)ContainerAvt.FifthLineArray);
+           CheckDataSwitchAsync((int)ContainerAvt.FifthLineArray);
 
         private void comboBox55_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.FifthLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.FifthLineArray);
 
         private void comboBox52_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.FifthLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.FifthLineArray);
 
         private void comboBox51_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.FifthLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.FifthLineArray);
 
         #endregion
 
         #region line6_Switch
         private void checkBox12_CheckedChanged(object sender, EventArgs e) =>
-          CheckDataSwitch((int)ContainerAvt.SixthLineArray);
+          CheckDataSwitchAsync((int)ContainerAvt.SixthLineArray);
 
         private void comboBox60_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.SixthLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.SixthLineArray);
 
         private void comboBox57_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.SixthLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.SixthLineArray);
 
         private void comboBox56_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataSwitch((int)ContainerAvt.SixthLineArray);
+            CheckDataSwitchAsync((int)ContainerAvt.SixthLineArray);
 
         #endregion
 

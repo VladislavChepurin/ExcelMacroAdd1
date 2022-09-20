@@ -1,4 +1,5 @@
 ﻿using ExcelMacroAdd.AccessLayer;
+using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.ProxyObjects;
@@ -7,6 +8,7 @@ using ExcelMacroAdd.Servises;
 using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,11 +24,18 @@ namespace ExcelMacroAdd
             var settings = app.GetSettingsModels();
             var resources = settings.Resources;
             var resourcesForm2 = settings.ResourcesForm2;
-            var resourcesDBConect = settings.ResourcesDBConect;
 
             DataInXmlProxy dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());
             AccessData accessData = new AccessData();
-
+                  
+            new Thread(() =>
+            {
+                using (DataContext db = new DataContext())
+                {
+                    db.Switch.Select(x => x.Id).ToList();
+                }
+            }).Start();       
+            
             // Заполнение паспортов
             button1.Click += (s, a) =>
             {

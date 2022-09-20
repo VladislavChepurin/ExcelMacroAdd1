@@ -16,7 +16,7 @@ namespace ExcelMacroAdd.Functions
             this.jornalData = jornalData;
             this.resources = resources;
         }
-        public sealed override void Start()
+        public sealed override async void Start()
         {
             if (application.ActiveWorkbook.Name != resources.NameFileJornal) // Проверка по имени книги
             {
@@ -37,7 +37,7 @@ namespace ExcelMacroAdd.Functions
                 {
                     sArticle = Convert.ToString(worksheet.Cells[firstRow, 26].Value2);
 
-                    var jornalNKU = jornalData.GetEntityJornal(sArticle);
+                    var jornalNKU = await jornalData.GetEntityJornal(sArticle);
 
                     if (!(jornalNKU is null))
                     {

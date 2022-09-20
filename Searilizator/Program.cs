@@ -31,18 +31,14 @@ namespace Searilizator
 
 
             string nameFileJornal = "Книга1";
-            string providerData = "Provider=Microsoft.ACE.OLEDB.16.0; Data Source=";
-            string nameFileDB = "BdMacro.accdb";
             int heihgtMaxBox = 1500;
 
             string templeteWall = "Паспорт_навесные.docx";
             string templeteFloor = "Паспорт_напольные.docx";
-
-
-            ResourcesDBConect resourcesDBConect = new ResourcesDBConect(providerData, nameFileDB);
+      
             Resources resourcesForm1 = new Resources(nameFileJornal, heihgtMaxBox, templeteWall, templeteFloor);
 
-            AppSettings appSettings = new AppSettings( resourcesForm1, resourcesForm2, resourcesDBConect);
+            AppSettings appSettings = new AppSettings( resourcesForm1, resourcesForm2);
 
             JsonSerializer serializer = new JsonSerializer();
             serializer.Converters.Add(new JavaScriptDateTimeConverter());

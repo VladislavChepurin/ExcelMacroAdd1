@@ -2,6 +2,7 @@
 using ExcelMacroAdd.Interfaces;
 using System;
 using System.Data;
+using System.Diagnostics;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelMacroAdd.Functions
@@ -11,13 +12,13 @@ namespace ExcelMacroAdd.Functions
         private readonly IResources resources;
         private readonly IJornalData jornalData;
 
-        public BoxShield(IJornalData boxShieldData ,IResources resources)
+        public BoxShield(IJornalData jornalData ,IResources resources)
         {
-            this.jornalData = boxShieldData;
+            this.jornalData = jornalData;
             this.resources = resources;
         }
 
-        public sealed override void Start()
+        public sealed override async void Start()
         {
             if (application.ActiveWorkbook.Name != resources.NameFileJornal) // Проверка по имени книги
             {
@@ -28,13 +29,13 @@ namespace ExcelMacroAdd.Functions
             int firstRow, countRow, endRow;
             firstRow = cell.Row;                 // Вычисляем верхний элемент
             countRow = cell.Rows.Count;          // Вычисляем кол-во выделенных строк
-            endRow = firstRow + countRow;         
+            endRow = firstRow + countRow;
             do
             {
                 try
                 {
                     string sArticle = Convert.ToString(worksheet.Cells[firstRow, 26].Value2);
-                    var jornalNKU = jornalData.GetEntityJornal(sArticle);
+                    var jornalNKU = await jornalData.GetEntityJornal(sArticle);
 
                     if (jornalNKU is null)
                     {
