@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ExcelMacroAdd.Serializable.Entity;
 using System.IO;
 
 namespace ExcelMacroAdd.Serializable

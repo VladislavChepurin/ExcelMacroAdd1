@@ -248,20 +248,31 @@ namespace ExcelMacroAdd.Forms
             string formula_1 = worksheet.Cells[firstRow, 2]?.FormulaLocal;                    
             if (formula_1 != String.Empty) 
             {
-                textBoxes[rowsArray, 0].Text = Replace.VprFormulaReplace(formula_1, firstRow);
+                textBoxes[rowsArray, 0].Text = VprFormulaReplace(formula_1, firstRow);
             }
             // Read Cells "D_" if value not empty then continue our work
             string formula_2 = worksheet.Cells[firstRow, 4]?.FormulaLocal;
             if (formula_2 != String.Empty)
             {
-                textBoxes[rowsArray, 1].Text = Replace.VprFormulaReplace(formula_2, firstRow);
+                textBoxes[rowsArray, 1].Text = VprFormulaReplace(formula_2, firstRow);
             }
             // Read Cells "G_" if value not empty then continue our work
             string formula_3 = worksheet.Cells[firstRow, 7]?.FormulaLocal;
             if (formula_3 != String.Empty)
             {
-                textBoxes[rowsArray, 2].Text = Replace.VprFormulaReplace(formula_3, firstRow);
+                textBoxes[rowsArray, 2].Text = VprFormulaReplace(formula_3, firstRow);
             }
+        }
+
+        /// <summary>
+        /// Фнкцция замены для ВПР при считывании
+        /// </summary>
+        /// <param name="mReplase"></param>
+        /// <param name="rows"></param>
+        /// <returns></returns>
+        public static string VprFormulaReplace(string mReplase, int rows)
+        {
+            return mReplase.Replace("=ВПР(A" + rows.ToString(), "=ВПР(A{0}");
         }
 
         /// <summary>

@@ -7,7 +7,7 @@ namespace ExcelMacroAdd.Functions
 {
     internal class Linker : AbstractFunctions
     {
-        protected internal override void Start()
+        public sealed override void Start()
         {    
             //Создаем коллекцию
             List<int> L = new List<int>();

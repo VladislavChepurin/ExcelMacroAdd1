@@ -1,12 +1,14 @@
-﻿using ExcelMacroAdd.Forms;
+﻿using ExcelMacroAdd.AccessLayer;
+using ExcelMacroAdd.DataLayer.Entity;
+using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.ProxyObjects;
 using ExcelMacroAdd.Serializable;
-using ExcelMacroAdd.Services;
 using ExcelMacroAdd.Servises;
 using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,20 +19,27 @@ namespace ExcelMacroAdd
         private readonly string _jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appSettings.json");         
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
-        {
+        {     
             AppSettingsDeserialize app= new AppSettingsDeserialize(_jsonFilePath);       
             var settings = app.GetSettingsModels();
-            var resourcesForm1 = settings.ResourcesForm1;
+            var resources = settings.Resources;
             var resourcesForm2 = settings.ResourcesForm2;
-            var resourcesDBConect = settings.ResourcesDBConect;
 
-            DataInXmlProxy dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());          
-            DBConectProxy dBConect = new DBConectProxy(DBConect.GetConnectionInstance(resourcesDBConect));
-
+            DataInXmlProxy dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());
+            AccessData accessData = new AccessData();
+                  
+            new Thread(() =>
+            {
+                using (DataContext db = new DataContext())
+                {
+                    db.Switch.Select(x => x.Id).ToList();
+                }
+            }).Start();       
+            
             // Заполнение паспортов
             button1.Click += (s, a) =>
             {
-                FillingOutThePassport fillingOutThePassport = new FillingOutThePassport(dBConect, resourcesForm1);
+                FillingOutThePassport fillingOutThePassport = new FillingOutThePassport(resources);
                 fillingOutThePassport.Start();
             };
 
@@ -49,19 +58,19 @@ namespace ExcelMacroAdd
        
             //Корпуса щитов
             button4.Click += (s, a) => {
-                BoxShield boxShield = new BoxShield(dBConect);
+                BoxShield boxShield = new BoxShield(accessData, resources);
                 boxShield.Start();
             };
           
             // Занесение в базу данных корпуса
             button5.Click += (s, a) => {
-                AddBoxDB addBoxDB = new AddBoxDB(dBConect);
+                AddBoxDB addBoxDB = new AddBoxDB(accessData, resources);
                 addBoxDB.Start();
             };
             // Корректировка записей в БД
             button6.Click += (s, a) =>
             {
-                CorectDB corectDB = new CorectDB(dBConect);
+                CorectDB corectDB = new CorectDB(accessData, resources);
                 corectDB.Start();
             };
             //Разметка расчетов
@@ -123,7 +132,7 @@ namespace ExcelMacroAdd
             {
                 await Task.Run(() =>
                 {
-                    Form2 fs = new Form2(dBConect, dataInXml, resourcesForm2);
+                    Form2 fs = new Form2(accessData, dataInXml, resourcesForm2);
                     fs.ShowDialog();
                     Thread.Sleep(5000);
                 });
