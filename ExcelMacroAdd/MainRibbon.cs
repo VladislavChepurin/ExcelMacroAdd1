@@ -16,7 +16,7 @@ namespace ExcelMacroAdd
 {
     public partial class MainRibbon
     {
-        private readonly string _jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appSettings.json");         
+        private readonly string _jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/appSettings.json");         
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {     

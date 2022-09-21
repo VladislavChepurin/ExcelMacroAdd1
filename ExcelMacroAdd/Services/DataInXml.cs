@@ -12,7 +12,7 @@ namespace ExcelMacroAdd.Servises
     public class DataInXml: IDataInXml
     {
         // Folders AppData content Settings.xml
-        readonly string file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings.xml");
+        readonly string file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/Settings.xml");
         public Vendor ReadElementXml(string vendor, Vendor[] dataXmlContinue)
         {
             return dataXmlContinue.Where(p => p.VendorAttribute == RepleceVendorTable()[vendor]).Single();
