@@ -30,10 +30,14 @@ namespace ExcelMacroAdd
                   
             new Thread(() =>
             {
-                using (DataContext db = new DataContext())
+                if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/BdMacro.sqlite")))
                 {
-                    db.Switch.Select(x => x.Id).ToList();
+                    using (DataContext db = new DataContext())
+                    {
+                        db.Switch.Select(x => x.Id).ToList();
+                    }
                 }
+  
             }).Start();       
             
             // Заполнение паспортов
@@ -156,7 +160,14 @@ namespace ExcelMacroAdd
                     about.ShowDialog();
                     Thread.Sleep(5000);
                 });
-            };            
+            };
+
+            button33.Click += (s, a) =>
+            {
+                System.Diagnostics.Process.Start("explorer.exe", AppDomain.CurrentDomain.BaseDirectory);
+            };
+
+
 
             GetValuteTSB getRate = new GetValuteTSB
             {
@@ -175,6 +186,6 @@ namespace ExcelMacroAdd
             this.label1.Label = "Доллар = " + usdValute;
             this.label2.Label = "ЕВРО     = " + evroValute;
             this.label3.Label = "Юань    = " + cnhValute;
-        }              
+        }
     }       
 }
