@@ -108,27 +108,27 @@ namespace ExcelMacroAdd
             };               
             // Вставка формул IEK
             button20.Click += (s, a) => {
-                WriteExcel writeExcel = new WriteExcel(dataInXml, "IEK");
+                WriteExcel writeExcel = new WriteExcel(dataInXml, "Iek");
                 writeExcel.Start();       
             };
             // Вставка формул EKF
             button21.Click += (s, a) => {
-                WriteExcel writeExcel = new WriteExcel(dataInXml, "EKF");
+                WriteExcel writeExcel = new WriteExcel(dataInXml, "Ekf");
                 writeExcel.Start();
             };
             // Вставка формул DKC
             button22.Click += (s, a) => {
-                WriteExcel writeExcel = new WriteExcel(dataInXml, "DKC");
+                WriteExcel writeExcel = new WriteExcel(dataInXml, "Dkc");
                 writeExcel.Start();
             };
             // Вставка формул KEAZ
             button23.Click += (s, a) => {
-                WriteExcel writeExcel = new WriteExcel(dataInXml, "KEAZ");
+                WriteExcel writeExcel = new WriteExcel(dataInXml, "Keaz");
                 writeExcel.Start();   
             };
             // Вставка формул DEKraft
             button24.Click += (s, a) => {
-                WriteExcel writeExcel = new WriteExcel(dataInXml, "DEKraft");
+                WriteExcel writeExcel = new WriteExcel(dataInXml, "Dekraft");
                 writeExcel.Start();
             };
             // Модульные аппрараты

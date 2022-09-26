@@ -37,7 +37,7 @@
     <PublishUrl>опубликовать\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>1.7.1.3</ApplicationVersion>
+    <ApplicationVersion>1.7.1.4</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -480,7 +480,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>2CC6C49E790572A918D81B5C3F6C253F4EAB6257</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>A0A04B7239022934E64FE406A1F83599E3E51B2B</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

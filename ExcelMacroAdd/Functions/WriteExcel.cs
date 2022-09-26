@@ -65,6 +65,7 @@ namespace ExcelMacroAdd.Functions
             Dictionary<string, string> disconaryVendor = new Dictionary<string, string>()
             {
                 {"Iek", "IEK"},
+                {"Ekf", "EKF"},
                 {"IekVa47", "IEK"},
                 {"IekVa47m", "IEK"},
                 {"IekArmat", "IEK"},
