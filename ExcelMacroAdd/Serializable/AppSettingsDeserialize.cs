@@ -6,17 +6,17 @@ namespace ExcelMacroAdd.Serializable
 {
     public class AppSettingsDeserialize
     {
-        private readonly string _jsonPatch;
+        private readonly string jsonPatch;
 
         public AppSettingsDeserialize(string jsonPatch)
         {
-            _jsonPatch = jsonPatch;
+            this.jsonPatch = jsonPatch;
         }
             
         public AppSettings GetSettingsModels()
         {           
             JsonSerializer serializer = new JsonSerializer();
-            using (StreamReader sw = new StreamReader(_jsonPatch))
+            using (StreamReader sw = new StreamReader(jsonPatch))
             {
                 using (JsonReader reader = new JsonTextReader(sw))
                 {

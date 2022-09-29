@@ -1,5 +1,4 @@
 ﻿using ExcelMacroAdd.Interfaces;
-using ExcelMacroAdd.Servises;
 using ExcelMacroAdd.UserVariables;
 using Microsoft.Office.Interop.Excel;
 using System;
@@ -165,56 +164,56 @@ namespace ExcelMacroAdd.Forms
                             textBox1.Text = vendor.Formula_1;
                             textBox2.Text = vendor.Formula_2;
                             textBox3.Text = vendor.Formula_3;
-                            textBox4.Text = vendor.Discont.ToString();
+                            textBox4.Text = vendor.Discount.ToString();
                             label33.Text = vendor.Date;
                             break;
                         case "EKF":
                             textBox5.Text = vendor.Formula_1;
                             textBox6.Text = vendor.Formula_2;
                             textBox7.Text = vendor.Formula_3;
-                            textBox8.Text = vendor.Discont.ToString();
+                            textBox8.Text = vendor.Discount.ToString();
                             label34.Text = vendor.Date;
                             break;
                         case "DKC":
                             textBox9.Text = vendor.Formula_1;
                             textBox10.Text = vendor.Formula_2;
                             textBox11.Text = vendor.Formula_3;
-                            textBox12.Text = vendor.Discont.ToString();
+                            textBox12.Text = vendor.Discount.ToString();
                             label35.Text = vendor.Date;
                             break;
                         case "KEAZ":
                             textBox13.Text = vendor.Formula_1;
                             textBox14.Text = vendor.Formula_2;
                             textBox15.Text = vendor.Formula_3;
-                            textBox16.Text = vendor.Discont.ToString();
+                            textBox16.Text = vendor.Discount.ToString();
                             label36.Text = vendor.Date;
                             break;
                         case "DEKraft":
                             textBox17.Text = vendor.Formula_1;
                             textBox18.Text = vendor.Formula_2;
                             textBox19.Text = vendor.Formula_3;
-                            textBox20.Text = vendor.Discont.ToString();
+                            textBox20.Text = vendor.Discount.ToString();
                             label37.Text = vendor.Date;
                             break;
                         case "TDM":
                             textBox21.Text = vendor.Formula_1;
                             textBox22.Text = vendor.Formula_2;
                             textBox23.Text = vendor.Formula_3;
-                            textBox24.Text = vendor.Discont.ToString();
+                            textBox24.Text = vendor.Discount.ToString();
                             label38.Text = vendor.Date;
                             break;
                         case "ABB":
                             textBox25.Text = vendor.Formula_1;
                             textBox26.Text = vendor.Formula_2;
                             textBox27.Text = vendor.Formula_3;
-                            textBox28.Text = vendor.Discont.ToString();
+                            textBox28.Text = vendor.Discount.ToString();
                             label39.Text = vendor.Date;
                             break;
                         case "Schneider":
                             textBox29.Text = vendor.Formula_1;
                             textBox30.Text = vendor.Formula_2;
                             textBox31.Text = vendor.Formula_3;
-                            textBox32.Text = vendor.Discont.ToString();
+                            textBox32.Text = vendor.Discount.ToString();
                             label40.Text = vendor.Date;
                             break;
                         default:

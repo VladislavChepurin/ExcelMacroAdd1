@@ -27,15 +27,14 @@ namespace ExcelMacroAdd.Forms
         private object format = Type.Missing;
         private object encoding = Type.Missing;
         private object oVisible = Type.Missing;
-        private object openConflictDocument = Type.Missing;
         private object openAndRepair = Type.Missing;
         private object documentDirection = Type.Missing;
         private object noEncodingDialog = false;
         private object xmlTransform = Type.Missing;
-        private object replaceTypeObj = Word.WdReplace.wdReplaceAll;
+        private object replaceTypeObj = WdReplace.wdReplaceAll;
         private object wordMissing = Missing.Value;
         private readonly IResources resources;
-        private readonly string PPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
+        private readonly string pPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
 
         internal Form1(IResources resources)
         {
@@ -46,14 +45,11 @@ namespace ExcelMacroAdd.Forms
         private void Form1_Load(object sender, EventArgs e)
         {
             Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
-            Workbook workBook = Globals.ThisAddIn.GetActiveWorkBook();
             Excel.Range cell = Globals.ThisAddIn.GetActiveCell();
 
-            int firstRow, countRow, endRow;
-
-            firstRow = cell.Row;                 // Вычисляем верхний элемент
-            countRow = cell.Rows.Count;          // Вычисляем кол-во выделенных строк
-            endRow = firstRow + countRow;
+            var firstRow = cell.Row; // Вычисляем верхний элемент
+            var countRow = cell.Rows.Count; // Вычисляем кол-во выделенных строк
+            var endRow = firstRow + countRow;
 
             progressBar1.Minimum = 0;
             progressBar1.Maximum = countRow;
@@ -65,7 +61,7 @@ namespace ExcelMacroAdd.Forms
                //Инициализируем параметры Word
                 Word.Application applicationWord = new Word.Application();
                 // Переменная объект документа
-                Word.Document document;               
+                Document document;               
 
                 try
                 {
@@ -74,35 +70,36 @@ namespace ExcelMacroAdd.Forms
                     {
                         Object filename;
                         // Преобразование типов для определения формата сохранения 
-                        if (int.TryParse(worksheet.Cells[firstRow, 14].Value2.ToString(), out int result) && result < resources.HeihgtMaxBox)
+                        if (int.TryParse(worksheet.Cells[firstRow, 14].Value2.ToString(), out int result) && result < resources.HeightMaxBox)
                         {
                             // переменная для открытия Word
-                            filename = Path.Combine(PPath, resources.TempleteWall);
+                            filename = Path.Combine(pPath, resources.TemplateWall);
                         }
                         else
                         {
                             // переменная для открытия Word
-                            filename = Path.Combine(PPath, resources.TempleteFloor);
+                            filename = Path.Combine(pPath, resources.TemplateFloor);
                         }
 
-                        string numberSave = Convert.ToString(worksheet.Cells[firstRow, 21].Value2);
-                        string sTY = Convert.ToString(worksheet.Cells[firstRow, 8].Value2);
-                        string sIcu = (Convert.ToString(worksheet.Cells[firstRow, 10].Value2));
-                        string sIP = Convert.ToString(worksheet.Cells[firstRow, 11].Value2);
-                        string sGab = (Convert.ToString(worksheet.Cells[firstRow, 14].Value2) + "x" + Convert.ToString(worksheet.Cells[firstRow, 15].Value2) +
-                            "x" + Convert.ToString(worksheet.Cells[firstRow, 16].Value2));
-                        string sMark = Convert.ToString(worksheet.Cells[firstRow, 4].Value2);
-                        string sNum = Convert.ToString(worksheet.Cells[firstRow, 21].Value2);
-                        string sKlima = Convert.ToString(worksheet.Cells[firstRow, 12].Value2);
-                        string sUe = (Convert.ToString(worksheet.Cells[firstRow, 9].Value2));
-                        string sGround = Convert.ToString(worksheet.Cells[firstRow, 28].Value2);
-                        string sName = Convert.ToString(worksheet.Cells[firstRow, 6].Value2);
-                        string sPaste = FuncReplece(sName ?? String.Empty); // ссылка на метод замены
-                        string sZapol = Convert.ToString(worksheet.Cells[firstRow, 7].Value2);
-                        string sSklon = FuncReplece(sZapol ?? String.Empty); // ссылка на метод замены
-                        string sIsp = Convert.ToString(worksheet.Cells[firstRow, 27].Value2);
-                        string sKorp = Convert.ToString(worksheet.Cells[firstRow, 29].Value2);
-                        string nameFolderSafe = Convert.ToString(worksheet.Cells[firstRow, 1].Value2);
+                        string numberSave = worksheet.Cells[firstRow, 21].Value2.ToString();
+                        string sTy = worksheet.Cells[firstRow, 8].Value2.ToString();
+                        string sIcu = worksheet.Cells[firstRow, 10].Value2.ToString();
+                        string sIp = worksheet.Cells[firstRow, 11].Value2.ToString();
+                        string sGab = worksheet.Cells[firstRow, 14].Value2.ToString() + "x"
+                                    + worksheet.Cells[firstRow, 15].Value2.ToString() + "x"
+                                    + worksheet.Cells[firstRow, 16].Value2.ToString();
+                        string sMark = worksheet.Cells[firstRow, 4].Value2.ToString();
+                        string sNum = worksheet.Cells[firstRow, 21].Value2.ToString();
+                        string sClimate = worksheet.Cells[firstRow, 12].Value2.ToString();
+                        string sUe = worksheet.Cells[firstRow, 9].Value2.ToString();
+                        string sGround = worksheet.Cells[firstRow, 28].Value2.ToString();
+                        string sName = worksheet.Cells[firstRow, 6].Value2.ToString();
+                        string sPaste = FuncReplace(sName ?? string.Empty); // ссылка на метод замены
+                        string firstWords = worksheet.Cells[firstRow, 7].Value2.ToString();
+                        string secondWords = FuncReplace(firstWords ?? string.Empty); // ссылка на метод замены
+                        string sIsp = worksheet.Cells[firstRow, 27].Value2.ToString();
+                        string sMaterial = worksheet.Cells[firstRow, 29].Value2.ToString();
+                        string nameFolderSafe = worksheet.Cells[firstRow, 1].Value2.ToString();
 
                         //Открываем Word
                         document = applicationWord.Documents.Open(filename, confirmConversions, readOnly, addToRecentFiles, passwordDocument, passwordTemplate,
@@ -110,17 +107,17 @@ namespace ExcelMacroAdd.Forms
                         noEncodingDialog, xmlTransform);
                         applicationWord.Visible = false;
                         //Инициализация метода Find
-                        Word.Find find = applicationWord.Selection.Find;
+                        Find find = applicationWord.Selection.Find;
 
                         // Замены ТУ
                         find.Execute("#ТУ", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sTY, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sTy, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Ток
                         find.Execute("#Ток", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
                         sIcu, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены IP
                         find.Execute("#IP", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sIP, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sIp, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Габарит
                         find.Execute("#Габарит", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
                         sGab, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
@@ -132,7 +129,7 @@ namespace ExcelMacroAdd.Forms
                         sNum, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Климат
                         find.Execute("#Климат", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sKlima, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        sClimate, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Заземление
                         find.Execute("#Заземление", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
                         sGround, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
@@ -144,10 +141,10 @@ namespace ExcelMacroAdd.Forms
                         sPaste, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Заполнение
                         find.Execute("#Заполнение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sZapol, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        firstWords, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замена Склонение (необходим метод замены)
                         find.Execute("#Склонение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sSklon, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        secondWords, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         // Замены Напряжение
                         if (sUe == "380")
                         {
@@ -181,7 +178,7 @@ namespace ExcelMacroAdd.Forms
                             "монтажной плате, din-рейках", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
                         }
                         // Замены Материал
-                        if (sKorp == "Металл")
+                        if (sMaterial == "Металл")
                         {
                             find.Execute("#Корпус", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
                             "металлическом", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
@@ -217,18 +214,18 @@ namespace ExcelMacroAdd.Forms
                         firstRow++;
 
                         // Работа с элементами формы через делегат
-                        this.Invoke((MethodInvoker)delegate ()
+                        this.Invoke((MethodInvoker)delegate
                         {
                             progressBar1.PerformStep();
-                            label1.Text = $"Подождите пожайлуста, идет заполнение паспортов {++progressValue}/{countRow}.";
+                            label1.Text = $@"Подождите пожайлуста, идет заполнение паспортов {++progressValue}/{countRow}.";
                         });
                     }
                     while (endRow > firstRow);
 
                     // Работа с элементами формы через делегат
-                    this.Invoke((MethodInvoker)delegate ()
+                    this.Invoke((MethodInvoker)delegate
                     {
-                        label1.Text = "Паспота заполнены. Ты молодец";
+                        label1.Text = @"Паспота заполнены. Ты молодец";
                         button1.Enabled = true;
                     });
                     applicationWord.Quit();
@@ -236,8 +233,8 @@ namespace ExcelMacroAdd.Forms
                 catch (COMException)
                 {
                     MessageBox.Show(
-                    "Проверьте имя проекта внимательно,\n экстрасенсы говорят что проблема в первом столбце.",
-                    "Ошибка надстройки",
+                    $@"Проверьте имя проекта внимательно,{Environment.NewLine} экстрасенсы говорят что проблема в первом столбце.",
+                    @"Ошибка надстройки",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error,
                     MessageBoxDefaultButton.Button1,
@@ -248,8 +245,8 @@ namespace ExcelMacroAdd.Forms
                 catch (RuntimeBinderException)
                 {
                     MessageBox.Show(
-                    "Проверьте заполнение всех столбцов,\n где-то нехватает данных.",
-                    "Ошибка надстройки",
+                    $@"Проверьте заполнение всех столбцов,{Environment.NewLine} где-то нехватает данных.",
+                    @"Ошибка надстройки",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error,
                     MessageBoxDefaultButton.Button1,
@@ -261,7 +258,7 @@ namespace ExcelMacroAdd.Forms
                 {
                     MessageBox.Show(
                     exception.ToString(),
-                    "Ошибка надстройки",
+                    @"Ошибка надстройки",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error,
                     MessageBoxDefaultButton.Button1,
@@ -303,7 +300,7 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-        private string FuncReplece(string mReplase)                          // Функция замены
+        private string FuncReplace(string mReplase)                          // Функция замены
         {
             return mReplase.Replace("Щиток", "Щитка").Replace("Щит", "Щита").Replace("Шкаф", "Шкафа").Replace("Устройство", "Устройства").Replace("Корпус", "Корпуса").
                 Replace("Ящик", "Ящика").Replace("Бокс", "Бокса").Replace("Панель", "Панели").Replace("распределительный", "распределительного");

@@ -6,8 +6,8 @@ namespace ExcelMacroAdd.Functions
     {
         public sealed override void Start()
         {
-            cell.Value = cell.Value;                            //Удаляем формулы
-            worksheet.get_Range("A1", Type.Missing).Select();   //Фокус на ячейку А1   
+            Cell.Value = Cell.Value;                            //Удаляем формулы
+            Worksheet.Range["A1", Type.Missing].Select();   //Фокус на ячейку А1   
         }
     }
 }

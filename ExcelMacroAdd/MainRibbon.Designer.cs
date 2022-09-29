@@ -37,15 +37,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainRibbon));
             this.tab1 = this.Factory.CreateRibbonTab();
             this.Группа1 = this.Factory.CreateRibbonGroup();
-            this.separator1 = this.Factory.CreateRibbonSeparator();
-            this.group3 = this.Factory.CreateRibbonGroup();
-            this.separator2 = this.Factory.CreateRibbonSeparator();
-            this.group2 = this.Factory.CreateRibbonGroup();
-            this.label1 = this.Factory.CreateRibbonLabel();
-            this.label2 = this.Factory.CreateRibbonLabel();
-            this.label3 = this.Factory.CreateRibbonLabel();
-            this.group1 = this.Factory.CreateRibbonGroup();
-            this.button33 = this.Factory.CreateRibbonButton();
             this.button1 = this.Factory.CreateRibbonButton();
             this.button2 = this.Factory.CreateRibbonButton();
             this.button3 = this.Factory.CreateRibbonButton();
@@ -54,17 +45,26 @@
             this.button6 = this.Factory.CreateRibbonButton();
             this.button7 = this.Factory.CreateRibbonButton();
             this.button8 = this.Factory.CreateRibbonButton();
+            this.separator1 = this.Factory.CreateRibbonSeparator();
             this.button9 = this.Factory.CreateRibbonButton();
             this.button10 = this.Factory.CreateRibbonButton();
             this.button11 = this.Factory.CreateRibbonButton();
+            this.group3 = this.Factory.CreateRibbonGroup();
             this.button20 = this.Factory.CreateRibbonButton();
             this.button21 = this.Factory.CreateRibbonButton();
             this.button22 = this.Factory.CreateRibbonButton();
             this.button23 = this.Factory.CreateRibbonButton();
             this.button24 = this.Factory.CreateRibbonButton();
+            this.separator2 = this.Factory.CreateRibbonSeparator();
             this.button30 = this.Factory.CreateRibbonButton();
             this.button31 = this.Factory.CreateRibbonButton();
+            this.group2 = this.Factory.CreateRibbonGroup();
+            this.label1 = this.Factory.CreateRibbonLabel();
+            this.label2 = this.Factory.CreateRibbonLabel();
+            this.label3 = this.Factory.CreateRibbonLabel();
+            this.group1 = this.Factory.CreateRibbonGroup();
             this.button32 = this.Factory.CreateRibbonButton();
+            this.button33 = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.Группа1.SuspendLayout();
             this.group3.SuspendLayout();
@@ -97,64 +97,6 @@
             this.Группа1.Items.Add(this.button11);
             this.Группа1.Label = "Базовые макросы";
             this.Группа1.Name = "Группа1";
-            // 
-            // separator1
-            // 
-            this.separator1.Name = "separator1";
-            // 
-            // group3
-            // 
-            this.group3.Items.Add(this.button20);
-            this.group3.Items.Add(this.button21);
-            this.group3.Items.Add(this.button22);
-            this.group3.Items.Add(this.button23);
-            this.group3.Items.Add(this.button24);
-            this.group3.Items.Add(this.separator2);
-            this.group3.Items.Add(this.button30);
-            this.group3.Items.Add(this.button31);
-            this.group3.Label = "Макросы для расчетов";
-            this.group3.Name = "group3";
-            // 
-            // separator2
-            // 
-            this.separator2.Name = "separator2";
-            // 
-            // group2
-            // 
-            this.group2.Items.Add(this.label1);
-            this.group2.Items.Add(this.label2);
-            this.group2.Items.Add(this.label3);
-            this.group2.Label = "Курсы валют ЦБ РФ";
-            this.group2.Name = "group2";
-            // 
-            // label1
-            // 
-            this.label1.Label = "label1";
-            this.label1.Name = "label1";
-            // 
-            // label2
-            // 
-            this.label2.Label = "label2";
-            this.label2.Name = "label2";
-            // 
-            // label3
-            // 
-            this.label3.Label = "label3";
-            this.label3.Name = "label3";
-            // 
-            // group1
-            // 
-            this.group1.Items.Add(this.button32);
-            this.group1.Items.Add(this.button33);
-            this.group1.Name = "group1";
-            // 
-            // button33
-            // 
-            this.button33.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button33.Image = global::ExcelMacroAdd.Properties.Resources.Open;
-            this.button33.Label = "Open dir";
-            this.button33.Name = "button33";
-            this.button33.ShowImage = true;
             // 
             // button1
             // 
@@ -220,6 +162,10 @@
             this.button8.Name = "button8";
             this.button8.ShowImage = true;
             // 
+            // separator1
+            // 
+            this.separator1.Name = "separator1";
+            // 
             // button9
             // 
             this.button9.Image = global::ExcelMacroAdd.Properties.Resources._970;
@@ -240,6 +186,19 @@
             this.button11.Label = "Шрифт";
             this.button11.Name = "button11";
             this.button11.ShowImage = true;
+            // 
+            // group3
+            // 
+            this.group3.Items.Add(this.button20);
+            this.group3.Items.Add(this.button21);
+            this.group3.Items.Add(this.button22);
+            this.group3.Items.Add(this.button23);
+            this.group3.Items.Add(this.button24);
+            this.group3.Items.Add(this.separator2);
+            this.group3.Items.Add(this.button30);
+            this.group3.Items.Add(this.button31);
+            this.group3.Label = "Макросы для расчетов";
+            this.group3.Name = "group3";
             // 
             // button20
             // 
@@ -281,6 +240,10 @@
             this.button24.Name = "button24";
             this.button24.ShowImage = true;
             // 
+            // separator2
+            // 
+            this.separator2.Name = "separator2";
+            // 
             // button30
             // 
             this.button30.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -297,6 +260,35 @@
             this.button31.Name = "button31";
             this.button31.ShowImage = true;
             // 
+            // group2
+            // 
+            this.group2.Items.Add(this.label1);
+            this.group2.Items.Add(this.label2);
+            this.group2.Items.Add(this.label3);
+            this.group2.Label = "Курсы валют ЦБ РФ";
+            this.group2.Name = "group2";
+            // 
+            // label1
+            // 
+            this.label1.Label = "label1";
+            this.label1.Name = "label1";
+            // 
+            // label2
+            // 
+            this.label2.Label = "label2";
+            this.label2.Name = "label2";
+            // 
+            // label3
+            // 
+            this.label3.Label = "label3";
+            this.label3.Name = "label3";
+            // 
+            // group1
+            // 
+            this.group1.Items.Add(this.button32);
+            this.group1.Items.Add(this.button33);
+            this.group1.Name = "group1";
+            // 
             // button32
             // 
             this.button32.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -304,6 +296,14 @@
             this.button32.Label = "About";
             this.button32.Name = "button32";
             this.button32.ShowImage = true;
+            // 
+            // button33
+            // 
+            this.button33.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button33.Image = global::ExcelMacroAdd.Properties.Resources.Open;
+            this.button33.Label = "Open dir";
+            this.button33.Name = "button33";
+            this.button33.ShowImage = true;
             // 
             // MainRibbon
             // 

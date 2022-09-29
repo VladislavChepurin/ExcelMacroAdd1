@@ -3,16 +3,16 @@ using System.Data;
 using System.Net;
 using System.Threading;
 
-namespace ExcelMacroAdd.Servises
+namespace ExcelMacroAdd.Services
 {
     /// <summary>
     /// Класс запроса курса валют
     /// </summary>
-    public class GetValuteTSB
+    public class GetCurrencyTsb
     {
-        public delegate void ValuteUSD(double usdValute, double evroValute, double cnhValute);
+        public delegate void Currency(double usdCurrency, double euroCurrency, double cnhCurrency);
 
-        public ValuteUSD ValuteUSDHandler { get; set; }
+        public Currency CurrencyHandler { get; set; }
 
         public void Start()
         {
@@ -21,7 +21,7 @@ namespace ExcelMacroAdd.Servises
                 try
                 {
                     double usdPrice = default,
-                           evroPrice = default,
+                           euroPrice = default,
                            cnyPrice = default;
 
                     string url = "http://www.cbr.ru/scripts/XML_daily.asp";
@@ -41,7 +41,7 @@ namespace ExcelMacroAdd.Servises
                         if (row["CharCode"].ToString() == "EUR")
                         {
                             int nominal = Convert.ToInt32(row["Nominal"]);
-                            evroPrice = Math.Round(Convert.ToDouble(row["Value"]) / nominal, 2);
+                            euroPrice = Math.Round(Convert.ToDouble(row["Value"]) / nominal, 2);
                         }
                         // Поиск Юаня
                         if (row["CharCode"].ToString() == "CNY")
@@ -50,11 +50,11 @@ namespace ExcelMacroAdd.Servises
                             cnyPrice = Math.Round(Convert.ToDouble(row["Value"]) / nominal, 2);
                         }
                     }
-                    ValuteUSDHandler(usdPrice, evroPrice, cnyPrice);
+                    CurrencyHandler(usdPrice, euroPrice, cnyPrice);
                 }
                 catch (WebException)
                 {
-                    ValuteUSDHandler(0.0, 0.0, 0.0);
+                    CurrencyHandler(0.0, 0.0, 0.0);
                 }
                 Thread.Sleep(60000);
             }       

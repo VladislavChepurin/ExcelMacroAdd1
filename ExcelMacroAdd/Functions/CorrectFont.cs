@@ -4,9 +4,9 @@
     {
         public sealed override void Start()
         {
-            var excelcells = application.Selection;
-            excelcells.Font.Name = "Calibri";
-            excelcells.Font.Size = 11;
+            var excelCells = Application.Selection;
+            excelCells.Font.Name = "Calibri";
+            excelCells.Font.Size = 11;
         }
     }
 }

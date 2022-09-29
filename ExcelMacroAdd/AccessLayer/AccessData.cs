@@ -6,25 +6,25 @@ using System.Threading.Tasks;
 
 namespace ExcelMacroAdd.AccessLayer
 {
-    public class AccessData : IForm2Data, IJornalData
+    public class AccessData : IForm2Data, IJournalData
     {
         public async Task<ISwitch> GetEntitySwitch(string current, string quantity)
         {
-            using (DataContext db = new DataContext())
+            using (var db = new DataContext())
             {
                 return await db.Switch.AsNoTracking().FirstOrDefaultAsync(p => p.Current == current && p.Quantity == quantity);
             }
         }
 
-        public async Task<IModul> GetEntityModul(string current, string kurve, string maxCurrent, string quantity)
+        public async Task<IModul> GetEntityModule(string current, string curve, string maxCurrent, string quantity)
         {
-            using (DataContext db = new DataContext())
+            using (var db = new DataContext())
             {
-                return await db.Modul.AsNoTracking().FirstOrDefaultAsync(p => p.Current == current && p.Kurve == kurve && p.MaxCurrent == maxCurrent && p.Quantity == quantity);
+                return await db.Modul.AsNoTracking().FirstOrDefaultAsync(p => p.Current == current && p.Kurve == curve && p.MaxCurrent == maxCurrent && p.Quantity == quantity);
             }
         }
 
-        public async Task<IJornalNKU> GetEntityJornal(string sArticle)
+        public async Task<IJournalNku> GetEntityJournal(string sArticle)
         {
             using (DataContext db = new DataContext())
             {
@@ -32,7 +32,7 @@ namespace ExcelMacroAdd.AccessLayer
             }
         }
 
-        public async void WriteUpdateDB(JornalNKU entity)
+        public async void WriteUpdateDB(JournalNku entity)
         {
             using (DataContext db = new DataContext())
             {
@@ -44,7 +44,7 @@ namespace ExcelMacroAdd.AccessLayer
             }
         }
 
-        public async void AddValueDB(JornalNKU entity)
+        public async void AddValueDB(JournalNku entity)
         {
             using (DataContext db = new DataContext())
             {

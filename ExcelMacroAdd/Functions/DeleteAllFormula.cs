@@ -7,14 +7,12 @@ namespace ExcelMacroAdd.Functions
     {
         public sealed override void Start()
         {
-            foreach (Excel.Worksheet sheet in workBook.Sheets)
+            foreach (Excel.Worksheet sheet in WorkBook.Sheets)
             {
                 sheet.Activate();
-                if (!(sheet.Index == 1))
-                {
-                    sheet.get_Range("A2", "G500").Value = sheet.get_Range("A2", "G500").Value;
-                    sheet.get_Range("A1", Type.Missing).Select();   //Фокус на ячейку А1
-                }
+                if (sheet.Index == 1) continue;
+                sheet.Range["A2", "G500"].Value = sheet.Range["A2", "G500"].Value;
+                sheet.Range["A1", Type.Missing].Select();   //Фокус на ячейку А1
             }
         }
     }

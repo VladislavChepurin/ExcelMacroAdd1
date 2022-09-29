@@ -6,14 +6,14 @@ namespace ExcelMacroAdd.Serializable.Entity
     [Serializable]
     public class ResourcesForm2 : IResourcesForm2
     {
-        public string[] CircuitBreakerCurrent { get; set;}
-        public string[] CircuitBreakerCurve { get; set; }
-        public string[] MaxCircuitBreakerCurrent { get; set; }
-        public string[] AmountOfPolesCircuitBreaker { get; set; }
-        public string[] CircuitBreakerVendor { get; set; }
-        public string[] LoadSwitchCurrent { get; set; }
-        public string[] AmountOfPolesLoadSwitch { get; set; }
-        public string[] LoadSwitchVendor { get; set; }
+        public object[] CircuitBreakerCurrent { get; set;}
+        public object[] CircuitBreakerCurve { get; set; }
+        public object[] MaxCircuitBreakerCurrent { get; set; }
+        public object[] AmountOfPolesCircuitBreaker { get; set; }
+        public object[] CircuitBreakerVendor { get; set; }
+        public object[] LoadSwitchCurrent { get; set; }
+        public object[] AmountOfPolesLoadSwitch { get; set; }
+        public object[] LoadSwitchVendor { get; set; }
 
         public ResourcesForm2(string[] circuitBreakerCurrent, string[] circuitBreakerCurve, string[] maxCircuitBreakerCurrent, string[] amountOfPolesCircuitBreaker,
                                     string[] circuitBreakerVendor, string[] loadSwitchCurrent, string[] amountOfPolesLoadSwitch, string[] loadSwitchVendor)

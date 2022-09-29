@@ -1,9 +1,8 @@
 ﻿using ExcelMacroAdd.Serializable.Entity;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace Searilizator
 {
@@ -15,15 +14,15 @@ namespace Searilizator
     {  
         static void Main()
         {
-            string[] circuitBreakerCurrent = new string[19] { "1", "2", "3", "4", "5", "6", "8", "10", "13", "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
-            string[] circuitBreakerCurve = new string[6] { "B", "C", "D", "K", "L", "Z" };
-            string[] maxCircuitBreakerCurrent = new string[4] { "4,5", "6", "10", "15" };
-            string[] amountOfPolesCircuitBreaker = new string[6] { "1", "2", "3", "4", "1N", "3N" };
-            string[] circuitBreakerVendor = new string[11] { "IEK BA47", "IEK BA47М", "IEK Armat", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DKC", "DEKraft", "Schneider", "TDM" };
+            string[] circuitBreakerCurrent = { "1", "2", "3", "4", "5", "6", "8", "10", "13", "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
+            string[] circuitBreakerCurve = { "B", "C", "D", "K", "L", "Z" };
+            string[] maxCircuitBreakerCurrent = { "4,5", "6", "10", "15" };
+            string[] amountOfPolesCircuitBreaker = { "1", "2", "3", "4", "1N", "3N" };
+            string[] circuitBreakerVendor = { "IEK BA47", "IEK BA47М", "IEK Armat", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DKC", "DEKraft", "Schneider", "TDM" };
             //Массивы параметров выключателей нагрузки
-            string[] loadSwitchCurrent = new string[10] { "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
-            string[] amountOfPolesLoadSwitch = new string[4] { "1", "2", "3", "4" };
-            string[] loadSwitchVendor = new string[8] { "IEK", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DEKraft", "Schneider", "TDM" };
+            string[] loadSwitchCurrent =  { "16", "20", "25", "32", "40", "50", "63", "80", "100", "125" };
+            string[] amountOfPolesLoadSwitch = { "1", "2", "3", "4" };
+            string[] loadSwitchVendor =  { "IEK", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DEKraft", "Schneider", "TDM" };
             ResourcesForm2 resourcesForm2 = new ResourcesForm2(circuitBreakerCurrent, circuitBreakerCurve,
                                                                                  maxCircuitBreakerCurrent, amountOfPolesCircuitBreaker,
                                                                                  circuitBreakerVendor, loadSwitchCurrent,

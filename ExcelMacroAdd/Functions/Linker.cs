@@ -10,73 +10,72 @@ namespace ExcelMacroAdd.Functions
         public sealed override void Start()
         {    
             //Создаем коллекцию
-            List<int> L = new List<int>();
+            List<int> list = new List<int>();
             // В коллекцию помещаем парсированые имена листов
-            foreach (Worksheet sheet in workBook.Sheets)
+            foreach (Worksheet sheet in WorkBook.Sheets)
             {
                 int.TryParse(sheet.Name, out int result);
-                L.Add(result);
+                list.Add(result);
             }
             //Проверяем на налиечие этих номеров в коллекции, если есть, то имя вкладке не присваиваем                 
-            if (!L.Contains(worksheet.Index - 1))
+            if (!list.Contains(Worksheet.Index - 1))
             {
                 //имя вкладки в зависимости от индекса
-                worksheet.Name = (worksheet.Index - 1).ToString();
+                Worksheet.Name = (Worksheet.Index - 1).ToString();
             }
 
             //состовляем надписи колонок           
-            worksheet.get_Range("A1", Type.Missing).Value2 = "Артикул";
-            worksheet.get_Range("B1", Type.Missing).Value2 = "Описание";
-            worksheet.get_Range("C1", Type.Missing).Value2 = "Кол-во";
-            worksheet.get_Range("D1", Type.Missing).Value2 = "Кратность";
-            worksheet.get_Range("E1", Type.Missing).Value2 = "Пр-ль";
-            worksheet.get_Range("F1", Type.Missing).Value2 = "Скидка";
-            worksheet.get_Range("G1", Type.Missing).Value2 = "Цена";
-            worksheet.get_Range("H1", Type.Missing).Value2 = "Цена со скидкой";
-            worksheet.get_Range("I1", Type.Missing).Value2 = "Стоимость";
+            Worksheet.Range["A1", Type.Missing].Value2 = "Артикул";
+            Worksheet.Range["B1", Type.Missing].Value2 = "Описание";
+            Worksheet.Range["C1", Type.Missing].Value2 = "Кол-во";
+            Worksheet.Range["D1", Type.Missing].Value2 = "Кратность";
+            Worksheet.Range["E1", Type.Missing].Value2 = "Пр-ль";
+            Worksheet.Range["F1", Type.Missing].Value2 = "Скидка";
+            Worksheet.Range["G1", Type.Missing].Value2 = "Цена";
+            Worksheet.Range["H1", Type.Missing].Value2 = "Цена со скидкой";
+            Worksheet.Range["I1", Type.Missing].Value2 = "Стоимость";
 
             //увеличиваем размер по ширине диапазон ячеек
-            worksheet.get_Range("A1", Type.Missing).EntireColumn.ColumnWidth = 21;
-            worksheet.get_Range("B1", Type.Missing).EntireColumn.ColumnWidth = 80;
-            worksheet.get_Range("C1", Type.Missing).EntireColumn.ColumnWidth = 10;
-            worksheet.get_Range("D1", "I1").EntireColumn.ColumnWidth = 13;
+            Worksheet.Range["A1", Type.Missing].EntireColumn.ColumnWidth = 21;
+            Worksheet.Range["B1", Type.Missing].EntireColumn.ColumnWidth = 80;
+            Worksheet.Range["C1", Type.Missing].EntireColumn.ColumnWidth = 10;
+            Worksheet.Range["D1", "I1"].EntireColumn.ColumnWidth = 13;
 
             //размечаем границы и правим шрифты
-            worksheet.get_Range("A1", "i500").Cells.Font.Name = "Calibri";
-            worksheet.get_Range("A1", "i500").Cells.Font.Size = 11;
+            Worksheet.Range["A1", "i500"].Cells.Font.Name = "Calibri";
+            Worksheet.Range["A1", "i500"].Cells.Font.Size = 11;
 
-            var excelcells = worksheet.get_Range("A1", "I11");
-            XlBordersIndex borderIndex;
+            var excelCells = Worksheet.Range["A1", "I11"];
 
-            borderIndex = XlBordersIndex.xlEdgeLeft; //Левая граница
-            excelcells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-            excelcells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-            excelcells.Borders[borderIndex].ColorIndex = 0;
+            var borderIndex = XlBordersIndex.xlEdgeLeft; //Левая граница
+            excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
+            excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
+            excelCells.Borders[borderIndex].ColorIndex = 0;
 
             borderIndex = XlBordersIndex.xlEdgeTop; //Верхняя граница
-            excelcells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-            excelcells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-            excelcells.Borders[borderIndex].ColorIndex = 0;
+            excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
+            excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
+            excelCells.Borders[borderIndex].ColorIndex = 0;
 
             borderIndex = XlBordersIndex.xlEdgeBottom; //Нижняя граница
-            excelcells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-            excelcells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-            excelcells.Borders[borderIndex].ColorIndex = 0;
+            excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
+            excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
+            excelCells.Borders[borderIndex].ColorIndex = 0;
 
             borderIndex = XlBordersIndex.xlEdgeRight;  //Правая граница
-            excelcells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-            excelcells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-            excelcells.Borders[borderIndex].ColorIndex = 0;
+            excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
+            excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
+            excelCells.Borders[borderIndex].ColorIndex = 0;
 
             borderIndex = XlBordersIndex.xlInsideHorizontal;  //Внутренняя горизонтальня граница
-            excelcells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-            excelcells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-            excelcells.Borders[borderIndex].ColorIndex = 0;
+            excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
+            excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
+            excelCells.Borders[borderIndex].ColorIndex = 0;
 
             borderIndex = XlBordersIndex.xlInsideVertical;  //Внутренняя горизонтальня граница
-            excelcells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-            excelcells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-            excelcells.Borders[borderIndex].ColorIndex = 0;
+            excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
+            excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
+            excelCells.Borders[borderIndex].ColorIndex = 0;
         }
     }
 }

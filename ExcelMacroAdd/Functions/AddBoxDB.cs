@@ -6,40 +6,38 @@ using System.Data;
 
 namespace ExcelMacroAdd.Functions
 {
-    internal class AddBoxDB : AbstractFunctions
+    internal class AddBoxDb : AbstractFunctions
     {
         private readonly IResources resources;
-        private readonly IJornalData jornalData;
+        private readonly IJournalData journalData;
 
-        public AddBoxDB(IJornalData jornalData, IResources resources)
+        public AddBoxDb(IJournalData journalData, IResources resources)
         {
-            this.jornalData = jornalData;
+            this.journalData = journalData;
             this.resources = resources;
         }
         public sealed override async void Start()
         {
-            if (application.ActiveWorkbook.Name != resources.NameFileJornal) // Проверка по имени книги
+            if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
             {
                 MessageWarning("Функция работает только в \"Журнале учета НКУ\" текущего года. \n Пожайлуста откройте необходимую книгу Excel.",
                     "Имя книги не совпадает с целевой");
                 return;
             }
-            int firstRow, countRow, endRow;
-            string sKlima, sReserve, sHeinght, sWidth, sDepth, sArticle, sExecution;
 
-            firstRow = cell.Row;                 // Вычисляем верхний элемент
-            countRow = cell.Rows.Count;          // Вычисляем кол-во выделенных строк
-            endRow = firstRow + countRow;
+            var firstRow = Cell.Row; // Вычисляем верхний элемент
+            var countRow = Cell.Rows.Count; // Вычисляем кол-во выделенных строк
+            var endRow = firstRow + countRow;
 
             do
             {
                 try
                 {
-                    sArticle = Convert.ToString(worksheet.Cells[firstRow, 26].Value2);
+                    string sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
 
-                    var jornalNKU = await jornalData.GetEntityJornal(sArticle);
+                    var journalNku = await journalData.GetEntityJournal(sArticle);
 
-                    if (!(jornalNKU is null))
+                    if (!(journalNku is null))
                     {
                         MessageWarning($"В базе данных уже есть такой артикул.\n Создавать новую запись не нужно. \nАртикул = {sArticle}",
                             "Ошибка записи!");
@@ -47,16 +45,16 @@ namespace ExcelMacroAdd.Functions
                         continue;
                     }
 
-                    int.TryParse(Convert.ToString(worksheet.Cells[firstRow, 11].Value2), out int sIP);
-                    sKlima = Convert.ToString(worksheet.Cells[firstRow, 12].Value2);
-                    sReserve = Convert.ToString(worksheet.Cells[firstRow, 13].Value2);
-                    sHeinght = Convert.ToString(worksheet.Cells[firstRow, 14].Value2);
-                    sWidth = Convert.ToString(worksheet.Cells[firstRow, 15].Value2);
-                    sDepth = Convert.ToString(worksheet.Cells[firstRow, 16].Value2);
-                    sArticle = Convert.ToString(worksheet.Cells[firstRow, 26].Value2);
-                    sExecution = Convert.ToString(worksheet.Cells[firstRow, 29].Value2);
+                    int.TryParse(Convert.ToString(Worksheet.Cells[firstRow, 11].Value2), out int sIp);
+                    string sClimate = Convert.ToString(Worksheet.Cells[firstRow, 12].Value2);
+                    string sReserve = Convert.ToString(Worksheet.Cells[firstRow, 13].Value2);
+                    string sHeight = Convert.ToString(Worksheet.Cells[firstRow, 14].Value2);
+                    string sWidth = Convert.ToString(Worksheet.Cells[firstRow, 15].Value2);
+                    string sDepth = Convert.ToString(Worksheet.Cells[firstRow, 16].Value2);
+                    sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
+                    string sExecution = Convert.ToString(Worksheet.Cells[firstRow, 29].Value2);
 
-                    if (sKlima == null || sReserve == null || sHeinght == null || sWidth == null || sDepth == null || sArticle == null || sExecution == null)
+                    if (sClimate == null || sReserve == null || sHeight == null || sWidth == null || sDepth == null || sArticle == null || sExecution == null)
                     {
                         MessageWarning($"Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n Артикул = {sArticle}",
                             "Ошибка записи");
@@ -64,12 +62,12 @@ namespace ExcelMacroAdd.Functions
                         continue;
                     }
 
-                    JornalNKU jornal = new JornalNKU()
+                    JournalNku journal = new JournalNku()
                     {
-                        Ip = sIP,
-                        Klima = sKlima,
+                        Ip = sIp,
+                        Climate = sClimate,
                         Reserve = sReserve,
-                        Height = sHeinght,
+                        Height = sHeight,
                         Width = sWidth,
                         Depth = sDepth,
                         Article = sArticle,
@@ -77,7 +75,7 @@ namespace ExcelMacroAdd.Functions
                         Vendor = "None"
                     };
 
-                    jornalData.AddValueDB(jornal);
+                    journalData.AddValueDB(journal);
 
                     MessageInformation($"Успешно записано в базу данных. Теперь доступна новая запись.\n Поздравляем! \nАртикул = {sArticle}",
                                "Запись успешна!");

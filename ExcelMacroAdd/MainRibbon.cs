@@ -4,35 +4,35 @@ using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.ProxyObjects;
 using ExcelMacroAdd.Serializable;
-using ExcelMacroAdd.Servises;
 using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ExcelMacroAdd.Services;
 
 namespace ExcelMacroAdd
 {
     public partial class MainRibbon
     {
-        private readonly string _jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/appSettings.json");         
+        private readonly string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/appSettings.json");         
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {     
-            AppSettingsDeserialize app= new AppSettingsDeserialize(_jsonFilePath);       
+            AppSettingsDeserialize app= new AppSettingsDeserialize(jsonFilePath);       
             var settings = app.GetSettingsModels();
             var resources = settings.Resources;
             var resourcesForm2 = settings.ResourcesForm2;
 
-            DataInXmlProxy dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());
-            AccessData accessData = new AccessData();
+            var dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());
+            var accessData = new AccessData();
                   
             new Thread(() =>
             {
                 if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/BdMacro.sqlite")))
                 {
-                    using (DataContext db = new DataContext())
+                    using (var db = new DataContext())
                     {
                         db.Switch.Select(x => x.Id).ToList();
                     }
@@ -43,92 +43,92 @@ namespace ExcelMacroAdd
             // Заполнение паспортов
             button1.Click += (s, a) =>
             {
-                FillingOutThePassport fillingOutThePassport = new FillingOutThePassport(resources);
+                var fillingOutThePassport = new FillingOutThePassport(resources);
                 fillingOutThePassport.Start();
             };
 
             //Удаление формул выделеной области
             button2.Click += (s, a) => {
-                DeleteFormula deleteFormula = new DeleteFormula();
+                var deleteFormula = new DeleteFormula();
                 deleteFormula.Start();
             };
 
             // Удаление формул на всех листах кроме первого
             button3.Click += (s, a) =>
             {
-                DeleteAllFormula deleteAllFormula = new DeleteAllFormula();
+                var deleteAllFormula = new DeleteAllFormula();
                 deleteAllFormula.Start();
             };     
        
             //Корпуса щитов
             button4.Click += (s, a) => {
-                BoxShield boxShield = new BoxShield(accessData, resources);
+                var boxShield = new BoxShield(accessData, resources);
                 boxShield.Start();
             };
           
             // Занесение в базу данных корпуса
             button5.Click += (s, a) => {
-                AddBoxDB addBoxDB = new AddBoxDB(accessData, resources);
-                addBoxDB.Start();
+                var addBoxDb = new AddBoxDb(accessData, resources);
+                addBoxDb.Start();
             };
             // Корректировка записей в БД
             button6.Click += (s, a) =>
             {
-                CorectDB corectDB = new CorectDB(accessData, resources);
-                corectDB.Start();
+                var correctDb = new CorrectDb(accessData, resources);
+                correctDb.Start();
             };
             //Разметка расчетов
             button7.Click += (s, a) => {
-                Linker linker = new Linker();
+                var linker = new Linker();
                 linker.Start();
             };
             // Правка расчетов
             button8.Click += (s, a) =>
             {
-                EditCalculation editCalculation = new EditCalculation();
+                var editCalculation = new EditCalculation();
                 editCalculation.Start();
             };
             // Разметка таблицы расчетов
             button9.Click += (s, a) =>
             {
-                CalculationMarkup calculationMarkup = new CalculationMarkup();
+                var calculationMarkup = new CalculationMarkup();
                 calculationMarkup.Start();
             };
             // Разметка границ
             button10.Click += (s, a) =>
             {
-                BordersTable bordersTable = new BordersTable();
+                var bordersTable = new BordersTable();
                 bordersTable.Start();  
             };
             // Исправление шрифтов
             button11.Click += (s, a) =>
             {
-                CorrectFont correctFont = new CorrectFont();
+                var correctFont = new CorrectFont();
                 correctFont.Start();
             };               
             // Вставка формул IEK
             button20.Click += (s, a) => {
-                WriteExcel writeExcel = new WriteExcel(dataInXml, "Iek");
+                var writeExcel = new WriteExcel(dataInXml, "Iek");
                 writeExcel.Start();       
             };
             // Вставка формул EKF
             button21.Click += (s, a) => {
-                WriteExcel writeExcel = new WriteExcel(dataInXml, "Ekf");
+                var writeExcel = new WriteExcel(dataInXml, "Ekf");
                 writeExcel.Start();
             };
             // Вставка формул DKC
             button22.Click += (s, a) => {
-                WriteExcel writeExcel = new WriteExcel(dataInXml, "Dkc");
+                var writeExcel = new WriteExcel(dataInXml, "Dkc");
                 writeExcel.Start();
             };
             // Вставка формул KEAZ
             button23.Click += (s, a) => {
-                WriteExcel writeExcel = new WriteExcel(dataInXml, "Keaz");
+                var writeExcel = new WriteExcel(dataInXml, "Keaz");
                 writeExcel.Start();   
             };
             // Вставка формул DEKraft
             button24.Click += (s, a) => {
-                WriteExcel writeExcel = new WriteExcel(dataInXml, "Dekraft");
+                var writeExcel = new WriteExcel(dataInXml, "Dekraft");
                 writeExcel.Start();
             };
             // Модульные аппрараты
@@ -156,7 +156,7 @@ namespace ExcelMacroAdd
             {
                 await Task.Run(() =>
                 {
-                    AboutBox1 about = new AboutBox1();
+                    var about = new AboutBox1();
                     about.ShowDialog();
                     Thread.Sleep(5000);
                 });
@@ -166,12 +166,10 @@ namespace ExcelMacroAdd
             {
                 System.Diagnostics.Process.Start("explorer.exe", AppDomain.CurrentDomain.BaseDirectory);
             };
-
-
-
-            GetValuteTSB getRate = new GetValuteTSB
+            
+            GetCurrencyTsb getRate = new GetCurrencyTsb
             {
-                ValuteUSDHandler = ShowValitePrice
+                CurrencyHandler = ShowCurrencyPrice
             };
             //В новом потоке запускаем метод получения данных от Центробанка
             new Thread(() =>
@@ -181,11 +179,11 @@ namespace ExcelMacroAdd
             }).Start();          
         }
         
-        private void ShowValitePrice(double usdValute, double evroValute, double cnhValute)
+        private void ShowCurrencyPrice(double usdCurrency, double euroCurrency, double cnhCurrency)
         {
-            this.label1.Label = "Доллар = " + usdValute;
-            this.label2.Label = "ЕВРО     = " + evroValute;
-            this.label3.Label = "Юань    = " + cnhValute;
+            this.label1.Label = "Доллар = " + usdCurrency;
+            this.label2.Label = "ЕВРО     = " + euroCurrency;
+            this.label3.Label = "Юань    = " + cnhCurrency;
         }
     }       
 }

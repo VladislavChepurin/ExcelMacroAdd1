@@ -11,23 +11,23 @@ namespace ExcelMacroAdd.DataLayer.Entity
             AppDomain.CurrentDomain.SetData("DataDirectory", path);
         }
 
-        public DbSet<JornalNKU> JornalNKU { get; set; }
+        public DbSet<JournalNku> JornalNKU { get; set; }
         public DbSet<Switch> Switch { get; set; }
         public DbSet<Modul> Modul { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {          
             //Настройка таблицы JornalNKUs
-            modelBuilder.Entity<JornalNKU>().Property(p => p.Id).HasColumnName("id");
-            modelBuilder.Entity<JornalNKU>().Property(p => p.Ip).HasColumnName("ip");
-            modelBuilder.Entity<JornalNKU>().Property(p => p.Klima).HasColumnName("klima");
-            modelBuilder.Entity<JornalNKU>().Property(p => p.Reserve).HasColumnName("reserve");
-            modelBuilder.Entity<JornalNKU>().Property(p => p.Height).HasColumnName("height");
-            modelBuilder.Entity<JornalNKU>().Property(p => p.Width).HasColumnName("width");
-            modelBuilder.Entity<JornalNKU>().Property(p => p.Depth).HasColumnName("depth");
-            modelBuilder.Entity<JornalNKU>().Property(p => p.Article).HasColumnName("article");
-            modelBuilder.Entity<JornalNKU>().Property(p => p.Execution).HasColumnName("execution");
-            modelBuilder.Entity<JornalNKU>().Property(p => p.Vendor).HasColumnName("vendor");
+            modelBuilder.Entity<JournalNku>().Property(p => p.Id).HasColumnName("id");
+            modelBuilder.Entity<JournalNku>().Property(p => p.Ip).HasColumnName("ip");
+            modelBuilder.Entity<JournalNku>().Property(p => p.Climate).HasColumnName("klima");
+            modelBuilder.Entity<JournalNku>().Property(p => p.Reserve).HasColumnName("reserve");
+            modelBuilder.Entity<JournalNku>().Property(p => p.Height).HasColumnName("height");
+            modelBuilder.Entity<JournalNku>().Property(p => p.Width).HasColumnName("width");
+            modelBuilder.Entity<JournalNku>().Property(p => p.Depth).HasColumnName("depth");
+            modelBuilder.Entity<JournalNku>().Property(p => p.Article).HasColumnName("article");
+            modelBuilder.Entity<JournalNku>().Property(p => p.Execution).HasColumnName("execution");
+            modelBuilder.Entity<JournalNku>().Property(p => p.Vendor).HasColumnName("vendor");
             
             //Настройка таблицы Switchs
             modelBuilder.Entity<Switch>().Property(p => p.Id).HasColumnName("id");

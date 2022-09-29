@@ -15,7 +15,7 @@ namespace ExcelMacroAdd.Functions
 
         public sealed override void Start()
         {
-            if (application.ActiveWorkbook.Name != resources.NameFileJornal) // Проверка по имени книги
+            if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
             {
                 MessageWarning("Функция работает только в \"Журнале учета НКУ\" текущего года. \n Пожайлуста откройте необходимую книгу Excel.",
                             "Имя книги не совпадает с целевой");

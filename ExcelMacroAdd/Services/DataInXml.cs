@@ -1,13 +1,14 @@
-﻿using ExcelMacroAdd.Interfaces;
-using ExcelMacroAdd.UserVariables;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.UserVariables;
 
-namespace ExcelMacroAdd.Servises
+namespace ExcelMacroAdd.Services
 {
     public class DataInXml: IDataInXml
     {
@@ -15,7 +16,7 @@ namespace ExcelMacroAdd.Servises
         readonly string file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/Settings.xml");
         public Vendor ReadElementXml(string vendor, Vendor[] dataXmlContinue)
         {
-            return dataXmlContinue.Where(p => p.VendorAttribute == RepleceVendorTable()[vendor]).Single();
+            return dataXmlContinue.Single(p => p.VendorAttribute == ReplaceVendorTable()[vendor]);
         }
 
         public Vendor[] ReadFileXml()
@@ -33,7 +34,7 @@ namespace ExcelMacroAdd.Servises
 
             try 
             {
-                // десериализуем объект
+                // десериализуем
                 using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
                 {
                     return xmlSerializer.Deserialize(fs) as Vendor[];                  
@@ -53,19 +54,19 @@ namespace ExcelMacroAdd.Servises
             if (index != null)
             {
                 // Записываем первую формулу
-                var formula_1 = index.Element("Formula_1");
-                if (formula_1 != null) formula_1.Value = data[0];
+                var formula1 = index.Element("Formula_1");
+                if (formula1 != null) formula1.Value = data[0];
                 // Записываем вторую формулу
-                var formula_2 = index.Element("Formula_2");
-                if (formula_2 != null) formula_2.Value = data[1];
+                var formula2 = index.Element("Formula_2");
+                if (formula2 != null) formula2.Value = data[1];
                 // Записываем третью формулу
-                var formula_3 = index.Element("Formula_3");
-                if (formula_3 != null) formula_3.Value = data[2];
+                var formula3 = index.Element("Formula_3");
+                if (formula3 != null) formula3.Value = data[2];
                 // Записываем скидку
-                var discont = index.Element("Discont");
-                if (discont != null) discont.Value = data[3];
+                var discount = index.Element("Discount");
+                if (discount != null) discount.Value = data[3];
                 // Записываем дату и время
-                DateTime localDate = DateTime.Now;
+
                 var date = index.Element("Date");
                 if (date != null) date.Value = data[4];        
                 // Сохраняем документ
@@ -87,16 +88,15 @@ namespace ExcelMacroAdd.Servises
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(Vendor[]), xOver);
 
-            Vendor[] vendor = new Vendor[8]
-            {
-                new Vendor("IEK", "_", "_", "_", 0, DateTime.Now.ToString()),
-                new Vendor("EKF", "_", "_", "_", 0, DateTime.Now.ToString()),
-                new Vendor("DKC", "_", "_", "_", 0, DateTime.Now.ToString()),
-                new Vendor("KEAZ", "_", "_", "_", 0, DateTime.Now.ToString()),
-                new Vendor("DEKraft", "_", "_", "_", 0, DateTime.Now.ToString()),
-                new Vendor("TDM", "_", "_", "_", 0, DateTime.Now.ToString()),
-                new Vendor("ABB", "_", "_", "_", 0, DateTime.Now.ToString()),
-                new Vendor("Schneider", "_", "_", "_", 0, DateTime.Now.ToString())
+            Vendor[] vendor = {
+                new Vendor("IEK", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
+                new Vendor("EKF", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
+                new Vendor("DKC", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
+                new Vendor("KEAZ", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
+                new Vendor("DEKraft", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
+                new Vendor("TDM", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
+                new Vendor("ABB", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
+                new Vendor("Schneider", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")))
             };
             // получаем поток, куда будем записывать сериализованный объект
             using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
@@ -108,11 +108,10 @@ namespace ExcelMacroAdd.Servises
         /// <summary>
         /// Функция замены для вставки вендора и запроса из XML
         /// </summary>
-        /// <param name="mReplase"></param>
         /// <returns></returns>
-        public static IDictionary<string, string> RepleceVendorTable()                         
+        public static IDictionary<string, string> ReplaceVendorTable()                         
         {
-            Dictionary<string, string> disconaryVendor = new Dictionary<string, string>()
+            Dictionary<string, string> dictionaryVendor = new Dictionary<string, string>()
             {
                 {"Iek", "IEK"},
                 {"Ekf", "EKF"},
@@ -128,7 +127,7 @@ namespace ExcelMacroAdd.Servises
                 {"Schneider", "Schneider"},
                 {"Tdm", "TDM"}               
             };
-            return disconaryVendor;
+            return dictionaryVendor;
         }
     }
 }

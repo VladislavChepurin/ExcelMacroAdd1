@@ -2,10 +2,10 @@
 {
     public interface IResources
     {
-        string NameFileJornal { get; set; }
-        int HeihgtMaxBox { get; set; }
-        string TempleteWall { get; set; }
-        string TempleteFloor { get; set; }
+        string NameFileJournal { get; set; }
+        int HeightMaxBox { get; set; }
+        string TemplateWall { get; set; }
+        string TemplateFloor { get; set; }
 
     }
 }
