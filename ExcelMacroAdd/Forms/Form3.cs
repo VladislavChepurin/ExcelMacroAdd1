@@ -2,8 +2,8 @@
 using ExcelMacroAdd.UserVariables;
 using Microsoft.Office.Interop.Excel;
 using System;
+using System.Globalization;
 using System.Windows.Forms;
-using Excel = Microsoft.Office.Interop.Excel;
 using Label = System.Windows.Forms.Label;
 using TextBox = System.Windows.Forms.TextBox;
 
@@ -115,7 +115,7 @@ namespace ExcelMacroAdd.Forms
 
         #endregion
 
-        private Label[] RetupnLabelArray()
+        private Label[] ReturnLabelArray()
         {
             Label[] labels = new Label[] { label33, label34, label35, label36, label37, label38, label39, label40 };
             return labels;
@@ -123,7 +123,7 @@ namespace ExcelMacroAdd.Forms
 
         private TextBox[,] ReturnTextBoxArray()
         {
-            TextBox[,] textBoxes = new TextBox[8, 4]
+            TextBox[,] textBoxes =
             {
                 {
                     textBox1, textBox2, textBox3, textBox4      //IEK
@@ -224,9 +224,8 @@ namespace ExcelMacroAdd.Forms
             catch (NullReferenceException)
             {
                 MessageBox.Show(
-                "Внимание! Возникла ошибка в файле Settings.xml,\n" +
-                "файл будет восстановлен автоматически.",
-                "Ошибка файла Settings.xml",
+                $@"Внимание! Возникла ошибка в файле Settings.xml,{Environment.NewLine} файл будет восстановлен автоматически.",
+                @"Ошибка файла Settings.xml",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error,
                 MessageBoxDefaultButton.Button1,
@@ -235,7 +234,6 @@ namespace ExcelMacroAdd.Forms
         }        
         private void ReadExcelFunc(int rowsArray)
         {
-            Excel.Application application = Globals.ThisAddIn.GetApplication();
             Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
             Range cell = Globals.ThisAddIn.GetActiveCell();
 
@@ -244,22 +242,22 @@ namespace ExcelMacroAdd.Forms
             int firstRow = cell.Row;
 
             // Read Cells "B_" if value not empty then continue our work
-            string formula_1 = worksheet.Cells[firstRow, 2]?.FormulaLocal;                    
-            if (formula_1 != String.Empty) 
+            string formula1 = worksheet.Cells[firstRow, 2]?.FormulaLocal;                    
+            if (formula1 != String.Empty) 
             {
-                textBoxes[rowsArray, 0].Text = VprFormulaReplace(formula_1, firstRow);
+                textBoxes[rowsArray, 0].Text = VprFormulaReplace(formula1, firstRow);
             }
             // Read Cells "D_" if value not empty then continue our work
-            string formula_2 = worksheet.Cells[firstRow, 4]?.FormulaLocal;
-            if (formula_2 != String.Empty)
+            string formula2 = worksheet.Cells[firstRow, 4]?.FormulaLocal;
+            if (formula2 != String.Empty)
             {
-                textBoxes[rowsArray, 1].Text = VprFormulaReplace(formula_2, firstRow);
+                textBoxes[rowsArray, 1].Text = VprFormulaReplace(formula2, firstRow);
             }
             // Read Cells "G_" if value not empty then continue our work
-            string formula_3 = worksheet.Cells[firstRow, 7]?.FormulaLocal;
-            if (formula_3 != String.Empty)
+            string formula3 = worksheet.Cells[firstRow, 7]?.FormulaLocal;
+            if (formula3 != String.Empty)
             {
-                textBoxes[rowsArray, 2].Text = VprFormulaReplace(formula_3, firstRow);
+                textBoxes[rowsArray, 2].Text = VprFormulaReplace(formula3, firstRow);
             }
         }
 
@@ -284,15 +282,15 @@ namespace ExcelMacroAdd.Forms
             int line = (int)RowsToArray.IekLine;
 
             TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = RetupnLabelArray();
+            Label[] labels = ReturnLabelArray();
 
             DateTime localDate = DateTime.Now;
             dataInXml.WriteXml("IEK", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString());    
-            labels[line].Text = localDate.ToString();
+                                            localDate.ToString(new CultureInfo("ru-RU")));    
+            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
         }
 
         /// <summary>
@@ -305,15 +303,15 @@ namespace ExcelMacroAdd.Forms
             int line = (int)RowsToArray.EkfLine;
 
             TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = RetupnLabelArray();
+            Label[] labels = ReturnLabelArray();
 
             DateTime localDate = DateTime.Now;
             dataInXml.WriteXml("EKF", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString());
-            labels[line].Text = localDate.ToString();
+                                            localDate.ToString(new CultureInfo("ru-RU")));
+            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
         }
 
         /// <summary>
@@ -326,15 +324,15 @@ namespace ExcelMacroAdd.Forms
             int line = (int)RowsToArray.DkcLine;
 
             TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = RetupnLabelArray();
+            Label[] labels = ReturnLabelArray();
 
             DateTime localDate = DateTime.Now;
             dataInXml.WriteXml("DKC", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString());
-            labels[line].Text = localDate.ToString();
+                                            localDate.ToString(new CultureInfo("ru-RU")));
+            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
         }
 
         /// <summary>
@@ -347,15 +345,15 @@ namespace ExcelMacroAdd.Forms
             int line = (int)RowsToArray.KeazLine;
 
             TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = RetupnLabelArray();
+            Label[] labels = ReturnLabelArray();
 
             DateTime localDate = DateTime.Now;
             dataInXml.WriteXml("KEAZ", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString());
-            labels[line].Text = localDate.ToString();
+                                            localDate.ToString(new CultureInfo("ru-RU")));
+            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
         }
 
         /// <summary>
@@ -368,15 +366,15 @@ namespace ExcelMacroAdd.Forms
             int line = (int)RowsToArray.DekraftLine;
 
             TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = RetupnLabelArray();
+            Label[] labels = ReturnLabelArray();
 
             DateTime localDate = DateTime.Now;
             dataInXml.WriteXml("DEKraft", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString());
-            labels[line].Text = localDate.ToString();
+                                            localDate.ToString(new CultureInfo("ru-RU")));
+            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
         }
 
         /// <summary>
@@ -389,15 +387,15 @@ namespace ExcelMacroAdd.Forms
             int line = (int)RowsToArray.TdmLine;
 
             TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = RetupnLabelArray();
+            Label[] labels = ReturnLabelArray();
 
             DateTime localDate = DateTime.Now;
             dataInXml.WriteXml("TDM", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString());
-            labels[line].Text = localDate.ToString();
+                                            localDate.ToString(new CultureInfo("ru-RU")));
+            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
         }
 
         /// <summary>
@@ -410,15 +408,15 @@ namespace ExcelMacroAdd.Forms
             int line = (int)RowsToArray.AbbLine;
 
             TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = RetupnLabelArray();
+            Label[] labels = ReturnLabelArray();
 
             DateTime localDate = DateTime.Now;
             dataInXml.WriteXml("ABB", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString());
-            labels[line].Text = localDate.ToString();
+                                            localDate.ToString(new CultureInfo("ru-RU")));
+            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
         }
 
         /// <summary>
@@ -431,15 +429,15 @@ namespace ExcelMacroAdd.Forms
             int line = (int)RowsToArray.SchneiderLine;
 
             TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = RetupnLabelArray();
+            Label[] labels = ReturnLabelArray();
 
             DateTime localDate = DateTime.Now;
             dataInXml.WriteXml("Schneider", textBoxes[line, 0].Text ?? String.Empty,
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString());
-            labels[line].Text = localDate.ToString();
+                                            localDate.ToString(new CultureInfo("ru-RU")));
+            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
         }
         /// <summary>
         /// Read IEK formula in ExcelSheets
