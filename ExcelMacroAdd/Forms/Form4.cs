@@ -243,62 +243,41 @@ namespace ExcelMacroAdd.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var data = new DataObject();
-            data.SetData(DataFormats.UnicodeText, true, label11.Text);
-            var thread = new Thread(() => Clipboard.SetDataObject(data, true));
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            thread.Join();
+            CopyToClipboard(label11.Text);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var data = new DataObject();
-            data.SetData(DataFormats.UnicodeText, true, label12.Text);
-            var thread = new Thread(() => Clipboard.SetDataObject(data, true));
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            thread.Join();
+            CopyToClipboard(label12.Text);
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            var data = new DataObject();
-            data.SetData(DataFormats.UnicodeText, true, label13.Text);
-            var thread = new Thread(() => Clipboard.SetDataObject(data, true));
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            thread.Join();
+            CopyToClipboard(label13.Text);
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            var data = new DataObject();
-            data.SetData(DataFormats.UnicodeText, true, label14.Text);
-            var thread = new Thread(() => Clipboard.SetDataObject(data, true));
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            thread.Join();
+            CopyToClipboard(label14.Text);
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
-            var data = new DataObject();
-            data.SetData(DataFormats.UnicodeText, true, label15.Text);
-            var thread = new Thread(() => Clipboard.SetDataObject(data, true));
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            thread.Join();
+            CopyToClipboard(label15.Text);
         }
 
         private void button11_Click(object sender, EventArgs e)
         {
+            CopyToClipboard(label16.Text);
+        }
+
+        private void CopyToClipboard(string text)
+        {
             var data = new DataObject();
-            data.SetData(DataFormats.UnicodeText, true, label16.Text);
+            data.SetData(DataFormats.UnicodeText, true, text);
             var thread = new Thread(() => Clipboard.SetDataObject(data, true));
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
-            thread.Join();
         }
 
         private void button2_Click(object sender, EventArgs e)
