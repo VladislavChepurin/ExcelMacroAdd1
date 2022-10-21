@@ -84,17 +84,17 @@ namespace ExcelMacroAdd.Forms
         {
             try
             {
+                comboBox2.Items.Clear();
                 using (var db = new AppContext()) //Перенести в /AccessLayer/AccessData
                 {
-                    comboBox2.Items.Clear();
                     // ReSharper disable once CoVariantArrayConversion
                     comboBox2.Items.AddRange(db.Transformers
                         .Where(p => p.Current == comboBox1.SelectedItem.ToString())
                         .Select(p => p.Bus)
                         .ToHashSet()
                         .ToArray());
-                    comboBox2.SelectedIndex = 0;
                 }
+                comboBox2.SelectedIndex = 0;
             }
             catch (NotSupportedException)
             {
