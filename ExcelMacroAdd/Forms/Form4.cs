@@ -26,6 +26,72 @@ namespace ExcelMacroAdd.Forms
         {
             comboBox1.Items.AddRange(resources.TransformerCurrent);
             comboBox1.SelectedIndex = StartTransformerCurrent;
+
+            button1.Click += (s, a) =>
+            {
+                CopyToClipboard(label11.Text);
+            };
+
+            button2.Click += (s, a) =>
+            {
+                var writeExcel = new WriteExcel(dataInXml, "Iek", 0, label11.Text);
+                writeExcel.Start();
+            };
+
+            button3.Click += (s, a) =>
+            {
+                CopyToClipboard(label12.Text);
+            };
+
+            button4.Click += (s, a) =>
+            {
+                var writeExcel = new WriteExcel(dataInXml, "Ekf", 0, label12.Text);
+                writeExcel.Start();
+            };
+
+            button5.Click += (s, a) =>
+            {
+                CopyToClipboard(label13.Text);
+            };
+
+            button6.Click += (s, a) =>
+            {
+                var writeExcel = new WriteExcel(dataInXml, "Keaz", 0, label13.Text);
+                writeExcel.Start();
+            };
+
+            button7.Click += (s, a) =>
+            {
+                CopyToClipboard(label14.Text);
+            };
+
+            button8.Click += (s, a) =>
+            {
+                var writeExcel = new WriteExcel(dataInXml, "Tdm", 0, label14.Text);
+                writeExcel.Start();
+            };
+
+            button9.Click += (s, a) =>
+            {
+                CopyToClipboard(label15.Text);
+            };
+
+            button10.Click += (s, a) =>
+            {
+                var writeExcel = new WriteExcel(dataInXml, "Iek", 0, label15.Text);
+                writeExcel.Start();
+            };
+
+            button11.Click += (s, a) =>
+            {
+                CopyToClipboard(label16.Text);
+            };
+
+            button12.Click += (s, a) =>
+            {
+                var writeExcel = new WriteExcel(dataInXml, "Dekraft", 0, label16.Text);
+                writeExcel.Start();
+            };
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -241,36 +307,6 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(label11.Text);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(label12.Text);
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(label13.Text);
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(label14.Text);
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(label15.Text);
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(label16.Text);
-        }
-
         private void CopyToClipboard(string text)
         {
             var data = new DataObject();
@@ -278,42 +314,6 @@ namespace ExcelMacroAdd.Forms
             var thread = new Thread(() => Clipboard.SetDataObject(data, true));
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            var writeExcel = new WriteExcel(dataInXml, "Iek", 0, label11.Text);
-            writeExcel.Start();
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            var writeExcel = new WriteExcel(dataInXml, "Ekf", 0, label12.Text);
-            writeExcel.Start();
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            var writeExcel = new WriteExcel(dataInXml, "Keaz", 0, label13.Text);
-            writeExcel.Start();
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            var writeExcel = new WriteExcel(dataInXml, "Tdm", 0, label14.Text);
-            writeExcel.Start();
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            var writeExcel = new WriteExcel(dataInXml, "Iek", 0, label15.Text);
-            writeExcel.Start();
-        }
-
-        private void button12_Click(object sender, EventArgs e)
-        {
-            var writeExcel = new WriteExcel(dataInXml, "Dekraft", 0, label16.Text);
-            writeExcel.Start();
         }
     }
 }
