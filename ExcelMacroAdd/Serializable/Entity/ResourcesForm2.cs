@@ -15,8 +15,8 @@ namespace ExcelMacroAdd.Serializable.Entity
         public object[] AmountOfPolesLoadSwitch { get; set; }
         public object[] LoadSwitchVendor { get; set; }
 
-        public ResourcesForm2(string[] circuitBreakerCurrent, string[] circuitBreakerCurve, string[] maxCircuitBreakerCurrent, string[] amountOfPolesCircuitBreaker,
-                                    string[] circuitBreakerVendor, string[] loadSwitchCurrent, string[] amountOfPolesLoadSwitch, string[] loadSwitchVendor)
+        public ResourcesForm2(object[] circuitBreakerCurrent, object[] circuitBreakerCurve, object[] maxCircuitBreakerCurrent, object[] amountOfPolesCircuitBreaker,
+                                    object[] circuitBreakerVendor, object[] loadSwitchCurrent, object[] amountOfPolesLoadSwitch, object[] loadSwitchVendor)
         {
             CircuitBreakerCurrent = circuitBreakerCurrent;
             CircuitBreakerCurve = circuitBreakerCurve;

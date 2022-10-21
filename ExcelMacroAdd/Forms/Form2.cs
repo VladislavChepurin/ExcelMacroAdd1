@@ -22,15 +22,15 @@ namespace ExcelMacroAdd.Forms
 
     internal partial class Form2 : Form
     {
-        private const int CircuitIndAvt = 5; // Начальный ток автоматических выключателей
-        private const int CurveIndAvt = 1; // Начальная кривая автоматических выключателей
-        private const int IcuIndAvt = 0; // Начальная отключающая способность автоматических выключателей
-        private const int PolusIndAvt = 0; // Начальная кол-во полюсов автоматических выключателей
-        private const int VendorIndAvt = 0; // Начальный вендор автолмтических выключателей
+        private const byte CircuitIndAvt = 5; // Начальный ток автоматических выключателей
+        private const byte CurveIndAvt = 1; // Начальная кривая автоматических выключателей
+        private const byte IcuIndAvt = 0; // Начальная отключающая способность автоматических выключателей
+        private const byte PolusIndAvt = 0; // Начальная кол-во полюсов автоматических выключателей
+        private const byte VendorIndAvt = 0; // Начальный вендор автолмтических выключателей
 
-        private const int CircuitIndVn = 0; // Начальный ток выключателей нагрузки
-        private const int PolusIndVn = 0; // Начальная кол-во полюсов выключателей нагрузки
-        private const int VendorIndVn = 0; // Начальный вендор выключателей нагрузки
+        private const byte CircuitIndVn = 0; // Начальный ток выключателей нагрузки
+        private const byte PolusIndVn = 0; // Начальная кол-во полюсов выключателей нагрузки
+        private const byte VendorIndVn = 0; // Начальный вендор выключателей нагрузки
 
         private readonly IDataInXml dataInXml;
         private readonly IResourcesForm2 resources;
@@ -46,15 +46,15 @@ namespace ExcelMacroAdd.Forms
         private void Form1_Load(object sender, EventArgs e)
         {
             //Массивы параметров модульных автоматов
-            object[] circuitBreakerCurrent = resources.CircuitBreakerCurrent;
-            object[] circuitBreakerCurve = resources.CircuitBreakerCurve;
-            object[] maxCircuitBreakerCurrent = resources.MaxCircuitBreakerCurrent;
-            object[] amountOfPolesCircuitBreaker = resources.AmountOfPolesCircuitBreaker;
-            object[] circuitBreakerVendor = resources.CircuitBreakerVendor;
+            var circuitBreakerCurrent = resources.CircuitBreakerCurrent;
+            var circuitBreakerCurve = resources.CircuitBreakerCurve;
+            var maxCircuitBreakerCurrent = resources.MaxCircuitBreakerCurrent;
+            var amountOfPolesCircuitBreaker = resources.AmountOfPolesCircuitBreaker;
+            var circuitBreakerVendor = resources.CircuitBreakerVendor;
             //Массивы параметров выключателей нагрузки
-            object[] loadSwitchCurrent = resources.LoadSwitchCurrent;
-            object[] amountOfPolesLoadSwitch = resources.AmountOfPolesLoadSwitch;
-            object[] loadSwitchVendor = resources.LoadSwitchVendor;
+            var loadSwitchCurrent = resources.LoadSwitchCurrent;
+            var amountOfPolesLoadSwitch = resources.AmountOfPolesLoadSwitch;
+            var loadSwitchVendor = resources.LoadSwitchVendor;
 
             //Создание массивов ComboBox для автоматических выключателей
             ComboBox[] comboBoxItCircuit = { comboBox5, comboBox10, comboBox15, comboBox20, comboBox25, comboBox30 };

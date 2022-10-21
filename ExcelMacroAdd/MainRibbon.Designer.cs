@@ -57,6 +57,7 @@
             this.button24 = this.Factory.CreateRibbonButton();
             this.separator2 = this.Factory.CreateRibbonSeparator();
             this.button30 = this.Factory.CreateRibbonButton();
+            this.button12 = this.Factory.CreateRibbonButton();
             this.button31 = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.label1 = this.Factory.CreateRibbonLabel();
@@ -196,6 +197,7 @@
             this.group3.Items.Add(this.button24);
             this.group3.Items.Add(this.separator2);
             this.group3.Items.Add(this.button30);
+            this.group3.Items.Add(this.button12);
             this.group3.Items.Add(this.button31);
             this.group3.Label = "Макросы для расчетов";
             this.group3.Name = "group3";
@@ -251,6 +253,14 @@
             this.button30.Label = "Модульные аппараты";
             this.button30.Name = "button30";
             this.button30.ShowImage = true;
+            // 
+            // button12
+            // 
+            this.button12.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button12.Image = global::ExcelMacroAdd.Properties.Resources._503;
+            this.button12.Label = "Трансформатор тока";
+            this.button12.Name = "button12";
+            this.button12.ShowImage = true;
             // 
             // button31
             // 
@@ -357,6 +367,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button9;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button24;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button33;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button12;
     }
 
     partial class ThisRibbonCollection

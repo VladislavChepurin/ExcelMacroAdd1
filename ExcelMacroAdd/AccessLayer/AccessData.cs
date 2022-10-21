@@ -10,31 +10,31 @@ namespace ExcelMacroAdd.AccessLayer
     {
         public async Task<ISwitch> GetEntitySwitch(string current, string quantity)
         {
-            using (var db = new DataContext())
+            using (var db = new AppContext())
             {
-                return await db.Switch.AsNoTracking().FirstOrDefaultAsync(p => p.Current == current && p.Quantity == quantity);
+                return await db.Switchs.AsNoTracking().FirstOrDefaultAsync(p => p.Current == current && p.Quantity == quantity);
             }
         }
 
         public async Task<IModul> GetEntityModule(string current, string curve, string maxCurrent, string quantity)
         {
-            using (var db = new DataContext())
+            using (var db = new AppContext())
             {
-                return await db.Modul.AsNoTracking().FirstOrDefaultAsync(p => p.Current == current && p.Kurve == curve && p.MaxCurrent == maxCurrent && p.Quantity == quantity);
+                return await db.Moduls.AsNoTracking().FirstOrDefaultAsync(p => p.Current == current && p.Kurve == curve && p.MaxCurrent == maxCurrent && p.Quantity == quantity);
             }
         }
 
         public async Task<IJournalNku> GetEntityJournal(string sArticle)
         {
-            using (DataContext db = new DataContext())
+            using (AppContext db = new AppContext())
             {
-                return await db.JornalNKU.FirstOrDefaultAsync(p => p.Article == sArticle);
+                return await db.JornalNkus.FirstOrDefaultAsync(p => p.Article == sArticle);
             }
         }
 
         public async void WriteUpdateDB(JournalNku entity)
         {
-            using (DataContext db = new DataContext())
+            using (AppContext db = new AppContext())
             {
                 if (entity != null)
                 {
@@ -46,11 +46,11 @@ namespace ExcelMacroAdd.AccessLayer
 
         public async void AddValueDB(JournalNku entity)
         {
-            using (DataContext db = new DataContext())
+            using (AppContext db = new AppContext())
             {
                 if (entity != null)
                 {    
-                    db.JornalNKU.Add(entity);
+                    db.JornalNkus.Add(entity);
                     await db.SaveChangesAsync();
                 }
             }

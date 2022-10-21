@@ -4,13 +4,13 @@ using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.ProxyObjects;
 using ExcelMacroAdd.Serializable;
+using ExcelMacroAdd.Services;
 using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ExcelMacroAdd.Services;
 
 namespace ExcelMacroAdd
 {
@@ -24,6 +24,7 @@ namespace ExcelMacroAdd
             var settings = app.GetSettingsModels();
             var resources = settings.Resources;
             var resourcesForm2 = settings.ResourcesForm2;
+            var resourcesForm4 = settings.ResourcesForm4;
 
             var dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());
             var accessData = new AccessData();
@@ -32,9 +33,9 @@ namespace ExcelMacroAdd
             {
                 if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/BdMacro.sqlite")))
                 {
-                    using (var db = new DataContext())
+                    using (var db = new DataLayer.Entity.AppContext())
                     {
-                        db.Switch.Select(x => x.Id).ToList();
+                        db.Switchs.Select(x => x.Id).ToList();
                     }
                 }
   
@@ -151,6 +152,17 @@ namespace ExcelMacroAdd
                     Thread.Sleep(5000);
                 });
             };
+
+            button12.Click += async (s, a) =>
+            {
+                await Task.Run(() =>
+                {
+                    Form4 fs = new Form4(resourcesForm4, dataInXml);
+                    fs.ShowDialog();
+                    Thread.Sleep(5000);
+                });
+            };
+
             // Окно "О программе"
             button32.Click += async (s, a) =>
             {

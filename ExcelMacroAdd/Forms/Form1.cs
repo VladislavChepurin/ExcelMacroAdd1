@@ -16,21 +16,21 @@ namespace ExcelMacroAdd.Forms
     internal partial class Form1 : Form
     {
         // Переменные иницализации                   
-        private object confirmConversions = false;
-        private object readOnly = false;
-        private object addToRecentFiles = false;
-        private object passwordDocument = Type.Missing;
-        private object passwordTemplate = Type.Missing;
-        private object revert = false;
-        private object writePasswordDocument = Type.Missing;
-        private object writePasswordTemplate = Type.Missing;
-        private object format = Type.Missing;
-        private object encoding = Type.Missing;
-        private object oVisible = Type.Missing;
-        private object openAndRepair = Type.Missing;
-        private object documentDirection = Type.Missing;
-        private object noEncodingDialog = false;
-        private object xmlTransform = Type.Missing;
+        private readonly object confirmConversions = false;
+        private readonly object readOnly = false;
+        private readonly object addToRecentFiles = false;
+        private readonly object passwordDocument = Type.Missing;
+        private readonly object passwordTemplate = Type.Missing;
+        private readonly object revert = false;
+        private readonly object writePasswordDocument = Type.Missing;
+        private readonly object writePasswordTemplate = Type.Missing;
+        private readonly object format = Type.Missing;
+        private readonly object encoding = Type.Missing;
+        private readonly object oVisible = Type.Missing;
+        private readonly object openAndRepair = Type.Missing;
+        private readonly object documentDirection = Type.Missing;
+        private readonly object noEncodingDialog = false;
+        private readonly object xmlTransform = Type.Missing;
         private object replaceTypeObj = WdReplace.wdReplaceAll;
         private object wordMissing = Missing.Value;
         private readonly IResources resources;
@@ -61,7 +61,6 @@ namespace ExcelMacroAdd.Forms
                //Инициализируем параметры Word
                 Word.Application applicationWord = new Word.Application();
                 // Переменная объект документа
-                Document document;               
 
                 try
                 {
@@ -102,9 +101,9 @@ namespace ExcelMacroAdd.Forms
                         string nameFolderSafe = worksheet.Cells[firstRow, 1].Value2.ToString();
 
                         //Открываем Word
-                        document = applicationWord.Documents.Open(filename, confirmConversions, readOnly, addToRecentFiles, passwordDocument, passwordTemplate,
-                        revert, writePasswordDocument, writePasswordTemplate, format, encoding, oVisible, openAndRepair, documentDirection,
-                        noEncodingDialog, xmlTransform);
+                        var document = applicationWord.Documents.Open(filename, confirmConversions, readOnly, addToRecentFiles, passwordDocument, passwordTemplate,
+                            revert, writePasswordDocument, writePasswordTemplate, format, encoding, oVisible, openAndRepair, documentDirection,
+                            noEncodingDialog, xmlTransform);
                         applicationWord.Visible = false;
                         //Инициализация метода Find
                         Find find = applicationWord.Selection.Find;

@@ -163,6 +163,16 @@ namespace ExcelMacroAdd.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _503 {
+            get {
+                object obj = ResourceManager.GetObject("_503", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap _560 {
             get {
                 object obj = ResourceManager.GetObject("560", resourceCulture);
@@ -201,6 +211,15 @@ namespace ExcelMacroAdd.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Отсутствует.
+        /// </summary>
+        internal static string absent {
+            get {
+                return ResourceManager.GetString("absent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap dkc {
@@ -231,6 +250,15 @@ namespace ExcelMacroAdd.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Недопустимая операция!.
+        /// </summary>
+        internal static string invalidOperation {
+            get {
+                return ResourceManager.GetString("invalidOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap keaz {
@@ -246,6 +274,86 @@ namespace ExcelMacroAdd.Properties {
         internal static System.Drawing.Bitmap Open {
             get {
                 object obj = ResourceManager.GetObject("Open", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tdm {
+            get {
+                object obj = ResourceManager.GetObject("tdm", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ttk_100 {
+            get {
+                object obj = ResourceManager.GetObject("ttk_100", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ttk_125 {
+            get {
+                object obj = ResourceManager.GetObject("ttk_125", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ttk_30 {
+            get {
+                object obj = ResourceManager.GetObject("ttk_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ttk_40 {
+            get {
+                object obj = ResourceManager.GetObject("ttk_40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ttk_60 {
+            get {
+                object obj = ResourceManager.GetObject("ttk_60", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ttk_85 {
+            get {
+                object obj = ResourceManager.GetObject("ttk_85", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ttk_a {
+            get {
+                object obj = ResourceManager.GetObject("ttk_a", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

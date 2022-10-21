@@ -7,10 +7,13 @@ namespace ExcelMacroAdd.Serializable.Entity
     {
         public Resources Resources { get; set; }
         public ResourcesForm2 ResourcesForm2 { get; set; }
-        public AppSettings(Resources resources, ResourcesForm2 resourcesForm2)
+        public ResourcesForm4 ResourcesForm4 { get; set; }
+
+        public AppSettings(Resources resources, ResourcesForm2 resourcesForm2, ResourcesForm4 resourcesForm4)
         {
             Resources = resources;
-            ResourcesForm2 = resourcesForm2;      
+            ResourcesForm2 = resourcesForm2;
+            ResourcesForm4 = resourcesForm4;
         }
     }
 }

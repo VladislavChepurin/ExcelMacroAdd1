@@ -175,4 +175,37 @@
   <data name="Open" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Open.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="_503" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\503.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ttk_100" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ttk-100.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ttk_125" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ttk-125.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ttk_30" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ttk-30.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ttk_40" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ttk-40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ttk_60" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ttk-60.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ttk_85" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ttk-85.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ttk_a" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ttk-a.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tdm" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tdm.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="absent" xml:space="preserve">
+    <value>Отсутствует</value>
+  </data>
+  <data name="invalidOperation" xml:space="preserve">
+    <value>Недопустимая операция!</value>
+  </data>
 </root>
