@@ -6,7 +6,7 @@ namespace ExcelMacroAdd.Serializable.Entity
     {
         public object[] TransformerCurrent { get; set; }
 
-        public ResourcesForm4(object[] transformerCurrent)
+        public ResourcesForm4(string[] transformerCurrent)
         {
             TransformerCurrent = transformerCurrent;
         }

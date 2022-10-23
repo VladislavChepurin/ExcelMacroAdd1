@@ -3,10 +3,8 @@ using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Interfaces;
 using System;
 using System.Drawing;
-using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using AppContext = ExcelMacroAdd.DataLayer.Entity.AppContext;
 
 namespace ExcelMacroAdd.Forms
 {
@@ -193,96 +191,92 @@ namespace ExcelMacroAdd.Forms
                 MessageBox.Show(Properties.Resources.invalidOperation);
             }
         }
+
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
-            PutDataDbTransformer();
-        }
+            var transformerRow =
+               accessData.GetTransformerArticle(
+                   comboBox1.SelectedItem.ToString(),
+                   comboBox2.SelectedItem.ToString(),
+                   comboBox3.SelectedItem.ToString(),
+                   comboBox4.SelectedItem.ToString());
 
-        private void PutDataDbTransformer()
-        {
-            using (AppContext db = new AppContext())
+            if (string.IsNullOrEmpty(transformerRow.IekTti))
             {
-                var transformerRow = db.Transformers
-                    .Where(t=> t.Current == comboBox1.SelectedItem.ToString() 
-                               && t.Bus == comboBox2.SelectedItem.ToString()
-                               && t.Accuracy == comboBox3.SelectedItem.ToString()
-                               && t.Power == comboBox4.SelectedItem.ToString())
-                    .Select(  t => new { IekTti = t.Iek, EkfTte = t.Ekf, KeazTtk = t.Keaz, TdmTtn = t.Tdm, IekTop = t.IekTopTpsh, DekTop = t.DekraftTopTpsh })
-                    .FirstOrDefault();
+                button1.Enabled = false;
+                button2.Enabled = false;
+                label11.Text = Properties.Resources.absent;
+            }
+            else
+            {
+                button1.Enabled = true;
+                button2.Enabled = true;
+                label11.Text = transformerRow.IekTti;
+            }
 
-                if (string.IsNullOrEmpty(transformerRow?.IekTti))
-                {
-                    button1.Enabled = false;
-                    button2.Enabled = false;
-                    label11.Text = Properties.Resources.absent;
-                }
-                else
-                {
-                    button1.Enabled = true;
-                    button2.Enabled = true;
-                    label11.Text = transformerRow.IekTti;
-                }
-                if (string.IsNullOrEmpty(transformerRow?.EkfTte))
-                {
-                    button3.Enabled = false;
-                    button4.Enabled = false;
-                    label12.Text = Properties.Resources.absent;
-                }
-                else
-                {
-                    button3.Enabled = true;
-                    button4.Enabled = true;
-                    label12.Text = transformerRow.EkfTte;
-                }
-                if (string.IsNullOrEmpty(transformerRow?.KeazTtk))
-                {
-                    button5.Enabled = false;
-                    button6.Enabled = false;
-                    label13.Text = Properties.Resources.absent;
-                }
-                else
-                {
-                    button5.Enabled = true;
-                    button6.Enabled = true;
-                    label13.Text = transformerRow.KeazTtk;
-                }
-                if (string.IsNullOrEmpty(transformerRow?.TdmTtn))
-                {
-                    button7.Enabled = false;
-                    button8.Enabled = false;
-                    label14.Text = Properties.Resources.absent;
-                }
-                else
-                {
-                    button7.Enabled = true;
-                    button8.Enabled = true;
-                    label14.Text = transformerRow.TdmTtn;
-                }
-                if (string.IsNullOrEmpty(transformerRow?.IekTop))
-                {
-                    button9.Enabled = false;
-                    button10.Enabled = false;
-                    label15.Text = Properties.Resources.absent;
-                }
-                else
-                {
-                    button9.Enabled = true;
-                    button10.Enabled = true;
-                    label15.Text = transformerRow.IekTop;
-                }
+            if (string.IsNullOrEmpty(transformerRow.EkfTte))
+            {
+                button3.Enabled = false;
+                button4.Enabled = false;
+                label12.Text = Properties.Resources.absent;
+            }
+            else
+            {
+                button3.Enabled = true;
+                button4.Enabled = true;
+                label12.Text = transformerRow.EkfTte;
+            }
 
-                if (string.IsNullOrEmpty(transformerRow?.DekTop))
-                {
-                    button11.Enabled = false;
-                    button12.Enabled = false;
-                    label16.Text = Properties.Resources.absent;
-                }
-                else
-                {
-                    button11.Enabled = true;
-                    button12.Enabled = true;
-                    label16.Text = transformerRow.DekTop;
-                }
+            if (string.IsNullOrEmpty(transformerRow.KeazTtk))
+            {
+                button5.Enabled = false;
+                button6.Enabled = false;
+                label13.Text = Properties.Resources.absent;
+            }
+            else
+            {
+                button5.Enabled = true;
+                button6.Enabled = true;
+                label13.Text = transformerRow.KeazTtk;
+            }
+
+            if (string.IsNullOrEmpty(transformerRow.TdmTtn))
+            {
+                button7.Enabled = false;
+                button8.Enabled = false;
+                label14.Text = Properties.Resources.absent;
+            }
+            else
+            {
+                button7.Enabled = true;
+                button8.Enabled = true;
+                label14.Text = transformerRow.TdmTtn;
+            }
+
+            if (string.IsNullOrEmpty(transformerRow.IekTop))
+            {
+                button9.Enabled = false;
+                button10.Enabled = false;
+                label15.Text = Properties.Resources.absent;
+            }
+            else
+            {
+                button9.Enabled = true;
+                button10.Enabled = true;
+                label15.Text = transformerRow.IekTop;
+            }
+
+            if (string.IsNullOrEmpty(transformerRow.DekTop))
+            {
+                button11.Enabled = false;
+                button12.Enabled = false;
+                label16.Text = Properties.Resources.absent;
+            }
+            else
+            {
+                button11.Enabled = true;
+                button12.Enabled = true;
+                label16.Text = transformerRow.DekTop;
             }
         }
 

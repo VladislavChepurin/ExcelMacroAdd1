@@ -1,5 +1,4 @@
 ﻿using ExcelMacroAdd.AccessLayer;
-using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.ProxyObjects;
@@ -11,6 +10,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AppContext = ExcelMacroAdd.DataLayer.Entity.AppContext;
+using Path = System.IO.Path;
 
 namespace ExcelMacroAdd
 {
@@ -25,22 +26,32 @@ namespace ExcelMacroAdd
             var resources = settings.Resources;
             var resourcesForm2 = settings.ResourcesForm2;
             var resourcesForm4 = settings.ResourcesForm4;
-
+            //Если недоступна база данных прописанная в AppSettings.json, то используется локальная
+            string path;
+            if (File.Exists(settings.GlobalDateBaseLocation + "BdMacro.sqlite"))
+            {
+                path = settings.GlobalDateBaseLocation;
+                label5.Label = "глобальная";
+            }
+            else
+            {
+                path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase");
+                label5.Label = "локальная";
+            }
+            //Создание внедряемых зависимостей
             var dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());
-            var accessData = new AccessData();
-                  
+            var context = new AppContext(path);
+            var accessData = new AccessData(context);
+            //Ранняя инициализация Entity Framework
+            //Будет утекать 50МБ памяти
             new Thread(() =>
             {
                 if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/BdMacro.sqlite")))
                 {
-                    using (var db = new DataLayer.Entity.AppContext())
-                    {
-                        db.Switchs.Select(x => x.Id).ToList();
-                    }
+                    context.Switchs.Select(x => x.Id).ToList();
                 }
-  
-            }).Start();       
-            
+            }).Start();
+
             // Заполнение паспортов
             button1.Click += (s, a) =>
             {
@@ -179,7 +190,7 @@ namespace ExcelMacroAdd
                 System.Diagnostics.Process.Start("explorer.exe", AppDomain.CurrentDomain.BaseDirectory);
             };
             
-            GetCurrencyTsb getRate = new GetCurrencyTsb
+            var getRate = new GetCurrencyTsb
             {
                 CurrencyHandler = ShowCurrencyPrice
             };
@@ -188,14 +199,15 @@ namespace ExcelMacroAdd
             {
                 getRate.Start();
                 //Thread.Sleep(100);
-            }).Start();          
+            }).Start();
         }
-        
+
         private void ShowCurrencyPrice(double usdCurrency, double euroCurrency, double cnhCurrency)
         {
-            this.label1.Label = "Доллар = " + usdCurrency;
-            this.label2.Label = "ЕВРО     = " + euroCurrency;
-            this.label3.Label = "Юань    = " + cnhCurrency;
+            label1.Label = "Доллар = " + usdCurrency;
+            label2.Label = "ЕВРО     = " + euroCurrency;
+            label3.Label = "Юань    = " + cnhCurrency;
         }
+        
     }       
 }

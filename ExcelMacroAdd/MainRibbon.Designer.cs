@@ -66,11 +66,15 @@
             this.group1 = this.Factory.CreateRibbonGroup();
             this.button32 = this.Factory.CreateRibbonButton();
             this.button33 = this.Factory.CreateRibbonButton();
+            this.group4 = this.Factory.CreateRibbonGroup();
+            this.label4 = this.Factory.CreateRibbonLabel();
+            this.label5 = this.Factory.CreateRibbonLabel();
             this.tab1.SuspendLayout();
             this.Группа1.SuspendLayout();
             this.group3.SuspendLayout();
             this.group2.SuspendLayout();
             this.group1.SuspendLayout();
+            this.group4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
@@ -79,6 +83,7 @@
             this.tab1.Groups.Add(this.group3);
             this.tab1.Groups.Add(this.group2);
             this.tab1.Groups.Add(this.group1);
+            this.tab1.Groups.Add(this.group4);
             this.tab1.Label = "МАКРОСЫ";
             this.tab1.Name = "tab1";
             // 
@@ -315,6 +320,22 @@
             this.button33.Name = "button33";
             this.button33.ShowImage = true;
             // 
+            // group4
+            // 
+            this.group4.Items.Add(this.label4);
+            this.group4.Items.Add(this.label5);
+            this.group4.Name = "group4";
+            // 
+            // label4
+            // 
+            this.label4.Label = "База данных";
+            this.label4.Name = "label4";
+            // 
+            // label5
+            // 
+            this.label5.Label = "Не готова";
+            this.label5.Name = "label5";
+            // 
             // MainRibbon
             // 
             this.Name = "MainRibbon";
@@ -331,6 +352,8 @@
             this.group2.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
+            this.group4.ResumeLayout(false);
+            this.group4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -368,6 +391,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button24;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button33;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button12;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group4;
+        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label4;
+        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label5;
     }
 
     partial class ThisRibbonCollection
