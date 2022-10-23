@@ -157,7 +157,7 @@ namespace ExcelMacroAdd
             {
                 await Task.Run(() =>
                 {
-                    Form4 fs = new Form4(resourcesForm4, dataInXml);
+                    Form4 fs = new Form4(resourcesForm4, dataInXml, accessData);
                     fs.ShowDialog();
                     Thread.Sleep(5000);
                 });

@@ -1,4 +1,5 @@
-﻿using ExcelMacroAdd.Functions;
+﻿using ExcelMacroAdd.AccessLayer.Interfaces;
+using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Interfaces;
 using System;
 using System.Drawing;
@@ -13,13 +14,15 @@ namespace ExcelMacroAdd.Forms
     {
         private const byte StartTransformerCurrent = 0; // Начальный ток трансформации
         private readonly IDataInXml dataInXml;
+        private readonly IForm4Data accessData;
 
         private readonly IResourcesForm4 resources;
-        public Form4(IResourcesForm4 resources, IDataInXml dataInXml)
+        public Form4(IResourcesForm4 resources, IDataInXml dataInXml, IForm4Data accessData)
         {
             this.resources = resources;
-            InitializeComponent();
             this.dataInXml = dataInXml;
+            this.accessData = accessData;
+            InitializeComponent();
         }
 
         private void Form4_Load(object sender, EventArgs e)
@@ -151,15 +154,8 @@ namespace ExcelMacroAdd.Forms
             try
             {
                 comboBox2.Items.Clear();
-                using (var db = new AppContext()) //Перенести в /AccessLayer/AccessData
-                {
-                    // ReSharper disable once CoVariantArrayConversion
-                    comboBox2.Items.AddRange(db.Transformers
-                        .Where(p => p.Current == comboBox1.SelectedItem.ToString())
-                        .Select(p => p.Bus)
-                        .ToHashSet()
-                        .ToArray());
-                }
+                // ReSharper disable once CoVariantArrayConversion
+                comboBox2.Items.AddRange(accessData.GetComboBox2Items(comboBox1.SelectedItem.ToString()));
                 comboBox2.SelectedIndex = 0;
             }
             catch (NotSupportedException)
@@ -173,16 +169,8 @@ namespace ExcelMacroAdd.Forms
             try
             {
                 comboBox3.Items.Clear();
-                using (var db = new AppContext()) //Перенести в /AccessLayer/AccessData
-                {
-                    // ReSharper disable once CoVariantArrayConversion
-                    comboBox3.Items.AddRange(db.Transformers
-                        .Where(p => p.Current == comboBox1.SelectedItem.ToString() &&
-                                    p.Bus == comboBox2.SelectedItem.ToString())
-                        .Select(p => p.Accuracy)
-                        .ToHashSet()
-                        .ToArray());
-                }
+                // ReSharper disable once CoVariantArrayConversion
+                comboBox3.Items.AddRange(accessData.GetComboBox3Items(comboBox1.SelectedItem.ToString(), comboBox2.SelectedItem.ToString()));
                 comboBox3.SelectedIndex = 0;
             }
             catch (NotSupportedException)
@@ -196,17 +184,8 @@ namespace ExcelMacroAdd.Forms
             try
             {
                 comboBox4.Items.Clear();
-                using (var db = new AppContext()) //Перенести в /AccessLayer/AccessData
-                {
-                    // ReSharper disable once CoVariantArrayConversion
-                    comboBox4.Items.AddRange(db.Transformers
-                        .Where(p => p.Current == comboBox1.SelectedItem.ToString() &&
-                                    p.Bus == comboBox2.SelectedItem.ToString() &&
-                                    p.Accuracy == comboBox3.SelectedItem.ToString())
-                        .Select(p => p.Power)
-                        .ToHashSet()
-                        .ToArray());
-                }
+                // ReSharper disable once CoVariantArrayConversion
+                comboBox4.Items.AddRange(accessData.GetComboBox4Items(comboBox1.SelectedItem.ToString(), comboBox2.SelectedItem.ToString(), comboBox3.SelectedItem.ToString()));
                 comboBox4.SelectedIndex = 0;
             }
             catch (NotSupportedException)

@@ -236,6 +236,7 @@
   -->
   <ItemGroup>
     <Compile Include="AccessLayer\AccessData.cs" />
+    <Compile Include="AccessLayer\Interfaces\IForm4Data.cs" />
     <Compile Include="AccessLayer\Interfaces\IJournalData.cs" />
     <Compile Include="AccessLayer\Interfaces\IForm2Data.cs" />
     <Compile Include="DataLayer\Entity\JournalNku.cs" />
