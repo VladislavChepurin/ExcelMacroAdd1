@@ -34,7 +34,7 @@ namespace ExcelMacroAdd.Forms
         private object replaceTypeObj = WdReplace.wdReplaceAll;
         private object wordMissing = Missing.Value;
         private readonly IResources resources;
-        private readonly string pPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
+        private readonly string pPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template");
 
         internal Form1(IResources resources)
         {
