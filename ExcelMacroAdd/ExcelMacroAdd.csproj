@@ -37,7 +37,7 @@
     <PublishUrl>опубликовать\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>1.7.2.2</ApplicationVersion>
+    <ApplicationVersion>1.7.2.4</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
