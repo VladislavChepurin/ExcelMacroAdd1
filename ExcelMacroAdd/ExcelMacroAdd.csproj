@@ -235,30 +235,46 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="AccessLayer\AccessCircuitBreaker.cs" />
     <Compile Include="AccessLayer\AccessData.cs" />
-    <Compile Include="AccessLayer\Interfaces\IForm4Data.cs" />
+    <Compile Include="AccessLayer\AccessJournalNku.cs" />
+    <Compile Include="AccessLayer\AccessTransformer.cs" />
+    <Compile Include="AccessLayer\AccessTwinBlock.cs" />
+    <Compile Include="AccessLayer\Interfaces\ISelectionTwinBlockData.cs" />
+    <Compile Include="AccessLayer\Interfaces\ISelectionTransformerData.cs" />
     <Compile Include="AccessLayer\Interfaces\IJournalData.cs" />
-    <Compile Include="AccessLayer\Interfaces\IForm2Data.cs" />
+    <Compile Include="AccessLayer\Interfaces\ISelectionCircuitBreakerData.cs" />
+    <Compile Include="DataLayer\Entity\AdditionalPole.cs" />
+    <Compile Include="DataLayer\Entity\Stock.cs" />
+    <Compile Include="DataLayer\Entity\DoorHandle.cs" />
+    <Compile Include="DataLayer\Entity\DirectMountingHandle.cs" />
     <Compile Include="DataLayer\Entity\JournalNku.cs" />
     <Compile Include="DataLayer\Entity\AppContext.cs" />
     <Compile Include="DataLayer\Entity\Modul.cs" />
     <Compile Include="DataLayer\Entity\Switch.cs" />
     <Compile Include="DataLayer\Entity\Transformer.cs" />
+    <Compile Include="DataLayer\Entity\TransformerAttribute.cs" />
+    <Compile Include="DataLayer\Entity\TwinBlockSwitch.cs" />
     <Compile Include="DataLayer\Interfaces\IJournalNku.cs" />
     <Compile Include="DataLayer\Interfaces\IModul.cs" />
     <Compile Include="DataLayer\Interfaces\ISwitch.cs" />
-    <Compile Include="DataLayer\Interfaces\ITransformer.cs" />
     <Compile Include="Forms\AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Form4.cs">
+    <Compile Include="Forms\SelectionTransformer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Form4.Designer.cs">
-      <DependentUpon>Form4.cs</DependentUpon>
+    <Compile Include="Forms\SelectionTransformer.Designer.cs">
+      <DependentUpon>SelectionTransformer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SelectionTwinBlock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SelectionTwinBlock.Designer.cs">
+      <DependentUpon>SelectionTwinBlock.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IDataInXml.cs" />
     <Compile Include="Interfaces\IResourcesDBConect.cs" />
@@ -282,23 +298,23 @@
     <Compile Include="Functions\EditCalculation.cs" />
     <Compile Include="Functions\FillingOutThePassport.cs" />
     <Compile Include="Functions\AbstractFunctions.cs" />
-    <Compile Include="Forms\Form1.cs">
+    <Compile Include="Forms\FillingOutPassports.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\FillingOutPassports.Designer.cs">
+      <DependentUpon>FillingOutPassports.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Form2.cs">
+    <Compile Include="Forms\SelectionCircuitBreaker.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Form2.Designer.cs">
-      <DependentUpon>Form2.cs</DependentUpon>
+    <Compile Include="Forms\SelectionCircuitBreaker.Designer.cs">
+      <DependentUpon>SelectionCircuitBreaker.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Form3.cs">
+    <Compile Include="Forms\Settings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Form3.Designer.cs">
-      <DependentUpon>Form3.cs</DependentUpon>
+    <Compile Include="Forms\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions\DeleteFormula.cs" />
     <Compile Include="Services\GetCurrencyTsb.cs" />
@@ -312,17 +328,20 @@
     <EmbeddedResource Include="Forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\FillingOutPassports.resx">
+      <DependentUpon>FillingOutPassports.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Form2.resx">
-      <DependentUpon>Form2.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\SelectionCircuitBreaker.resx">
+      <DependentUpon>SelectionCircuitBreaker.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Form3.resx">
-      <DependentUpon>Form3.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\SelectionTwinBlock.resx">
+      <DependentUpon>SelectionTwinBlock.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Form4.resx">
-      <DependentUpon>Form4.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SelectionTransformer.resx">
+      <DependentUpon>SelectionTransformer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -347,15 +366,10 @@
     </Content>
     <None Include="ExcelMacroAdd_1_TemporaryKey.pfx" />
     <None Include="Resources\Open.png" />
-    <None Include="Resources\503.png" />
-    <None Include="Resources\ttk-40.png" />
-    <None Include="Resources\ttk-60.png" />
-    <None Include="Resources\ttk-85.png" />
-    <None Include="Resources\ttk-100.png" />
-    <None Include="Resources\ttk-125.png" />
-    <None Include="Resources\ttk-a.png" />
-    <None Include="Resources\ttk-30.png" />
     <None Include="Resources\tdm.png" />
+    <None Include="Resources\none.png" />
+    <None Include="Resources\503.png" />
+    <None Include="Resources\504.png" />
     <Content Include="Template\Паспорт_навесные.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -498,6 +512,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -510,7 +525,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>A0A04B7239022934E64FE406A1F83599E3E51B2B</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>0DD85D65EDBA2DC1A2DB66BBBF161A74ED4EE948</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

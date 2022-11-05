@@ -6,6 +6,7 @@ using ExcelMacroAdd.Serializable;
 using ExcelMacroAdd.Services;
 using Microsoft.Office.Tools.Ribbon;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -20,12 +21,13 @@ namespace ExcelMacroAdd
         private readonly string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/appSettings.json");         
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
-        {     
-            AppSettingsDeserialize app= new AppSettingsDeserialize(jsonFilePath);       
+        {
+            AppSettingsDeserialize app= new AppSettingsDeserialize(jsonFilePath);
             var settings = app.GetSettingsModels();
             var resources = settings.Resources;
             var resourcesForm2 = settings.ResourcesForm2;
             var resourcesForm4 = settings.ResourcesForm4;
+
             //Если недоступна база данных прописанная в AppSettings.json, то используется локальная
             string path;
             if (File.Exists(settings.GlobalDateBaseLocation + "BdMacro.sqlite"))
@@ -148,7 +150,7 @@ namespace ExcelMacroAdd
             {
                 await Task.Run(() =>
                 {
-                    Form2 fs = new Form2(accessData, dataInXml, resourcesForm2);
+                    SelectionCircuitBreaker fs = new SelectionCircuitBreaker(accessData, dataInXml, resourcesForm2);
                     fs.ShowDialog();
                     Thread.Sleep(5000);
                 });
@@ -158,7 +160,7 @@ namespace ExcelMacroAdd
             {
                 await Task.Run(() =>
                 {
-                    Form3 fs = new Form3(dataInXml);
+                    Settings fs = new Settings(dataInXml);
                     fs.ShowDialog();
                     Thread.Sleep(5000);
                 });
@@ -168,11 +170,27 @@ namespace ExcelMacroAdd
             {
                 await Task.Run(() =>
                 {
-                    Form4 fs = new Form4(resourcesForm4, dataInXml, accessData);
+                    SelectionTransformer fs = new SelectionTransformer(resourcesForm4, dataInXml, accessData);
                     fs.ShowDialog();
                     Thread.Sleep(5000);
                 });
             };
+
+            button13.Click += async (s, a) =>
+            {
+                await Task.Run(() =>
+                {
+                    SelectionTwinBlock fs = new SelectionTwinBlock(dataInXml, accessData);
+                    fs.ShowDialog();
+                    Thread.Sleep(5000);
+                });
+            };
+
+
+
+
+
+
 
             // Окно "О программе"
             button32.Click += async (s, a) =>

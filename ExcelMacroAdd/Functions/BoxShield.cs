@@ -9,11 +9,11 @@ namespace ExcelMacroAdd.Functions
     internal class BoxShield : AbstractFunctions
     {
         private readonly IResources resources;
-        private readonly IJournalData journalData;
+        private readonly IJournalData accessData;
 
-        public BoxShield(IJournalData journalData ,IResources resources)
+        public BoxShield(IJournalData accessData ,IResources resources)
         {
-            this.journalData = journalData;
+            this.accessData = accessData;
             this.resources = resources;
         }
 
@@ -34,7 +34,7 @@ namespace ExcelMacroAdd.Functions
                 try
                 {
                     string sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
-                    var journalNku = await journalData.GetEntityJournal(sArticle);
+                    var journalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle);
 
                     if (journalNku is null)
                     {

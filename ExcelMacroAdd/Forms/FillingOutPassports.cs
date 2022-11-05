@@ -13,7 +13,7 @@ using Word = Microsoft.Office.Interop.Word;
 
 namespace ExcelMacroAdd.Forms
 {
-    internal partial class Form1 : Form
+    internal partial class FillingOutPassports : Form
     {
         // Переменные иницализации                   
         private readonly object confirmConversions = false;
@@ -36,13 +36,13 @@ namespace ExcelMacroAdd.Forms
         private readonly IResources resources;
         private readonly string pPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template");
 
-        internal Form1(IResources resources)
+        internal FillingOutPassports(IResources resources)
         {
             this.resources = resources;            
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void FillingOutPassports_Load(object sender, EventArgs e)
         {
             Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
             Excel.Range cell = Globals.ThisAddIn.GetActiveCell();

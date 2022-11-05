@@ -3,19 +3,20 @@ using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Interfaces;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms
 {
-    public partial class Form4 : Form
+    public partial class SelectionTransformer : Form
     {
         private const byte StartTransformerCurrent = 0; // Начальный ток трансформации
         private readonly IDataInXml dataInXml;
-        private readonly IForm4Data accessData;
+        private readonly ISelectionTransformerData accessData;
 
         private readonly IResourcesForm4 resources;
-        public Form4(IResourcesForm4 resources, IDataInXml dataInXml, IForm4Data accessData)
+        public SelectionTransformer(IResourcesForm4 resources, IDataInXml dataInXml, ISelectionTransformerData accessData)
         {
             this.resources = resources;
             this.dataInXml = dataInXml;
@@ -23,7 +24,7 @@ namespace ExcelMacroAdd.Forms
             InitializeComponent();
         }
 
-        private void Form4_Load(object sender, EventArgs e)
+        private void SelectionTransformer_Load(object sender, EventArgs e)
         {
             comboBox1.Items.AddRange(resources.TransformerCurrent);
             comboBox1.SelectedIndex = StartTransformerCurrent;
@@ -114,30 +115,6 @@ namespace ExcelMacroAdd.Forms
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (comboBox2.SelectedItem.ToString())
-            {
-                case "Встроенная":
-                    pictureBox1.Image = Properties.Resources.ttk_a;
-                    break;
-                case "30мм":
-                    pictureBox1.Image = Properties.Resources.ttk_30;
-                    break;
-                case "40мм":
-                    pictureBox1.Image = Properties.Resources.ttk_40;
-                    break;
-                case "60мм":
-                    pictureBox1.Image = Properties.Resources.ttk_60;
-                    break;
-                case "85мм":
-                    pictureBox1.Image = Properties.Resources.ttk_85;
-                    break;
-                case "100мм":
-                    pictureBox1.Image = Properties.Resources.ttk_100;
-                    break;
-                case "125мм":
-                    pictureBox1.Image = Properties.Resources.ttk_125;
-                    break;
-            }
             ComboboxAccuracyRefresh();
             ComboboxPowerRefresh();
         }
@@ -153,7 +130,7 @@ namespace ExcelMacroAdd.Forms
             {
                 comboBox2.Items.Clear();
                 // ReSharper disable once CoVariantArrayConversion
-                comboBox2.Items.AddRange(accessData.GetComboBox2Items(comboBox1.SelectedItem.ToString()));
+                comboBox2.Items.AddRange(accessData.AccessTransformer.GetComboBox2Items(comboBox1.SelectedItem.ToString()));
                 comboBox2.SelectedIndex = 0;
             }
             catch (NotSupportedException)
@@ -168,7 +145,7 @@ namespace ExcelMacroAdd.Forms
             {
                 comboBox3.Items.Clear();
                 // ReSharper disable once CoVariantArrayConversion
-                comboBox3.Items.AddRange(accessData.GetComboBox3Items(comboBox1.SelectedItem.ToString(), comboBox2.SelectedItem.ToString()));
+                comboBox3.Items.AddRange(accessData.AccessTransformer.GetComboBox3Items(comboBox1.SelectedItem.ToString(), comboBox2.SelectedItem.ToString()));
                 comboBox3.SelectedIndex = 0;
             }
             catch (NotSupportedException)
@@ -183,7 +160,7 @@ namespace ExcelMacroAdd.Forms
             {
                 comboBox4.Items.Clear();
                 // ReSharper disable once CoVariantArrayConversion
-                comboBox4.Items.AddRange(accessData.GetComboBox4Items(comboBox1.SelectedItem.ToString(), comboBox2.SelectedItem.ToString(), comboBox3.SelectedItem.ToString()));
+                comboBox4.Items.AddRange(accessData.AccessTransformer.GetComboBox4Items(comboBox1.SelectedItem.ToString(), comboBox2.SelectedItem.ToString(), comboBox3.SelectedItem.ToString()));
                 comboBox4.SelectedIndex = 0;
             }
             catch (NotSupportedException)
@@ -195,7 +172,7 @@ namespace ExcelMacroAdd.Forms
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
             var transformerRow =
-               accessData.GetTransformerArticle(
+               accessData.AccessTransformer.GetArticle(
                    comboBox1.SelectedItem.ToString(),
                    comboBox2.SelectedItem.ToString(),
                    comboBox3.SelectedItem.ToString(),
@@ -278,6 +255,12 @@ namespace ExcelMacroAdd.Forms
                 button12.Enabled = true;
                 label16.Text = transformerRow.DekTop;
             }
+            //Обновление картинки из базы
+            pictureBox1.Image = ByteArrayToImage(accessData.AccessTransformer.GetBlobPictureDb(
+                comboBox1.SelectedItem.ToString(),
+                comboBox2.SelectedItem.ToString(),
+                comboBox3.SelectedItem.ToString(),
+                comboBox4.SelectedItem.ToString()));
         }
 
         private void CopyToClipboard(string text)
@@ -287,6 +270,14 @@ namespace ExcelMacroAdd.Forms
             var thread = new Thread(() => Clipboard.SetDataObject(data, true));
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
+        }
+        private Image ByteArrayToImage(byte[] byteArrayIn)
+        {
+            using (var ms = new MemoryStream(byteArrayIn))
+            {
+                var returnImage = Image.FromStream(ms);
+                return returnImage;
+            }
         }
     }
 }

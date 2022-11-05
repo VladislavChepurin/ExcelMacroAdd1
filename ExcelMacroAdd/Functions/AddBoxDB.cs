@@ -9,11 +9,11 @@ namespace ExcelMacroAdd.Functions
     internal class AddBoxDb : AbstractFunctions
     {
         private readonly IResources resources;
-        private readonly IJournalData journalData;
+        private readonly IJournalData accessData;
 
-        public AddBoxDb(IJournalData journalData, IResources resources)
+        public AddBoxDb(IJournalData accessData, IResources resources)
         {
-            this.journalData = journalData;
+            this.accessData = accessData;
             this.resources = resources;
         }
         public sealed override async void Start()
@@ -35,7 +35,7 @@ namespace ExcelMacroAdd.Functions
                 {
                     string sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
 
-                    var journalNku = await journalData.GetEntityJournal(sArticle);
+                    var journalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle);
 
                     if (!(journalNku is null))
                     {
@@ -75,7 +75,7 @@ namespace ExcelMacroAdd.Functions
                         Vendor = "None"
                     };
 
-                    journalData.AddValueDB(journal);
+                    accessData.AccessJournalNku.addValueDb(journal);
 
                     MessageInformation($"Успешно записано в базу данных. Теперь доступна новая запись.\n Поздравляем! \nАртикул = {sArticle}",
                                "Запись успешна!");

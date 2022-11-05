@@ -1,6 +1,6 @@
 ﻿namespace ExcelMacroAdd.Forms
 {
-    partial class Form2
+    partial class SelectionCircuitBreaker
     {
         /// <summary>
         /// Required designer variable.
@@ -2098,7 +2098,7 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // Form2
+            // SelectionCircuitBreaker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -2108,9 +2108,9 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Form2";
+            this.Name = "SelectionCircuitBreaker";
             this.Text = "Модульные автоматы";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.SelectionCircuitBreaker_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);

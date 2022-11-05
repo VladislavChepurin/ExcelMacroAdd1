@@ -1,6 +1,6 @@
 ﻿namespace ExcelMacroAdd.Forms
 {
-    partial class Form1
+    partial class FillingOutPassports
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FillingOutPassports));
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -79,7 +79,7 @@
             this.MinimumSize = new System.Drawing.Size(476, 162);
             this.Name = "Form1";
             this.Text = "Заполнение паспортов";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.FillingOutPassports_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

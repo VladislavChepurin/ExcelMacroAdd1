@@ -9,12 +9,12 @@ namespace ExcelMacroAdd.Functions
 {
     internal class CorrectDb : AbstractFunctions
     {       
-        private readonly IJournalData journalData;
+        private readonly IJournalData accessData;
         private readonly IResources resources;
 
-        public CorrectDb(IJournalData journalData, IResources resources)
+        public CorrectDb(IJournalData accessData, IResources resources)
         {
-            this.journalData = journalData;
+            this.accessData = accessData;
             this.resources = resources;
         }
 
@@ -36,7 +36,7 @@ namespace ExcelMacroAdd.Functions
 
                 try
                 {
-                    var jornalNku = await journalData.GetEntityJournal(sArticle);
+                    var jornalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle);
                     if (jornalNku is null)
                     {
                         MessageWarning($"В базе данных такого артикула нет.\n Необходимо сначала его занести. \nАртикул = {sArticle}",
@@ -68,7 +68,7 @@ namespace ExcelMacroAdd.Functions
                     jornalNku.Article = sArticle;
                     jornalNku.Execution = sExecution;
 
-                    journalData.WriteUpdateDB((JournalNku)jornalNku);                                 
+                    accessData.AccessJournalNku.writeUpdateDb((JournalNku)jornalNku);                                 
 
                     MessageInformation($"Запись успешно изменена! \nПоздравляем! \nАртикул = {sArticle}",
                                 "Запись успешна!");

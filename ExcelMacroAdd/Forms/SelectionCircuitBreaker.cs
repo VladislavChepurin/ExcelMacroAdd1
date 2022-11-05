@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using Switch = ExcelMacroAdd.DataLayer.Entity.Switch;
 
 namespace ExcelMacroAdd.Forms
 {
@@ -20,7 +21,7 @@ namespace ExcelMacroAdd.Forms
         SixthLineArray
     }
 
-    internal partial class Form2 : Form
+    internal partial class SelectionCircuitBreaker : Form
     {
         private const byte CircuitIndAvt = 5; // Начальный ток автоматических выключателей
         private const byte CurveIndAvt = 1; // Начальная кривая автоматических выключателей
@@ -34,17 +35,18 @@ namespace ExcelMacroAdd.Forms
 
         private readonly IDataInXml dataInXml;
         private readonly IResourcesForm2 resources;
-        private readonly IForm2Data accessData;
+        private readonly ISelectionCircuitBreakerData accessData;
 
-        internal Form2(IForm2Data accessData, IDataInXml dataInXml, IResourcesForm2 resources)
+        internal SelectionCircuitBreaker(ISelectionCircuitBreakerData accessData, IDataInXml dataInXml, IResourcesForm2 resources)
         {
             this.accessData = accessData;
             this.dataInXml = dataInXml;
             this.resources = resources;
             InitializeComponent();
         }
-        private void Form1_Load(object sender, EventArgs e)
+        private void SelectionCircuitBreaker_Load(object sender, EventArgs e)
         {
+            
             //Массивы параметров модульных автоматов
             var circuitBreakerCurrent = resources.CircuitBreakerCurrent;
             var circuitBreakerCurve = resources.CircuitBreakerCurve;
@@ -55,7 +57,25 @@ namespace ExcelMacroAdd.Forms
             var loadSwitchCurrent = resources.LoadSwitchCurrent;
             var amountOfPolesLoadSwitch = resources.AmountOfPolesLoadSwitch;
             var loadSwitchVendor = resources.LoadSwitchVendor;
+            /*
 
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            //Массивы параметров модульных автоматов
+            var circuitBreakerCurrent = accessData.AccessCircuitBreaker.GetCircuitCurrentItems();
+            var circuitBreakerCurve = accessData.AccessCircuitBreaker.GetCircuitCurveItems();
+            var maxCircuitBreakerCurrent = accessData.AccessCircuitBreaker.GetCircuitMaxCurrentItems();
+            var amountOfPolesCircuitBreaker = accessData.AccessCircuitBreaker.GetCircuitPolesItems();
+            var circuitBreakerVendor = resources.CircuitBreakerVendor;
+            //Массивы параметров выключателей нагрузки
+            var loadSwitchCurrent = accessData.AccessCircuitBreaker.GetCircuitSwitchsItems();
+            var amountOfPolesLoadSwitch = accessData.AccessCircuitBreaker.GetSwitchsPolesItems();
+            var loadSwitchVendor = resources.LoadSwitchVendor;
+
+            stopWatch.Stop();
+            Debug.WriteLine("RunTime " + stopWatch.ElapsedMilliseconds);
+            */
             //Создание массивов ComboBox для автоматических выключателей
             ComboBox[] comboBoxItCircuit = { comboBox5, comboBox10, comboBox15, comboBox20, comboBox25, comboBox30 };
             ComboBox[] comboBoxItCurve = { comboBox4, comboBox9, comboBox14, comboBox19, comboBox24, comboBox29 };
@@ -115,7 +135,7 @@ namespace ExcelMacroAdd.Forms
 
             try
             {
-                var  modules = await accessData.GetEntityModule(current, curve, maxCurrent, polus);        
+                var  modules = await accessData.AccessCircuitBreaker.GetEntityModule(current, curve, maxCurrent, polus);        
 
                 if (modules is null)
                 {
@@ -160,7 +180,7 @@ namespace ExcelMacroAdd.Forms
 
             try
             {
-                var switches = await accessData.GetEntitySwitch(current, polus);             
+                var switches = await accessData.AccessCircuitBreaker.GetEntitySwitch(current, polus);             
 
                 if (switches is null)
                 {
@@ -224,7 +244,7 @@ namespace ExcelMacroAdd.Forms
 
                     try
                     {
-                        var modules = await accessData.GetEntityModule(current, curve, maxCurrent, polus);
+                        var modules = await accessData.AccessCircuitBreaker.GetEntityModule(current, curve, maxCurrent, polus);
 
                         Type myType = typeof(Modul);
                         // получаем свойство
@@ -272,7 +292,7 @@ namespace ExcelMacroAdd.Forms
 
                     try
                     {
-                        var switches = await accessData.GetEntitySwitch(current, polus);
+                        var switches = await accessData.AccessCircuitBreaker.GetEntitySwitch(current, polus);
 
                         Type myType = typeof(Switch);
                         // получаем свойство

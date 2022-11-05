@@ -1,6 +1,6 @@
 ﻿namespace ExcelMacroAdd.Forms
 {
-    partial class Form4
+    partial class SelectionTransformer
     {
         /// <summary>
         /// Required designer variable.
@@ -451,7 +451,7 @@
             this.button11.Text = "В буфер";
             this.button11.UseVisualStyleBackColor = true;
             // 
-            // Form4
+            // SelectionTransformer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -499,9 +499,9 @@
             this.MaximumSize = new System.Drawing.Size(665, 348);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(665, 348);
-            this.Name = "Form4";
+            this.Name = "SelectionTransformer";
             this.Text = "Трансфоматоры тока";
-            this.Load += new System.EventHandler(this.Form4_Load);
+            this.Load += new System.EventHandler(this.SelectionTransformer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();

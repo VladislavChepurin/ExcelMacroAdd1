@@ -23,7 +23,7 @@ namespace ExcelMacroAdd.Functions
             }
             new Thread(() =>
             {
-                Form1 fs = new Form1(resources);
+                FillingOutPassports fs = new FillingOutPassports(resources);
                 fs.ShowDialog();
                 Thread.Sleep(100);
             }).Start();

@@ -21,10 +21,10 @@ namespace ExcelMacroAdd.Forms
         SchneiderLine
     }
 
-    internal partial class Form3 : Form
+    internal partial class Settings : Form
     {    
         private readonly IDataInXml dataInXml;
-        internal Form3(IDataInXml dataInXml)
+        internal Settings(IDataInXml dataInXml)
         {
             InitializeComponent();
             this.dataInXml = dataInXml;
@@ -152,7 +152,7 @@ namespace ExcelMacroAdd.Forms
             };
             return textBoxes;
         }
-        private void Form3_Load(object sender, EventArgs e)
+        private void Settings_Load(object sender, EventArgs e)
         {
             try
             { // Загружаем в форму файл Settings.xml

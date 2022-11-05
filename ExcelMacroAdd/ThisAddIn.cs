@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
+﻿using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
-using Office = Microsoft.Office.Core;
-using Microsoft.Office.Tools.Excel;
-using Microsoft.Office.Tools.Ribbon;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using Microsoft.Office.Core;
 
 namespace ExcelMacroAdd
 {
