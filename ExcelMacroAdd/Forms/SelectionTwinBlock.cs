@@ -2,7 +2,6 @@
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -61,27 +60,45 @@ namespace ExcelMacroAdd.Forms
                 pictureBox1.Image = Properties.Resources.none;
                 button1.Enabled = false;
             }
-            //Код для определения доступных аксесуаров
-            //Что недоступно - неактивно
-            var checkBoxs = new CheckBox[] { checkBox2, checkBox3, checkBox4, checkBox5 };
-            
-            var items = new Queue<string>(4);
-            items.Enqueue(data.Item2);
-            items.Enqueue(data.Item3);
-            items.Enqueue(data.Item4);
-            items.Enqueue(data.Item5);
 
-            foreach (var iCheckBox in checkBoxs)
+            if (string.IsNullOrEmpty(data.Item2))
             {
-                if (string.IsNullOrEmpty(items.Dequeue()))
-                {
-                    iCheckBox.Checked = false;
-                    iCheckBox.Enabled = false;
-                }
-                else
-                {
-                    iCheckBox.Enabled = true;
-                }
+                checkBox2.Checked = false;
+                checkBox2.Enabled = false;
+            }
+            else
+            {
+                checkBox2.Enabled = true;
+            }
+
+            if (string.IsNullOrEmpty(data.Item3))
+            {
+                checkBox3.Checked = false;
+                checkBox3.Enabled = false;
+            }
+            else
+            {
+                checkBox3.Enabled = true;
+            }
+
+            if (string.IsNullOrEmpty(data.Item4))
+            {
+                checkBox4.Checked = false;
+                checkBox4.Enabled = false;
+            }
+            else
+            {
+                checkBox4.Enabled = true;
+            }
+
+            if (string.IsNullOrEmpty(data.Item5))
+            {
+                checkBox5.Checked = false;
+                checkBox5.Enabled = false;
+            }
+            else
+            {
+                checkBox5.Enabled = true;
             }
         }
 
