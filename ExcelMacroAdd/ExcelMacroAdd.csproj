@@ -276,17 +276,14 @@
     <Compile Include="Forms\SelectionTwinBlock.Designer.cs">
       <DependentUpon>SelectionTwinBlock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\ICorrectFontResources.cs" />
     <Compile Include="Interfaces\IDataInXml.cs" />
-    <Compile Include="Interfaces\IResourcesDBConect.cs" />
     <Compile Include="Interfaces\IResources.cs" />
-    <Compile Include="Interfaces\IResourcesForm2.cs" />
-    <Compile Include="Interfaces\IResourcesForm4.cs" />
     <Compile Include="ProxyObjects\DataInXmlProxy.cs" />
     <Compile Include="Serializable\Entity\AppSettings.cs" />
     <Compile Include="Serializable\AppSettingsDeserialize.cs" />
+    <Compile Include="Serializable\Entity\CorrectFontResources.cs" />
     <Compile Include="Serializable\Entity\Resources.cs" />
-    <Compile Include="Serializable\Entity\ResourcesForm2.cs" />
-    <Compile Include="Serializable\Entity\ResourcesForm4.cs" />
     <Compile Include="Services\DataInXml.cs" />
     <Compile Include="Functions\AddBoxDB.cs" />
     <Compile Include="Functions\BordersTable.cs" />

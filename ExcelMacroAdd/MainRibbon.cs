@@ -6,7 +6,6 @@ using ExcelMacroAdd.Serializable;
 using ExcelMacroAdd.Services;
 using Microsoft.Office.Tools.Ribbon;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -25,8 +24,7 @@ namespace ExcelMacroAdd
             AppSettingsDeserialize app= new AppSettingsDeserialize(jsonFilePath);
             var settings = app.GetSettingsModels();
             var resources = settings.Resources;
-            var resourcesForm2 = settings.ResourcesForm2;
-            var resourcesForm4 = settings.ResourcesForm4;
+            var correctFontResources = settings.CorrectFontResources;
 
             //Если недоступна база данных прописанная в AppSettings.json, то используется локальная
             string path;
@@ -117,7 +115,7 @@ namespace ExcelMacroAdd
             // Исправление шрифтов
             button11.Click += (s, a) =>
             {
-                var correctFont = new CorrectFont();
+                var correctFont = new CorrectFont(correctFontResources);
                 correctFont.Start();
             };               
             // Вставка формул IEK
@@ -150,7 +148,7 @@ namespace ExcelMacroAdd
             {
                 await Task.Run(() =>
                 {
-                    SelectionCircuitBreaker fs = new SelectionCircuitBreaker(accessData, dataInXml, resourcesForm2);
+                    SelectionCircuitBreaker fs = new SelectionCircuitBreaker(accessData, dataInXml);
                     fs.ShowDialog();
                     Thread.Sleep(5000);
                 });
@@ -170,7 +168,7 @@ namespace ExcelMacroAdd
             {
                 await Task.Run(() =>
                 {
-                    SelectionTransformer fs = new SelectionTransformer(resourcesForm4, dataInXml, accessData);
+                    SelectionTransformer fs = new SelectionTransformer(dataInXml, accessData);
                     fs.ShowDialog();
                     Thread.Sleep(5000);
                 });
@@ -185,12 +183,6 @@ namespace ExcelMacroAdd
                     Thread.Sleep(5000);
                 });
             };
-
-
-
-
-
-
 
             // Окно "О программе"
             button32.Click += async (s, a) =>

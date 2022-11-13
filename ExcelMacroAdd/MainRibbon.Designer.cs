@@ -85,7 +85,7 @@
             this.tab1.Groups.Add(this.group2);
             this.tab1.Groups.Add(this.group1);
             this.tab1.Groups.Add(this.group4);
-            this.tab1.Label = "МАКРОСЫ";
+            this.tab1.Label = "Абиэлт";
             this.tab1.Name = "tab1";
             // 
             // Группа1

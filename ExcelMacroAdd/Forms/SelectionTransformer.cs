@@ -15,10 +15,9 @@ namespace ExcelMacroAdd.Forms
         private readonly IDataInXml dataInXml;
         private readonly ISelectionTransformerData accessData;
 
-        private readonly IResourcesForm4 resources;
-        public SelectionTransformer(IResourcesForm4 resources, IDataInXml dataInXml, ISelectionTransformerData accessData)
+ 
+        public SelectionTransformer(IDataInXml dataInXml, ISelectionTransformerData accessData)
         {
-            this.resources = resources;
             this.dataInXml = dataInXml;
             this.accessData = accessData;
             InitializeComponent();
@@ -26,7 +25,8 @@ namespace ExcelMacroAdd.Forms
 
         private void SelectionTransformer_Load(object sender, EventArgs e)
         {
-            comboBox1.Items.AddRange(resources.TransformerCurrent);
+            comboBox1.Items.AddRange(new object[] {"5/5", "10/5", "15/5", "20/5", "25/5", "30/5", "40/5", "50/5", "60/5", "75/5", "80/5", "100/5", "120/5", "125/5", "150/5", "200/5", "250/5", "300/5",
+                "400/5", "500/5", "600/5", "750/5", "800/5", "1000/5", "1200/5", "1250/5", "1500/5", "1600/5", "2000/5", "2250/5", "2500/5", "3000/5", "4000/5", "5000/5" });
             comboBox1.SelectedIndex = StartTransformerCurrent;
 
             button1.Click += (s, a) =>

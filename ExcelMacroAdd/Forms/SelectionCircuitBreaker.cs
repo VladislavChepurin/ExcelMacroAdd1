@@ -34,48 +34,27 @@ namespace ExcelMacroAdd.Forms
         private const byte VendorIndVn = 0; // Начальный вендор выключателей нагрузки
 
         private readonly IDataInXml dataInXml;
-        private readonly IResourcesForm2 resources;
         private readonly ISelectionCircuitBreakerData accessData;
 
-        internal SelectionCircuitBreaker(ISelectionCircuitBreakerData accessData, IDataInXml dataInXml, IResourcesForm2 resources)
+        internal SelectionCircuitBreaker(ISelectionCircuitBreakerData accessData, IDataInXml dataInXml)
         {
             this.accessData = accessData;
             this.dataInXml = dataInXml;
-            this.resources = resources;
             InitializeComponent();
         }
         private void SelectionCircuitBreaker_Load(object sender, EventArgs e)
         {
-            
-            //Массивы параметров модульных автоматов
-            var circuitBreakerCurrent = resources.CircuitBreakerCurrent;
-            var circuitBreakerCurve = resources.CircuitBreakerCurve;
-            var maxCircuitBreakerCurrent = resources.MaxCircuitBreakerCurrent;
-            var amountOfPolesCircuitBreaker = resources.AmountOfPolesCircuitBreaker;
-            var circuitBreakerVendor = resources.CircuitBreakerVendor;
-            //Массивы параметров выключателей нагрузки
-            var loadSwitchCurrent = resources.LoadSwitchCurrent;
-            var amountOfPolesLoadSwitch = resources.AmountOfPolesLoadSwitch;
-            var loadSwitchVendor = resources.LoadSwitchVendor;
-            /*
-
-            Stopwatch stopWatch = new Stopwatch();
-            stopWatch.Start();
-
             //Массивы параметров модульных автоматов
             var circuitBreakerCurrent = accessData.AccessCircuitBreaker.GetCircuitCurrentItems();
             var circuitBreakerCurve = accessData.AccessCircuitBreaker.GetCircuitCurveItems();
             var maxCircuitBreakerCurrent = accessData.AccessCircuitBreaker.GetCircuitMaxCurrentItems();
             var amountOfPolesCircuitBreaker = accessData.AccessCircuitBreaker.GetCircuitPolesItems();
-            var circuitBreakerVendor = resources.CircuitBreakerVendor;
+            var circuitBreakerVendor = new[] { "IEK BA47", "IEK BA47М", "IEK Armat", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DKC", "DEKraft", "Schneider", "TDM" };
             //Массивы параметров выключателей нагрузки
             var loadSwitchCurrent = accessData.AccessCircuitBreaker.GetCircuitSwitchsItems();
             var amountOfPolesLoadSwitch = accessData.AccessCircuitBreaker.GetSwitchsPolesItems();
-            var loadSwitchVendor = resources.LoadSwitchVendor;
+            var loadSwitchVendor = new[] { "IEK", "EKF PROxima", "EKF AVERS", "KEAZ", "ABB", "DEKraft", "Schneider", "TDM" };
 
-            stopWatch.Stop();
-            Debug.WriteLine("RunTime " + stopWatch.ElapsedMilliseconds);
-            */
             //Создание массивов ComboBox для автоматических выключателей
             ComboBox[] comboBoxItCircuit = { comboBox5, comboBox10, comboBox15, comboBox20, comboBox25, comboBox30 };
             ComboBox[] comboBoxItCurve = { comboBox4, comboBox9, comboBox14, comboBox19, comboBox24, comboBox29 };
@@ -90,27 +69,35 @@ namespace ExcelMacroAdd.Forms
             for (int i = 0; i < 6; i++)
             {
                 //Добавление в модульные автоматы данных тока
+                // ReSharper disable once CoVariantArrayConversion
                 comboBoxItCircuit[i].Items.AddRange(circuitBreakerCurrent);
                 comboBoxItCircuit[i].SelectedIndex = CircuitIndAvt;
                 //Добавление в модульные автоматы данных по кривой
+                // ReSharper disable once CoVariantArrayConversion
                 comboBoxItCurve[i].Items.AddRange(circuitBreakerCurve);
                 comboBoxItCurve[i].SelectedIndex = CurveIndAvt;
                 //Добавление в модульные автоматы данных по макс току
+                // ReSharper disable once CoVariantArrayConversion
                 comboBoxItIcu[i].Items.AddRange(maxCircuitBreakerCurrent);
                 comboBoxItIcu[i].SelectedIndex = IcuIndAvt;
                 //Добавление в модульные автоматы данных по полюсам
+                // ReSharper disable once CoVariantArrayConversion
                 comboBoxItPolus[i].Items.AddRange(amountOfPolesCircuitBreaker);
                 comboBoxItPolus[i].SelectedIndex = PolusIndAvt;
                 //Добавление в модульные автоматы данных по вендорам
+                // ReSharper disable once CoVariantArrayConversion
                 comboBoxItVendor[i].Items.AddRange(circuitBreakerVendor);
                 comboBoxItVendor[i].SelectedIndex = VendorIndAvt;
                 //Добавление в выключатели нагрузки данных тока
+                // ReSharper disable once CoVariantArrayConversion
                 comboBoxItCircuitVn[i].Items.AddRange(loadSwitchCurrent);
                 comboBoxItCircuitVn[i].SelectedIndex = CircuitIndVn;
                 //Добавление в выключатели нагрузки данных по полюсам
+                // ReSharper disable once CoVariantArrayConversion
                 comboBoxItPolusVn[i].Items.AddRange(amountOfPolesLoadSwitch);
                 comboBoxItPolusVn[i].SelectedIndex = PolusIndVn;
                 //Добавление в выключатели нагрузки данных по вендорам
+                // ReSharper disable once CoVariantArrayConversion
                 comboBoxItVendorVn[i].Items.AddRange(loadSwitchVendor);
                 comboBoxItVendorVn[i].SelectedIndex = VendorIndVn;
             }
@@ -127,11 +114,11 @@ namespace ExcelMacroAdd.Forms
                 return;
             }
 
-            string current = comboBoxes[rowsCheck, 0].SelectedItem.ToString();
-            string curve = comboBoxes[rowsCheck, 1].SelectedItem.ToString();
-            string maxCurrent = comboBoxes[rowsCheck, 2].SelectedItem.ToString();
-            string polus = comboBoxes[rowsCheck, 3].SelectedItem.ToString();
-            string vendor = GetDictionaryVendor()[comboBoxes[rowsCheck, 4].SelectedItem.ToString()];
+            var current = comboBoxes[rowsCheck, 0].SelectedItem.ToString();
+            var curve = comboBoxes[rowsCheck, 1].SelectedItem.ToString();
+            var maxCurrent = comboBoxes[rowsCheck, 2].SelectedItem.ToString();
+            var polus = comboBoxes[rowsCheck, 3].SelectedItem.ToString();
+            var vendor = GetDictionaryVendor()[comboBoxes[rowsCheck, 4].SelectedItem.ToString()];
 
             try
             {
@@ -174,9 +161,9 @@ namespace ExcelMacroAdd.Forms
                 return;
             }
 
-            string current = comboBoxes[rowsCheck, 0].SelectedItem.ToString();
-            string polus = comboBoxes[rowsCheck, 1].SelectedItem.ToString();
-            string vendor = GetDictionaryVendor()[comboBoxes[rowsCheck, 2].SelectedItem.ToString()];
+            var current = comboBoxes[rowsCheck, 0].SelectedItem.ToString();
+            var polus = comboBoxes[rowsCheck, 1].SelectedItem.ToString();
+            var vendor = GetDictionaryVendor()[comboBoxes[rowsCheck, 2].SelectedItem.ToString()];
 
             try
             {
@@ -236,11 +223,11 @@ namespace ExcelMacroAdd.Forms
                 // Если стоит галочка в CheckBox, то условие истина
                 if (checks[rows].Checked)
                 {
-                    string current = comboBoxes[rows, 0].SelectedItem.ToString();
-                    string curve = comboBoxes[rows, 1].SelectedItem.ToString();
-                    string maxCurrent = comboBoxes[rows, 2].SelectedItem.ToString();
-                    string polus = comboBoxes[rows, 3].SelectedItem.ToString();
-                    string vendor = GetDictionaryVendor()[comboBoxes[rows, 4].SelectedItem.ToString()];
+                    var current = comboBoxes[rows, 0].SelectedItem.ToString();
+                    var curve = comboBoxes[rows, 1].SelectedItem.ToString();
+                    var maxCurrent = comboBoxes[rows, 2].SelectedItem.ToString();
+                    var polus = comboBoxes[rows, 3].SelectedItem.ToString();
+                    var vendor = GetDictionaryVendor()[comboBoxes[rows, 4].SelectedItem.ToString()];
 
                     try
                     {
@@ -286,9 +273,9 @@ namespace ExcelMacroAdd.Forms
                 // Если стоит галочка в CheckBox, то условие истина
                 if (checks[rows].Checked)
                 {
-                    string current = comboBoxes[rows, 0].SelectedItem.ToString();
-                    string polus = comboBoxes[rows, 1].SelectedItem.ToString();
-                    string vendor = GetDictionaryVendor()[comboBoxes[rows, 2].SelectedItem.ToString()];
+                    var current = comboBoxes[rows, 0].SelectedItem.ToString();
+                    var polus = comboBoxes[rows, 1].SelectedItem.ToString();
+                    var vendor = GetDictionaryVendor()[comboBoxes[rows, 2].SelectedItem.ToString()];
 
                     try
                     {

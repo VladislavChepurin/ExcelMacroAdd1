@@ -6,15 +6,14 @@ namespace ExcelMacroAdd.Serializable.Entity
     public class AppSettings
     {
         public Resources Resources { get; set; }
-        public ResourcesForm2 ResourcesForm2 { get; set; }
-        public ResourcesForm4 ResourcesForm4 { get; set; }
+
+        public  CorrectFontResources CorrectFontResources { get; set; }
         public string GlobalDateBaseLocation { get; set; }
 
-        public AppSettings(Resources resources, ResourcesForm2 resourcesForm2, ResourcesForm4 resourcesForm4, string globalDateBaseLocation)
+        public AppSettings(Resources resources, CorrectFontResources correctFontResources, string globalDateBaseLocation)
         {
             Resources = resources;
-            ResourcesForm2 = resourcesForm2;
-            ResourcesForm4 = resourcesForm4;
+            CorrectFontResources = correctFontResources;
             GlobalDateBaseLocation = globalDateBaseLocation;
         }
     }

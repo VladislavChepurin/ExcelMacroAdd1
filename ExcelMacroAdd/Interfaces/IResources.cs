@@ -6,6 +6,5 @@
         int HeightMaxBox { get; set; }
         string TemplateWall { get; set; }
         string TemplateFloor { get; set; }
-
     }
 }
