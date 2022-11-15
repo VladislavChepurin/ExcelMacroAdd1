@@ -1,9 +1,12 @@
-﻿using ExcelMacroAdd.Interfaces;
+﻿using ExcelMacroAdd.Forms.FillingOutPassportClass;
+using ExcelMacroAdd.Interfaces;
 using Microsoft.CSharp.RuntimeBinder;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Interop.Word;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -31,10 +34,13 @@ namespace ExcelMacroAdd.Forms
         private readonly object documentDirection = Type.Missing;
         private readonly object noEncodingDialog = false;
         private readonly object xmlTransform = Type.Missing;
-        private object replaceTypeObj = WdReplace.wdReplaceAll;
-        private object wordMissing = Missing.Value;
+        private static object _replaceTypeObj = WdReplace.wdReplaceAll;
+        private static object _wordMissing = Missing.Value;
         private readonly IResources resources;
         private readonly string pPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template");
+
+        readonly Func<Find, string, string, bool> replacingTextLabels = (find, label, value) => find.Execute(label, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing,
+            value, ref _replaceTypeObj, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing);
 
         internal FillingOutPassports(IResources resources)
         {
@@ -67,7 +73,7 @@ namespace ExcelMacroAdd.Forms
                     // Цикл переборки строк
                     do
                     {
-                        Object filename;
+                        object filename;
                         // Преобразование типов для определения формата сохранения 
                         if (int.TryParse(worksheet.Cells[firstRow, 14].Value2.ToString(), out int result) && result < resources.HeightMaxBox)
                         {
@@ -108,89 +114,94 @@ namespace ExcelMacroAdd.Forms
                         //Инициализация метода Find
                         Find find = applicationWord.Selection.Find;
 
+                        var verifyIsNotFind = new List<bool>(20);
+
                         // Замены ТУ
-                        find.Execute("#ТУ", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sTy, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        verifyIsNotFind.Add(
+                            replacingTextLabels(find, "#ТУ", sTy));
                         // Замены Ток
-                        find.Execute("#Ток", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sIcu, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        verifyIsNotFind.Add(
+                        replacingTextLabels(find, "#Ток", sIcu));
                         // Замены IP
-                        find.Execute("#IP", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sIp, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        verifyIsNotFind.Add(
+                        replacingTextLabels(find, "#IP", sIp));
                         // Замены Габарит
-                        find.Execute("#Габарит", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sGab, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        verifyIsNotFind.Add(
+                        replacingTextLabels(find, "#Габарит", sGab));
                         // Замены Марка
-                        find.Execute("#Марка", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sMark, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        verifyIsNotFind.Add(
+                        replacingTextLabels(find, "#Марка", sMark));
                         // Замены Номер
-                        find.Execute("#Номер", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sNum, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        verifyIsNotFind.Add(
+                        replacingTextLabels(find, "#Номер", sNum));
                         // Замены Климат
-                        find.Execute("#Климат", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sClimate, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        //verifyIsNotFind.Add(
+                        //replacingTextLabels(find, "#Климат", sClimate));
                         // Замены Заземление
-                        find.Execute("#Заземление", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sGround, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        verifyIsNotFind.Add(
+                        replacingTextLabels(find, "#Заземление", sGround));
                         // Замены Название
-                        find.Execute("#Название", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sName, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        verifyIsNotFind.Add(
+                        replacingTextLabels(find, "#Название", sName));
                         // Замена Вставка (необходим метод замены)
-                        find.Execute("#Вставка", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        sPaste, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        verifyIsNotFind.Add(
+                            replacingTextLabels(find, "#Вставка", sPaste));
                         // Замены Заполнение
-                        find.Execute("#Заполнение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        firstWords, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        verifyIsNotFind.Add(
+                            replacingTextLabels(find, "#Заполнение", firstWords));
                         // Замена Склонение (необходим метод замены)
-                        find.Execute("#Склонение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                        secondWords, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                        verifyIsNotFind.Add(
+                            replacingTextLabels(find, "#Склонение", secondWords));
+
                         // Замены Напряжение
                         if (sUe == "380")
                         {
-                            find.Execute("#Напряжение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                            "~230/380 В.", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                            verifyIsNotFind.Add(
+                                replacingTextLabels(find, "#Напряжение", "~230/380 В."));
                         }
                         else if (sIsp == "220")
                         {
-                            find.Execute("#Напряжение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                            "~230В.", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                            verifyIsNotFind.Add(
+                                replacingTextLabels(find, "#Напряжение", "~230В."));
                         }
                         else
                         {
-                            find.Execute("#Напряжение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                            sUe + "В.", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                            verifyIsNotFind.Add(
+                                replacingTextLabels(find, "#Напряжение", sUe + "В."));
                         }
+
                         // Замены Исполнение
                         if (sIsp == "МП")
                         {
-                            find.Execute("#Исполнение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                            "монтажной плате", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                            verifyIsNotFind.Add(
+                            replacingTextLabels(find, "#Исполнение", "монтажной плате"));
                         }
                         else if (sIsp == "ДР")
                         {
-                            find.Execute("#Исполнение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                            "din-рейках", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                            verifyIsNotFind.Add(
+                            replacingTextLabels(find, "#Исполнение", "din-рейках"));
                         }
                         else
                         {
-                            find.Execute("#Исполнение", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                            "монтажной плате, din-рейках", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                            verifyIsNotFind.Add(
+                            replacingTextLabels(find, "#Исполнение", "монтажной плате, din-рейках"));
                         }
+
                         // Замены Материал
                         if (sMaterial == "Металл")
                         {
-                            find.Execute("#Корпус", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                            "металлическом", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                            verifyIsNotFind.Add(
+                            replacingTextLabels(find, "#Корпус", "металлическом"));
                         }
                         else if (sIsp == "ДР")
                         {
-                            find.Execute("#Корпус", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                            "пластиковом", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                            verifyIsNotFind.Add(
+                            replacingTextLabels(find, "#Корпус", "пластиковом"));
                         }
                         else
                         {
-                            find.Execute("#Корпус", ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing,
-                            "металлическом или пластиковом", ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                            verifyIsNotFind.Add(
+                            replacingTextLabels(find, "#Корпус", "металлическом или пластиковом"));
                         }
 
                         //Путь к папке Рабочего стола                                     
@@ -200,14 +211,15 @@ namespace ExcelMacroAdd.Forms
                         if (!drInfo.Exists)
                         {
                             drInfo.Create();
-                            Logger(folderName);
+                            WriteLog.Logger(folderName);
                         }
 
                         document.SaveAs($@"{folderName}\Паспорт {numberSave}.docx");                        
 
                         int amountSheet = document.ComputeStatistics(WdStatistic.wdStatisticPages, false);
+                        
                         // Вызов логгера
-                        Logger(folderName, numberSave, amountSheet);
+                        WriteLog.Logger(folderName, numberSave, amountSheet, verifyIsNotFind.All(item => item));
 
                         document.Close();
                         firstRow++;
@@ -266,37 +278,6 @@ namespace ExcelMacroAdd.Forms
                     if (!(applicationWord is null)) applicationWord.Quit();
                 }
             }).Start();
-        }
-
-        /// <summary>
-        /// Метод для записи логов шапки документа
-        /// </summary>
-        /// <param name="folder"></param>
-        private static void Logger(string folder)
-        {
-            string patch = Path.Combine(folder, "log.txt");
-            using (StreamWriter output = File.AppendText(patch))
-            {
-                output.WriteLine("Версия OC:          " + Environment.OSVersion);
-                output.WriteLine("Имя пользователя:   " + Environment.UserName);
-                output.WriteLine("Имя компьютера:     " + Environment.MachineName);
-                output.WriteLine("--------------------------------------------------------------------------------");
-            }
-        }
-
-        /// <summary>
-        /// Метод для записи логов формиррования паспортов
-        /// </summary>
-        /// <param name="folder"></param>
-        /// <param name="saveNum"></param>
-        /// <param name="amount"></param>
-        private static void Logger(string folder, string saveNum, int amount)
-        {
-            string patch = Path.Combine(folder, "log.txt");
-            using (StreamWriter output = File.AppendText(patch))
-            {
-                output.WriteLine($"{DateTime.Now} | Паспорт {saveNum} сформирован успешно, в паспорте {amount} листа");
-            }
         }
 
         private string FuncReplace(string mReplase)                          // Функция замены
