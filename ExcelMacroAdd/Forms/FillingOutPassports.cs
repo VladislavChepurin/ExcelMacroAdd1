@@ -95,7 +95,7 @@ namespace ExcelMacroAdd.Forms
                                     + worksheet.Cells[firstRow, 16].Value2.ToString();
                         string sMark = worksheet.Cells[firstRow, 4].Value2.ToString();
                         string sNum = worksheet.Cells[firstRow, 21].Value2.ToString();
-                        string sClimate = worksheet.Cells[firstRow, 12].Value2.ToString();
+                        //string sClimate = worksheet.Cells[firstRow, 12].Value2.ToString();
                         string sUe = worksheet.Cells[firstRow, 9].Value2.ToString();
                         string sGround = worksheet.Cells[firstRow, 28].Value2.ToString();
                         string sName = worksheet.Cells[firstRow, 6].Value2.ToString();
@@ -114,35 +114,35 @@ namespace ExcelMacroAdd.Forms
                         //Инициализация метода Find
                         Find find = applicationWord.Selection.Find;
 
-                        var verifyIsNotFind = new List<bool>(20);
+                        var verifyIsNotFind = new List<bool>(15);
 
                         // Замены ТУ
                         verifyIsNotFind.Add(
                             replacingTextLabels(find, "#ТУ", sTy));
                         // Замены Ток
                         verifyIsNotFind.Add(
-                        replacingTextLabels(find, "#Ток", sIcu));
+                            replacingTextLabels(find, "#Ток", sIcu));
                         // Замены IP
                         verifyIsNotFind.Add(
-                        replacingTextLabels(find, "#IP", sIp));
+                            replacingTextLabels(find, "#IP", sIp));
                         // Замены Габарит
                         verifyIsNotFind.Add(
-                        replacingTextLabels(find, "#Габарит", sGab));
+                            replacingTextLabels(find, "#Габарит", sGab));
                         // Замены Марка
                         verifyIsNotFind.Add(
-                        replacingTextLabels(find, "#Марка", sMark));
+                            replacingTextLabels(find, "#Марка", sMark));
                         // Замены Номер
                         verifyIsNotFind.Add(
-                        replacingTextLabels(find, "#Номер", sNum));
+                            replacingTextLabels(find, "#Номер", sNum));
                         // Замены Климат
                         //verifyIsNotFind.Add(
                         //replacingTextLabels(find, "#Климат", sClimate));
                         // Замены Заземление
                         verifyIsNotFind.Add(
-                        replacingTextLabels(find, "#Заземление", sGround));
+                            replacingTextLabels(find, "#Заземление", sGround));
                         // Замены Название
                         verifyIsNotFind.Add(
-                        replacingTextLabels(find, "#Название", sName));
+                            replacingTextLabels(find, "#Название", sName));
                         // Замена Вставка (необходим метод замены)
                         verifyIsNotFind.Add(
                             replacingTextLabels(find, "#Вставка", sPaste));
@@ -174,34 +174,34 @@ namespace ExcelMacroAdd.Forms
                         if (sIsp == "МП")
                         {
                             verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Исполнение", "монтажной плате"));
+                                replacingTextLabels(find, "#Исполнение", "монтажной плате"));
                         }
                         else if (sIsp == "ДР")
                         {
                             verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Исполнение", "din-рейках"));
+                                replacingTextLabels(find, "#Исполнение", "din-рейках"));
                         }
                         else
                         {
                             verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Исполнение", "монтажной плате, din-рейках"));
+                                replacingTextLabels(find, "#Исполнение", "монтажной плате, din-рейках"));
                         }
 
                         // Замены Материал
                         if (sMaterial == "Металл")
                         {
                             verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Корпус", "металлическом"));
+                                replacingTextLabels(find, "#Корпус", "металлическом"));
                         }
                         else if (sIsp == "ДР")
                         {
                             verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Корпус", "пластиковом"));
+                                replacingTextLabels(find, "#Корпус", "пластиковом"));
                         }
                         else
                         {
                             verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Корпус", "металлическом или пластиковом"));
+                                replacingTextLabels(find, "#Корпус", "металлическом или пластиковом"));
                         }
 
                         //Путь к папке Рабочего стола                                     
@@ -219,10 +219,15 @@ namespace ExcelMacroAdd.Forms
                         int amountSheet = document.ComputeStatistics(WdStatistic.wdStatisticPages, false);
                         
                         // Вызов логгера
-                        WriteLog.Logger(folderName, numberSave, amountSheet, verifyIsNotFind.All(item => item));
+                        WriteLog.Logger(folderName, numberSave, amountSheet);
 
                         document.Close();
                         firstRow++;
+
+                        if (!verifyIsNotFind.All(item => item))
+                            МеssageView.MessageWarning(
+                                $@"В шаблоне не произошла вставка{Environment.NewLine} одного или нескольких значений.",
+                                @"Проблема шаблона");
 
                         // Работа с элементами формы через делегат
                         this.Invoke((MethodInvoker)delegate
@@ -233,6 +238,30 @@ namespace ExcelMacroAdd.Forms
                     }
                     while (endRow > firstRow);
 
+                }
+                catch (COMException)
+                {
+                    МеssageView.MessageError(
+                        $@"Проверьте имя проекта внимательно,{Environment.NewLine} экстрасенсы говорят что проблема в первом столбце.",
+                        @"Ошибка надстройки");
+                    if (!(applicationWord is null)) applicationWord.Quit();
+                }
+                catch (RuntimeBinderException)
+                {
+                    МеssageView.MessageError(                                            
+                        $@"Проверьте заполнение всех столбцов,{Environment.NewLine} где-то нехватает данных.",
+                        @"Ошибка надстройки");
+                    if (!(applicationWord is null)) applicationWord.Quit();
+                }
+                catch (Exception exception)
+                {
+                    МеssageView.MessageError(
+                        exception.ToString(),
+                        @"Ошибка надстройки");
+                    if (!(applicationWord is null)) applicationWord.Quit();
+                }
+                finally
+                {
                     // Работа с элементами формы через делегат
                     this.Invoke((MethodInvoker)delegate
                     {
@@ -240,42 +269,6 @@ namespace ExcelMacroAdd.Forms
                         button1.Enabled = true;
                     });
                     applicationWord.Quit();
-                }
-                catch (COMException)
-                {
-                    MessageBox.Show(
-                    $@"Проверьте имя проекта внимательно,{Environment.NewLine} экстрасенсы говорят что проблема в первом столбце.",
-                    @"Ошибка надстройки",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly);
-
-                    if (!(applicationWord is null)) applicationWord.Quit();
-                }
-                catch (RuntimeBinderException)
-                {
-                    MessageBox.Show(
-                    $@"Проверьте заполнение всех столбцов,{Environment.NewLine} где-то нехватает данных.",
-                    @"Ошибка надстройки",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly);
-
-                    if (!(applicationWord is null)) applicationWord.Quit();
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show(
-                    exception.ToString(),
-                    @"Ошибка надстройки",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly);
-
-                    if (!(applicationWord is null)) applicationWord.Quit();
                 }
             }).Start();
         }

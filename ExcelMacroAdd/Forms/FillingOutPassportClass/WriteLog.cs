@@ -28,12 +28,12 @@ namespace ExcelMacroAdd.Forms.FillingOutPassportClass
         /// <param name="saveNum"></param> 
         /// <param name="amount"></param>
         /// <param name="verify"></param>
-        internal static void Logger(string folder, string saveNum, int amount, bool verify)
+        internal static void Logger(string folder, string saveNum, int amount)
         {
             string patch = Path.Combine(folder, "log.txt");
             using (StreamWriter output = File.AppendText(patch))
             {
-                output.WriteLine($"{DateTime.Now} | Паспорт {saveNum} сформирован успешно, в паспорте {amount} листа, верификация {verify}");
+                output.WriteLine($"{DateTime.Now} | Паспорт {saveNum} сформирован успешно, в паспорте {amount} листа");
             }
         }
     }

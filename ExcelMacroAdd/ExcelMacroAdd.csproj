@@ -265,6 +265,7 @@
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FillingOutPassportClass\WriteLog.cs" />
+    <Compile Include="Forms\FillingOutPassportClass\МеssageView.cs" />
     <Compile Include="Forms\SelectionTransformer.cs">
       <SubType>Form</SubType>
     </Compile>
