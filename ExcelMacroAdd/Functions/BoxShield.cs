@@ -34,7 +34,7 @@ namespace ExcelMacroAdd.Functions
                 try
                 {
                     string sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
-                    var journalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle);
+                    var journalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle.ToLower());
 
                     if (journalNku is null)
                     {

@@ -35,7 +35,7 @@ namespace ExcelMacroAdd.Functions
                 {
                     string sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
 
-                    var journalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle);
+                    var journalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle.ToLower());
 
                     if (!(journalNku is null))
                     {
@@ -70,12 +70,12 @@ namespace ExcelMacroAdd.Functions
                         Height = sHeight,
                         Width = sWidth,
                         Depth = sDepth,
-                        Article = sArticle,
+                        Article = sArticle.ToLower(),
                         Execution = sExecution,
                         Vendor = "None"
                     };
 
-                    accessData.AccessJournalNku.addValueDb(journal);
+                    accessData.AccessJournalNku.AddValueDb(journal);
 
                     MessageInformation($"Успешно записано в базу данных. Теперь доступна новая запись.\n Поздравляем! \nАртикул = {sArticle}",
                                "Запись успешна!");

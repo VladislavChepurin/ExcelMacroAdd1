@@ -19,7 +19,7 @@ namespace ExcelMacroAdd.AccessLayer
             return await context.JornalNkus.FirstOrDefaultAsync(p => p.Article == sArticle);
         }
 
-        public async void writeUpdateDb(JournalNku entity)
+        public async void WriteUpdateDb(JournalNku entity)
         {
             if (entity != null)
             {
@@ -28,7 +28,7 @@ namespace ExcelMacroAdd.AccessLayer
             }
         }
 
-        public async void addValueDb(JournalNku entity)
+        public async void AddValueDb(JournalNku entity)
         {
             if (entity != null)
             {

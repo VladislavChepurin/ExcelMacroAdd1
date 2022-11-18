@@ -36,7 +36,7 @@ namespace ExcelMacroAdd.Functions
 
                 try
                 {
-                    var jornalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle);
+                    var jornalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle.ToLower());
                     if (jornalNku is null)
                     {
                         MessageWarning($"В базе данных такого артикула нет.\n Необходимо сначала его занести. \nАртикул = {sArticle}",
@@ -65,10 +65,10 @@ namespace ExcelMacroAdd.Functions
                     jornalNku.Height = sHeight;
                     jornalNku.Width = sWidth;
                     jornalNku.Depth = sDepth;
-                    jornalNku.Article = sArticle;
+                    jornalNku.Article = sArticle.ToLower();
                     jornalNku.Execution = sExecution;
 
-                    accessData.AccessJournalNku.writeUpdateDb((JournalNku)jornalNku);                                 
+                    accessData.AccessJournalNku.WriteUpdateDb((JournalNku)jornalNku);                                 
 
                     MessageInformation($"Запись успешно изменена! \nПоздравляем! \nАртикул = {sArticle}",
                                 "Запись успешна!");
