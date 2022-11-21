@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace ExcelMacroAdd.Forms.FillingOutPassportClass
+namespace ExcelMacroAdd.Forms.Services
 {
     internal static class WriteLog
     {
