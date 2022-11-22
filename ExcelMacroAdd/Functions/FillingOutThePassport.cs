@@ -98,7 +98,7 @@ namespace ExcelMacroAdd.Functions
                             filename = Path.Combine(pPath, resources.TemplateFloor);
                         }
 
-                        string numberSave = Worksheet.Cells[firstRow, 21].Value2.ToString();
+                        string factoryNumber = Worksheet.Cells[firstRow, 21].Value2.ToString();
                         string sTy = Worksheet.Cells[firstRow, 8].Value2.ToString();
                         string sIcu = Worksheet.Cells[firstRow, 10].Value2.ToString();
                         string sIp = Worksheet.Cells[firstRow, 11].Value2.ToString();
@@ -226,12 +226,12 @@ namespace ExcelMacroAdd.Functions
                             WriteLog.Logger(folderName);
                         }
 
-                        document.SaveAs($@"{folderName}\Паспорт {numberSave}.docx");
+                        document.SaveAs($@"{folderName}\Паспорт {factoryNumber.Replace("/", "_")}.docx");
 
                         int amountSheet = document.ComputeStatistics(WdStatistic.wdStatisticPages, false);
 
                         // Вызов логгера
-                        WriteLog.Logger(folderName, numberSave, amountSheet);
+                        WriteLog.Logger(folderName, factoryNumber, amountSheet);
 
                         document.Close();
 
@@ -250,7 +250,7 @@ namespace ExcelMacroAdd.Functions
                 catch (COMException)
                 {
                     MessageError(
-                        $@"Проверьте имя проекта внимательно,{Environment.NewLine} экстрасенсы говорят что проблема в первом столбце.",
+                        $@"Проверьте имя проекта внимательно,{Environment.NewLine} экстрасенсы говорят что есть ошибки в заполнеии столбцов.",
                         @"Ошибка надстройки");
                     if (!(applicationWord is null)) applicationWord.Quit();
                 }
