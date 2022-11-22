@@ -26,8 +26,7 @@ namespace ExcelMacroAdd.Forms.Services
         /// </summary>
         /// <param name="folder"></param>
         /// <param name="saveNum"></param> 
-        /// <param name="amount"></param>
-        /// <param name="verify"></param>
+        /// <param name="amount"></param>        
         internal static void Logger(string folder, string saveNum, int amount)
         {
             string patch = Path.Combine(folder, "log.txt");

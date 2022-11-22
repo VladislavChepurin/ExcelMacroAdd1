@@ -24,7 +24,21 @@ namespace ExcelMacroAdd.Forms
         {
             this.Invoke((MethodInvoker)delegate
             {
-                progressBar1.PerformStep();
+            //this code is taken from 
+            //https://stackoverflow.com/questions/6071626/progressbar-is-slow-in-windows-forms
+                if (step == progressBar1.Maximum)
+                {
+                    // Special case as value can't be set greater than Maximum.
+                    progressBar1.Maximum = step + 1;     // Temporarily Increase Maximum
+                    progressBar1.Value = step + 1;       // Move past
+                    progressBar1.Maximum = step;         // Reset maximum
+                }
+                else
+                {
+                    progressBar1.Value = step + 1;       // Move past
+                }
+                progressBar1.Value = step;               // Move to correct value
+
                 label1.Text = $@"Подождите пожайлуста, идет заполнение паспортов {step}/{countRow}.";
             });
         }
