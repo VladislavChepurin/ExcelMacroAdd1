@@ -1,6 +1,7 @@
 ﻿using ExcelMacroAdd.Interfaces;
 using ExcelMacroAdd.UserVariables;
 using Microsoft.Office.Interop.Excel;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Globalization;
 using System.Windows.Forms;
@@ -9,20 +10,22 @@ using TextBox = System.Windows.Forms.TextBox;
 
 namespace ExcelMacroAdd.Forms
 {
-    enum RowsToArray
-    {
-        IekLine,
-        EkfLine,
-        DkcLine,
-        KeazLine,
-        DekraftLine,
-        TdmLine,
-        AbbLine,
-        SchneiderLine
-    }
+   
 
     internal partial class Settings : Form
-    {    
+    {
+        enum RowsToArray
+        {
+            IekLine,
+            EkfLine,
+            DkcLine,
+            KeazLine,
+            DekraftLine,
+            TdmLine,
+            AbbLine,
+            SchneiderLine
+        }
+
         private readonly IDataInXml dataInXml;
         internal Settings(IDataInXml dataInXml)
         {
@@ -239,25 +242,31 @@ namespace ExcelMacroAdd.Forms
 
             TextBox[,] textBoxes = ReturnTextBoxArray();
 
-            int firstRow = cell.Row;
+            int currentRow = cell.Row;
 
             // Read Cells "B_" if value not empty then continue our work
-            string formula1 = worksheet.Cells[firstRow, 2]?.FormulaLocal;                    
+            string formula1 = worksheet.Cells[currentRow, 2]?.FormulaLocal;                    
             if (formula1 != String.Empty) 
             {
-                textBoxes[rowsArray, 0].Text = VprFormulaReplace(formula1, firstRow);
+                textBoxes[rowsArray, 0].Text = VprFormulaReplace(formula1, currentRow);
             }
             // Read Cells "D_" if value not empty then continue our work
-            string formula2 = worksheet.Cells[firstRow, 4]?.FormulaLocal;
+            string formula2 = worksheet.Cells[currentRow, 4]?.FormulaLocal;
             if (formula2 != String.Empty)
             {
-                textBoxes[rowsArray, 1].Text = VprFormulaReplace(formula2, firstRow);
+                textBoxes[rowsArray, 1].Text = VprFormulaReplace(formula2, currentRow);
+            }
+            // Read Cells "F_"
+            var sales = worksheet.Cells[currentRow, 6]?.Value2;
+            if (sales is double)
+            {
+                textBoxes[rowsArray, 3].Text = sales.ToString();
             }
             // Read Cells "G_" if value not empty then continue our work
-            string formula3 = worksheet.Cells[firstRow, 7]?.FormulaLocal;
+            string formula3 = worksheet.Cells[currentRow, 7]?.FormulaLocal;
             if (formula3 != String.Empty)
             {
-                textBoxes[rowsArray, 2].Text = VprFormulaReplace(formula3, firstRow);
+                textBoxes[rowsArray, 2].Text = VprFormulaReplace(formula3, currentRow);
             }
         }
 
