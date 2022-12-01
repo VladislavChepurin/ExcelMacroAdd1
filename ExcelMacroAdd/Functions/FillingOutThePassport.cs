@@ -279,8 +279,19 @@ namespace ExcelMacroAdd.Functions
 
         private string FuncReplace(string mReplase)                          // Функция замены
         {
-            return mReplase.Replace("Щиток", "Щитка").Replace("Щит", "Щита").Replace("Шкаф", "Шкафа").Replace("Устройство", "Устройства").Replace("Корпус", "Корпуса").
-                Replace("Ящик", "Ящика").Replace("Бокс", "Бокса").Replace("Панель", "Панели").Replace("распределительный", "распределительного");
+            var replace = new Dictionary<string, string>()
+            {
+                { "Щиток", "Щитка"},
+                { "Щит", "Щита"},
+                { "Шкаф", "Шкафа"},
+                { "Устройство", "Устройства"},
+                { "Корпус", "Корпуса"},
+                { "Ящик", "Ящика"},
+                { "Бокс", "Бокса"},
+                { "Панель", "Панели"},
+                { "распределительный", "распределительного"}
+            };
+            return replace[mReplase];
         }
     }
 }
