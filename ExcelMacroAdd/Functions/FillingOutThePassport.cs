@@ -291,7 +291,11 @@ namespace ExcelMacroAdd.Functions
                 { "Панель", "Панели"},
                 { "распределительный", "распределительного"}
             };
-            return replace[mReplase];
+            if (replace.ContainsKey(mReplase))
+            {
+                return replace[mReplase];
+            }
+            return mReplase;
         }
     }
 }
