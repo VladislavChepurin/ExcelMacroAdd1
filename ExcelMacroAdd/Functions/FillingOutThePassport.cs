@@ -111,9 +111,16 @@ namespace ExcelMacroAdd.Functions
                         string sUe = Worksheet.Cells[firstRow, 9].Value2.ToString();
                         string sGround = Worksheet.Cells[firstRow, 28].Value2.ToString();
                         string sName = Worksheet.Cells[firstRow, 6].Value2.ToString();
+
+
                         string sPaste = FuncReplace(sName ?? string.Empty); // ссылка на метод замены
+
+
                         string firstWords = Worksheet.Cells[firstRow, 7].Value2.ToString();
+
                         string secondWords = FuncReplace(firstWords ?? string.Empty); // ссылка на метод замены
+
+
                         string sIsp = Worksheet.Cells[firstRow, 27].Value2.ToString();
                         string sMaterial = Worksheet.Cells[firstRow, 29].Value2.ToString();
                         string nameFolderSafe = Worksheet.Cells[firstRow, 1].Value2.ToString();
@@ -279,6 +286,8 @@ namespace ExcelMacroAdd.Functions
 
         private string FuncReplace(string mReplase)                          // Функция замены
         {
+            string[] subs = mReplase.Split(' ');
+
             var replace = new Dictionary<string, string>()
             {
                 { "Щиток", "Щитка"},
@@ -291,11 +300,15 @@ namespace ExcelMacroAdd.Functions
                 { "Панель", "Панели"},
                 { "распределительный", "распределительного"}
             };
-            if (replace.ContainsKey(mReplase))
+
+            for (int i = 0; i < subs.Length; i++)
             {
-                return replace[mReplase];
+                if (replace.ContainsKey(subs[i]))
+                {
+                    subs[i] = replace[subs[i]];
+                }
             }
-            return mReplase;
+            return String.Join(" ", subs);           
         }
     }
 }
