@@ -14,12 +14,12 @@ namespace ExcelMacroAdd.AccessLayer
             this.context = context;
         }
 
-        public async Task<IJournalNku> GetEntityJournal(string sArticle)
+        public async Task<IBoxBase> GetEntityJournal(string sArticle)
         {
             return await context.JornalNkus.FirstOrDefaultAsync(p => p.Article == sArticle);
         }
 
-        public async void WriteUpdateDb(JournalNku entity)
+        public async void WriteUpdateDb(BoxBase entity)
         {
             if (entity != null)
             {
@@ -28,7 +28,17 @@ namespace ExcelMacroAdd.AccessLayer
             }
         }
 
-        public async void AddValueDb(JournalNku entity)
+        public async Task<IExecution> GetExecutionEntityByName(string execution)
+        {             
+            return await context.Executions.FirstOrDefaultAsync(p => p.ExecutionValue == execution);
+        }
+
+        public async Task<IExecution> GetExecutionEntityById(int id)
+        {
+            return await context.Executions.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async void AddValueDb(BoxBase entity)
         {
             if (entity != null)
             {

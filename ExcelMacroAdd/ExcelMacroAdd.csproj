@@ -245,19 +245,23 @@
     <Compile Include="AccessLayer\Interfaces\IJournalData.cs" />
     <Compile Include="AccessLayer\Interfaces\ISelectionCircuitBreakerData.cs" />
     <Compile Include="DataLayer\Entity\AdditionalPole.cs" />
+    <Compile Include="DataLayer\Entity\Execution.cs" />
     <Compile Include="DataLayer\Entity\Stock.cs" />
     <Compile Include="DataLayer\Entity\DoorHandle.cs" />
     <Compile Include="DataLayer\Entity\DirectMountingHandle.cs" />
-    <Compile Include="DataLayer\Entity\JournalNku.cs" />
+    <Compile Include="DataLayer\Entity\BoxBase.cs" />
     <Compile Include="DataLayer\Entity\AppContext.cs" />
     <Compile Include="DataLayer\Entity\Modul.cs" />
     <Compile Include="DataLayer\Entity\Switch.cs" />
     <Compile Include="DataLayer\Entity\Transformer.cs" />
     <Compile Include="DataLayer\Entity\TransformerAttribute.cs" />
     <Compile Include="DataLayer\Entity\TwinBlockSwitch.cs" />
-    <Compile Include="DataLayer\Interfaces\IJournalNku.cs" />
+    <Compile Include="DataLayer\Entity\Vendor.cs" />
+    <Compile Include="DataLayer\Interfaces\IBoxBase.cs" />
+    <Compile Include="DataLayer\Interfaces\IExecution.cs" />
     <Compile Include="DataLayer\Interfaces\IModul.cs" />
     <Compile Include="DataLayer\Interfaces\ISwitch.cs" />
+    <Compile Include="UserException\DataBaseNotFoundValueException.cs" />
     <Compile Include="Forms\AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -2,7 +2,7 @@
 
 namespace ExcelMacroAdd.DataLayer.Entity
 {
-    public class JournalNku : IJournalNku
+    public class BoxBase : IBoxBase
     {
         public int Id { get; set; }
         public int Ip { get; set; }       
@@ -12,7 +12,13 @@ namespace ExcelMacroAdd.DataLayer.Entity
         public string Width { get; set; }
         public string Depth { get; set; }
         public string Article { get; set; }
-        public string Execution { get; set; }
-        public string Vendor { get; set; }
+        // Внешний ключ
+        public int ExecutionId { get; set; }
+        // Навигационное свойство
+        public Execution Execution {get; set; }
+        // Внешний ключ
+        public int? VendorId { get; set; }
+        // Навигационное свойство
+        public Vendor Vendor { get; set; }
     }
 }
