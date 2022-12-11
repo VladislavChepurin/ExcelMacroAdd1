@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Functions
 {
-    internal class CorrectDb : AbstractFunctions
+    internal sealed class CorrectDb : AbstractFunctions
     {       
         private readonly IJournalData accessData;
         private readonly IResources resources;
@@ -19,7 +19,7 @@ namespace ExcelMacroAdd.Functions
             this.resources = resources;
         }
 
-        public sealed override async void Start()
+        public override async void Start()
         {
      
             if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги

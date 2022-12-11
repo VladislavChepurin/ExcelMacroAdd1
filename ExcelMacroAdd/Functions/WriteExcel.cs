@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ExcelMacroAdd.Functions
 {
-    internal class WriteExcel : AbstractFunctions 
+    internal sealed class WriteExcel : AbstractFunctions 
     {
         private readonly IDataInXml dataInXml;
         private readonly string vendor;
@@ -20,7 +20,7 @@ namespace ExcelMacroAdd.Functions
             this.quantity = quantity;
         }
 
-        public sealed override void Start()
+        public override void Start()
         {         
             int endRow = default;          
             //Вычисляем столбец на который установлен фокус
@@ -58,7 +58,7 @@ namespace ExcelMacroAdd.Functions
             while (endRow > firstRow);          
         }
 
-        public static IDictionary<string, string> ReplaceVendorTable()
+        private static IDictionary<string, string> ReplaceVendorTable()
         {
             Dictionary<string, string> dictionaryVendor = new Dictionary<string, string>()
             {

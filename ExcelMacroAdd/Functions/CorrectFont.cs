@@ -1,10 +1,9 @@
-﻿using System;
+﻿using ExcelMacroAdd.Interfaces;
 using System.Runtime.InteropServices;
-using ExcelMacroAdd.Interfaces;
 
 namespace ExcelMacroAdd.Functions
 {
-    internal class CorrectFont : AbstractFunctions
+    internal sealed class CorrectFont : AbstractFunctions
     {
         private readonly ICorrectFontResources correctFontResources;
         public CorrectFont(ICorrectFontResources correctFontResources)
@@ -12,7 +11,7 @@ namespace ExcelMacroAdd.Functions
             this.correctFontResources = correctFontResources;
         }
 
-        public sealed override void Start()
+        public override void Start()
         {
             var excelCells = Application.Selection;
 

@@ -261,6 +261,8 @@
     <Compile Include="DataLayer\Interfaces\IExecution.cs" />
     <Compile Include="DataLayer\Interfaces\IModul.cs" />
     <Compile Include="DataLayer\Interfaces\ISwitch.cs" />
+    <Compile Include="Interfaces\IFormSettings.cs" />
+    <Compile Include="Serializable\Entity\FormSettings.cs" />
     <Compile Include="UserException\DataBaseNotFoundValueException.cs" />
     <Compile Include="Forms\AboutBox1.cs">
       <SubType>Form</SubType>

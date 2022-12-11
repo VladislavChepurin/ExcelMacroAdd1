@@ -7,7 +7,7 @@ using System.Data;
 
 namespace ExcelMacroAdd.Functions
 {
-    internal class AddBoxDb : AbstractFunctions
+    internal sealed class AddBoxDb : AbstractFunctions
     {
         private readonly IResources resources;
         private readonly IJournalData accessData;
@@ -17,7 +17,7 @@ namespace ExcelMacroAdd.Functions
             this.accessData = accessData;
             this.resources = resources;
         }
-        public sealed override async void Start()
+        public override async void Start()
         {
             if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
             {

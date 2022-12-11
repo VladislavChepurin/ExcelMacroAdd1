@@ -6,42 +6,87 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Switch = ExcelMacroAdd.DataLayer.Entity.Switch;
 
 namespace ExcelMacroAdd.Forms
 {
-    internal enum ContainerAvt
-    {
-        FirstLineArray,
-        SecondLineArray,
-        ThirdLineArray,
-        FourthLineArray,
-        FifthLineArray,
-        SixthLineArray
-    }
 
     internal partial class SelectionCircuitBreaker : Form
     {
-        private const byte CircuitIndAvt = 5; // Начальный ток автоматических выключателей
-        private const byte CurveIndAvt = 1; // Начальная кривая автоматических выключателей
-        private const byte IcuIndAvt = 0; // Начальная отключающая способность автоматических выключателей
-        private const byte PolusIndAvt = 0; // Начальная кол-во полюсов автоматических выключателей
-        private const byte VendorIndAvt = 0; // Начальный вендор автолмтических выключателей
+        private enum ContainerAvt
+        {
+            FirstLineArray,
+            SecondLineArray,
+            ThirdLineArray,
+            FourthLineArray,
+            FifthLineArray,
+            SixthLineArray
+        }
 
-        private const byte CircuitIndVn = 0; // Начальный ток выключателей нагрузки
-        private const byte PolusIndVn = 0; // Начальная кол-во полюсов выключателей нагрузки
-        private const byte VendorIndVn = 0; // Начальный вендор выключателей нагрузки
+        private static int CircuitIndAvt; // Начальный ток автоматических выключателей
+        private static int CurveIndAvt;// Начальная кривая автоматических выключателей
+        private static int IcuIndAvt; // Начальная отключающая способность автоматических выключателей
+        private static int PolusIndAvt; // Начальная кол-во полюсов автоматических выключателей
+        private static int VendorIndAvt; // Начальный вендор автолмтических выключателей
+
+        private static int CircuitIndVn; // Начальный ток выключателей нагрузки
+        private static int PolusIndVn; // Начальная кол-во полюсов выключателей нагрузки
+        private static int VendorIndVn; // Начальный вендор выключателей нагрузки
 
         private readonly IDataInXml dataInXml;
         private readonly ISelectionCircuitBreakerData accessData;
 
-        internal SelectionCircuitBreaker(ISelectionCircuitBreakerData accessData, IDataInXml dataInXml)
+        static SelectionCircuitBreaker()
         {
-            this.accessData = accessData;
+            CircuitIndAvt = 5;
+            CurveIndAvt = 1;
+            IcuIndAvt = 0;
+            PolusIndAvt = 0;
+            VendorIndAvt = 0;
+
+            CircuitIndVn = 0;
+            PolusIndVn = 0;
+            VendorIndVn = 0;
+        }
+
+        //Singelton
+        private static SelectionCircuitBreaker instance;
+        public static async Task getInstance(IDataInXml dataInXml, ISelectionCircuitBreakerData accessData, IFormSettings formSettings)
+        {
+            if (instance == null)
+            {
+                await Task.Run(() =>
+                {
+                    instance = new SelectionCircuitBreaker(dataInXml, accessData);
+                    instance.TopMost = formSettings.FormTopMost;
+                    instance.ShowDialog();
+                });
+            }    
+        }
+
+        private void SelectionCircuitBreaker_FormClosed(object sender, FormClosedEventArgs e)=>
+            instance = null;
+
+        private void SelectionCircuitBreaker_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            CurveIndAvt = comboBox4.SelectedIndex;
+            IcuIndAvt = comboBox3.SelectedIndex;
+            PolusIndAvt = comboBox2.SelectedIndex;
+            VendorIndAvt = comboBox1.SelectedIndex;
+
+            PolusIndVn = comboBox32.SelectedIndex;
+            VendorIndVn = comboBox31.SelectedIndex;
+        }
+
+        private SelectionCircuitBreaker(IDataInXml dataInXml, ISelectionCircuitBreakerData accessData)
+        {      
             this.dataInXml = dataInXml;
+            this.accessData = accessData;
             InitializeComponent();
         }
+
         private void SelectionCircuitBreaker_Load(object sender, EventArgs e)
         {
             //Массивы параметров модульных автоматов
@@ -212,7 +257,7 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-        public async void CreateFillInCircutBreakAsync()
+        private async void CreateFillInCircutBreakAsync()
         {
             CheckBox[] checks = CheckBoxArrayCircuitBreak();
             ComboBox[,] comboBoxes = ComboBoxArrayCircuitBreak();
@@ -262,7 +307,7 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-        public async void CreateFillInSwitchAsync()
+        private async void CreateFillInSwitchAsync()
         {
             CheckBox[] checks = CheckBoxArraySwitch();
             ComboBox[,] comboBoxes = ComboBoxArraySwitch();
@@ -311,12 +356,12 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-        protected PictureBox[] PictureBoxesCircuitBreak()
+        private PictureBox[] PictureBoxesCircuitBreak()
         {
             PictureBox[] pictures = { pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6 };
             return pictures;
         }
-        protected PictureBox[] PictureBoxesSwitch()
+        private PictureBox[] PictureBoxesSwitch()
         {
             PictureBox[] pictures = { pictureBox7, pictureBox8, pictureBox9, pictureBox10, pictureBox11, pictureBox12 };
             return pictures;
@@ -336,7 +381,7 @@ namespace ExcelMacroAdd.Forms
             CheckBox[] checks = { checkBox1, checkBox2, checkBox3, checkBox4, checkBox5, checkBox6 };
             return checks;
         }
-        protected CheckBox[] CheckBoxArraySwitch()
+        private CheckBox[] CheckBoxArraySwitch()
         {
             CheckBox[] checks = { checkBox7, checkBox8, checkBox9, checkBox10, checkBox11, checkBox12 };
             return checks;
@@ -366,7 +411,7 @@ namespace ExcelMacroAdd.Forms
             };
             return comboBoxes;
         }
-        protected ComboBox[,] ComboBoxArraySwitch()
+        private ComboBox[,] ComboBoxArraySwitch()
         {
             ComboBox[,] comboBoxes = new ComboBox[,]
             {
@@ -396,7 +441,7 @@ namespace ExcelMacroAdd.Forms
         /// Функция замены для запроса SQL
         /// </summary>
         /// <returns></returns>
-        public static IDictionary<string, string> GetDictionaryVendor()
+        private static IDictionary<string, string> GetDictionaryVendor()
         {
             Dictionary<string, string> dictionaryVendor = new Dictionary<string, string>()
             {
@@ -793,6 +838,6 @@ namespace ExcelMacroAdd.Forms
             {
                 comboBoxes[5, i].SelectedIndex = comboBoxes[4, i].SelectedIndex;
             }
-        }
+        }       
     }
 }

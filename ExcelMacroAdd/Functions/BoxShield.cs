@@ -7,7 +7,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelMacroAdd.Functions
 {
-    internal class BoxShield : AbstractFunctions
+    internal sealed class BoxShield : AbstractFunctions
     {
         private readonly IResources resources;
         private readonly IJournalData accessData;
@@ -18,7 +18,7 @@ namespace ExcelMacroAdd.Functions
             this.resources = resources;
         }
 
-        public sealed override async void Start()
+        public override async void Start()
         {
             if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
             {
