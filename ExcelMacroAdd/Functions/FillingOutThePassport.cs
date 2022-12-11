@@ -14,7 +14,7 @@ using Word = Microsoft.Office.Interop.Word;
 
 namespace ExcelMacroAdd.Functions
 {
-    internal class FillingOutThePassport : AbstractFunctions
+    internal sealed class FillingOutThePassport : AbstractFunctions
     {
         // Переменные иницализации                   
         private readonly object confirmConversions = false;
@@ -51,7 +51,7 @@ namespace ExcelMacroAdd.Functions
             this.resources = resources;
         }
 
-        public sealed override void Start()
+        public override void Start()
         {
             if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
             {
@@ -111,16 +111,9 @@ namespace ExcelMacroAdd.Functions
                         string sUe = Worksheet.Cells[firstRow, 9].Value2.ToString();
                         string sGround = Worksheet.Cells[firstRow, 28].Value2.ToString();
                         string sName = Worksheet.Cells[firstRow, 6].Value2.ToString();
-
-
                         string sPaste = FuncReplace(sName ?? string.Empty); // ссылка на метод замены
-
-
                         string firstWords = Worksheet.Cells[firstRow, 7].Value2.ToString();
-
                         string secondWords = FuncReplace(firstWords ?? string.Empty); // ссылка на метод замены
-
-
                         string sIsp = Worksheet.Cells[firstRow, 27].Value2.ToString();
                         string sMaterial = Worksheet.Cells[firstRow, 29].Value2.ToString();
                         string nameFolderSafe = Worksheet.Cells[firstRow, 1].Value2.ToString();

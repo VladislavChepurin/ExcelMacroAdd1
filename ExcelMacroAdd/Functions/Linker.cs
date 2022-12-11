@@ -1,13 +1,21 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using ExcelMacroAdd.Interfaces;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 
 
 namespace ExcelMacroAdd.Functions
 {
-    internal class Linker : AbstractFunctions
+    internal sealed class Linker : AbstractFunctions
     {
-        public sealed override void Start()
+        private readonly ICorrectFontResources correctFontResources;
+
+        public Linker(ICorrectFontResources correctFontResources)
+        {
+            this.correctFontResources = correctFontResources;
+        }
+
+        public override void Start()
         {    
             //Создаем коллекцию
             List<int> list = new List<int>();
@@ -42,8 +50,8 @@ namespace ExcelMacroAdd.Functions
             Worksheet.Range["D1", "I1"].EntireColumn.ColumnWidth = 13;
 
             //размечаем границы и правим шрифты
-            Worksheet.Range["A1", "i500"].Cells.Font.Name = "Calibri";
-            Worksheet.Range["A1", "i500"].Cells.Font.Size = 11;
+            Worksheet.Range["A1", "i500"].Cells.Font.Name = correctFontResources.NameFont;
+            Worksheet.Range["A1", "i500"].Cells.Font.Size = correctFontResources.SizeFont;
 
             var excelCells = Worksheet.Range["A1", "I11"];
 

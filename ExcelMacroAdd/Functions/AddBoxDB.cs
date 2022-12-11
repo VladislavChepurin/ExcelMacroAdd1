@@ -1,12 +1,13 @@
 ﻿using ExcelMacroAdd.AccessLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.UserException;
 using System;
 using System.Data;
 
 namespace ExcelMacroAdd.Functions
 {
-    internal class AddBoxDb : AbstractFunctions
+    internal sealed class AddBoxDb : AbstractFunctions
     {
         private readonly IResources resources;
         private readonly IJournalData accessData;
@@ -16,7 +17,7 @@ namespace ExcelMacroAdd.Functions
             this.accessData = accessData;
             this.resources = resources;
         }
-        public sealed override async void Start()
+        public override async void Start()
         {
             if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
             {
@@ -62,7 +63,14 @@ namespace ExcelMacroAdd.Functions
                         continue;
                     }
 
-                    JournalNku journal = new JournalNku()
+                    var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sExecution);
+                    if (executionEntity is null)
+                    {
+                        throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sExecution}\" недопустимо, пожайлуста используйте значение \"Пластик\" или \"Металл\"");
+                    }
+
+
+                    BoxBase journal = new BoxBase()
                     {
                         Ip = sIp,
                         Climate = sClimate,
@@ -71,8 +79,7 @@ namespace ExcelMacroAdd.Functions
                         Width = sWidth,
                         Depth = sDepth,
                         Article = sArticle.ToLower(),
-                        Execution = sExecution,
-                        Vendor = "None"
+                        ExecutionId  = executionEntity.Id
                     };
 
                     accessData.AccessJournalNku.AddValueDb(journal);
@@ -80,12 +87,20 @@ namespace ExcelMacroAdd.Functions
                     MessageInformation($"Успешно записано в базу данных. Теперь доступна новая запись.\n Поздравляем! \nАртикул = {sArticle}",
                                "Запись успешна!");
                 }
+
+                catch (DataBaseNotFoundValueException e)
+                {
+                    MessageError($"Произошла ошибка, скорее всего непавильно было указано исполнение шкафа. {e.Message}",
+                        "Ошибка базы данных");
+                }
+
                 catch (DataException)
                 {
                     MessageError("Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",
                         "Ошибка базы данных");
                     return;
                 }
+
                 catch (Exception e)
                 {
                     MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {e.Message}",

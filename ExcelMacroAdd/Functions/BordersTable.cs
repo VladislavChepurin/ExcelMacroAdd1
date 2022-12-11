@@ -2,9 +2,9 @@
 
 namespace ExcelMacroAdd.Functions
 {
-    internal class BordersTable : AbstractFunctions
+    internal sealed class BordersTable : AbstractFunctions
     {
-        public sealed override void Start()
+        public override void Start()
         {
             var excelCells = Application.Selection;
 

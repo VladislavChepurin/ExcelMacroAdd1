@@ -153,7 +153,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(480, 264);
+            this.ClientSize = new System.Drawing.Size(480, 263);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pictureBox1);
@@ -171,6 +171,7 @@
             this.MinimumSize = new System.Drawing.Size(496, 302);
             this.Name = "SelectionTwinBlock";
             this.Text = "Рубильники TwinBlock";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SelectionTwinBlock_FormClosed);
             this.Load += new System.EventHandler(this.SelectionTwinBlock_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);

@@ -1,11 +1,19 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using ExcelMacroAdd.Interfaces;
+using Microsoft.Office.Interop.Excel;
 using System;
 
 namespace ExcelMacroAdd.Functions
 {
-    internal class CalculationMarkup : AbstractFunctions
+    internal sealed class CalculationMarkup : AbstractFunctions
     {
-        public sealed override void Start()
+        private readonly ICorrectFontResources correctFontResources;
+
+        public CalculationMarkup(ICorrectFontResources correctFontResources)
+        {
+            this.correctFontResources = correctFontResources;
+        }
+
+        public override void Start()
         {
             //Проверяем наличие данных в таблице, A1:H9
             Boolean resultCellNull = true;
@@ -52,8 +60,8 @@ namespace ExcelMacroAdd.Functions
                 }
 
                 //размечаем границы и правим шрифты
-                Worksheet.Range["A1", "H100"].Cells.Font.Name = "Calibri";
-                Worksheet.Range["A1", "H100"].Cells.Font.Size = 11;
+                Worksheet.Range["A1", "H100"].Cells.Font.Name = correctFontResources.NameFont;
+                Worksheet.Range["A1", "H100"].Cells.Font.Size = correctFontResources.SizeFont;
 
                 var excelCells = Worksheet.Range["A1", "H9"];
 

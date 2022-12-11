@@ -1,13 +1,14 @@
 ﻿using ExcelMacroAdd.AccessLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.UserException;
 using System;
 using System.Data;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Functions
 {
-    internal class CorrectDb : AbstractFunctions
+    internal sealed class CorrectDb : AbstractFunctions
     {       
         private readonly IJournalData accessData;
         private readonly IResources resources;
@@ -18,7 +19,7 @@ namespace ExcelMacroAdd.Functions
             this.resources = resources;
         }
 
-        public sealed override async void Start()
+        public override async void Start()
         {
      
             if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
@@ -59,6 +60,13 @@ namespace ExcelMacroAdd.Functions
                             "Ошибка записи");
                         return;
                     }
+
+                    var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sExecution);
+                    if (executionEntity is null)
+                    {
+                        throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sExecution}\" недопустимо, пожайлуста используйте значение \"Пластик\" или \"Металл\"");
+                    }
+
                     jornalNku.Ip = sIp;
                     jornalNku.Climate = sClimate;
                     jornalNku.Reserve = sReserve;
@@ -66,13 +74,20 @@ namespace ExcelMacroAdd.Functions
                     jornalNku.Width = sWidth;
                     jornalNku.Depth = sDepth;
                     jornalNku.Article = sArticle.ToLower();
-                    jornalNku.Execution = sExecution;
+                    jornalNku.ExecutionId = executionEntity.Id;
 
-                    accessData.AccessJournalNku.WriteUpdateDb((JournalNku)jornalNku);                                 
+                    accessData.AccessJournalNku.WriteUpdateDb((BoxBase)jornalNku);                                 
 
                     MessageInformation($"Запись успешно изменена! \nПоздравляем! \nАртикул = {sArticle}",
                                 "Запись успешна!");
                 }
+
+                catch (DataBaseNotFoundValueException e)
+                {
+                    MessageError($"Произошла ошибка, скорее всего непавильно было указано исполнение шкафа. {e.Message}",
+                        "Ошибка базы данных");
+                }
+
                 catch (DataException)
                 {
                     MessageError("Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",

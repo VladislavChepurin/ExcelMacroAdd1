@@ -25,6 +25,7 @@ namespace ExcelMacroAdd
             var settings = app.GetSettingsModels();
             var resources = settings.Resources;
             var correctFontResources = settings.CorrectFontResources;
+            var formSettings = settings.FormSettings;
 
             //Если недоступна база данных прописанная в AppSettings.json, то используется локальная
             string path;
@@ -91,19 +92,19 @@ namespace ExcelMacroAdd
             };
             //Разметка расчетов
             button7.Click += (s, a) => {
-                var linker = new Linker();
+                var linker = new Linker(correctFontResources);
                 linker.Start();
             };
             // Правка расчетов
             button8.Click += (s, a) =>
             {
-                var editCalculation = new EditCalculation();
+                var editCalculation = new EditCalculation(correctFontResources);
                 editCalculation.Start();
             };
             // Разметка таблицы расчетов
             button9.Click += (s, a) =>
             {
-                var calculationMarkup = new CalculationMarkup();
+                var calculationMarkup = new CalculationMarkup(correctFontResources);
                 calculationMarkup.Start();
             };
             // Разметка границ
@@ -117,7 +118,17 @@ namespace ExcelMacroAdd
             {
                 var correctFont = new CorrectFont(correctFontResources);
                 correctFont.Start();
-            };               
+            };
+
+            button12.Click += async (s, a) =>
+            {
+                await SelectionTransformer.getInstance(dataInXml, accessData, formSettings);
+            };
+
+            button13.Click += async (s, a) =>
+            {
+                await SelectionTwinBlock.getInstance(dataInXml, accessData, formSettings);
+            };
             // Вставка формул IEK
             button20.Click += (s, a) => {
                 var writeExcel = new WriteExcel(dataInXml, "Iek");
@@ -146,39 +157,13 @@ namespace ExcelMacroAdd
             // Модульные аппрараты
             button30.Click += async (s, a) =>
             {
-                await Task.Run(() =>
-                {
-                    SelectionCircuitBreaker fs = new SelectionCircuitBreaker(accessData, dataInXml);
-                    fs.ShowDialog();
-                    Thread.Sleep(5000);
-                });
+                await SelectionCircuitBreaker.getInstance(dataInXml, accessData, formSettings);
             };
-            // Настройки
             button31.Click += async (s, a) =>
             {
                 await Task.Run(() =>
                 {
                     Settings fs = new Settings(dataInXml);
-                    fs.ShowDialog();
-                    Thread.Sleep(5000);
-                });
-            };
-
-            button12.Click += async (s, a) =>
-            {
-                await Task.Run(() =>
-                {
-                    SelectionTransformer fs = new SelectionTransformer(dataInXml, accessData);
-                    fs.ShowDialog();
-                    Thread.Sleep(5000);
-                });
-            };
-
-            button13.Click += async (s, a) =>
-            {
-                await Task.Run(() =>
-                {
-                    SelectionTwinBlock fs = new SelectionTwinBlock(dataInXml, accessData);
                     fs.ShowDialog();
                     Thread.Sleep(5000);
                 });
@@ -208,7 +193,6 @@ namespace ExcelMacroAdd
             new Thread(() =>
             {
                 getRate.Start();
-                //Thread.Sleep(100);
             }).Start();
         }
 

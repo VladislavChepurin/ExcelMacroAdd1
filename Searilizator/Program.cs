@@ -14,7 +14,7 @@ namespace Searilizator
     {  
         static void Main()
         {
-            var appSettings = new AppSettings(Resources(), CorrectFontResources(), GlobalDateBaseLocation());
+            var appSettings = new AppSettings(Resources(), CorrectFontResources(), FormSettings(), GlobalDateBaseLocation());
 
             var serializer = new JsonSerializer();
             serializer.Converters.Add(new JavaScriptDateTimeConverter());
@@ -48,12 +48,17 @@ namespace Searilizator
             return new Resources(nameFileJournal, heightMaxBox, templateWall, templateFloor);
         }
 
+        private static FormSettings FormSettings()
+        {
+            bool IsTopMost = true;
+            return new FormSettings(IsTopMost);
+        }
+
         private static CorrectFontResources CorrectFontResources()
         {
             string nameFont = "Calibri";
             int sizeFont = 11;
             return new CorrectFontResources(nameFont, sizeFont);
         }
-
     }
 }

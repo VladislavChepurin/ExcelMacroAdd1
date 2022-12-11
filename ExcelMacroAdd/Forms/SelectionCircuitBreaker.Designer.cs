@@ -2110,6 +2110,8 @@
             this.MinimizeBox = false;
             this.Name = "SelectionCircuitBreaker";
             this.Text = "Модульные автоматы";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelectionCircuitBreaker_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SelectionCircuitBreaker_FormClosed);
             this.Load += new System.EventHandler(this.SelectionCircuitBreaker_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);

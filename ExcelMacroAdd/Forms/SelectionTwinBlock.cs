@@ -4,6 +4,7 @@ using ExcelMacroAdd.Interfaces;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms
@@ -14,7 +15,25 @@ namespace ExcelMacroAdd.Forms
         private readonly IDataInXml dataInXml;
         private readonly ISelectionTwinBlockData accessData;
 
-        public SelectionTwinBlock(IDataInXml dataInXml, ISelectionTwinBlockData accessData)
+        //Singelton
+        private static SelectionTwinBlock instance;
+        public static async Task getInstance(IDataInXml dataInXml, ISelectionTwinBlockData accessData, IFormSettings formSettings)
+        {
+            if (instance == null)
+            {
+                await Task.Run(() =>
+                {
+                    instance = new SelectionTwinBlock(dataInXml, accessData);
+                    instance.TopMost = formSettings.FormTopMost;
+                    instance.ShowDialog();
+                });
+            }
+        }
+
+        private void SelectionTwinBlock_FormClosed(object sender, FormClosedEventArgs e) =>      
+            instance = null;
+
+        private SelectionTwinBlock(IDataInXml dataInXml, ISelectionTwinBlockData accessData)
         {
             this.dataInXml = dataInXml;
             this.accessData = accessData;

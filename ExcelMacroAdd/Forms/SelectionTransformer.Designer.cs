@@ -455,7 +455,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(649, 310);
+            this.ClientSize = new System.Drawing.Size(649, 309);
             this.Controls.Add(this.button12);
             this.Controls.Add(this.button11);
             this.Controls.Add(this.button10);
@@ -501,6 +501,7 @@
             this.MinimumSize = new System.Drawing.Size(665, 348);
             this.Name = "SelectionTransformer";
             this.Text = "Трансфоматоры тока";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SelectionTransformer_FormClosed);
             this.Load += new System.EventHandler(this.SelectionTransformer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();

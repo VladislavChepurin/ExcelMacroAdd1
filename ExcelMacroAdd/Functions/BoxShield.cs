@@ -1,4 +1,5 @@
 ﻿using ExcelMacroAdd.AccessLayer.Interfaces;
+using ExcelMacroAdd.UserException;
 using ExcelMacroAdd.Interfaces;
 using System;
 using System.Data;
@@ -6,7 +7,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelMacroAdd.Functions
 {
-    internal class BoxShield : AbstractFunctions
+    internal sealed class BoxShield : AbstractFunctions
     {
         private readonly IResources resources;
         private readonly IJournalData accessData;
@@ -17,7 +18,7 @@ namespace ExcelMacroAdd.Functions
             this.resources = resources;
         }
 
-        public sealed override async void Start()
+        public override async void Start()
         {
             if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
             {
@@ -34,22 +35,39 @@ namespace ExcelMacroAdd.Functions
                 try
                 {
                     string sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
-                    var journalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle.ToLower());
 
-                    if (journalNku is null)
+                    if (!String.IsNullOrEmpty(sArticle))
                     {
-                        Worksheet.Range["Z" + firstRow].Interior.Color = Excel.XlRgbColor.rgbPaleGoldenrod;
-                        firstRow++;
-                        continue;
+                        var journalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle.ToLower());
+
+                        if (journalNku is null)
+                        {
+                            Worksheet.Range["Z" + firstRow].Interior.Color = Excel.XlRgbColor.rgbPaleGoldenrod;
+                            firstRow++;
+                            continue;
+                        }
+
+                        var ex = await accessData.AccessJournalNku.GetExecutionEntityById(journalNku.ExecutionId);
+                        if (ex is null)
+                        {
+                            throw new DataBaseNotFoundValueException("Ошибка получения значения из таблицы Executions");
+                        }
+                        Worksheet.Range["K" + firstRow].Value2 = journalNku.Ip.ToString();
+                        Worksheet.Range["L" + firstRow].Value2 = journalNku.Climate ?? string.Empty;
+                        Worksheet.Range["M" + firstRow].Value2 = journalNku.Reserve ?? string.Empty;
+                        Worksheet.Range["N" + firstRow].Value2 = journalNku.Height ?? string.Empty;
+                        Worksheet.Range["O" + firstRow].Value2 = journalNku.Width ?? string.Empty;
+                        Worksheet.Range["P" + firstRow].Value2 = journalNku.Depth ?? string.Empty;
+                        Worksheet.Range["AC" + firstRow].Value2 = ex.ExecutionValue ?? string.Empty;
                     }
-                    Worksheet.Range["K" + firstRow].Value2 = journalNku.Ip.ToString();
-                    Worksheet.Range["L" + firstRow].Value2 = journalNku.Climate ?? string.Empty;
-                    Worksheet.Range["M" + firstRow].Value2 = journalNku.Reserve ?? string.Empty;
-                    Worksheet.Range["N" + firstRow].Value2 = journalNku.Height ?? string.Empty;
-                    Worksheet.Range["O" + firstRow].Value2 = journalNku.Width ?? string.Empty;
-                    Worksheet.Range["P" + firstRow].Value2 = journalNku.Depth ?? string.Empty;
-                    Worksheet.Range["AC" + firstRow].Value2 = journalNku.Execution ?? string.Empty;
                 }
+
+                catch (DataBaseNotFoundValueException e)
+                {
+                    MessageError($"Произошла ошибка в базе данных, пожайлуста обратитесь к разработчику. {e.Message}",
+                        "Ошибка базы данных");
+                }
+
                 catch (DataException)
                 {
                     MessageError("Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",

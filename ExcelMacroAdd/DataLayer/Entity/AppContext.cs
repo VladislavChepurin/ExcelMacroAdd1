@@ -9,7 +9,7 @@ namespace ExcelMacroAdd.DataLayer.Entity
         {
             AppDomain.CurrentDomain.SetData("DataDirectory", path);
         }        
-        public DbSet<JournalNku> JornalNkus { get; set; }
+        public DbSet<BoxBase> JornalNkus { get; set; }
         public DbSet<Switch> Switchs { get; set; }
         public DbSet<Modul> Moduls { get; set; }
         public DbSet<TransformerAttribute> TransformerAttributes { get; set; }
@@ -19,5 +19,7 @@ namespace ExcelMacroAdd.DataLayer.Entity
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<AdditionalPole> AdditionalPoles { get; set; }
         public DbSet<TwinBlockSwitch> TwinBlockSwitchs { get; set; }
+        public DbSet<Vendor> Vendors  { get; set; }
+        public DbSet<Execution> Executions { get; set; }
     }
 }

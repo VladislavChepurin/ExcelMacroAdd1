@@ -1,10 +1,12 @@
 ﻿using ExcelMacroAdd.AccessLayer.Interfaces;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.Serializable.Entity;
 using System;
 using System.Drawing;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms
@@ -15,8 +17,25 @@ namespace ExcelMacroAdd.Forms
         private readonly IDataInXml dataInXml;
         private readonly ISelectionTransformerData accessData;
 
- 
-        public SelectionTransformer(IDataInXml dataInXml, ISelectionTransformerData accessData)
+        //Singelton
+        private static SelectionTransformer instance;
+        public static async Task getInstance(IDataInXml dataInXml, ISelectionTransformerData accessData, IFormSettings formSettings)
+        {
+            if (instance == null)
+            {
+                await Task.Run(() =>
+                {
+                    instance = new SelectionTransformer(dataInXml, accessData);
+                    instance.TopMost = formSettings.FormTopMost;
+                    instance.ShowDialog();
+                });
+            }
+        }
+
+        private void SelectionTransformer_FormClosed(object sender, FormClosedEventArgs e)=>
+            instance = null;       
+
+        private SelectionTransformer(IDataInXml dataInXml, ISelectionTransformerData accessData)
         {
             this.dataInXml = dataInXml;
             this.accessData = accessData;
