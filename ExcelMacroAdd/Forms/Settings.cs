@@ -1,7 +1,6 @@
 ﻿using ExcelMacroAdd.Interfaces;
 using ExcelMacroAdd.UserVariables;
 using Microsoft.Office.Interop.Excel;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Globalization;
 using System.Windows.Forms;
@@ -10,8 +9,6 @@ using TextBox = System.Windows.Forms.TextBox;
 
 namespace ExcelMacroAdd.Forms
 {
-   
-
     internal partial class Settings : Form
     {
         enum RowsToArray
@@ -23,7 +20,8 @@ namespace ExcelMacroAdd.Forms
             DekraftLine,
             TdmLine,
             AbbLine,
-            SchneiderLine
+            SchneiderLine,
+            ChintLine
         }
 
         private readonly IDataInXml dataInXml;
@@ -115,12 +113,21 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
+        private void textBox36_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+
+            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
+            {
+                e.Handled = true;
+            }
+        }
 
         #endregion
 
         private Label[] ReturnLabelArray()
         {
-            Label[] labels = new Label[] { label33, label34, label35, label36, label37, label38, label39, label40 };
+            Label[] labels = new Label[] { label33, label34, label35, label36, label37, label38, label39, label40, label41 };
             return labels;
         }
 
@@ -151,7 +158,11 @@ namespace ExcelMacroAdd.Forms
                 },
                 {
                    textBox29, textBox30, textBox31, textBox32   //Schneider
+                },                
+                {
+                   textBox33, textBox34, textBox35, textBox36  //Chint
                 }
+
             };
             return textBoxes;
         }
@@ -218,6 +229,13 @@ namespace ExcelMacroAdd.Forms
                             textBox31.Text = vendor.Formula_3;
                             textBox32.Text = vendor.Discount.ToString();
                             label40.Text = vendor.Date;
+                            break;
+                        case "Chint":
+                            textBox33.Text = vendor.Formula_1;
+                            textBox34.Text = vendor.Formula_2;
+                            textBox35.Text = vendor.Formula_3;
+                            textBox36.Text = vendor.Discount.ToString();
+                            label41.Text = vendor.Date;
                             break;
                         default:
                             throw new NullReferenceException("Не коректное значение в классе Form3");
@@ -449,6 +467,27 @@ namespace ExcelMacroAdd.Forms
             labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
         }
         /// <summary>
+        /// Write Chint settings to xml
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button18_Click(object sender, EventArgs e)
+        {
+            int line = (int)RowsToArray.ChintLine;
+
+            TextBox[,] textBoxes = ReturnTextBoxArray();
+            Label[] labels = ReturnLabelArray();
+
+            DateTime localDate = DateTime.Now;
+            dataInXml.WriteXml("Chint", textBoxes[line, 0].Text ?? String.Empty,
+                                            textBoxes[line, 1].Text ?? String.Empty,
+                                            textBoxes[line, 2].Text ?? String.Empty,
+                                            textBoxes[line, 3].Text ?? String.Empty,
+                                            localDate.ToString(new CultureInfo("ru-RU")));
+            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
+        }
+
+        /// <summary>
         /// Read IEK formula in ExcelSheets
         /// </summary>
         /// <param name="sender"></param>
@@ -519,6 +558,15 @@ namespace ExcelMacroAdd.Forms
         private void button15_Click(object sender, EventArgs e)
         {
             ReadExcelFunc((int)RowsToArray.SchneiderLine);
+        }
+        /// <summary>
+        /// Read Chint formula in ExcelSheets
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button17_Click(object sender, EventArgs e)
+        {
+            ReadExcelFunc((int)RowsToArray.ChintLine);
         }
     }
 }

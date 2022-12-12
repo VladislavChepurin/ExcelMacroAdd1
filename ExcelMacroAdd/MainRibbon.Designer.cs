@@ -55,6 +55,7 @@
             this.button22 = this.Factory.CreateRibbonButton();
             this.button23 = this.Factory.CreateRibbonButton();
             this.button24 = this.Factory.CreateRibbonButton();
+            this.button25 = this.Factory.CreateRibbonButton();
             this.separator2 = this.Factory.CreateRibbonSeparator();
             this.button30 = this.Factory.CreateRibbonButton();
             this.button12 = this.Factory.CreateRibbonButton();
@@ -201,6 +202,7 @@
             this.group3.Items.Add(this.button22);
             this.group3.Items.Add(this.button23);
             this.group3.Items.Add(this.button24);
+            this.group3.Items.Add(this.button25);
             this.group3.Items.Add(this.separator2);
             this.group3.Items.Add(this.button30);
             this.group3.Items.Add(this.button12);
@@ -248,6 +250,14 @@
             this.button24.Label = "Формула ВПР DEK";
             this.button24.Name = "button24";
             this.button24.ShowImage = true;
+            // 
+            // button25
+            // 
+            this.button25.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button25.Image = global::ExcelMacroAdd.Properties.Resources.chint;
+            this.button25.Label = "Формула ВПР CHINT";
+            this.button25.Name = "button25";
+            this.button25.ShowImage = true;
             // 
             // separator2
             // 
@@ -405,6 +415,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label4;
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label5;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button13;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button25;
     }
 
     partial class ThisRibbonCollection

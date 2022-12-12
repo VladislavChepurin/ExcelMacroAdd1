@@ -96,7 +96,8 @@ namespace ExcelMacroAdd.Services
                 new Vendor("DEKraft", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
                 new Vendor("TDM", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
                 new Vendor("ABB", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("Schneider", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")))
+                new Vendor("Schneider", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
+                new Vendor("Chint", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")))
             };
             // получаем поток, куда будем записывать сериализованный объект
             using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
@@ -109,7 +110,7 @@ namespace ExcelMacroAdd.Services
         /// Функция замены для вставки вендора и запроса из XML
         /// </summary>
         /// <returns></returns>
-        public static IDictionary<string, string> ReplaceVendorTable()                         
+        public IDictionary<string, string> ReplaceVendorTable()                         
         {
             Dictionary<string, string> dictionaryVendor = new Dictionary<string, string>()
             {
@@ -125,6 +126,7 @@ namespace ExcelMacroAdd.Services
                 {"Dkc", "DKC"},
                 {"Dekraft", "DEKraft"},
                 {"Schneider", "Schneider"},
+                {"Chint", "Chint"},
                 {"Tdm", "TDM"}               
             };
             return dictionaryVendor;

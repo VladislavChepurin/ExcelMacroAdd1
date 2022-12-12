@@ -154,6 +154,11 @@ namespace ExcelMacroAdd
                 var writeExcel = new WriteExcel(dataInXml, "Dekraft");
                 writeExcel.Start();
             };
+            // Вставка формул Chint
+            button25.Click += (s, a) => {
+                var writeExcel = new WriteExcel(dataInXml, "Chint");
+                writeExcel.Start();
+            };
             // Модульные аппрараты
             button30.Click += async (s, a) =>
             {

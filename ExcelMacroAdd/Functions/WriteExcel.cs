@@ -58,7 +58,7 @@ namespace ExcelMacroAdd.Functions
             while (endRow > firstRow);          
         }
 
-        private static IDictionary<string, string> ReplaceVendorTable()
+        private IDictionary<string, string> ReplaceVendorTable()
         {
             Dictionary<string, string> dictionaryVendor = new Dictionary<string, string>()
             {
@@ -74,6 +74,7 @@ namespace ExcelMacroAdd.Functions
                 {"Dkc", "DKC"},
                 {"Dekraft", "DEKraft"},
                 {"Schneider", "Schneider"},
+                {"Chint","Chint"},
                 {"Tdm", "TDM"}
             };
             return dictionaryVendor;

@@ -374,6 +374,7 @@
     <None Include="Resources\none.png" />
     <None Include="Resources\503.png" />
     <None Include="Resources\504.png" />
+    <None Include="Resources\chint.png" />
     <Content Include="Template\Паспорт_навесные.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -507,9 +508,7 @@
     <None Include="Resources\560.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\Settings.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Config\Settings.xml" />
     <Content Include="x64\SQLite.Interop.dll" />
     <Content Include="x86\SQLite.Interop.dll" />
   </ItemGroup>
