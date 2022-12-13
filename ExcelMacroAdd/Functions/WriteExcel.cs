@@ -9,15 +9,15 @@ namespace ExcelMacroAdd.Functions
         private readonly string vendor;
         private readonly int rowsLine;
         private readonly string getArticle;
-        private readonly int quantity;
+        private readonly int amount;
 
-        public WriteExcel(IDataInXml dataInXml, string vendor ,int rowsLine = default, string getArticle = null, int quantity = default)
+        public WriteExcel(IDataInXml dataInXml, string vendor ,int rowsLine = default, string getArticle = null, int amount = default)
         {
             this.dataInXml = dataInXml;
             this.vendor = vendor;
             this.rowsLine = rowsLine;
             this.getArticle = getArticle;
-            this.quantity = quantity;
+            this.amount = amount;
         }
 
         public override void Start()
@@ -46,7 +46,7 @@ namespace ExcelMacroAdd.Functions
                 */
                 var objectVendor = dataInXml.ReadElementXml(vendor, dataInXml.ReadFileXml());
                 Worksheet.Range["B" + firstRow].FormulaLocal = string.Format(objectVendor.Formula_1, firstRow);    //Столбец "Описание". Вызывает формулу Formula_1            
-                if (quantity != 0) Worksheet.Range["C" + firstRow].Value2 = quantity;
+                if (amount != 0) Worksheet.Range["C" + firstRow].Value2 = amount;
                 Worksheet.Range["D" + firstRow].FormulaLocal = string.Format(objectVendor.Formula_2, firstRow);    //Столбец "Кратность". Вызывает формулу Formula_2
                 Worksheet.Range["E" + firstRow].Value2 = ReplaceVendorTable()[vendor];
                 Worksheet.Range["F" + firstRow].Value2 = objectVendor.Discount;         //Столбец "Скидка". Вызывает значение Discount
