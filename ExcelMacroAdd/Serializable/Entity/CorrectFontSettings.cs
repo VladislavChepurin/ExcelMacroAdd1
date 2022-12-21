@@ -2,12 +2,12 @@
 
 namespace ExcelMacroAdd.Serializable.Entity
 {
-    public class CorrectFontResources: ICorrectFontResources
+    public class CorrectFontSettings: ICorrectFontResources
     {
         public string NameFont { get; set; }
         public int SizeFont { get; set; }
 
-        public CorrectFontResources(string nameFont, int sizeFont)
+        public CorrectFontSettings(string nameFont, int sizeFont)
         {
             NameFont = nameFont;
             SizeFont = sizeFont;

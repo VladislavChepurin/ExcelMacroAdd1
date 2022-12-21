@@ -13,6 +13,7 @@ namespace ExcelMacroAdd.AccessLayer
         public string[] GetComboBox1Items()
         {
             return context.TwinBlockSwitchs
+                .AsNoTracking()
                 .Select(p => p.Current)
                 .ToHashSet()
                 .ToArray();
@@ -21,6 +22,7 @@ namespace ExcelMacroAdd.AccessLayer
         public (string, string, string, string, string) GetDataInTableDb(string current, bool isReverse)
         {
             var data = context.TwinBlockSwitchs
+                .AsNoTracking()
                 .Where(s => s.Current == current && s.IsReverse == isReverse)
                 .Select(s => new {
                     newArticle = s.Article,
@@ -35,6 +37,7 @@ namespace ExcelMacroAdd.AccessLayer
         public byte[] GetBlobPictureDb(string current, bool isReverse)
         {
             return context.TwinBlockSwitchs
+                .AsNoTracking()
                 .Where(s => s.Current == current && s.IsReverse == isReverse)
                 .Select(s => s.Picture
                 ).FirstOrDefault();
