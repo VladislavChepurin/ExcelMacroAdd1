@@ -36,7 +36,6 @@ namespace ExcelMacroAdd.Services
                             int nominal = Convert.ToInt32(row["Nominal"]);
                             usdPrice = Math.Round(Convert.ToDouble(row["Value"]) / nominal, 2);
                         }
-
                         // Поиск ЕВРО
                         if (row["CharCode"].ToString() == "EUR")
                         {

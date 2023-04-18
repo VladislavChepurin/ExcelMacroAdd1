@@ -443,7 +443,7 @@ namespace ExcelMacroAdd.Forms
         /// <returns></returns>
         private static IDictionary<string, string> GetDictionaryVendor()
         {
-            Dictionary<string, string> dictionaryVendor = new Dictionary<string, string>()
+            var dictionaryVendor = new Dictionary<string, string>()
             {
                 {"IEK", "Iek"},
                 {"IEK BA47", "IekVa47"},
