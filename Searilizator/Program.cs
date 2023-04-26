@@ -37,7 +37,7 @@ namespace Searilizator
             return "//192.168.100.100/ftp/Info_A/FTP/Производство Абиэлт/Инженеры/База данных/";
         }
 
-        private static Resources Resources()
+        private static FillingOutThePassportSettings Resources()
         {
             string nameFileJournal = "Книга1";
             int heightMaxBox = 1500;
@@ -45,7 +45,7 @@ namespace Searilizator
             string templateWall = "Паспорт_навесные.docx";
             string templateFloor = "Паспорт_напольные.docx";
 
-            return new Resources(nameFileJournal, heightMaxBox, templateWall, templateFloor);
+            return new FillingOutThePassportSettings(nameFileJournal, heightMaxBox, templateWall, templateFloor);
         }
 
         private static FormSettings FormSettings()
@@ -54,11 +54,11 @@ namespace Searilizator
             return new FormSettings(IsTopMost);
         }
 
-        private static CorrectFontResources CorrectFontResources()
+        private static CorrectFontSettings CorrectFontResources()
         {
             string nameFont = "Calibri";
             int sizeFont = 11;
-            return new CorrectFontResources(nameFont, sizeFont);
+            return new CorrectFontSettings(nameFont, sizeFont);
         }
     }
 }

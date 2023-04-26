@@ -263,6 +263,7 @@
     <Compile Include="DataLayer\Interfaces\ISwitch.cs" />
     <Compile Include="Interfaces\IFormSettings.cs" />
     <Compile Include="Serializable\Entity\FormSettings.cs" />
+    <Compile Include="Services\DataInXlsRead.cs" />
     <Compile Include="UserException\DataBaseNotFoundValueException.cs" />
     <Compile Include="Forms\AboutBox1.cs">
       <SubType>Form</SubType>
@@ -368,6 +369,7 @@
     <Content Include="DataLayer\DataBase\BdMacro.sqlite">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Config\IEK\230418 Прайс.xlsx" />
     <None Include="ExcelMacroAdd_1_TemporaryKey.pfx" />
     <None Include="Resources\Open.png" />
     <None Include="Resources\tdm.png" />
@@ -508,14 +510,22 @@
     <None Include="Resources\560.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\Settings.xml" />
     <Content Include="x64\SQLite.Interop.dll" />
     <Content Include="x86\SQLite.Interop.dll" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Config\ABB\" />
+    <Folder Include="Config\Chint\" />
+    <Folder Include="Config\DEKraft\" />
+    <Folder Include="Config\DKC\" />
+    <Folder Include="Config\EKF\" />
+    <Folder Include="Config\KEAZ\" />
+    <Folder Include="Config\Schneider\" />
+    <Folder Include="Config\TDM\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

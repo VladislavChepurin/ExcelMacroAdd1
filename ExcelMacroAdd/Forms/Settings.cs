@@ -131,6 +131,41 @@ namespace ExcelMacroAdd.Forms
             return labels;
         }
 
+        private NumericUpDown[,] ReturnNumericUpDown()
+        {
+            NumericUpDown[,] numericUpDown =
+            {
+                {
+                    numericUpDown1, numericUpDown2, numericUpDown3, numericUpDown4      //IEK
+                },
+                {
+                    numericUpDown5, numericUpDown6, numericUpDown7, numericUpDown8      //EKF
+                },
+                {
+                    numericUpDown9, numericUpDown10, numericUpDown11, numericUpDown12   //DKC
+                },
+                {
+                    numericUpDown13, numericUpDown14, numericUpDown15, numericUpDown16  //KEAZ
+                },
+                {
+                    numericUpDown17, numericUpDown18, numericUpDown19, numericUpDown20  //DEKraft
+                },
+                {
+                    numericUpDown21, numericUpDown22, numericUpDown23, numericUpDown24   //TDM
+                },
+                {
+                    numericUpDown25, numericUpDown26, numericUpDown27, numericUpDown28   //ABB
+                },
+                {
+                    numericUpDown29, numericUpDown30, numericUpDown31, numericUpDown32   //Schneider
+                },
+                {
+                    numericUpDown33, numericUpDown34, numericUpDown35, numericUpDown36  //Chint
+                }
+            };
+            return numericUpDown;
+        }
+
         private TextBox[,] ReturnTextBoxArray()
         {
             TextBox[,] textBoxes =
@@ -162,7 +197,6 @@ namespace ExcelMacroAdd.Forms
                 {
                    textBox33, textBox34, textBox35, textBox36  //Chint
                 }
-
             };
             return textBoxes;
         }

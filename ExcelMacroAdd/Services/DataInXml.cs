@@ -65,8 +65,12 @@ namespace ExcelMacroAdd.Services
                 // Записываем скидку
                 var discount = index.Element("Discount");
                 if (discount != null) discount.Value = data[3];
-                // Записываем дату и время
 
+
+
+
+
+                // Записываем дату и время
                 var date = index.Element("Date");
                 if (date != null) date.Value = data[4];        
                 // Сохраняем документ
@@ -89,15 +93,15 @@ namespace ExcelMacroAdd.Services
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(Vendor[]), xOver);
 
             Vendor[] vendor = {
-                new Vendor("IEK", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("EKF", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("DKC", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("KEAZ", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("DEKraft", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("TDM", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("ABB", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("Schneider", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("Chint", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")))
+                new Vendor("IEK", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")), 1, 2, 3, 4),
+                new Vendor("EKF", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")), 1, 2, 3, 4),
+                new Vendor("DKC", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")), 1, 2, 3, 4),
+                new Vendor("KEAZ", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")), 1, 2, 3, 4),
+                new Vendor("DEKraft", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")), 1, 2, 3, 4),
+                new Vendor("TDM", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")), 1, 2, 3, 4),
+                new Vendor("ABB", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")), 1, 2, 3, 4),
+                new Vendor("Schneider", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")), 1, 2, 3, 4),
+                new Vendor("Chint", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")), 1, 2, 3, 4)
             };
             // получаем поток, куда будем записывать сериализованный объект
             using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
