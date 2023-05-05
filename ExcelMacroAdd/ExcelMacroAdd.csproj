@@ -261,6 +261,12 @@
     <Compile Include="DataLayer\Interfaces\IExecution.cs" />
     <Compile Include="DataLayer\Interfaces\IModul.cs" />
     <Compile Include="DataLayer\Interfaces\ISwitch.cs" />
+    <Compile Include="Forms\TermoCalculation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TermoCalculation.Designer.cs">
+      <DependentUpon>TermoCalculation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\IFormSettings.cs" />
     <Compile Include="Serializable\Entity\FormSettings.cs" />
     <Compile Include="UserException\DataBaseNotFoundValueException.cs" />
@@ -346,6 +352,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SelectionTransformer.resx">
       <DependentUpon>SelectionTransformer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TermoCalculation.resx">
+      <DependentUpon>TermoCalculation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

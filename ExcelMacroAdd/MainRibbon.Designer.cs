@@ -60,6 +60,7 @@
             this.button30 = this.Factory.CreateRibbonButton();
             this.button12 = this.Factory.CreateRibbonButton();
             this.button13 = this.Factory.CreateRibbonButton();
+            this.button14 = this.Factory.CreateRibbonButton();
             this.button31 = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.label1 = this.Factory.CreateRibbonLabel();
@@ -207,6 +208,7 @@
             this.group3.Items.Add(this.button30);
             this.group3.Items.Add(this.button12);
             this.group3.Items.Add(this.button13);
+            this.group3.Items.Add(this.button14);
             this.group3.Items.Add(this.button31);
             this.group3.Label = "Макросы для расчетов";
             this.group3.Name = "group3";
@@ -286,6 +288,13 @@
             this.button13.Label = "Рубильники TwinBlock";
             this.button13.Name = "button13";
             this.button13.ShowImage = true;
+            // 
+            // button14
+            // 
+            this.button14.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button14.Label = "Расчет обогрева";
+            this.button14.Name = "button14";
+            this.button14.ShowImage = true;
             // 
             // button31
             // 
@@ -416,6 +425,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label5;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button13;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button25;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button14;
     }
 
     partial class ThisRibbonCollection

@@ -838,6 +838,6 @@ namespace ExcelMacroAdd.Forms
             {
                 comboBoxes[5, i].SelectedIndex = comboBoxes[4, i].SelectedIndex;
             }
-        }       
+        }
     }
 }
