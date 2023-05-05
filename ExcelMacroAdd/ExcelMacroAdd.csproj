@@ -237,7 +237,6 @@
   <ItemGroup>
     <Compile Include="AccessLayer\AccessCircuitBreaker.cs" />
     <Compile Include="AccessLayer\AccessData.cs" />
-    <Compile Include="AccessLayer\AccessJournalNku.cs" />
     <Compile Include="AccessLayer\AccessTransformer.cs" />
     <Compile Include="AccessLayer\AccessTwinBlock.cs" />
     <Compile Include="AccessLayer\Interfaces\ISelectionTwinBlockData.cs" />

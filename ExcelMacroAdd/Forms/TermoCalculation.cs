@@ -10,26 +10,26 @@ namespace ExcelMacroAdd.Forms
     {
 
 
-        private AccessData AccessJournal; 
+        private AccessData AccessData; 
 
         //Singelton
         private static TermoCalculation instance;
-        public static async Task getInstance(IFormSettings formSettings, AccessData accessJournal)
+        public static async Task getInstance(IFormSettings formSettings, AccessData accessData)
         {
             if (instance == null)
             {
                 await Task.Run(() =>
                 {
-                    instance = new TermoCalculation(accessJournal);
+                    instance = new TermoCalculation(accessData);
                     instance.TopMost = formSettings.FormTopMost;
                     instance.ShowDialog();                    
                 });
             }
         }
 
-        private TermoCalculation(AccessData accessJournal)
+        private TermoCalculation(AccessData accessData)
         {
-            AccessJournal = accessJournal;
+            AccessData = accessData;
             InitializeComponent();
         }
 

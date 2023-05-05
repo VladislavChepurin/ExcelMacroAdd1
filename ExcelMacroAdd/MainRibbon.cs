@@ -132,7 +132,7 @@ namespace ExcelMacroAdd
 
             button14.Click += async (s, a) =>
             {
-                await TermoCalculation.getInstance(formSettings);
+                await TermoCalculation.getInstance(formSettings, accessData);
             };
 
             // Вставка формул IEK
