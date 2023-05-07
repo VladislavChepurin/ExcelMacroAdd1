@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ExcelMacroAdd.AccessLayer
+namespace ExcelMacroAdd.BisinnesLayer
 {
     public class AccessCircuitBreaker
     {

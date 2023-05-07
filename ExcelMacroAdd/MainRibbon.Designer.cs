@@ -110,7 +110,7 @@
             // button1
             // 
             this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button1.Image = global::ExcelMacroAdd.Properties.Resources._306;
+            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
             this.button1.Label = "Заполнить паспорта";
             this.button1.Name = "button1";
             this.button1.ShowImage = true;
@@ -118,7 +118,7 @@
             // button2
             // 
             this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button2.Image = global::ExcelMacroAdd.Properties.Resources._308;
+            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
             this.button2.Label = "Удалить формулы";
             this.button2.Name = "button2";
             this.button2.ShowImage = true;
@@ -126,7 +126,7 @@
             // button3
             // 
             this.button3.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button3.Image = global::ExcelMacroAdd.Properties.Resources._301;
+            this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
             this.button3.Label = "Удалить все формулы";
             this.button3.Name = "button3";
             this.button3.ShowImage = true;
@@ -134,7 +134,7 @@
             // button4
             // 
             this.button4.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button4.Image = global::ExcelMacroAdd.Properties.Resources._303;
+            this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
             this.button4.Label = "Корпуса щитов";
             this.button4.Name = "button4";
             this.button4.ShowImage = true;
@@ -150,7 +150,7 @@
             // button6
             // 
             this.button6.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button6.Image = global::ExcelMacroAdd.Properties.Resources._307;
+            this.button6.Image = ((System.Drawing.Image)(resources.GetObject("button6.Image")));
             this.button6.Label = "Исправить запись БД";
             this.button6.Name = "button6";
             this.button6.ShowImage = true;
@@ -284,7 +284,7 @@
             // button13
             // 
             this.button13.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button13.Image = global::ExcelMacroAdd.Properties.Resources._504;
+            this.button13.Image = ((System.Drawing.Image)(resources.GetObject("button13.Image")));
             this.button13.Label = "Рубильники TwinBlock";
             this.button13.Name = "button13";
             this.button13.ShowImage = true;
@@ -292,6 +292,7 @@
             // button14
             // 
             this.button14.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button14.Image = global::ExcelMacroAdd.Properties.Resources._505;
             this.button14.Label = "Расчет обогрева";
             this.button14.Name = "button14";
             this.button14.ShowImage = true;
@@ -299,8 +300,8 @@
             // button31
             // 
             this.button31.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button31.Image = global::ExcelMacroAdd.Properties.Resources._502;
-            this.button31.Label = "Settings";
+            this.button31.Image = ((System.Drawing.Image)(resources.GetObject("button31.Image")));
+            this.button31.Label = "Настройка формул";
             this.button31.Name = "button31";
             this.button31.ShowImage = true;
             // 

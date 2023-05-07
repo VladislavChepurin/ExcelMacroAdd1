@@ -3,7 +3,7 @@ using ExcelMacroAdd.DataLayer.Interfaces;
 using System.Data.Entity;
 using System.Threading.Tasks;
 
-namespace ExcelMacroAdd.AccessLayer
+namespace ExcelMacroAdd.BisinnesLayer
 {
     public class AccessJournalNku
     {

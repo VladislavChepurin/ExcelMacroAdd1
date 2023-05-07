@@ -75,7 +75,7 @@ namespace ExcelMacroAdd.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap _301 {
             get {
-                object obj = ResourceManager.GetObject("301", resourceCulture);
+                object obj = ResourceManager.GetObject("_301", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -95,7 +95,17 @@ namespace ExcelMacroAdd.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap _303 {
             get {
-                object obj = ResourceManager.GetObject("303", resourceCulture);
+                object obj = ResourceManager.GetObject("_303", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _304 {
+            get {
+                object obj = ResourceManager.GetObject("_304", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -115,7 +125,7 @@ namespace ExcelMacroAdd.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap _306 {
             get {
-                object obj = ResourceManager.GetObject("306", resourceCulture);
+                object obj = ResourceManager.GetObject("_306", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -125,7 +135,7 @@ namespace ExcelMacroAdd.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap _307 {
             get {
-                object obj = ResourceManager.GetObject("307", resourceCulture);
+                object obj = ResourceManager.GetObject("_307", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -135,7 +145,7 @@ namespace ExcelMacroAdd.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap _308 {
             get {
-                object obj = ResourceManager.GetObject("308", resourceCulture);
+                object obj = ResourceManager.GetObject("_308", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -155,7 +165,7 @@ namespace ExcelMacroAdd.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap _502 {
             get {
-                object obj = ResourceManager.GetObject("502", resourceCulture);
+                object obj = ResourceManager.GetObject("_502", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -176,6 +186,16 @@ namespace ExcelMacroAdd.Properties {
         internal static System.Drawing.Bitmap _504 {
             get {
                 object obj = ResourceManager.GetObject("_504", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _505 {
+            get {
+                object obj = ResourceManager.GetObject("_505", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

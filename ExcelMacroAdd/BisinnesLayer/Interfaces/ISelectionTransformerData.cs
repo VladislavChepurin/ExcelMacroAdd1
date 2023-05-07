@@ -1,4 +1,4 @@
-﻿namespace ExcelMacroAdd.AccessLayer.Interfaces
+﻿namespace ExcelMacroAdd.BisinnesLayer.Interfaces
 {
     public interface ISelectionTransformerData
     {
