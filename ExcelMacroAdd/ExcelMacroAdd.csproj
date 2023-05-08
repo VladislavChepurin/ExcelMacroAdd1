@@ -37,7 +37,7 @@
     <PublishUrl>publication\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>1.7.5.1</ApplicationVersion>
+    <ApplicationVersion>1.8.0.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -396,6 +396,8 @@
     <None Include="Resources\504.png" />
     <None Include="Resources\307.png" />
     <None Include="Resources\303.png" />
+    <None Include="Resources\901.png" />
+    <None Include="Resources\Settings.ico" />
     <Content Include="Template\Паспорт_навесные.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -482,9 +484,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\305.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\901.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\902.png" />

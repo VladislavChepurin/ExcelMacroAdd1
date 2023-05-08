@@ -585,6 +585,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(370, 735);
             this.Name = "TermoCalculation";
+            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Расчет обогрева шкафа";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TermoCalculation_FormClosed);
