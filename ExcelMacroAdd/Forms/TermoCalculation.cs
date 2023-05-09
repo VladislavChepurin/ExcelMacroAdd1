@@ -157,12 +157,14 @@ namespace ExcelMacroAdd.Forms
             double effectiveArea = GetEffectiveArea();
             double heatTransferCoefficientBox = GetHeatTransferCoefficienBox();
             double heatTransferCoefficientInsulation = GetHeatTransferCoefficienInsulation();
+            double placementCoefficient = GetPlacementCoefficient();
 
 
             if (int.TryParse(textBox6.Text, out int temperatureDifference))
             {
                 int.TryParse(textBox7.Text, out int totalHeatGeneration);
-                var heaterPower = GetPlacementCoefficient() * MathTermo.CalculationOfHeating(effectiveArea, (5 * heatTransferCoefficientInsulation + heatTransferCoefficientBox) / 6, temperatureDifference, totalHeatGeneration);
+
+                var heaterPower = MathTermo.CalculationOfHeating(placementCoefficient, effectiveArea, heatTransferCoefficientBox, heatTransferCoefficientInsulation, temperatureDifference, totalHeatGeneration);
 
                 label13.Text = heaterPower.ToString() + " Вт";
                 label13.Visible = true;

@@ -19,6 +19,12 @@ namespace ExcelMacroAdd.Services
         internal const double internalPlacement  = 1.0;
         internal const double outdoorPlacement  = 1.7;
 
+
+        private static double CalculationHeatTransferCoefficient(double heatTransferCoefficientBox, double heatTransferCoefficientInsulation)
+        {
+            return (5 * heatTransferCoefficientInsulation + heatTransferCoefficientBox) / 6;
+        }
+
         /// <summary>
         /// Расчет мощности
         /// </summary>
@@ -27,9 +33,11 @@ namespace ExcelMacroAdd.Services
         /// <param name="temperatureDifference"></param>
         /// <param name="totalHeatGeneration"></param>
         /// <returns></returns>
-        internal static int CalculationOfHeating(double effectiveArea, double heatTransferCoefficient, int temperatureDifference, int totalHeatGeneration)
-        { 
-            var powerOfHeating = effectiveArea * heatTransferCoefficient * temperatureDifference - totalHeatGeneration;
+        internal static int CalculationOfHeating(double placementCoefficient, double effectiveArea, double heatTransferCoefficientBox, double heatTransferCoefficientInsulation, int temperatureDifference, int totalHeatGeneration)
+        {
+            var heatTransferCoefficient = CalculationHeatTransferCoefficient(heatTransferCoefficientBox, heatTransferCoefficientInsulation);
+
+            var powerOfHeating = placementCoefficient * (effectiveArea * heatTransferCoefficient * temperatureDifference - totalHeatGeneration);
             return (int)Math.Round(powerOfHeating);
         }
 
