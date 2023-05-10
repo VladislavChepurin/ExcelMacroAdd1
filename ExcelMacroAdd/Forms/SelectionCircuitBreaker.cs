@@ -1,4 +1,4 @@
-﻿using ExcelMacroAdd.AccessLayer.Interfaces;
+﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Interfaces;
@@ -443,7 +443,7 @@ namespace ExcelMacroAdd.Forms
         /// <returns></returns>
         private static IDictionary<string, string> GetDictionaryVendor()
         {
-            Dictionary<string, string> dictionaryVendor = new Dictionary<string, string>()
+            var dictionaryVendor = new Dictionary<string, string>()
             {
                 {"IEK", "Iek"},
                 {"IEK BA47", "IekVa47"},
@@ -838,6 +838,6 @@ namespace ExcelMacroAdd.Forms
             {
                 comboBoxes[5, i].SelectedIndex = comboBoxes[4, i].SelectedIndex;
             }
-        }       
+        }
     }
 }

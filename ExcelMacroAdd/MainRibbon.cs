@@ -1,4 +1,4 @@
-﻿using ExcelMacroAdd.AccessLayer;
+﻿using ExcelMacroAdd.BisinnesLayer;
 using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.ProxyObjects;
@@ -129,6 +129,12 @@ namespace ExcelMacroAdd
             {
                 await SelectionTwinBlock.getInstance(dataInXml, accessData, formSettings);
             };
+
+            button14.Click += async (s, a) =>
+            {
+                await TermoCalculation.getInstance(formSettings, accessData);
+            };
+
             // Вставка формул IEK
             button20.Click += (s, a) => {
                 var writeExcel = new WriteExcel(dataInXml, "Iek");
@@ -207,6 +213,5 @@ namespace ExcelMacroAdd
             label2.Label = "ЕВРО     = " + euroCurrency;
             label3.Label = "Юань    = " + cnhCurrency;
         }
-        
     }       
 }

@@ -1,7 +1,6 @@
-﻿using ExcelMacroAdd.AccessLayer.Interfaces;
+﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Interfaces;
-using ExcelMacroAdd.Serializable.Entity;
 using System;
 using System.Drawing;
 using System.IO;

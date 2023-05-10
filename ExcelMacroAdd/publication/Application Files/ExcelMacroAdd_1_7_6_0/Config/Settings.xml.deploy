@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MetaSettings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Vendor vendor="IEK">
+    <Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[220131 Прайс.xlsx]Прайс'!$A$13:$K$65536;2;0)</Formula_1>
+    <Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[220131 Прайс.xlsx]Прайс'!$A$13:$K$65536;4;0)</Formula_2>
+    <Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[220131 Прайс.xlsx]Прайс'!$A$13:$J$65536;10;0)</Formula_3>
+    <Discount>10</Discount>
+    <Date>23.07.2022 13:20:00</Date>
+  </Vendor>
+  <Vendor vendor="EKF">
+    <Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[ekf_pricelist_2022_08_22.xlsx]Продукция EKF'!$A$12:$G$65536;2;0)</Formula_1>
+    <Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[ekf_pricelist_2022_08_22.xlsx]Продукция EKF'!$A$12:$G$65536;6;0)</Formula_2>
+    <Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[ekf_pricelist_2022_08_22.xlsx]Продукция EKF'!$A$12:$G$65536;7;0)</Formula_3>
+    <Discount>40</Discount>
+    <Date>29.08.2022 15:18:56</Date>
+  </Vendor>
+  <Vendor vendor="DKC">
+    <Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[DKC-Prays_list-ot-22.08.2022.xlsx]Прайс ДКС'!$F$15:$J$65536;2;0)</Formula_1>
+    <Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[DKC-Prays_list-ot-22.08.2022.xlsx]Прайс ДКС'!$F$15:$J$65536;3;0)</Formula_2>
+    <Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[DKC-Prays_list-ot-22.08.2022.xlsx]Прайс ДКС'!$F$15:$J$65536;5;0)</Formula_3>
+    <Discount>35</Discount>
+    <Date>29.08.2022 15:18:54</Date>
+  </Vendor>
+  <Vendor vendor="KEAZ">
+    <Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[keaz.xls]TDSheet'!$C$15:$I$65536;2;0)</Formula_1>
+    <Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[keaz.xls]TDSheet'!$C$14:$I$65536;3;0)</Formula_2>
+    <Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[keaz.xls]TDSheet'!$C$14:$I$65536;5;0)</Formula_3>
+    <Discount>0</Discount>
+    <Date>03.07.2022 19:55:17</Date>
+  </Vendor>
+  <Vendor vendor="DEKraft">
+    <Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[Tariff-Moscow-2022-_-1-_01.01.2022_.xlsb]Тариф Москва'!$A$4:$D$65536;2;0)</Formula_1>
+    <Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[Tariff-Moscow-2022-_-1-_01.01.2022_.xlsb]Тариф Москва'!$A$4:$D$65536;4;0)</Formula_2>
+    <Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[Tariff-Moscow-2022-_-1-_01.01.2022_.xlsb]Тариф Москва'!$A$4:$D$65536;3;0)*1,2</Formula_3>
+    <Discount>0</Discount>
+    <Date>03.07.2022 19:55:25</Date>
+  </Vendor>
+  <Vendor vendor="TDM">
+    <Formula_1>=ВПР(A{0};'C:\Work\Каталог\Прайсы\[200420 Парайс TDM.xls]TDSheet'!$A$14:$E$65536;2;0)</Formula_1>
+    <Formula_2>=ВПР(A{0};'C:\Work\Каталог\Прайсы\[200420 Парайс TDM.xls]TDSheet'!$A$14:$E$65536;5;0)</Formula_2>
+    <Formula_3>=ВПР(A{0};'C:\Work\Каталог\Прайсы\[200420 Парайс TDM.xls]TDSheet'!$A$14:$E$65536;4;0)*1,2</Formula_3>
+    <Discount>0</Discount>
+    <Date>03.07.2022 19:55:30</Date>
+  </Vendor>
+  <Vendor vendor="ABB">
+    <Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[ABB-Prays_list-EL-2022-YAnvar-s-31.01.xlsx]Низковольтное оборудование'!$A$3:$G$65536;3;0)</Formula_1>
+    <Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[ABB-Prays_list-EL-2022-YAnvar-s-31.01.xlsx]Низковольтное оборудование'!$A$3:$G$65536;5;0)</Formula_2>
+    <Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[ABB-Prays_list-EL-2022-YAnvar-s-31.01.xlsx]Низковольтное оборудование'!$A$3:$G$65536;6;0)*1,2</Formula_3>
+    <Discount>0</Discount>
+    <Date>03.07.2022 19:55:35</Date>
+  </Vendor>
+  <Vendor vendor="Schneider">
+    <Formula_1>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[Tariff-Moscow-2022-_-1-_01.01.2022_.xlsb]Тариф Москва'!$A$4:$D$65536;2;0)</Formula_1>
+    <Formula_2>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[Tariff-Moscow-2022-_-1-_01.01.2022_.xlsb]Тариф Москва'!$A$4:$D$65536;4;0)</Formula_2>
+    <Formula_3>=ВПР(A{0};'C:\Users\ПК\Desktop\Прайсы\[Tariff-Moscow-2022-_-1-_01.01.2022_.xlsb]Тариф Москва'!$A$4:$D$65536;3;0)*1,2</Formula_3>
+    <Discount>44</Discount>
+    <Date>06.08.2022 15:43:13</Date>
+  </Vendor>
+</MetaSettings>

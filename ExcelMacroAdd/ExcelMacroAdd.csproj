@@ -37,7 +37,7 @@
     <PublishUrl>publication\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>1.7.6.1</ApplicationVersion>
+    <ApplicationVersion>1.8.0.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -138,7 +138,7 @@
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -150,14 +150,14 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Data.SQLite, Version=1.0.116.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    <Reference Include="System.Data.SQLite, Version=1.0.117.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.117.0\lib\net46\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.SQLite.EF6, Version=1.0.116.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.116.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.117.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.117.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.116.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.116.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.117.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.117.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -235,15 +235,17 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="AccessLayer\AccessCircuitBreaker.cs" />
-    <Compile Include="AccessLayer\AccessData.cs" />
-    <Compile Include="AccessLayer\AccessJournalNku.cs" />
-    <Compile Include="AccessLayer\AccessTransformer.cs" />
-    <Compile Include="AccessLayer\AccessTwinBlock.cs" />
-    <Compile Include="AccessLayer\Interfaces\ISelectionTwinBlockData.cs" />
-    <Compile Include="AccessLayer\Interfaces\ISelectionTransformerData.cs" />
-    <Compile Include="AccessLayer\Interfaces\IJournalData.cs" />
-    <Compile Include="AccessLayer\Interfaces\ISelectionCircuitBreakerData.cs" />
+    <Compile Include="BisinnesLayer\AccessCircuitBreaker.cs" />
+    <Compile Include="BisinnesLayer\AccessData.cs" />
+    <Compile Include="BisinnesLayer\AccessJournalNku.cs" />
+    <Compile Include="BisinnesLayer\AccessTermoCalc.cs" />
+    <Compile Include="BisinnesLayer\AccessTransformer.cs" />
+    <Compile Include="BisinnesLayer\AccessTwinBlock.cs" />
+    <Compile Include="BisinnesLayer\Interfaces\ISelectionTwinBlockData.cs" />
+    <Compile Include="BisinnesLayer\Interfaces\ISelectionTransformerData.cs" />
+    <Compile Include="BisinnesLayer\Interfaces\IJournalData.cs" />
+    <Compile Include="BisinnesLayer\Interfaces\ISelectionCircuitBreakerData.cs" />
+    <Compile Include="BisinnesLayer\Interfaces\ITermoCalcData.cs" />
     <Compile Include="DataLayer\Entity\AdditionalPole.cs" />
     <Compile Include="DataLayer\Entity\Execution.cs" />
     <Compile Include="DataLayer\Entity\Stock.cs" />
@@ -261,8 +263,15 @@
     <Compile Include="DataLayer\Interfaces\IExecution.cs" />
     <Compile Include="DataLayer\Interfaces\IModul.cs" />
     <Compile Include="DataLayer\Interfaces\ISwitch.cs" />
+    <Compile Include="Forms\TermoCalculation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TermoCalculation.Designer.cs">
+      <DependentUpon>TermoCalculation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\IFormSettings.cs" />
     <Compile Include="Serializable\Entity\FormSettings.cs" />
+    <Compile Include="Services\MathTermo.cs" />
     <Compile Include="UserException\DataBaseNotFoundValueException.cs" />
     <Compile Include="Forms\AboutBox1.cs">
       <SubType>Form</SubType>
@@ -288,8 +297,8 @@
     <Compile Include="ProxyObjects\DataInXmlProxy.cs" />
     <Compile Include="Serializable\Entity\AppSettings.cs" />
     <Compile Include="Serializable\AppSettingsDeserialize.cs" />
-    <Compile Include="Serializable\Entity\CorrectFontResources.cs" />
-    <Compile Include="Serializable\Entity\Resources.cs" />
+    <Compile Include="Serializable\Entity\CorrectFontSettings.cs" />
+    <Compile Include="Serializable\Entity\FillingOutThePassportSettings.cs" />
     <Compile Include="Services\DataInXml.cs" />
     <Compile Include="Functions\AddBoxDB.cs" />
     <Compile Include="Functions\BordersTable.cs" />
@@ -347,6 +356,9 @@
     <EmbeddedResource Include="Forms\SelectionTransformer.resx">
       <DependentUpon>SelectionTransformer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TermoCalculation.resx">
+      <DependentUpon>TermoCalculation.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -373,8 +385,19 @@
     <None Include="Resources\tdm.png" />
     <None Include="Resources\none.png" />
     <None Include="Resources\503.png" />
-    <None Include="Resources\504.png" />
     <None Include="Resources\chint.png" />
+    <None Include="Resources\306.ico" />
+    <None Include="Resources\505.png" />
+    <None Include="Resources\502.png" />
+    <None Include="Resources\308.png" />
+    <None Include="Resources\301.png" />
+    <None Include="Resources\306.png" />
+    <None Include="Resources\304.png" />
+    <None Include="Resources\504.png" />
+    <None Include="Resources\307.png" />
+    <None Include="Resources\303.png" />
+    <None Include="Resources\901.png" />
+    <None Include="Resources\Settings.ico" />
     <Content Include="Template\Паспорт_навесные.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -457,28 +480,10 @@
     <None Include="Resources\970.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\306.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\308.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\301.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\303.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\307.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\302.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\305.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\901.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\902.png" />
@@ -497,9 +502,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\501.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\502.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\201.png" />
@@ -528,7 +530,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>A0A04B7239022934E64FE406A1F83599E3E51B2B</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>61FE5DC7804E8FAA83A4F7AD839D45863F4E64C3</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -578,8 +580,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
-    <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.117.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.117.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
-  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.117.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.117.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
 </Project>
