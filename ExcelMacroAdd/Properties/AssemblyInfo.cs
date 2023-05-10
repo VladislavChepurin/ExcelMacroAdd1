@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("vlad1988_1@mail.ru")]
 [assembly: AssemblyProduct("Набор расширений для Excel")]
-[assembly: AssemblyCopyright("Copyright © Чепурин Владислав 2022")]
+[assembly: AssemblyCopyright("Copyright © Чепурин Владислав 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
