@@ -37,7 +37,7 @@
     <PublishUrl>publication\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>1.8.0.4</ApplicationVersion>
+    <ApplicationVersion>1.9.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -163,6 +163,7 @@
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
@@ -270,6 +271,7 @@
       <DependentUpon>TermoCalculation.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IFormSettings.cs" />
+    <Compile Include="Models\PriceCurrency.cs" />
     <Compile Include="Serializable\Entity\FormSettings.cs" />
     <Compile Include="Services\MathTermo.cs" />
     <Compile Include="UserException\DataBaseNotFoundValueException.cs" />
@@ -329,15 +331,15 @@
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions\DeleteFormula.cs" />
-    <Compile Include="Services\GetCurrencyTsb.cs" />
     <Compile Include="Functions\Linker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\WriteExcel.cs" />
     <Compile Include="Services\WriteLog.cs" />
-    <Compile Include="UserVariables\StructTransformer.cs" />
-    <Compile Include="UserVariables\Vendor.cs" />
+    <Compile Include="Models\StructTransformer.cs" />
+    <Compile Include="Models\Vendor.cs" />
+    <Content Include="iconexcel.ico" />
     <Content Include="x64\SQLite.Interop.dll" />
     <Content Include="x86\SQLite.Interop.dll" />
     <EmbeddedResource Include="Forms\AboutBox1.resx">
@@ -536,7 +538,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>61FE5DC7804E8FAA83A4F7AD839D45863F4E64C3</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>168F0C56C6F895B7EC1B81D5A4715AB9A4BCE8E8</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -563,6 +565,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>iconexcel.ico</ApplicationIcon>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
