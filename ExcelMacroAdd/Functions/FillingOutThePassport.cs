@@ -37,8 +37,8 @@ namespace ExcelMacroAdd.Functions
         private readonly IResources resources;
         private readonly string pPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template");
 
-        readonly Func<Find, string, string, bool> replacingTextLabels = (find, label, value) => find.Execute(label, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing,
-            value, ref _replaceTypeObj, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing);
+        readonly Func<Find, string, string, bool> replacingTextLabels = (find, label, value) => find.Execute(label, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing,
+            ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing,  value, ref _replaceTypeObj, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing);
 
         public delegate void MetodProgressStep(int step);
         public event MetodProgressStep ProgressStep;

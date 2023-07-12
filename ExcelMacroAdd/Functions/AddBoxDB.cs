@@ -63,13 +63,7 @@ namespace ExcelMacroAdd.Functions
                         continue;
                     }
 
-                    var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sExecution);
-                    if (executionEntity is null)
-                    {
-                        throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sExecution}\" недопустимо, пожайлуста используйте значение \"Пластик\" или \"Металл\"");
-                    }
-
-
+                    var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sExecution) ?? throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sExecution}\" недопустимо, пожайлуста используйте значение \"Пластик\" или \"Металл\"");
                     BoxBase journal = new BoxBase()
                     {
                         Ip = sIp,
