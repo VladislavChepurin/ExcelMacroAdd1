@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
+  <ribbon>
+    <tabs>
+      <tab id ="Tab2" label="Абиэлт">
+        <group id="MyGroup" label="Макросы для работы">
+			<labelControl id=" Label1" label="123" />
+			<labelControl id=" Label2" label="55" />
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
+

@@ -13,7 +13,7 @@ using Office = Microsoft.Office.Core;
 
 //  protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
 //  {
-//      return new Ribbon();
+//      return new Ribbon1();
 //  }
 
 // 2. Создайте методы обратного вызова в области "Обратные вызовы ленты" этого класса, чтобы обрабатывать действия
@@ -29,11 +29,11 @@ using Office = Microsoft.Office.Core;
 namespace ExcelMacroAdd
 {
     [ComVisible(true)]
-    public class Ribbon : Office.IRibbonExtensibility
+    public class Ribbon1 : Office.IRibbonExtensibility
     {
         private Office.IRibbonUI ribbon;
 
-        public Ribbon()
+        public Ribbon1()
         {
         }
 
@@ -41,7 +41,7 @@ namespace ExcelMacroAdd
 
         public string GetCustomUI(string ribbonID)
         {
-            return GetResourceText("ExcelMacroAdd.Ribbon.xml");
+            return GetResourceText("ExcelMacroAdd.Ribbon1.xml");
         }
 
         #endregion
