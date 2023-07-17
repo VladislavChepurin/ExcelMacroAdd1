@@ -37,8 +37,8 @@
     <PublishUrl>publication\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>1.9.0.0</ApplicationVersion>
-    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <ApplicationVersion>2.0.0.1</ApplicationVersion>
+    <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
@@ -270,10 +270,19 @@
     <Compile Include="Forms\TermoCalculation.Designer.cs">
       <DependentUpon>TermoCalculation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Functions\GoogleSearch.cs" />
+    <Compile Include="Functions\YandexSearch.cs" />
     <Compile Include="Interfaces\IFormSettings.cs" />
     <Compile Include="Models\PriceCurrency.cs" />
+    <Compile Include="NewRibbon.cs" />
     <Compile Include="Serializable\Entity\FormSettings.cs" />
     <Compile Include="Services\MathTermo.cs" />
+    <Compile Include="SidePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SidePanel.Designer.cs">
+      <DependentUpon>SidePanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserException\DataBaseNotFoundValueException.cs" />
     <Compile Include="Forms\AboutBox1.cs">
       <SubType>Form</SubType>
@@ -339,7 +348,12 @@
     <Compile Include="Services\WriteLog.cs" />
     <Compile Include="Models\StructTransformer.cs" />
     <Compile Include="Models\Vendor.cs" />
-    <Content Include="iconexcel.ico" />
+    <Content Include="iconexcel.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="NewRibbon.xml" />
+    <None Include="Resources\Yandex.png" />
+    <None Include="Resources\Google.png" />
     <Content Include="x64\SQLite.Interop.dll" />
     <Content Include="x86\SQLite.Interop.dll" />
     <EmbeddedResource Include="Forms\AboutBox1.resx">
@@ -373,9 +387,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="MainRibbon.resx">
-      <DependentUpon>MainRibbon.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="SidePanel.resx">
+      <DependentUpon>SidePanel.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <Content Include="Config\appSettings.json">
@@ -390,7 +403,6 @@
     <None Include="Resources\none.png" />
     <None Include="Resources\503.png" />
     <None Include="Resources\chint.png" />
-    <None Include="Resources\306.ico" />
     <None Include="Resources\505.png" />
     <None Include="Resources\502.png" />
     <None Include="Resources\308.png" />
@@ -401,7 +413,6 @@
     <None Include="Resources\307.png" />
     <None Include="Resources\303.png" />
     <None Include="Resources\901.png" />
-    <None Include="Resources\Settings.ico" />
     <Content Include="Template\Паспорт_навесные.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -418,12 +429,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="MainRibbon.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="MainRibbon.Designer.cs">
-      <DependentUpon>MainRibbon.cs</DependentUpon>
     </Compile>
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
@@ -522,7 +527,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

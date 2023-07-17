@@ -229,7 +229,7 @@
             // 
             // pictureBox7
             // 
-            this.pictureBox7.Image = global::ExcelMacroAdd.Properties.Resources._560;
+            this.pictureBox7.Image = global::ExcelMacroAdd.Properties.Resources.dek;
             this.pictureBox7.InitialImage = null;
             this.pictureBox7.Location = new System.Drawing.Point(268, 271);
             this.pictureBox7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);

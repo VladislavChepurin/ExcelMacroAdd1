@@ -4,8 +4,12 @@ using Excel = Microsoft.Office.Interop.Excel;
 namespace ExcelMacroAdd
 {
     public sealed partial class ThisAddIn
+    {
+        protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
+        {
+            return new NewRibbon();
+        }
 
-    {       
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
