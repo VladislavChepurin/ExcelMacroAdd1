@@ -539,7 +539,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>168F0C56C6F895B7EC1B81D5A4715AB9A4BCE8E8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>61FE5DC7804E8FAA83A4F7AD839D45863F4E64C3</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
