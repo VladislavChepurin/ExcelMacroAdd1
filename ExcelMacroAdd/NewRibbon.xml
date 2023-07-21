@@ -8,7 +8,7 @@
 			<button id ="FillingOutThePassport_Button" size="large" image="FillingOutThePassport" label="Заполнить паспорта" onAction="OnActionCallbackBase"/>
 			<button id ="DeleteFormula_Button" size="large" image="DelFormula" label="Удалить формулы" onAction="OnActionCallbackBase"/>
 			<button id ="DeleteAllFormula_Button" size="large" image="DelAllFormula" label="Удалить все формулы" onAction="OnActionCallbackBase"/>
-			<button id ="BoxShield_Buttton" size="large" image="BoxShield" label="Корпуса щитов" onAction="OnActionCallbackBase"/>
+			<button id ="BoxShield_Button" size="large" image="BoxShield" label="Корпуса щитов" onAction="OnActionCallbackBase"/>
 			<button id ="AddBoxDb_Button" size="large" image="AddBoxDb" label="Корпуса в базу" onAction="OnActionCallbackBase"/>
 			<button id ="CorrectDb_Button" size="large" image="CorrectDb" label="Исправить запись БД" onAction="OnActionCallbackBase" />
 		</group>
