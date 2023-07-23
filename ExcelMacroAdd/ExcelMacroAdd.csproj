@@ -270,6 +270,12 @@
     <Compile Include="Forms\TermoCalculation.Designer.cs">
       <DependentUpon>TermoCalculation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TypeNky.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\TypeNky.Designer.cs">
+      <DependentUpon>TypeNky.cs</DependentUpon>
+    </Compile>
     <Compile Include="Functions\GoogleSearch.cs" />
     <Compile Include="Functions\YandexSearch.cs" />
     <Compile Include="Interfaces\IFormSettings.cs" />
@@ -351,9 +357,14 @@
     <Content Include="iconexcel.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Forms\TypeNky.resx">
+      <DependentUpon>TypeNky.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NewRibbon.xml" />
     <None Include="Resources\Yandex.png" />
     <None Include="Resources\Google.png" />
+    <None Include="Resources\TypeBox.png" />
+    <None Include="Resources\TypeNky.png" />
     <Content Include="x64\SQLite.Interop.dll" />
     <Content Include="x86\SQLite.Interop.dll" />
     <EmbeddedResource Include="Forms\AboutBox1.resx">

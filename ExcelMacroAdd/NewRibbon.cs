@@ -224,6 +224,14 @@ namespace ExcelMacroAdd
                 case "TermoCalculation_Button":
                     await TermoCalculation.getInstance(formSettings, accessData);
                     break;
+                //Таблица типов
+                case "TypeNky_Button":               
+                    var typeNky = new TypeNky();
+                    var taskPane = Globals.ThisAddIn.CustomTaskPanes.Add(typeNky, "Тип шкафов");
+                    taskPane.Width = 400;
+                    taskPane.DockPosition = Office.MsoCTPDockPosition.msoCTPDockPositionRight;
+                    taskPane.Visible = true;
+                    break;
             }
         }
 
