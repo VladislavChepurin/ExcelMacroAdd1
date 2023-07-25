@@ -1,6 +1,6 @@
 ﻿using ExcelMacroAdd.UserVariables;
 
-namespace ExcelMacroAdd.Interfaces
+namespace ExcelMacroAdd.Services.Interfaces
 {
     public interface IDataInXml
     {

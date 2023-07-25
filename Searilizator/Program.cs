@@ -14,7 +14,7 @@ namespace Searilizator
     {  
         static void Main()
         {
-            var appSettings = new AppSettings(Resources(), CorrectFontResources(), FormSettings(), GlobalDateBaseLocation());
+            var appSettings = new AppSettings(Resources(), CorrectFontResources(), FormSettings(), GlobalDateBaseLocation(), TypeNkySettings());
 
             var serializer = new JsonSerializer();
             serializer.Converters.Add(new JavaScriptDateTimeConverter());
@@ -60,5 +60,13 @@ namespace Searilizator
             int sizeFont = 11;
             return new CorrectFontSettings(nameFont, sizeFont);
         }
+
+        private static TypeNkySettings[] TypeNkySettings()
+        {
+            return null;
+        }
+
+
+
     }
 }

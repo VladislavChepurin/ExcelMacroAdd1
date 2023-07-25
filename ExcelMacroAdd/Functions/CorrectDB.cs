@@ -1,6 +1,6 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
-using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.UserException;
 using System;
 using System.Data;
@@ -11,9 +11,9 @@ namespace ExcelMacroAdd.Functions
     internal sealed class CorrectDb : AbstractFunctions
     {       
         private readonly IJournalData accessData;
-        private readonly IResources resources;
+        private readonly IFillingOutThePassportSettings resources;
 
-        public CorrectDb(IJournalData accessData, IResources resources)
+        public CorrectDb(IJournalData accessData, IFillingOutThePassportSettings resources)
         {
             this.accessData = accessData;
             this.resources = resources;

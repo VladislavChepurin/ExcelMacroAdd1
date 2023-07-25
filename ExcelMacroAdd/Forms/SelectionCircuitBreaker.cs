@@ -1,7 +1,8 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Functions;
-using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.Serializable.Entity.Interfaces;
+using ExcelMacroAdd.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,13 +26,13 @@ namespace ExcelMacroAdd.Forms
             SixthLineArray
         }
 
-        private static int CircuitIndAvt; // Начальный ток автоматических выключателей
-        private static int CurveIndAvt;// Начальная кривая автоматических выключателей
+        private static readonly int CircuitIndAvt; // Начальный ток автоматических выключателей
+        private static  int CurveIndAvt;// Начальная кривая автоматических выключателей
         private static int IcuIndAvt; // Начальная отключающая способность автоматических выключателей
         private static int PolusIndAvt; // Начальная кол-во полюсов автоматических выключателей
         private static int VendorIndAvt; // Начальный вендор автолмтических выключателей
 
-        private static int CircuitIndVn; // Начальный ток выключателей нагрузки
+        private static readonly int CircuitIndVn; // Начальный ток выключателей нагрузки
         private static int PolusIndVn; // Начальная кол-во полюсов выключателей нагрузки
         private static int VendorIndVn; // Начальный вендор выключателей нагрузки
 
@@ -59,8 +60,10 @@ namespace ExcelMacroAdd.Forms
             {
                 await Task.Run(() =>
                 {
-                    instance = new SelectionCircuitBreaker(dataInXml, accessData);
-                    instance.TopMost = formSettings.FormTopMost;
+                    instance = new SelectionCircuitBreaker(dataInXml, accessData)
+                    {
+                        TopMost = formSettings.FormTopMost
+                    };
                     instance.ShowDialog();
                 });
             }    

@@ -1,6 +1,6 @@
-﻿namespace ExcelMacroAdd.Interfaces
+﻿namespace ExcelMacroAdd.Serializable.Entity.Interfaces
 {
-    public interface IResources
+    public interface IFillingOutThePassportSettings
     {
         string NameFileJournal { get; set; }
         int HeightMaxBox { get; set; }

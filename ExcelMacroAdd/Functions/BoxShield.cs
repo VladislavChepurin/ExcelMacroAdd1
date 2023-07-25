@@ -1,6 +1,6 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
+using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.UserException;
-using ExcelMacroAdd.Interfaces;
 using System;
 using System.Data;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -9,10 +9,10 @@ namespace ExcelMacroAdd.Functions
 {
     internal sealed class BoxShield : AbstractFunctions
     {
-        private readonly IResources resources;
+        private readonly IFillingOutThePassportSettings resources;
         private readonly IJournalData accessData;
 
-        public BoxShield(IJournalData accessData ,IResources resources)
+        public BoxShield(IJournalData accessData ,IFillingOutThePassportSettings resources)
         {
             this.accessData = accessData;
             this.resources = resources;
@@ -47,11 +47,8 @@ namespace ExcelMacroAdd.Functions
                             continue;
                         }
 
-                        var ex = await accessData.AccessJournalNku.GetExecutionEntityById(journalNku.ExecutionId);
-                        if (ex is null)
-                        {
+                        var ex = await accessData.AccessJournalNku.GetExecutionEntityById(journalNku.ExecutionId) ??
                             throw new DataBaseNotFoundValueException("Ошибка получения значения из таблицы Executions");
-                        }
                         Worksheet.Range["K" + firstRow].Value2 = journalNku.Ip.ToString();
                         Worksheet.Range["L" + firstRow].Value2 = journalNku.Climate ?? string.Empty;
                         Worksheet.Range["M" + firstRow].Value2 = journalNku.Reserve ?? string.Empty;

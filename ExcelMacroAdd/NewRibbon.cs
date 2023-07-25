@@ -1,15 +1,15 @@
 ﻿using ExcelMacroAdd.BisinnesLayer;
 using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Functions;
-using ExcelMacroAdd.Interfaces;
 using ExcelMacroAdd.ProxyObjects;
 using ExcelMacroAdd.Serializable;
+using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.Services;
+using ExcelMacroAdd.Services.Interfaces;
 using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -25,9 +25,10 @@ namespace ExcelMacroAdd
         private Office.IRibbonUI ribbon;
         private readonly string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/appSettings.json");
         private readonly IDataInXml dataInXml;
-        private readonly IResources resources;
+        private readonly IFillingOutThePassportSettings resources;
         private readonly ICorrectFontResources correctFontResources;
         private readonly IFormSettings formSettings;
+        private readonly ITypeNkySettings[] typeNkySettings;
         private readonly AccessData accessData;
         private readonly bool locationDataBase = default;
 
@@ -38,7 +39,8 @@ namespace ExcelMacroAdd
             resources = settings.Resources;
             correctFontResources = settings.CorrectFontResources;
             formSettings = settings.FormSettings;
-                       
+            typeNkySettings = settings.TypeNkySettings;
+
             string path;
             if (File.Exists(settings.GlobalDateBaseLocation + "BdMacro.sqlite"))
             {
@@ -53,7 +55,9 @@ namespace ExcelMacroAdd
             dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());
             var context = new AppContext(path);
             accessData = new AccessData(context);
-            //Будет утекать 50МБ памяти
+
+#if !DEBUG
+            //Будет утекать немного памяти
             new Thread(() =>
             {
                 if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/BdMacro.sqlite")))
@@ -61,8 +65,9 @@ namespace ExcelMacroAdd
                     context.Switchs.Select(x => x.Id).ToList();
                 }
             }).Start();
-        }            
-
+#endif
+        }     
+        
         #region Элементы IRibbonExtensibility
 
         public string GetCustomUI(string ribbonID)
@@ -226,7 +231,7 @@ namespace ExcelMacroAdd
                     break;
                 //Таблица типов
                 case "TypeNky_Button":               
-                    var typeNky = new TypeNky();
+                    var typeNky = new TypeNky(typeNkySettings);
                     var taskPane = Globals.ThisAddIn.CustomTaskPanes.Add(typeNky, "Тип шкафов");
                     taskPane.Width = 400;
                     taskPane.DockPosition = Office.MsoCTPDockPosition.msoCTPDockPositionRight;

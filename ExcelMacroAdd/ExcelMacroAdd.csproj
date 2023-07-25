@@ -278,10 +278,12 @@
     </Compile>
     <Compile Include="Functions\GoogleSearch.cs" />
     <Compile Include="Functions\YandexSearch.cs" />
-    <Compile Include="Interfaces\IFormSettings.cs" />
+    <Compile Include="Serializable\Entity\Interfaces\IFormSettings.cs" />
+    <Compile Include="Serializable\Entity\Interfaces\ITypeNkySettings.cs" />
     <Compile Include="Models\PriceCurrency.cs" />
     <Compile Include="NewRibbon.cs" />
     <Compile Include="Serializable\Entity\FormSettings.cs" />
+    <Compile Include="Serializable\Entity\TypeNkySettings.cs" />
     <Compile Include="Services\MathTermo.cs" />
     <Compile Include="SidePanel.cs">
       <SubType>UserControl</SubType>
@@ -308,9 +310,9 @@
     <Compile Include="Forms\SelectionTwinBlock.Designer.cs">
       <DependentUpon>SelectionTwinBlock.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\ICorrectFontResources.cs" />
-    <Compile Include="Interfaces\IDataInXml.cs" />
-    <Compile Include="Interfaces\IResources.cs" />
+    <Compile Include="Serializable\Entity\Interfaces\ICorrectFontResources.cs" />
+    <Compile Include="Services\Interfaces\IDataInXml.cs" />
+    <Compile Include="Serializable\Entity\Interfaces\IFillingOutThePassportSettings.cs" />
     <Compile Include="ProxyObjects\DataInXmlProxy.cs" />
     <Compile Include="Serializable\Entity\AppSettings.cs" />
     <Compile Include="Serializable\AppSettingsDeserialize.cs" />
