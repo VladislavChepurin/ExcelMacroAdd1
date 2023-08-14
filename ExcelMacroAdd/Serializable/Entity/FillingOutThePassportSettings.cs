@@ -1,8 +1,8 @@
-﻿using ExcelMacroAdd.Interfaces;
+﻿using ExcelMacroAdd.Serializable.Entity.Interfaces;
 
 namespace ExcelMacroAdd.Serializable.Entity
 {
-    public class FillingOutThePassportSettings : IResources
+    public class FillingOutThePassportSettings : IFillingOutThePassportSettings
     {
         public string NameFileJournal { get; set; }
         public int HeightMaxBox { get; set; }

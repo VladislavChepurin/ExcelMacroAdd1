@@ -1,4 +1,4 @@
-﻿using ExcelMacroAdd.Interfaces;
+﻿using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using Microsoft.Office.Interop.Excel;
 using System;
 

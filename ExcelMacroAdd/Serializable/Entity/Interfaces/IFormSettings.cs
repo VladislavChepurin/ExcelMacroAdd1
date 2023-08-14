@@ -1,4 +1,4 @@
-﻿namespace ExcelMacroAdd.Interfaces
+﻿namespace ExcelMacroAdd.Serializable.Entity.Interfaces
 {
     public interface IFormSettings
     {

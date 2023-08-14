@@ -1,6 +1,6 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
-using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.UserException;
 using System;
 using System.Data;
@@ -9,10 +9,10 @@ namespace ExcelMacroAdd.Functions
 {
     internal sealed class AddBoxDb : AbstractFunctions
     {
-        private readonly IResources resources;
+        private readonly IFillingOutThePassportSettings resources;
         private readonly IJournalData accessData;
 
-        public AddBoxDb(IJournalData accessData, IResources resources)
+        public AddBoxDb(IJournalData accessData, IFillingOutThePassportSettings resources)
         {
             this.accessData = accessData;
             this.resources = resources;

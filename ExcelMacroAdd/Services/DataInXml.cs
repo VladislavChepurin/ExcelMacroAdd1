@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.Services.Interfaces;
 using ExcelMacroAdd.UserVariables;
 
 namespace ExcelMacroAdd.Services

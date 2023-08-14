@@ -6,7 +6,7 @@ namespace ExcelMacroAdd.Functions
     {
         public override void Start()
         {
-            string value = Cell.Value;
+            string value = Cell.Value.ToString();
             if (!string.IsNullOrEmpty(value))
             {
                 string url = "http://www.yandex.ru/yandsearch?text=" + value;

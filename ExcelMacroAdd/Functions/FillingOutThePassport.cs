@@ -1,6 +1,6 @@
 ﻿using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Forms.Services;
-using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using Microsoft.CSharp.RuntimeBinder;
 using Microsoft.Office.Interop.Word;
 using System;
@@ -34,7 +34,7 @@ namespace ExcelMacroAdd.Functions
         private readonly object xmlTransform = Type.Missing;
         private static object _replaceTypeObj = WdReplace.wdReplaceAll;
         private static object _wordMissing = Missing.Value;
-        private readonly IResources resources;
+        private readonly IFillingOutThePassportSettings resources;
         private readonly string pPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template");
 
         readonly Func<Find, string, string, bool> replacingTextLabels = (find, label, value) => find.Execute(label, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing,
@@ -46,7 +46,7 @@ namespace ExcelMacroAdd.Functions
         public delegate void MetodProgressFinal();
         public event MetodProgressFinal ProgressFinal;
 
-        public FillingOutThePassport(IResources resources)
+        public FillingOutThePassport(IFillingOutThePassportSettings resources)
         {
             this.resources = resources;
         }
@@ -126,44 +126,34 @@ namespace ExcelMacroAdd.Functions
                         //Инициализация метода Find
                         Find find = applicationWord.Selection.Find;
 
-                        var verifyIsNotFind = new List<bool>(15);
-
-                        // Замены ТУ
-                        verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#ТУ", sTy));
-                        // Замены Ток
-                        verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Ток", sIcu));
-                        // Замены IP
-                        verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#IP", sIp));
-                        // Замены Габарит
-                        verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Габарит", sGab));
-                        // Замены Марка
-                        verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Марка", sMark));
-                        // Замены Номер
-                        verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Номер", sNum));
-                        // Замены Климат
-                        //verifyIsNotFind.Add(
-                        //replacingTextLabels(find, "#Климат", sClimate));
-                        // Замены Заземление
-                        verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Заземление", sGround));
-                        // Замены Название
-                        verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Название", sName));
-                        // Замена Вставка (необходим метод замены)
-                        verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Вставка", sPaste));
-                        // Замены Заполнение
-                        verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Заполнение", firstWords));
-                        // Замена Склонение (необходим метод замены)
-                        verifyIsNotFind.Add(
-                            replacingTextLabels(find, "#Склонение", secondWords));
+                        var verifyIsNotFind = new List<bool>(15)
+                        {
+                            // Замены ТУ
+                            replacingTextLabels(find, "#ТУ", sTy),
+                            // Замены Ток
+                            replacingTextLabels(find, "#Ток", sIcu),
+                            // Замены IP
+                            replacingTextLabels(find, "#IP", sIp),
+                            // Замены Габарит
+                            replacingTextLabels(find, "#Габарит", sGab),
+                            // Замены Марка
+                            replacingTextLabels(find, "#Марка", sMark),
+                            // Замены Номер
+                            replacingTextLabels(find, "#Номер", sNum),
+                            // Замены Климат
+                            //verifyIsNotFind.Add(
+                            //replacingTextLabels(find, "#Климат", sClimate));
+                            // Замены Заземление
+                            replacingTextLabels(find, "#Заземление", sGround),
+                            // Замены Название
+                            replacingTextLabels(find, "#Название", sName),
+                            // Замена Вставка (необходим метод замены)
+                            replacingTextLabels(find, "#Вставка", sPaste),
+                            // Замены Заполнение
+                            replacingTextLabels(find, "#Заполнение", firstWords),
+                            // Замена Склонение (необходим метод замены)
+                            replacingTextLabels(find, "#Склонение", secondWords)
+                        };
 
                         // Замены Напряжение
                         if (sUe == "380")
@@ -252,21 +242,21 @@ namespace ExcelMacroAdd.Functions
                     MessageError(
                         $@"Проверьте имя проекта внимательно,{Environment.NewLine} экстрасенсы говорят что есть ошибки в заполнеии столбцов.",
                         @"Ошибка надстройки");
-                    if (!(applicationWord is null)) applicationWord.Quit();
+                    applicationWord?.Quit();
                 }
                 catch (RuntimeBinderException)
                 {
                     MessageError(
                         $@"Проверьте заполнение всех столбцов,{Environment.NewLine} где-то нехватает данных.",
                         @"Ошибка надстройки");
-                    if (!(applicationWord is null)) applicationWord.Quit();
+                    applicationWord?.Quit();
                 }
                 catch (Exception exception)
                 {
                     MessageError(
                         exception.ToString(),
                         @"Ошибка надстройки");
-                    if (!(applicationWord is null)) applicationWord.Quit();
+                    applicationWord?.Quit();
                 }
                 finally
                 {

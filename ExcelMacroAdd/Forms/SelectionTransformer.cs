@@ -1,6 +1,7 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.Functions;
-using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.Services.Interfaces;
+using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using System;
 using System.Drawing;
 using System.IO;
@@ -24,8 +25,10 @@ namespace ExcelMacroAdd.Forms
             {
                 await Task.Run(() =>
                 {
-                    instance = new SelectionTransformer(dataInXml, accessData);
-                    instance.TopMost = formSettings.FormTopMost;
+                    instance = new SelectionTransformer(dataInXml, accessData)
+                    {
+                        TopMost = formSettings.FormTopMost
+                    };
                     instance.ShowDialog();
                 });
             }

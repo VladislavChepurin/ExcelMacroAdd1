@@ -1,5 +1,5 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
-using ExcelMacroAdd.Interfaces;
+using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.Services;
 using Microsoft.Office.Interop.Excel;
 using System;
