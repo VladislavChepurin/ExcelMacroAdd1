@@ -1,5 +1,5 @@
-﻿using ExcelMacroAdd.Interfaces;
-using ExcelMacroAdd.Services;
+﻿using ExcelMacroAdd.Services;
+using ExcelMacroAdd.Services.Interfaces;
 using ExcelMacroAdd.UserVariables;
 using Moq;
 using NUnit.Framework;

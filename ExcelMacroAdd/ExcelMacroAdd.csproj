@@ -264,6 +264,8 @@
     <Compile Include="DataLayer\Interfaces\IExecution.cs" />
     <Compile Include="DataLayer\Interfaces\IModul.cs" />
     <Compile Include="DataLayer\Interfaces\ISwitch.cs" />
+    <Compile Include="Forms\SupportiveFunction\AddTypeNky.cs" />
+    <Compile Include="Forms\SupportiveFunction\DeleteTypeNky.cs" />
     <Compile Include="Forms\TermoCalculation.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,8 +1,10 @@
-﻿using ExcelMacroAdd.Serializable.Entity.Interfaces;
+﻿using ExcelMacroAdd.Forms.SupportiveFunction;
+using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using ButtonForm = System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms
 {
@@ -11,8 +13,8 @@ namespace ExcelMacroAdd.Forms
         private readonly ITypeNkySettings[] typeNkySettings;
         private readonly Panel buttonPanel = new Panel();
         private readonly DataGridView nkyDataGridView = new DataGridView();
-        private readonly Button addTypeButton = new Button();
-        private readonly Button deleteTypeButton = new Button();
+        private readonly ButtonForm.Button addTypeButton = new ButtonForm.Button();
+        private readonly ButtonForm.Button deleteTypeButton = new ButtonForm.Button();
 
         public TypeNky(ITypeNkySettings[] typeNkySettings)
         {
@@ -38,12 +40,21 @@ namespace ExcelMacroAdd.Forms
 
         private void addTypeButton_Click(object sender, EventArgs e)
         {
-          
+            if (nkyDataGridView.SelectedCells.Count > 0)
+            {
+                int selectedrowindex = nkyDataGridView.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = nkyDataGridView.Rows[selectedrowindex];
+                string cellValue = selectedRow.Cells[0].Value.ToString();
+
+                var typeNky = new AddTypeNky(cellValue);
+                typeNky.Start();
+            }           
         }
 
         private void deleteTypeButton_Click(object sender, EventArgs e)
         {
-           
+            var typeNky = new DeleteTypeNky();
+            typeNky.Start();
         }
 
         private void SetupLayout()
@@ -51,13 +62,13 @@ namespace ExcelMacroAdd.Forms
             this.Size = new Size(600, 500);
 
             addTypeButton.Text = "Добавить тип";
-            addTypeButton.Location = new Point(50, 40);
+            addTypeButton.Location = new System.Drawing.Point(50, 40);
             addTypeButton.Width = 90;
             addTypeButton.Height = 30;
             addTypeButton.Click += new EventHandler(addTypeButton_Click);
 
             deleteTypeButton.Text = "Удалить тип";
-            deleteTypeButton.Location = new Point(245, 40);
+            deleteTypeButton.Location = new System.Drawing.Point(245, 40);
             deleteTypeButton.Width = 90;
             deleteTypeButton.Height = 30;
             deleteTypeButton.Click += new EventHandler(deleteTypeButton_Click);
@@ -78,10 +89,10 @@ namespace ExcelMacroAdd.Forms
             nkyDataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             nkyDataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             nkyDataGridView.ColumnHeadersDefaultCellStyle.Font =
-                new Font(nkyDataGridView.Font, FontStyle.Bold);
+                new System.Drawing.Font(nkyDataGridView.Font, FontStyle.Bold);
 
             nkyDataGridView.Name = "nkyDataGridView";
-            nkyDataGridView.Location = new Point(5, 5);
+            nkyDataGridView.Location = new System.Drawing.Point(5, 5);
             nkyDataGridView.Size = new Size(380, 500);
 
             nkyDataGridView.AutoSizeRowsMode =
