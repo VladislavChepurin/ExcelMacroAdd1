@@ -10,7 +10,6 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -63,7 +62,7 @@ namespace ExcelMacroAdd
             {
                 if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/BdMacro.sqlite")))
                 {
-                    context.Switchs.Select(x => x.Id).ToList();
+                    context.Switchs.AsParallel().Select(x => x.Id).ToList();
                 }
             }).Start();
 #endif

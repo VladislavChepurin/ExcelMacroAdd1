@@ -282,17 +282,10 @@
     <Compile Include="Functions\YandexSearch.cs" />
     <Compile Include="Serializable\Entity\Interfaces\IFormSettings.cs" />
     <Compile Include="Serializable\Entity\Interfaces\ITypeNkySettings.cs" />
-    <Compile Include="Models\PriceCurrency.cs" />
     <Compile Include="NewRibbon.cs" />
     <Compile Include="Serializable\Entity\FormSettings.cs" />
     <Compile Include="Serializable\Entity\TypeNkySettings.cs" />
     <Compile Include="Services\MathTermo.cs" />
-    <Compile Include="SidePanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SidePanel.Designer.cs">
-      <DependentUpon>SidePanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="UserException\DataBaseNotFoundValueException.cs" />
     <Compile Include="Forms\AboutBox1.cs">
       <SubType>Form</SubType>
@@ -402,9 +395,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SidePanel.resx">
-      <DependentUpon>SidePanel.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="app.config" />
     <Content Include="Config\appSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -554,7 +544,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>61FE5DC7804E8FAA83A4F7AD839D45863F4E64C3</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>168F0C56C6F895B7EC1B81D5A4715AB9A4BCE8E8</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
