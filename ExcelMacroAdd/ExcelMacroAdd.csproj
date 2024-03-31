@@ -281,11 +281,14 @@
     <Compile Include="Functions\GoogleSearch.cs" />
     <Compile Include="Functions\YandexSearch.cs" />
     <Compile Include="Serializable\Entity\Interfaces\IFormSettings.cs" />
+    <Compile Include="Serializable\Entity\Interfaces\ISaveState.cs" />
     <Compile Include="Serializable\Entity\Interfaces\ITypeNkySettings.cs" />
     <Compile Include="NewRibbon.cs" />
     <Compile Include="Serializable\Entity\FormSettings.cs" />
+    <Compile Include="Serializable\Entity\SaveState.cs" />
     <Compile Include="Serializable\Entity\TypeNkySettings.cs" />
     <Compile Include="Services\MathTermo.cs" />
+    <Compile Include="Services\SaveSheet.cs" />
     <Compile Include="UserException\DataBaseNotFoundValueException.cs" />
     <Compile Include="Forms\AboutBox1.cs">
       <SubType>Form</SubType>

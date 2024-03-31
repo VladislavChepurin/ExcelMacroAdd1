@@ -31,6 +31,7 @@ namespace ExcelMacroAdd
         private readonly ITypeNkySettings[] typeNkySettings;
         private readonly AccessData accessData;
         private readonly bool locationDataBase = default;
+        private readonly ISaveState saveState;
 
         public NewRibbon()
         {
@@ -40,6 +41,7 @@ namespace ExcelMacroAdd
             correctFontResources = settings.CorrectFontResources;
             formSettings = settings.FormSettings;
             typeNkySettings = settings.TypeNkySettings;
+            saveState = settings.SaveState;
 
             string path;
             if (File.Exists(settings.GlobalDateBaseLocation + "BdMacro.sqlite"))

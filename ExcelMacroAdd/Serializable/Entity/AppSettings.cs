@@ -10,14 +10,16 @@ namespace ExcelMacroAdd.Serializable.Entity
         public FormSettings FormSettings { get; set; }
         public string GlobalDateBaseLocation { get; set; }
         public TypeNkySettings[] TypeNkySettings { get; set; }
+        public SaveState SaveState { get; set; }
 
-        public AppSettings(FillingOutThePassportSettings resources, CorrectFontSettings correctFontResources, FormSettings formSettings, string globalDateBaseLocation, TypeNkySettings[] typeNkySettings)
+        public AppSettings(FillingOutThePassportSettings resources, CorrectFontSettings correctFontResources, FormSettings formSettings, string globalDateBaseLocation, TypeNkySettings[] typeNkySettings, SaveState saveState)
         {
             Resources = resources;
             CorrectFontResources = correctFontResources;
             FormSettings = formSettings;
             GlobalDateBaseLocation = globalDateBaseLocation;
             TypeNkySettings = typeNkySettings;
+            SaveState = saveState;
         }
     }
 }
