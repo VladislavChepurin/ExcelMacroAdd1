@@ -157,6 +157,11 @@ namespace ExcelMacroAdd
                     var editCalculation = new EditCalculation(correctFontResources);
                     editCalculation.Start();
                     break;
+                // Объединение ячеек
+                case "CombiningCells_Button":
+                    var combiningCells = new CombiningCells();
+                    combiningCells.Start();
+                    break;
             }
         }
 

@@ -278,6 +278,7 @@
     <Compile Include="Forms\TypeNky.Designer.cs">
       <DependentUpon>TypeNky.cs</DependentUpon>
     </Compile>
+    <Compile Include="Functions\CombiningCells.cs" />
     <Compile Include="Functions\GoogleSearch.cs" />
     <Compile Include="Functions\YandexSearch.cs" />
     <Compile Include="Serializable\Entity\Interfaces\IFormSettings.cs" />
@@ -362,6 +363,7 @@
     <None Include="Resources\Google.png" />
     <None Include="Resources\TypeBox.png" />
     <None Include="Resources\TypeNky.png" />
+    <None Include="Resources\CombiningCells.png" />
     <Content Include="x64\SQLite.Interop.dll" />
     <Content Include="x86\SQLite.Interop.dll" />
     <EmbeddedResource Include="Forms\AboutBox1.resx">
@@ -544,7 +546,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>168F0C56C6F895B7EC1B81D5A4715AB9A4BCE8E8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B80EA4B88FA0323D72EA4155B629F21CF9941207</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
