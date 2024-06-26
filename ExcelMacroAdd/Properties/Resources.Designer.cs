@@ -132,6 +132,16 @@ namespace ExcelMacroAdd.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CombiningCells {
+            get {
+                object obj = ResourceManager.GetObject("CombiningCells", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CorrectDb {
             get {
                 object obj = ResourceManager.GetObject("CorrectDb", resourceCulture);

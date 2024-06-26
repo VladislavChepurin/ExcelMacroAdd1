@@ -19,6 +19,7 @@
 			<button id ="CorrectFont_Button" size="large" image="CorrectFont" label="Шрифт" onAction="OnActionCallbackDecoration"/>
 			<button id ="CalculationMarkup_Button" size="large" image="CalculationMarkup" label="Расчет" onAction="OnActionCallbackDecoration"/>	
 			<button id ="EditCalculation_Button" size="large" image="EditCalculation" label="Причесать расчет" onAction="OnActionCallbackDecoration"/>
+			<button id ="CombiningCells_Button" size="large" image="CombiningCells" label="Объединить ячейки" onAction="OnActionCallbackDecoration"/>
 		</group>
 
 		<group id="Search" label="Поиск">

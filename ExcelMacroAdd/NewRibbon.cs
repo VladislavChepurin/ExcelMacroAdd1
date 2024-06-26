@@ -10,6 +10,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -44,19 +45,30 @@ namespace ExcelMacroAdd
             saveState = settings.SaveState;
 
             string path;
+
+            ////Проблемный участок, при запуске если не находит файл БД теряется 2-5 секунд.
+            //Stopwatch stopwatch = new Stopwatch();
+            ////засекаем время начала операции
+            //stopwatch.Start();
+
             if (File.Exists(settings.GlobalDateBaseLocation + "BdMacro.sqlite"))
-            {
-                path = settings.GlobalDateBaseLocation;
-                locationDataBase = true;
-            }
-            else
-            {
-                path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/");       
-            }
+                {
+                    path = settings.GlobalDateBaseLocation;
+                    locationDataBase = true;
+                }
+                else
+                {
+                    path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/");
+                }
+                var context = new AppContext(path);
+                accessData = new AccessData(context);
+
+            //stopwatch.Stop();
+            //Debug.WriteLine("Time: " + stopwatch.ElapsedMilliseconds);
+
+
             //Создание внедряемых зависимостей
             dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());
-            var context = new AppContext(path);
-            accessData = new AccessData(context);
 
 #if !DEBUG
             //Будет утекать немного памяти
@@ -113,20 +125,31 @@ namespace ExcelMacroAdd
                     break;
                 //Корпуса щитов
                 case "BoxShield_Button":
-                    var boxShield = new BoxShield(accessData, resources);
-                    boxShield.Start();
+                    if (accessData != null)
+                    {
+                        var boxShield = new BoxShield(accessData, resources);
+                        boxShield.Start();
+                    }
                     break;
 
                 //Корпуса в базу
                 case "AddBoxDb_Button":
-                    var addBoxDb = new AddBoxDb(accessData, resources);
-                    addBoxDb.Start();
+                    if (accessData != null)
+                    {
+                        var addBoxDb = new AddBoxDb(accessData, resources);
+                        addBoxDb.Start();
+                    }
+
                     break;
                 //Исправить запись в БД
                 case "CorrectDb_Button":
-                    var correctDb = new CorrectDb(accessData, resources);
-                    correctDb.Start();
+                    if (accessData != null)
+                    {
+                        var correctDb = new CorrectDb(accessData, resources);
+                        correctDb.Start();
+                    }
                     break;
+
             }
         }
 
@@ -158,6 +181,11 @@ namespace ExcelMacroAdd
                 case "EditCalculation_Button":
                     var editCalculation = new EditCalculation(correctFontResources);
                     editCalculation.Start();
+                    break;
+                // Объединение ячеек
+                case "CombiningCells_Button":
+                    var combiningCells = new CombiningCells();
+                    combiningCells.Start();
                     break;
             }
         }
@@ -217,22 +245,26 @@ namespace ExcelMacroAdd
                     break;
                 //Модульные аппараты
                 case "SelectionCircuitBreaker_Button":
-                    await SelectionCircuitBreaker.getInstance(dataInXml, accessData, formSettings);
+                    if (accessData != null)
+                        await SelectionCircuitBreaker.getInstance(dataInXml, accessData, formSettings);
                     break;
                 //Трансформаторы тока
                 case "SelectionTransformer_Button":
-                    await SelectionTransformer.getInstance(dataInXml, accessData, formSettings);
+                    if (accessData != null)
+                        await SelectionTransformer.getInstance(dataInXml, accessData, formSettings);
                     break;
                 //Рубильники TwinBlock
                 case "SelectionTwinBlock_Button":
-                    await SelectionTwinBlock.getInstance(dataInXml, accessData, formSettings);
+                    if (accessData != null)
+                        await SelectionTwinBlock.getInstance(dataInXml, accessData, formSettings);
                     break;
                 //Расчет обогрева
                 case "TermoCalculation_Button":
-                    await TermoCalculation.getInstance(formSettings, accessData);
+                    if (accessData != null)
+                        await TermoCalculation.getInstance(formSettings, accessData);
                     break;
                 //Таблица типов
-                case "TypeNky_Button":               
+                case "TypeNky_Button":
                     var typeNky = new TypeNky(typeNkySettings);
                     var taskPane = Globals.ThisAddIn.CustomTaskPanes.Add(typeNky, "Тип шкафов");
                     taskPane.Width = 400;
