@@ -58,6 +58,7 @@ namespace ExcelMacroAdd
                 {
                     path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/");
                 }
+
                 var context = new AppContext(path);
                 accessData = new AccessData(context);
 
@@ -268,6 +269,10 @@ namespace ExcelMacroAdd
                     taskPane.Width = 400;
                     taskPane.DockPosition = Office.MsoCTPDockPosition.msoCTPDockPositionRight;
                     taskPane.Visible = true;
+                    break;
+                case "UpdatingCalculation":
+                    var updatingCalculation = new UpdatingCalculation();
+                    updatingCalculation.Start();
                     break;
             }
         }

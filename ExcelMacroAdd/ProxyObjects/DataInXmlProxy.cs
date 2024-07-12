@@ -3,7 +3,6 @@ using ExcelMacroAdd.UserVariables;
 using System;
 using System.Collections.Generic;
 using ExcelMacroAdd.Services;
-
 namespace ExcelMacroAdd.ProxyObjects
 {
 
@@ -11,6 +10,7 @@ namespace ExcelMacroAdd.ProxyObjects
     {
         private readonly Lazy<DataInXml> dataXml;
         private readonly IDictionary<string, Vendor> cacheSeveralXmlRecords = new Dictionary<string, Vendor>();
+        private Vendor[] vendors;
 
         public DataInXmlProxy(Lazy<DataInXml> dataXml)
         {
@@ -30,14 +30,19 @@ namespace ExcelMacroAdd.ProxyObjects
 
         public Vendor[] ReadFileXml()
         {
-            //Проксируем вызов на прямую
-            return dataXml.Value.ReadFileXml();
+            if (vendors == null)
+            {
+                vendors = dataXml.Value.ReadFileXml();
+                return vendors;
+            }
+            return vendors;          
         }
 
         public void WriteXml(string vendor, params string[] data)
         {
-            //Очищаем коллекцию
+            //Очищаем 
             cacheSeveralXmlRecords.Clear();
+            vendors = null;
             //Проксируем вызов на прямую
             dataXml.Value.WriteXml(vendor, data);
         }

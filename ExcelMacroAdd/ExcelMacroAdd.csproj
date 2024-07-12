@@ -280,6 +280,7 @@
     </Compile>
     <Compile Include="Functions\CombiningCells.cs" />
     <Compile Include="Functions\GoogleSearch.cs" />
+    <Compile Include="Functions\UpdatingCalculation.cs" />
     <Compile Include="Functions\YandexSearch.cs" />
     <Compile Include="Serializable\Entity\Interfaces\IFormSettings.cs" />
     <Compile Include="Serializable\Entity\Interfaces\ITypeNkySettings.cs" />
@@ -356,6 +357,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\CombiningCells.png" />
+    <None Include="Resources\Update.png" />
     <Content Include="x64\SQLite.Interop.dll" />
     <Content Include="x86\SQLite.Interop.dll" />
     <EmbeddedResource Include="Forms\TypeNky.resx">
