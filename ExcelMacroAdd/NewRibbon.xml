@@ -40,6 +40,7 @@
 				<button id ="SelectionTwinBlock_Button" size="large" image="SelectionTwinBlock" label="Рубильники TwinBlock" onAction="OnActionCallbackCalculation"/>
 				<button id ="TermoCalculation_Button" size="large" image="TermoCalculation" label="Расчет обогрева" onAction="OnActionCallbackCalculation"/>
 			<separator id ="separator2"/>
+				<button id ="UpdatingCalculation" size="large" image="Update"  label="Обновление расчета" onAction="OnActionCallbackCalculation"/>
 				<button id ="TypeNky_Button" size="large" image="TypeNky"  label="Типы шкафов" onAction="OnActionCallbackCalculation"/>
 		</group>
 		  

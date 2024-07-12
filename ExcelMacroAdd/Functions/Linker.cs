@@ -1,5 +1,4 @@
-﻿using ExcelMacroAdd.Services.Interfaces;
-using ExcelMacroAdd.Serializable.Entity.Interfaces;
+﻿using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
@@ -43,18 +42,19 @@ namespace ExcelMacroAdd.Functions
             Worksheet.Range["G1", Type.Missing].Value2 = "Цена";
             Worksheet.Range["H1", Type.Missing].Value2 = "Цена со скидкой";
             Worksheet.Range["I1", Type.Missing].Value2 = "Стоимость";
+            Worksheet.Range["J1", Type.Missing].Value2 = "Дата";
 
             //увеличиваем размер по ширине диапазон ячеек
             Worksheet.Range["A1", Type.Missing].EntireColumn.ColumnWidth = 21;
             Worksheet.Range["B1", Type.Missing].EntireColumn.ColumnWidth = 80;
             Worksheet.Range["C1", Type.Missing].EntireColumn.ColumnWidth = 10;
-            Worksheet.Range["D1", "I1"].EntireColumn.ColumnWidth = 13;
+            Worksheet.Range["D1", "J1"].EntireColumn.ColumnWidth = 13;
 
             //размечаем границы и правим шрифты
             Worksheet.Range["A1", "i500"].Cells.Font.Name = correctFontResources.NameFont;
             Worksheet.Range["A1", "i500"].Cells.Font.Size = correctFontResources.SizeFont;
 
-            var excelCells = Worksheet.Range["A1", "I11"];
+            var excelCells = Worksheet.Range["A1", "J11"];
 
             var borderIndex = XlBordersIndex.xlEdgeLeft; //Левая граница
             excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;

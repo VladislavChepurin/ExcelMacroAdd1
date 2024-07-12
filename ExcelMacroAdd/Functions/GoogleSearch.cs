@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System;
+using System.Diagnostics;
 
 namespace ExcelMacroAdd.Functions
 {
@@ -6,10 +8,25 @@ namespace ExcelMacroAdd.Functions
     {
         public override void Start()
         {
-            string value = Cell.Value.ToString();
-            if (!string.IsNullOrEmpty(value))
+            var value = Cell.Value;
+            if (value != null)
             {
-                string url = "https://www.google.ru/search?q=" + value;
+                string request;
+                if (value is Object[,])
+                {
+                    List<string> list = new List<string>();
+                    foreach (var item in value)
+                    {
+                        if (item != null)
+                            list.Add(item.ToString());
+                    }
+                    request = String.Join(" ", list);
+                }
+                else
+                {
+                    request = Cell.Value.ToString();
+                }
+                string url = "https://www.google.ru/search?q=" + request;
                 Process.Start(url);
             }
         }
