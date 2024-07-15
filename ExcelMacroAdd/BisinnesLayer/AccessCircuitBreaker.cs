@@ -20,7 +20,7 @@ namespace ExcelMacroAdd.BisinnesLayer
         }
 
         public async Task<IModul> GetEntityModule(string current, string curve, string maxCurrent, string quantity)
-        {
+        {           
             return await context.Moduls.AsNoTracking().FirstOrDefaultAsync(p => p.Current == current && p.Kurve == curve && p.MaxCurrent == maxCurrent && p.Quantity == quantity);
         }
 

@@ -56,7 +56,7 @@ namespace ExcelMacroAdd.Functions
                 Worksheet.Range["G" + firstRow].FormulaLocal = string.Format(objectVendor.Formula_3, firstRow);     //Столбец "Цена". Вызывает формулу Formula_3
                 Worksheet.Range["H" + firstRow].Formula = string.Format("=G{0}*(100-F{0})/100", firstRow);
                 Worksheet.Range["I" + firstRow].Formula = string.Format("=H{0}*C{0}", firstRow);
-                Worksheet.Range["J" + firstRow].NumberFormat = "dd.mm.yyyy";
+                Worksheet.Range["J" + firstRow].NumberFormat = "dd.mm.yy hh:mm";
                 Worksheet.Range["J" + firstRow].Value2 = DateTime.Now;
                 firstRow++;
             }

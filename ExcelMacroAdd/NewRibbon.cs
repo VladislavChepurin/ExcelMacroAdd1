@@ -273,7 +273,7 @@ namespace ExcelMacroAdd
                     taskPane.Visible = true;
                     break;
                 case "UpdatingCalculation":
-                    var updatingCalculation = new UpdatingCalculation();
+                    var updatingCalculation = new UpdatingCalculation(dataInXml);
                     updatingCalculation.Start();
                     break;
             }

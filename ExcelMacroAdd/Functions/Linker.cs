@@ -42,7 +42,7 @@ namespace ExcelMacroAdd.Functions
             Worksheet.Range["G1", Type.Missing].Value2 = "Цена";
             Worksheet.Range["H1", Type.Missing].Value2 = "Цена со скидкой";
             Worksheet.Range["I1", Type.Missing].Value2 = "Стоимость";
-            Worksheet.Range["J1", Type.Missing].Value2 = "Дата";
+            Worksheet.Range["J1", Type.Missing].Value2 = "Дата и время";
 
             //увеличиваем размер по ширине диапазон ячеек
             Worksheet.Range["A1", Type.Missing].EntireColumn.ColumnWidth = 21;

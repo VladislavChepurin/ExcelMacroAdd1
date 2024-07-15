@@ -282,6 +282,16 @@
     <Compile Include="Functions\GoogleSearch.cs" />
     <Compile Include="Functions\UpdatingCalculation.cs" />
     <Compile Include="Functions\YandexSearch.cs" />
+    <Compile Include="Models\Abb.cs" />
+    <Compile Include="Models\Chint.cs" />
+    <Compile Include="Models\Dekraft.cs" />
+    <Compile Include="Models\Dkc.cs" />
+    <Compile Include="Models\Ekf.cs" />
+    <Compile Include="Models\Iek.cs" />
+    <Compile Include="Models\Interface\Vendors.cs" />
+    <Compile Include="Models\Keaz.cs" />
+    <Compile Include="Models\Schneider.cs" />
+    <Compile Include="Models\Tdm.cs" />
     <Compile Include="Serializable\Entity\Interfaces\IFormSettings.cs" />
     <Compile Include="Serializable\Entity\Interfaces\ISaveState.cs" />
     <Compile Include="Serializable\Entity\Interfaces\ITypeNkySettings.cs" />
@@ -289,6 +299,7 @@
     <Compile Include="Serializable\Entity\FormSettings.cs" />
     <Compile Include="Serializable\Entity\SaveState.cs" />
     <Compile Include="Serializable\Entity\TypeNkySettings.cs" />
+    <Compile Include="Services\CustomStringComparer.cs" />
     <Compile Include="Services\MathTermo.cs" />
     <Compile Include="Services\SaveSheet.cs" />
     <Compile Include="UserException\DataBaseNotFoundValueException.cs" />
