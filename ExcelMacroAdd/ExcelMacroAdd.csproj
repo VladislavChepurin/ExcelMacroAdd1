@@ -37,7 +37,7 @@
     <PublishUrl>publication\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>2.2.2.1</ApplicationVersion>
+    <ApplicationVersion>2.3.1.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -370,6 +370,7 @@
     <Content Include="iconexcel.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="ExcelMacroAdd_3_TemporaryKey.pfx" />
     <None Include="Resources\SelectionCircuitBreaker.png" />
     <None Include="Resources\TypeNky.png" />
     <None Include="Resources\SelectionTwinBlock.png" />
@@ -534,11 +535,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>ExcelMacroAdd_3_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>B80EA4B88FA0323D72EA4155B629F21CF9941207</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>5329CAE94A3ADD060F59FB9F51353BA7BE07CA0E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
