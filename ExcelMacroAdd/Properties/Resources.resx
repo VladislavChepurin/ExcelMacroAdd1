@@ -118,23 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="About" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\201.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="tdm" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tdm.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CorrectFont" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\902.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SelectionCircuitBreaker" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\501.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="dek" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\560.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BordersTable" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\901.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CalculationMarkup" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\970.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -145,26 +133,14 @@
   <data name="none" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\none.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Open" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Open.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="invalidOperation" xml:space="preserve">
     <value>Недопустимая операция!</value>
   </data>
   <data name="absent" xml:space="preserve">
     <value>Отсутствует</value>
   </data>
-  <data name="Linker" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\302.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SelectionTransformer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\503.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="iek" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\iek.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="EditCalculation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\305.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ekf" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ekf.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -175,33 +151,6 @@
   <data name="chint" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\chint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DelAllFormula" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\301.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BoxShield" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\303.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="AddBoxDb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\304.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="FillingOutThePassport" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\306.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CorrectDb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\307.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DelFormula" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\308.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SettingsPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\502.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SelectionTwinBlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\504.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TermoCalculation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\505.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Settings.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -211,13 +160,19 @@
   <data name="Google" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Google.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="EditCalculation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EditCalculation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SelectionCircuitBreaker" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SelectionCircuitBreaker.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SelectionTransformer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SelectionTransformer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SelectionTwinBlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SelectionTwinBlock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="TypeNky" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TypeNky.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CombiningCells" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CombiningCells.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Update" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Update.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

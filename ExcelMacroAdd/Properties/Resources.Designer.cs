@@ -61,51 +61,11 @@ namespace ExcelMacroAdd.Properties {
         }
         
         /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap About {
-            get {
-                object obj = ResourceManager.GetObject("About", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Отсутствует.
         /// </summary>
         internal static string absent {
             get {
                 return ResourceManager.GetString("absent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap AddBoxDb {
-            get {
-                object obj = ResourceManager.GetObject("AddBoxDb", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap BordersTable {
-            get {
-                object obj = ResourceManager.GetObject("BordersTable", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap BoxShield {
-            get {
-                object obj = ResourceManager.GetObject("BoxShield", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -132,59 +92,9 @@ namespace ExcelMacroAdd.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap CombiningCells {
-            get {
-                object obj = ResourceManager.GetObject("CombiningCells", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap CorrectDb {
-            get {
-                object obj = ResourceManager.GetObject("CorrectDb", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap CorrectFont {
-            get {
-                object obj = ResourceManager.GetObject("CorrectFont", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap dek {
             get {
                 object obj = ResourceManager.GetObject("dek", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap DelAllFormula {
-            get {
-                object obj = ResourceManager.GetObject("DelAllFormula", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap DelFormula {
-            get {
-                object obj = ResourceManager.GetObject("DelFormula", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -215,16 +125,6 @@ namespace ExcelMacroAdd.Properties {
         internal static System.Drawing.Bitmap ekf {
             get {
                 object obj = ResourceManager.GetObject("ekf", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap FillingOutThePassport {
-            get {
-                object obj = ResourceManager.GetObject("FillingOutThePassport", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -271,29 +171,9 @@ namespace ExcelMacroAdd.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Linker {
-            get {
-                object obj = ResourceManager.GetObject("Linker", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap none {
             get {
                 object obj = ResourceManager.GetObject("none", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Open {
-            get {
-                object obj = ResourceManager.GetObject("Open", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -341,16 +221,6 @@ namespace ExcelMacroAdd.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SettingsPic {
-            get {
-                object obj = ResourceManager.GetObject("SettingsPic", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap tdm {
             get {
                 object obj = ResourceManager.GetObject("tdm", resourceCulture);
@@ -361,29 +231,9 @@ namespace ExcelMacroAdd.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap TermoCalculation {
-            get {
-                object obj = ResourceManager.GetObject("TermoCalculation", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap TypeNky {
             get {
                 object obj = ResourceManager.GetObject("TypeNky", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Update {
-            get {
-                object obj = ResourceManager.GetObject("Update", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

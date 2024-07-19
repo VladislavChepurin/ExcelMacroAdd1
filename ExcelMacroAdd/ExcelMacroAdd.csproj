@@ -370,8 +370,11 @@
     <Content Include="iconexcel.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\CombiningCells.png" />
-    <None Include="Resources\Update.png" />
+    <None Include="Resources\SelectionCircuitBreaker.png" />
+    <None Include="Resources\TypeNky.png" />
+    <None Include="Resources\SelectionTwinBlock.png" />
+    <None Include="Resources\SelectionTransformer.png" />
+    <None Include="Resources\EditCalculation.png" />
     <Content Include="x64\SQLite.Interop.dll" />
     <Content Include="x86\SQLite.Interop.dll" />
     <EmbeddedResource Include="Forms\TypeNky.resx">
@@ -381,7 +384,6 @@
     <None Include="Resources\Yandex.png" />
     <None Include="Resources\Google.png" />
     <None Include="Resources\TypeBox.png" />
-    <None Include="Resources\TypeNky.png" />
     <EmbeddedResource Include="Forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>
@@ -421,21 +423,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ExcelMacroAdd_1_TemporaryKey.pfx" />
-    <None Include="Resources\Open.png" />
     <None Include="Resources\tdm.png" />
     <None Include="Resources\none.png" />
-    <None Include="Resources\503.png" />
     <None Include="Resources\chint.png" />
-    <None Include="Resources\505.png" />
-    <None Include="Resources\502.png" />
-    <None Include="Resources\308.png" />
-    <None Include="Resources\301.png" />
-    <None Include="Resources\306.png" />
-    <None Include="Resources\304.png" />
-    <None Include="Resources\504.png" />
-    <None Include="Resources\307.png" />
-    <None Include="Resources\303.png" />
-    <None Include="Resources\901.png" />
     <Content Include="Template\Паспорт_навесные.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -515,15 +505,6 @@
     <None Include="Resources\970.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\302.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\305.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\902.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\iek.png" />
   </ItemGroup>
   <ItemGroup>
@@ -534,12 +515,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\keaz.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\501.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\201.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\560.png" />

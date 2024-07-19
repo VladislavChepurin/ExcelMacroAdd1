@@ -1,62 +1,62 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load" loadImage="GetImage">
-  <ribbon>
-    <tabs>
-      <tab id="Tab2" label="Абиэлт">
-		  
-        <group id="Base" label="Базовые макросы">
-			<button id ="FillingOutThePassport_Button" size="large" image="FillingOutThePassport" label="Заполнить паспорта" onAction="OnActionCallbackBase"/>
-			<button id ="DeleteFormula_Button" size="large" image="DelFormula" label="Удалить формулы" onAction="OnActionCallbackBase"/>
-			<button id ="DeleteAllFormula_Button" size="large" image="DelAllFormula" label="Удалить все формулы" onAction="OnActionCallbackBase"/>
-			<button id ="BoxShield_Button" size="large" image="BoxShield" label="Корпуса щитов" onAction="OnActionCallbackBase"/>
-			<button id ="AddBoxDb_Button" size="large" image="AddBoxDb" label="Корпуса в базу" onAction="OnActionCallbackBase"/>
-			<button id ="CorrectDb_Button" size="large" image="CorrectDb" label="Исправить запись БД" onAction="OnActionCallbackBase" />
-		</group>
-		  
-		<group id="Decoration" label="Оформление">
-			<button id ="Linker_Button" size="large" image="Linker" label="Разметка листов" onAction="OnActionCallbackDecoration"/>
-			<button id ="BordersTable_Button" size="large" image="BordersTable" label="Границы" onAction="OnActionCallbackDecoration"/>
-			<button id ="CorrectFont_Button" size="large" image="CorrectFont" label="Шрифт" onAction="OnActionCallbackDecoration"/>
-			<button id ="CalculationMarkup_Button" size="large" image="CalculationMarkup" label="Расчет" onAction="OnActionCallbackDecoration"/>	
-			<button id ="EditCalculation_Button" size="large" image="EditCalculation" label="Причесать расчет" onAction="OnActionCallbackDecoration"/>
-			<button id ="CombiningCells_Button" size="large" image="CombiningCells" label="Объединить ячейки" onAction="OnActionCallbackDecoration"/>
-		</group>
+	<ribbon>
+		<tabs>
+			<tab id="Tab2" label="Абиэлт">
 
-		<group id="Search" label="Поиск">
-			<button id ="Yandex_Button" size="large" image="Yandex" label="Поиск в Яндексе" onAction="OnActionCallbackSearch"/>
-			<button id ="Google_Button" size="large" image="Google" label="Поиск в Google" onAction="OnActionCallbackSearch"/>
-		</group>  
-		  
-		<group id="Calculation" label="Макросы для расчетов">
-				<button id ="Iek_Button" size="large" image="iek" label="Формула ВПР IEK" onAction="OnActionCallbackCalculation"/>
-				<button id ="Ekf_Button" size="large" image="ekf" label="Формула ВПР EKF" onAction="OnActionCallbackCalculation"/>
-				<button id ="Dkc_Button" size="large" image="dkc" label="Формула ВПР DKC" onAction="OnActionCallbackCalculation"/>
-				<button id ="Keaz_Button" size="large" image="keaz" label="Формула ВПР KEAZ" onAction="OnActionCallbackCalculation"/>
-				<button id ="Dek_Button" size="large" image="dek" label="Формула ВПР DEK" onAction="OnActionCallbackCalculation"/>
-				<button id ="Chint_Button" size="large" image="chint" label="Формула ВПР CHINT" onAction="OnActionCallbackCalculation"/>
-	        <separator id ="separator1"/>
-				<button id ="SelectionCircuitBreaker_Button" size="large" image="SelectionCircuitBreaker" label="Модульные аппараты" onAction="OnActionCallbackCalculation"/>
-				<button id ="SelectionTransformer_Button" size="large" image="SelectionTransformer" label="Трансф. тока" onAction="OnActionCallbackCalculation"/>
-				<button id ="SelectionTwinBlock_Button" size="large" image="SelectionTwinBlock" label="Рубильники TwinBlock" onAction="OnActionCallbackCalculation"/>
-				<button id ="TermoCalculation_Button" size="large" image="TermoCalculation" label="Расчет обогрева" onAction="OnActionCallbackCalculation"/>
-			<separator id ="separator2"/>
-				<button id ="UpdatingCalculation" size="large" image="Update"  label="Обновление расчета" onAction="OnActionCallbackCalculation"/>
-				<button id ="TypeNky_Button" size="large" image="TypeNky"  label="Типы шкафов" onAction="OnActionCallbackCalculation"/>
-		</group>
-		  
-		<group id="Other">
-			<button id ="Settings_Button" size="large" image="SettingsPic" label="Настройка формул" onAction="OnActionCallbackOther"/>
-			<button id ="About_Button" size="large" image="About" label="About" onAction="OnActionCallbackOther"/>
-			<button id ="Open_Button" size="large" image="Open" label="Открыть папку" onAction="OnActionCallbackOther"/>
-		</group>
-		  
-		<group id="group5">
-			<labelControl id ="label1" label="База данных"/>
-			<labelControl id ="baseLocation" getLabel="GetLabelText"/>
-		</group>
-		  
-	  </tab>
-    </tabs>
-  </ribbon>
+				<group id="Base" label="Базовые макросы">
+					<button id ="FillingOutThePassport_Button" size="large" imageMso="OptionEditableForm" label="Заполнить паспорта" onAction="OnActionCallbackBase"/>
+					<button id ="DeleteFormula_Button" size="large" imageMso="ClearFormats" label="Удалить формулы" onAction="OnActionCallbackBase"/>
+					<button id ="DeleteAllFormula_Button" size="large" imageMso="ClearAllFormatting" label="Удалить все формулы" onAction="OnActionCallbackBase"/>
+					<button id ="BoxShield_Button" size="large" imageMso="GroupBroadcastResume" label="Корпуса щитов" onAction="OnActionCallbackBase"/>
+					<button id ="AddBoxDb_Button" size="large" imageMso="BackupSite" label="Корпуса в базу" onAction="OnActionCallbackBase"/>
+					<button id ="CorrectDb_Button" size="large" imageMso="RestoreSite" label="Исправить запись БД" onAction="OnActionCallbackBase" />					
+				</group>
+
+				<group id="Decoration" label="Оформление">
+					<button id ="Linker_Button" size="large" imageMso="QueryDataDefinition" label="Разметка листов" onAction="OnActionCallbackDecoration"/>
+					<button id ="BordersTable_Button" size="large" imageMso="BordersAll" label="Границы" onAction="OnActionCallbackDecoration"/>
+					<button id ="CorrectFont_Button" size="large" imageMso="HappyFace" label="Шрифт" onAction="OnActionCallbackDecoration"/>
+					<button id ="CalculationMarkup_Button" size="large" imageMso="ListAddToDefaultView" label="Расчет" onAction="OnActionCallbackDecoration"/>
+					<button id ="EditCalculation_Button" size="large" image="EditCalculation" label="Причесать расчет" onAction="OnActionCallbackDecoration"/>
+					<button id ="CombiningCells_Button" size="large" imageMso="GroupListSummaryNew" label="Объединить ячейки" onAction="OnActionCallbackDecoration"/>					
+				</group>
+
+				<group id="Search" label="Поиск">
+					<button id ="Yandex_Button" size="large" image="Yandex" label="Поиск в Яндексе" onAction="OnActionCallbackSearch"/>
+					<button id ="Google_Button" size="large" image="Google" label="Поиск в Google" onAction="OnActionCallbackSearch"/>
+				</group>
+
+				<group id="Calculation" label="Макросы для расчетов">
+					<button id ="Iek_Button" size="large" image="iek" label="Формула ВПР IEK" onAction="OnActionCallbackCalculation"/>
+					<button id ="Ekf_Button" size="large" image="ekf" label="Формула ВПР EKF" onAction="OnActionCallbackCalculation"/>
+					<button id ="Dkc_Button" size="large" image="dkc" label="Формула ВПР DKC" onAction="OnActionCallbackCalculation"/>
+					<button id ="Keaz_Button" size="large" image="keaz" label="Формула ВПР KEAZ" onAction="OnActionCallbackCalculation"/>
+					<button id ="Dek_Button" size="large" image="dek" label="Формула ВПР DEK" onAction="OnActionCallbackCalculation"/>
+					<button id ="Chint_Button" size="large" image="chint" label="Формула ВПР CHINT" onAction="OnActionCallbackCalculation"/>
+					<separator id ="separator1"/>
+					<button id ="SelectionCircuitBreaker_Button" size="large" image="SelectionCircuitBreaker" label="Модульные аппараты" onAction="OnActionCallbackCalculation"/>
+					<button id ="SelectionTransformer_Button" size="large" image="SelectionTransformer" label="Трансф. тока" onAction="OnActionCallbackCalculation"/>
+					<button id ="SelectionTwinBlock_Button" size="large" image="SelectionTwinBlock" label="Рубильники TwinBlock" onAction="OnActionCallbackCalculation"/>
+					<button id ="TermoCalculation_Button" size="large" imageMso="EditPermissions" label="Расчет обогрева" onAction="OnActionCallbackCalculation"/>					
+					<separator id ="separator2"/>
+					<button id ="UpdatingCalculation" size="large" imageMso="SynchronizeAll"  label="Обновление расчета" onAction="OnActionCallbackCalculation"/>
+					<button id ="TypeNky_Button" size="large" image="TypeNky"  label="Типы шкафов" onAction="OnActionCallbackCalculation"/>					
+				</group>
+
+				<group id="Other">
+					<button id ="Settings_Button" size="normal" imageMso="ToolboxGallery" label="Настройка формул" onAction="OnActionCallbackOther"/>				
+					<button id ="Open_Button" size="normal" imageMso="OpenFolder" label="Открыть папку" onAction="OnActionCallbackOther"/>	
+					<button id ="About_Button" size="normal" imageMso="Info" label="About" onAction="OnActionCallbackOther"/>
+				</group>
+
+				<group id="group5">
+					<labelControl id ="label1" label="База данных"/>
+					<labelControl id ="baseLocation" getLabel="GetLabelText"/>
+				</group>
+
+			</tab>
+		</tabs>
+	</ribbon>
 </customUI>
 
