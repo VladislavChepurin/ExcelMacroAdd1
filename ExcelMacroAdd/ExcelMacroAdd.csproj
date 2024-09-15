@@ -37,7 +37,7 @@
     <PublishUrl>publication\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>2.3.1.1</ApplicationVersion>
+    <ApplicationVersion>2.3.2.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -297,11 +297,9 @@
     <Compile Include="Serializable\Entity\Interfaces\ITypeNkySettings.cs" />
     <Compile Include="NewRibbon.cs" />
     <Compile Include="Serializable\Entity\FormSettings.cs" />
-    <Compile Include="Serializable\Entity\SaveState.cs" />
     <Compile Include="Serializable\Entity\TypeNkySettings.cs" />
     <Compile Include="Services\CustomStringComparer.cs" />
     <Compile Include="Services\MathTermo.cs" />
-    <Compile Include="Services\SaveSheet.cs" />
     <Compile Include="UserException\DataBaseNotFoundValueException.cs" />
     <Compile Include="Forms\AboutBox1.cs">
       <SubType>Form</SubType>

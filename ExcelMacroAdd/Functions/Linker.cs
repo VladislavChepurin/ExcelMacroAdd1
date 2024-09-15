@@ -48,11 +48,12 @@ namespace ExcelMacroAdd.Functions
             Worksheet.Range["A1", Type.Missing].EntireColumn.ColumnWidth = 21;
             Worksheet.Range["B1", Type.Missing].EntireColumn.ColumnWidth = 80;
             Worksheet.Range["C1", Type.Missing].EntireColumn.ColumnWidth = 10;
-            Worksheet.Range["D1", "J1"].EntireColumn.ColumnWidth = 13;
+            Worksheet.Range["D1", "I1"].EntireColumn.ColumnWidth = 13;
+            Worksheet.Range["J1", Type.Missing].EntireColumn.ColumnWidth = 0;
 
             //размечаем границы и правим шрифты
-            Worksheet.Range["A1", "i500"].Cells.Font.Name = correctFontResources.NameFont;
-            Worksheet.Range["A1", "i500"].Cells.Font.Size = correctFontResources.SizeFont;
+            Worksheet.Range["A1", "J500"].Cells.Font.Name = correctFontResources.NameFont;
+            Worksheet.Range["A1", "J500"].Cells.Font.Size = correctFontResources.SizeFont;
 
             var excelCells = Worksheet.Range["A1", "J11"];
 

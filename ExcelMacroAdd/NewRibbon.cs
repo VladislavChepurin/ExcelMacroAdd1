@@ -32,7 +32,6 @@ namespace ExcelMacroAdd
         private readonly ITypeNkySettings[] typeNkySettings;
         private readonly AccessData accessData;
         private readonly bool locationDataBase = default;
-        private readonly ISaveState saveState;
 
         public NewRibbon()
         {
@@ -42,7 +41,6 @@ namespace ExcelMacroAdd
             correctFontResources = settings.CorrectFontResources;
             formSettings = settings.FormSettings;
             typeNkySettings = settings.TypeNkySettings;
-            saveState = settings.SaveState;
 
             string path;
 
@@ -114,16 +112,19 @@ namespace ExcelMacroAdd
                     var fillingOutThePassport = new FillingOutThePassport(resources);
                     fillingOutThePassport.Start();
                     break;
+
                 //Удалить формулы выделенной области
                 case "DeleteFormula_Button":
                     var deleteFormula = new DeleteFormula();
                     deleteFormula.Start();
                     break;
+
                 //Удалить все формулы
                 case "DeleteAllFormula_Button":
                     var deleteAllFormula = new DeleteAllFormula();
                     deleteAllFormula.Start();
                     break;
+
                 //Корпуса щитов
                 case "BoxShield_Button":
                     if (accessData != null)
@@ -140,8 +141,8 @@ namespace ExcelMacroAdd
                         var addBoxDb = new AddBoxDb(accessData, resources);
                         addBoxDb.Start();
                     }
-
                     break;
+
                 //Исправить запись в БД
                 case "CorrectDb_Button":
                     if (accessData != null)
@@ -163,31 +164,37 @@ namespace ExcelMacroAdd
                     var linker = new Linker(correctFontResources);
                     linker.Start();
                     break;
+
                 //Границы таблицы
                 case "BordersTable_Button":
                     var bordersTable = new BordersTable();
                     bordersTable.Start();
                     break;
+
                 //Правка шрифта
                 case "CorrectFont_Button":
                     var correctFont = new CorrectFont(correctFontResources);
                     correctFont.Start();
                     break;
+
                 // Разметка таблицы расчетов
                 case "CalculationMarkup_Button":
                     var calculationMarkup = new CalculationMarkup(correctFontResources);
                     calculationMarkup.Start();
                     break;
+
                 // Исправление расчетов
                 case "EditCalculation_Button":
                     var editCalculation = new EditCalculation(correctFontResources);
                     editCalculation.Start();
                     break;
+
                 // Объединение ячеек
                 case "CombiningCells_Button":
                     var combiningCells = new CombiningCells();
                     combiningCells.Start();
                     break;
+
             }
         }
 
@@ -200,11 +207,13 @@ namespace ExcelMacroAdd
                     var yandexSearch = new YandexSearch();
                     yandexSearch.Start();
                     break;
+
                 //Поиск в Google
                 case "Google_Button":
                     var googleSearch = new GoogleSearch();  
                     googleSearch.Start();
                     break;
+
             }
         }
 
@@ -219,51 +228,61 @@ namespace ExcelMacroAdd
                     writeExcel = new WriteExcel(dataInXml, "Iek");
                     writeExcel.Start();
                     break;
+
                 //Вставка формулы Ekf
                 case "Ekf_Button":
                     writeExcel = new WriteExcel(dataInXml, "Ekf");
                     writeExcel.Start();
                     break;
+
                 //Вставка формулы Dkc
                 case "Dkc_Button":
                     writeExcel = new WriteExcel(dataInXml, "Dkc");
                     writeExcel.Start();
                     break;
+
                 //Вставка формулы Keaz
                 case "Keaz_Button":
                     writeExcel = new WriteExcel(dataInXml, "Keaz");
                     writeExcel.Start();
                     break;
+
                 //Вставка формулы Dek
                 case "Dek_Button":
                     writeExcel = new WriteExcel(dataInXml, "Dekraft");
                     writeExcel.Start();
                     break;
+
                 //Вставка формулы Chint
                 case "Chint_Button":
                     writeExcel = new WriteExcel(dataInXml, "Chint");
                     writeExcel.Start();
                     break;
+
                 //Модульные аппараты
                 case "SelectionCircuitBreaker_Button":
                     if (accessData != null)
                         await SelectionCircuitBreaker.getInstance(dataInXml, accessData, formSettings);
                     break;
+
                 //Трансформаторы тока
                 case "SelectionTransformer_Button":
                     if (accessData != null)
                         await SelectionTransformer.getInstance(dataInXml, accessData, formSettings);
                     break;
+
                 //Рубильники TwinBlock
                 case "SelectionTwinBlock_Button":
                     if (accessData != null)
                         await SelectionTwinBlock.getInstance(dataInXml, accessData, formSettings);
                     break;
+
                 //Расчет обогрева
                 case "TermoCalculation_Button":
                     if (accessData != null)
                         await TermoCalculation.getInstance(formSettings, accessData);
                     break;
+
                 //Таблица типов
                 case "TypeNky_Button":
                     var typeNky = new TypeNky(typeNkySettings);
@@ -272,10 +291,12 @@ namespace ExcelMacroAdd
                     taskPane.DockPosition = Office.MsoCTPDockPosition.msoCTPDockPositionRight;
                     taskPane.Visible = true;
                     break;
+
                 case "UpdatingCalculation":
                     var updatingCalculation = new UpdatingCalculation(dataInXml);
                     updatingCalculation.Start();
                     break;
+
             }
         }
 
@@ -292,6 +313,7 @@ namespace ExcelMacroAdd
                         Thread.Sleep(5000);
                     });
                     break;
+
                 //Окно о программе
                 case "About_Button":
                     await Task.Run(() =>
@@ -301,10 +323,12 @@ namespace ExcelMacroAdd
                         Thread.Sleep(5000);
                     });
                     break;
+
                 //Открыть папку
                 case "Open_Button":
                     Process.Start("explorer.exe", AppDomain.CurrentDomain.BaseDirectory);
                     break;
+
             }
         }
 
