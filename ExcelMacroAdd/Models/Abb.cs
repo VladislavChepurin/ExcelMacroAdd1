@@ -10,8 +10,8 @@ namespace ExcelMacroAdd.Models
 
         public Abb()
         {
-            RangeSearch = new[] { "ABB", "АББ" };
-            OutValue = "Abb";
+            RangeSearch = new[] {"АББ", "Abb" };
+            OutValue = "ABB";
         }
     }
 }

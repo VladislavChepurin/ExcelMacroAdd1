@@ -57,7 +57,7 @@ namespace ExcelMacroAdd.Forms
 
             button2.Click += (s, a) =>
             {
-                var writeExcel = new WriteExcel(dataInXml, "Iek", 0, label11.Text);
+                var writeExcel = new WriteExcel(dataInXml, "IEK", 0, label11.Text);
                 writeExcel.Start();
             };
 
@@ -68,7 +68,7 @@ namespace ExcelMacroAdd.Forms
 
             button4.Click += (s, a) =>
             {
-                var writeExcel = new WriteExcel(dataInXml, "Ekf", 0, label12.Text);
+                var writeExcel = new WriteExcel(dataInXml, "EKF", 0, label12.Text);
                 writeExcel.Start();
             };
 
@@ -79,7 +79,7 @@ namespace ExcelMacroAdd.Forms
 
             button6.Click += (s, a) =>
             {
-                var writeExcel = new WriteExcel(dataInXml, "Keaz", 0, label13.Text);
+                var writeExcel = new WriteExcel(dataInXml, "KEAZ", 0, label13.Text);
                 writeExcel.Start();
             };
 
@@ -90,7 +90,7 @@ namespace ExcelMacroAdd.Forms
 
             button8.Click += (s, a) =>
             {
-                var writeExcel = new WriteExcel(dataInXml, "Tdm", 0, label14.Text);
+                var writeExcel = new WriteExcel(dataInXml, "TDM", 0, label14.Text);
                 writeExcel.Start();
             };
 
@@ -101,7 +101,7 @@ namespace ExcelMacroAdd.Forms
 
             button10.Click += (s, a) =>
             {
-                var writeExcel = new WriteExcel(dataInXml, "Iek", 0, label15.Text);
+                var writeExcel = new WriteExcel(dataInXml, "IEK", 0, label15.Text);
                 writeExcel.Start();
             };
 
@@ -112,7 +112,7 @@ namespace ExcelMacroAdd.Forms
 
             button12.Click += (s, a) =>
             {
-                var writeExcel = new WriteExcel(dataInXml, "Dekraft", 0, label16.Text);
+                var writeExcel = new WriteExcel(dataInXml, "DEKraft", 0, label16.Text);
                 writeExcel.Start();
             };
         }

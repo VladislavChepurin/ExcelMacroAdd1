@@ -6,6 +6,7 @@ using ExcelMacroAdd.Serializable;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.Services;
 using ExcelMacroAdd.Services.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -32,6 +33,7 @@ namespace ExcelMacroAdd
         private readonly ITypeNkySettings[] typeNkySettings;
         private readonly AccessData accessData;
         private readonly bool locationDataBase = default;
+        private readonly IMemoryCache memoryCache;
 
         public NewRibbon()
         {
@@ -41,6 +43,7 @@ namespace ExcelMacroAdd
             correctFontResources = settings.CorrectFontResources;
             formSettings = settings.FormSettings;
             typeNkySettings = settings.TypeNkySettings;
+            memoryCache = new MemoryCache(new MemoryCacheOptions());
 
             string path;
 
@@ -49,7 +52,7 @@ namespace ExcelMacroAdd
             ////засекаем время начала операции
             //stopwatch.Start();
 
-            if (File.Exists(settings.GlobalDateBaseLocation + "BdMacro.sqlite"))
+            if (File.Exists(settings.GlobalDateBaseLocation + "BdMain.sqlite"))
                 {
                     path = settings.GlobalDateBaseLocation;
                     locationDataBase = true;
@@ -60,7 +63,7 @@ namespace ExcelMacroAdd
                 }
 
                 var context = new AppContext(path);
-                accessData = new AccessData(context);
+                accessData = new AccessData(context, memoryCache);
 
             //stopwatch.Stop();
             //Debug.WriteLine("Time: " + stopwatch.ElapsedMilliseconds);
@@ -225,31 +228,36 @@ namespace ExcelMacroAdd
             {
                 //Вставка формулы Iek
                 case "Iek_Button":
-                    writeExcel = new WriteExcel(dataInXml, "Iek");
+                   // writeExcel = new WriteExcel(dataInXml, "Iek");
+                    writeExcel = new WriteExcel(dataInXml, "IEK");
                     writeExcel.Start();
                     break;
 
                 //Вставка формулы Ekf
                 case "Ekf_Button":
-                    writeExcel = new WriteExcel(dataInXml, "Ekf");
+                    //writeExcel = new WriteExcel(dataInXml, "Ekf");
+                    writeExcel = new WriteExcel(dataInXml, "EKF");
                     writeExcel.Start();
                     break;
 
                 //Вставка формулы Dkc
                 case "Dkc_Button":
-                    writeExcel = new WriteExcel(dataInXml, "Dkc");
+                    //writeExcel = new WriteExcel(dataInXml, "Dkc");
+                    writeExcel = new WriteExcel(dataInXml, "DKC");
                     writeExcel.Start();
                     break;
 
                 //Вставка формулы Keaz
                 case "Keaz_Button":
-                    writeExcel = new WriteExcel(dataInXml, "Keaz");
+                    //writeExcel = new WriteExcel(dataInXml, "Keaz");
+                    writeExcel = new WriteExcel(dataInXml, "KEAZ");
                     writeExcel.Start();
                     break;
 
                 //Вставка формулы Dek
                 case "Dek_Button":
-                    writeExcel = new WriteExcel(dataInXml, "Dekraft");
+                    //writeExcel = new WriteExcel(dataInXml, "Dekraft");
+                    writeExcel = new WriteExcel(dataInXml, "DEKraft");
                     writeExcel.Start();
                     break;
 
@@ -260,9 +268,9 @@ namespace ExcelMacroAdd
                     break;
 
                 //Модульные аппараты
-                case "SelectionCircuitBreaker_Button":
+                case "SelectionModularDevices_Button":
                     if (accessData != null)
-                        await SelectionCircuitBreaker.getInstance(dataInXml, accessData, formSettings);
+                        await SelectionModularDevices.getInstance(dataInXml, accessData, formSettings);
                     break;
 
                 //Трансформаторы тока

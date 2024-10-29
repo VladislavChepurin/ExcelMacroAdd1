@@ -13,12 +13,16 @@ namespace ExcelMacroAdd.DataLayer.Entity
         public string Depth { get; set; }
         public string Article { get; set; }
         // Внешний ключ
-        public int ExecutionId { get; set; }
+        public int? MaterialBoxId { get; set; }
         // Навигационное свойство
-        public Execution Execution {get; set; }
+        public MaterialBox MaterialBox {get; set; }
         // Внешний ключ
-        public int? VendorId { get; set; }
+        public int? ProductVendorId { get; set; }
         // Навигационное свойство
-        public Vendor Vendor { get; set; }
+        public ProductVendor ProductVendor { get; set; }
+        // Внешний ключ
+        public int? ExecutionBoxId { get; set; }
+        // Навигационное свойство
+        public ExecutionBox ExecutionBox { get; set; }
     }
 }

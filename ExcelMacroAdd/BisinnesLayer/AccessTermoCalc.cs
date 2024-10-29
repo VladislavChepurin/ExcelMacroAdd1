@@ -18,6 +18,5 @@ namespace ExcelMacroAdd.BisinnesLayer
         {
             return await context.JornalNkus.FirstOrDefaultAsync(p => p.Article == sArticle);
         }
-
     }
 }

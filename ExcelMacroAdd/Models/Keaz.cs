@@ -10,8 +10,8 @@ namespace ExcelMacroAdd.Models
 
         public Keaz()
         {
-            RangeSearch = new[] { "KEAZ", "КЕАЗ" };
-            OutValue = "Keaz";
+            RangeSearch = new[] { "Keaz", "КЕАЗ" };
+            OutValue = "KEAZ";
         }
     }
 }

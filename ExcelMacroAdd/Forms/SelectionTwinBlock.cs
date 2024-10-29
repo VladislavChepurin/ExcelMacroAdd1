@@ -138,34 +138,34 @@ namespace ExcelMacroAdd.Forms
             int rowsLine = default;
             var data = accessData.AccessTwinBlock.GetDataInTableDb(comboBox1.SelectedItem.ToString(), checkBox1.Checked);
 
-            var writeExcel = new WriteExcel(dataInXml, "Ekf", rowsLine, data.Item1);
+            var writeExcel = new WriteExcel(dataInXml, "EKF", rowsLine, data.Item1);
             writeExcel.Start();
 
             if (!string.IsNullOrEmpty(data.Item2) && checkBox2.Checked)
             {
                 rowsLine++;
-                writeExcel = new WriteExcel(dataInXml, "Ekf", rowsLine, data.Item2);
+                writeExcel = new WriteExcel(dataInXml, "EKF", rowsLine, data.Item2);
                 writeExcel.Start();
             }
 
             if (!string.IsNullOrEmpty(data.Item3) && checkBox3.Checked)
             {
                 rowsLine++;
-                writeExcel = new WriteExcel(dataInXml, "Ekf", rowsLine, data.Item3);
+                writeExcel = new WriteExcel(dataInXml, "EKF", rowsLine, data.Item3);
                 writeExcel.Start();
             }
 
             if (!string.IsNullOrEmpty(data.Item4) && checkBox4.Checked)
             {
                 rowsLine++;
-                writeExcel = new WriteExcel(dataInXml, "Ekf", rowsLine, data.Item4);
+                writeExcel = new WriteExcel(dataInXml, "EKF", rowsLine, data.Item4);
                 writeExcel.Start();
             }
 
             if (!string.IsNullOrEmpty(data.Item5) && checkBox5.Checked)
             {
                 rowsLine++;
-                writeExcel = new WriteExcel(dataInXml, "Ekf", rowsLine, data.Item5);
+                writeExcel = new WriteExcel(dataInXml, "EKF", rowsLine, data.Item5);
                 writeExcel.Start();
             }
         }

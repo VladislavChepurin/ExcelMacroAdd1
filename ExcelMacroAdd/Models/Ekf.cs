@@ -10,8 +10,8 @@ namespace ExcelMacroAdd.Models
 
         public Ekf()
         {
-            RangeSearch = new[] { "EKF", "ЕКФ" };
-            OutValue = "Ekf";
+            RangeSearch = new[] { "Ekf", "ЕКФ" };
+            OutValue = "EKF";
         }
     }
 }

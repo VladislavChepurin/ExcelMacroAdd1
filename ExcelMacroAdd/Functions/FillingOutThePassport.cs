@@ -109,13 +109,14 @@ namespace ExcelMacroAdd.Functions
                         string sNum = Worksheet.Cells[firstRow, 21].Value2.ToString();
                         //string sClimate = worksheet.Cells[firstRow, 12].Value2.ToString();
                         string sUe = Worksheet.Cells[firstRow, 9].Value2.ToString();
-                        string sGround = Worksheet.Cells[firstRow, 28].Value2.ToString();
+                        string sGround = Worksheet.Cells[firstRow, 29].Value2.ToString();
                         string sName = Worksheet.Cells[firstRow, 6].Value2.ToString();
                         string sPaste = FuncReplace(sName ?? string.Empty); // ссылка на метод замены
                         string firstWords = Worksheet.Cells[firstRow, 7].Value2.ToString();
                         string secondWords = FuncReplace(firstWords ?? string.Empty); // ссылка на метод замены
                         string sIsp = Worksheet.Cells[firstRow, 27].Value2.ToString();
-                        string sMaterial = Worksheet.Cells[firstRow, 29].Value2.ToString();
+                        string sMaterial = Worksheet.Cells[firstRow, 30].Value2.ToString();
+                        string sExecution = Worksheet.Cells[firstRow, 28].Value2.ToString();
                         string nameFolderSafe = Worksheet.Cells[firstRow, 1].Value2.ToString();
 
                         //Открываем Word
@@ -147,12 +148,14 @@ namespace ExcelMacroAdd.Functions
                             replacingTextLabels(find, "#Заземление", sGround),
                             // Замены Название
                             replacingTextLabels(find, "#Название", sName),
-                            // Замена Вставка (необходим метод замены)
+                            // Замена Вставка
                             replacingTextLabels(find, "#Вставка", sPaste),
                             // Замены Заполнение
                             replacingTextLabels(find, "#Заполнение", firstWords),
-                            // Замена Склонение (необходим метод замены)
-                            replacingTextLabels(find, "#Склонение", secondWords)
+                            // Замена Склонение
+                            replacingTextLabels(find, "#Склонение", secondWords),
+                            // Замена Исполнения
+                            replacingTextLabels(find, "#Исполнение", sExecution)
                         };
 
                         // Замены Напряжение
@@ -176,17 +179,17 @@ namespace ExcelMacroAdd.Functions
                         if (sIsp == "МП")
                         {
                             verifyIsNotFind.Add(
-                                replacingTextLabels(find, "#Исполнение", "монтажной плате"));
+                                replacingTextLabels(find, "#Установка", "монтажной плате"));
                         }
                         else if (sIsp == "ДР")
                         {
                             verifyIsNotFind.Add(
-                                replacingTextLabels(find, "#Исполнение", "din-рейках"));
+                                replacingTextLabels(find, "#Установка", "din-рейках"));
                         }
                         else
                         {
                             verifyIsNotFind.Add(
-                                replacingTextLabels(find, "#Исполнение", "монтажной плате, din-рейках"));
+                                replacingTextLabels(find, "#Установка", "монтажной плате, din-рейках"));
                         }
 
                         // Замены Материал

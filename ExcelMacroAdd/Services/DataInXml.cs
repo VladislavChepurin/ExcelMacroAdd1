@@ -16,7 +16,7 @@ namespace ExcelMacroAdd.Services
         readonly string file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/Settings.xml");
         public Vendor ReadElementXml(string vendor, Vendor[] dataXmlContinue)
         {
-            return dataXmlContinue.Single(p => p.VendorAttribute == ReplaceVendorTable()[vendor]);
+            return dataXmlContinue.Single(p => p.VendorAttribute == vendor);
         }
 
         public Vendor[] ReadFileXml()
@@ -104,32 +104,6 @@ namespace ExcelMacroAdd.Services
             {
                 xmlSerializer.Serialize(fs, vendor);    
             }
-        }
-
-        /// <summary>
-        /// Функция замены для вставки вендора и запроса из XML
-        /// </summary>
-        /// <returns></returns>
-        public IDictionary<string, string> ReplaceVendorTable()                         
-        {
-            Dictionary<string, string> dictionaryVendor = new Dictionary<string, string>()
-            {
-                {"Iek", "IEK"},
-                {"Ekf", "EKF"},
-                {"IekVa47", "IEK"},
-                {"IekVa47m", "IEK"},
-                {"IekArmat", "IEK"},
-                {"EkfProxima", "EKF"},
-                {"EkfAvers", "EKF"},
-                {"Abb", "ABB"},
-                {"Keaz", "KEAZ"},
-                {"Dkc", "DKC"},
-                {"Dekraft", "DEKraft"},
-                {"Schneider", "Schneider"},
-                {"Chint", "Chint"},
-                {"Tdm", "TDM"}               
-            };
-            return dictionaryVendor;
         }
     }
 }

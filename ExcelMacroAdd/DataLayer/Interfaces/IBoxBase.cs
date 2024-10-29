@@ -12,9 +12,11 @@ namespace ExcelMacroAdd.DataLayer.Interfaces
         string Width { get; set; }
         string Depth { get; set; }
         string Article { get; set; }
-        int ExecutionId { get; set; }
-        Execution Execution { get; set; }
-        int? VendorId { get; set; }
-        Vendor Vendor { get; set; }
+        int? MaterialBoxId { get; set; }
+        MaterialBox MaterialBox { get; set; }
+        int? ProductVendorId { get; set; }
+        ProductVendor ProductVendor { get; set; }
+        int? ExecutionBoxId { get; set; }
+        ExecutionBox ExecutionBox { get; set; }
     }
 }

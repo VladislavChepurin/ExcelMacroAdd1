@@ -10,8 +10,8 @@ namespace ExcelMacroAdd.Models
 
         public Iek()
         {
-            RangeSearch = new[] { "IEK", "ИЕК" };
-            OutValue = "Iek";
+            RangeSearch = new[] { "Iek", "ИЕК" };
+            OutValue = "IEK";
         }
     }
 }

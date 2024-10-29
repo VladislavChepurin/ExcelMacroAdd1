@@ -1,8 +1,8 @@
 ﻿namespace ExcelMacroAdd.DataLayer.Entity
 {
-    public class Vendor
+    public class ProductSeries
     {
         public int Id { get; set; }
-        public string VendorName { get; set; }
+        public string SeriesName { get; set; }
     }
 }

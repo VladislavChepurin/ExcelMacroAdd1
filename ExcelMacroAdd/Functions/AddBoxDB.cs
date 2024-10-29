@@ -2,6 +2,7 @@
 using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.UserException;
+using Microsoft.Office.Interop.Word;
 using System;
 using System.Data;
 
@@ -35,7 +36,6 @@ namespace ExcelMacroAdd.Functions
                 try
                 {
                     string sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
-
                     var journalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle.ToLower());
 
                     if (!(journalNku is null))
@@ -53,9 +53,10 @@ namespace ExcelMacroAdd.Functions
                     string sWidth = Convert.ToString(Worksheet.Cells[firstRow, 15].Value2);
                     string sDepth = Convert.ToString(Worksheet.Cells[firstRow, 16].Value2);
                     sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
-                    string sExecution = Convert.ToString(Worksheet.Cells[firstRow, 29].Value2);
+                    string sMaterial = Convert.ToString(Worksheet.Cells[firstRow, 30].Value2);
+                    string sExecution = Convert.ToString(Worksheet.Cells[firstRow, 28].Value2);            
 
-                    if (sClimate == null || sReserve == null || sHeight == null || sWidth == null || sDepth == null || sArticle == null || sExecution == null)
+                    if (sClimate == null || sReserve == null || sHeight == null || sWidth == null || sDepth == null || sArticle == null || sMaterial == null)
                     {
                         MessageWarning($"Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n Артикул = {sArticle}",
                             "Ошибка записи");
@@ -63,7 +64,9 @@ namespace ExcelMacroAdd.Functions
                         continue;
                     }
 
-                    var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sExecution) ?? throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sExecution}\" недопустимо, пожайлуста используйте значение \"Пластик\" или \"Металл\"");
+                    var materialEntity = await accessData.AccessJournalNku.GetMaterialEntityByName(sMaterial) ?? throw new DataBaseNotFoundValueException($"Введенный материал шкафа \"{sMaterial}\" недопустим, пожайлуста используйте значение \"Пластик\" или \"Металл\"");
+                    var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sExecution) ?? throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sExecution}\" недопустимо, пожайлуста используйте значение \"напольное\", или \"навесное\", или \"встраиваемое\", или \"навесное для IT оборудования\", или \"навесное для IT оборудования\".");
+
                     BoxBase journal = new BoxBase()
                     {
                         Ip = sIp,
@@ -73,7 +76,8 @@ namespace ExcelMacroAdd.Functions
                         Width = sWidth,
                         Depth = sDepth,
                         Article = sArticle.ToLower(),
-                        ExecutionId  = executionEntity.Id
+                        MaterialBoxId = materialEntity.Id,
+                        ExecutionBoxId = executionEntity.Id
                     };
 
                     accessData.AccessJournalNku.AddValueDb(journal);

@@ -1,6 +1,5 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
-using ExcelMacroAdd.UserException;
 using System;
 using System.Data;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -12,7 +11,7 @@ namespace ExcelMacroAdd.Functions
         private readonly IFillingOutThePassportSettings resources;
         private readonly IJournalData accessData;
 
-        public BoxShield(IJournalData accessData ,IFillingOutThePassportSettings resources)
+        public BoxShield(IJournalData accessData, IFillingOutThePassportSettings resources)
         {
             this.accessData = accessData;
             this.resources = resources;
@@ -32,8 +31,8 @@ namespace ExcelMacroAdd.Functions
             var endRow = firstRow + countRow;
             do
             {
-                try
-                {
+                //try
+                //{
                     string sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
 
                     if (!String.IsNullOrEmpty(sArticle))
@@ -47,36 +46,29 @@ namespace ExcelMacroAdd.Functions
                             continue;
                         }
 
-                        var ex = await accessData.AccessJournalNku.GetExecutionEntityById(journalNku.ExecutionId) ??
-                            throw new DataBaseNotFoundValueException("Ошибка получения значения из таблицы Executions");
                         Worksheet.Range["K" + firstRow].Value2 = journalNku.Ip.ToString();
                         Worksheet.Range["L" + firstRow].Value2 = journalNku.Climate ?? string.Empty;
                         Worksheet.Range["M" + firstRow].Value2 = journalNku.Reserve ?? string.Empty;
                         Worksheet.Range["N" + firstRow].Value2 = journalNku.Height ?? string.Empty;
                         Worksheet.Range["O" + firstRow].Value2 = journalNku.Width ?? string.Empty;
                         Worksheet.Range["P" + firstRow].Value2 = journalNku.Depth ?? string.Empty;
-                        Worksheet.Range["AC" + firstRow].Value2 = ex.ExecutionValue ?? string.Empty;
+                        Worksheet.Range["AB" + firstRow].Value2 = journalNku.ExecutionBox.ExecutionValue ?? string.Empty;
+                        Worksheet.Range["AD" + firstRow].Value2 = journalNku.MaterialBox.MaterialValue ?? string.Empty;
                     }
-                }
+                //}
 
-                catch (DataBaseNotFoundValueException e)
-                {
-                    MessageError($"Произошла ошибка в базе данных, пожайлуста обратитесь к разработчику. {e.Message}",
-                        "Ошибка базы данных");
-                }
-
-                catch (DataException)
-                {
-                    MessageError("Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",
-                        "Ошибка базы данных");
-                    return;
-                }
-                catch (Exception e)
-                {
-                    MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {e.Message}",
-                        "Ошибка базы данных");
-                    return;
-                }
+                //catch (DataException)
+                //{
+                //    MessageError("Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",
+                //        "Ошибка базы данных");
+                //    return;
+                //}
+                //catch (Exception e)
+                //{
+                //    MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {e.Message}",
+                //        "Ошибка базы данных");
+                //    return;
+                //}
                 firstRow++;
             }
             while (endRow > firstRow);

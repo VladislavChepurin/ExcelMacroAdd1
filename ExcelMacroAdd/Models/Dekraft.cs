@@ -11,7 +11,7 @@ namespace ExcelMacroAdd.Models
         public Dekraft()
         {
             RangeSearch = new[] { "DEKRAFT", "DEK", "Декрафт", "Дек" };
-            OutValue = "Dekraft";
+            OutValue = "DEKraft";
         }
     }
 }

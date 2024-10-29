@@ -1,7 +1,4 @@
-﻿using ExcelMacroAdd.DataLayer.Interfaces;
-using System.Threading.Tasks;
-
-namespace ExcelMacroAdd.BisinnesLayer.Interfaces
+﻿namespace ExcelMacroAdd.BisinnesLayer.Interfaces
 {
     public interface ISelectionCircuitBreakerData
     {

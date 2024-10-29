@@ -1,9 +1,4 @@
 ﻿using ExcelMacroAdd.Models.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExcelMacroAdd.Models
 {
@@ -15,8 +10,8 @@ namespace ExcelMacroAdd.Models
 
         public Dkc()
         {
-            RangeSearch = new[] { "DKC", "ДКС" };
-            OutValue = "Dkc";
+            RangeSearch = new[] { "Dkc", "ДКС" };
+            OutValue = "DKC";
         }
     }
 }

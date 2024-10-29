@@ -137,6 +137,24 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Caching.Memory, Version=8.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Memory.8.0.1\lib\net462\Microsoft.Extensions.Caching.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=8.0.0.2, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.8.0.2\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=8.0.0.2, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.8.0.2\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=8.0.0.2, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.8.0.2\lib\net462\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.8.0.0\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -159,6 +177,9 @@
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.118.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.118.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
@@ -173,6 +194,7 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -236,34 +258,67 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="BisinnesLayer\AccessAdditionalModularDevices.cs" />
     <Compile Include="BisinnesLayer\AccessCircuitBreaker.cs" />
     <Compile Include="BisinnesLayer\AccessData.cs" />
     <Compile Include="BisinnesLayer\AccessJournalNku.cs" />
+    <Compile Include="BisinnesLayer\AccessSwitch.cs" />
     <Compile Include="BisinnesLayer\AccessTermoCalc.cs" />
     <Compile Include="BisinnesLayer\AccessTransformer.cs" />
     <Compile Include="BisinnesLayer\AccessTwinBlock.cs" />
+    <Compile Include="BisinnesLayer\Interfaces\IAccessAdditionalModularDevicesData.cs" />
+    <Compile Include="BisinnesLayer\Interfaces\ISelectionSwitchData.cs" />
     <Compile Include="BisinnesLayer\Interfaces\ISelectionTwinBlockData.cs" />
     <Compile Include="BisinnesLayer\Interfaces\ISelectionTransformerData.cs" />
     <Compile Include="BisinnesLayer\Interfaces\IJournalData.cs" />
     <Compile Include="BisinnesLayer\Interfaces\ISelectionCircuitBreakerData.cs" />
     <Compile Include="BisinnesLayer\Interfaces\ITermoCalcData.cs" />
     <Compile Include="DataLayer\Entity\AdditionalPole.cs" />
-    <Compile Include="DataLayer\Entity\Execution.cs" />
+    <Compile Include="DataLayer\Entity\AuxiliaryContact.cs" />
+    <Compile Include="DataLayer\Entity\ExecutionBox.cs" />
+    <Compile Include="DataLayer\Entity\MaterialBox.cs" />
+    <Compile Include="DataLayer\Entity\ProductGroup.cs" />
+    <Compile Include="DataLayer\Entity\ProductSeries.cs" />
+    <Compile Include="DataLayer\Entity\ShuntTrip230v.cs" />
+    <Compile Include="DataLayer\Entity\ShuntTrip24v.cs" />
+    <Compile Include="DataLayer\Entity\ShuntTrip48v.cs" />
+    <Compile Include="DataLayer\Entity\SignalContact.cs" />
+    <Compile Include="DataLayer\Entity\SignalOrAuxiliaryContact.cs" />
     <Compile Include="DataLayer\Entity\Stock.cs" />
     <Compile Include="DataLayer\Entity\DoorHandle.cs" />
     <Compile Include="DataLayer\Entity\DirectMountingHandle.cs" />
     <Compile Include="DataLayer\Entity\BoxBase.cs" />
     <Compile Include="DataLayer\Entity\AppContext.cs" />
-    <Compile Include="DataLayer\Entity\Modul.cs" />
+    <Compile Include="DataLayer\Entity\CircuitBreaker.cs" />
     <Compile Include="DataLayer\Entity\Switch.cs" />
     <Compile Include="DataLayer\Entity\Transformer.cs" />
     <Compile Include="DataLayer\Entity\TransformerAttribute.cs" />
     <Compile Include="DataLayer\Entity\TwinBlockSwitch.cs" />
-    <Compile Include="DataLayer\Entity\Vendor.cs" />
+    <Compile Include="DataLayer\Entity\ProductVendor.cs" />
+    <Compile Include="DataLayer\Entity\UndervoltageRelease.cs" />
     <Compile Include="DataLayer\Interfaces\IBoxBase.cs" />
-    <Compile Include="DataLayer\Interfaces\IExecution.cs" />
-    <Compile Include="DataLayer\Interfaces\IModul.cs" />
+    <Compile Include="DataLayer\Interfaces\IExecutionBox.cs" />
+    <Compile Include="DataLayer\Interfaces\IMaterialBox.cs" />
+    <Compile Include="DataLayer\Interfaces\ICircuitBreaker.cs" />
     <Compile Include="DataLayer\Interfaces\ISwitch.cs" />
+    <Compile Include="Forms\AdditionalDevicesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AdditionalDevicesForm.Designer.cs">
+      <DependentUpon>AdditionalDevicesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SelectionSwitch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SelectionSwitch.Designer.cs">
+      <DependentUpon>SelectionSwitch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SelectionModularDevices.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SelectionModularDevices.Designer.cs">
+      <DependentUpon>SelectionModularDevices.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SupportiveFunction\AddTypeNky.cs" />
     <Compile Include="Forms\SupportiveFunction\DeleteTypeNky.cs" />
     <Compile Include="Forms\TermoCalculation.cs">
@@ -283,7 +338,12 @@
     <Compile Include="Functions\UpdatingCalculation.cs" />
     <Compile Include="Functions\YandexSearch.cs" />
     <Compile Include="Models\Abb.cs" />
+    <Compile Include="Models\AdditionalDevices.cs" />
     <Compile Include="Models\Chint.cs" />
+    <Compile Include="Models\Interface\IUserSwitch.cs" />
+    <Compile Include="Models\Interface\IUserCircuitBreaker.cs" />
+    <Compile Include="Models\UserSwitch.cs" />
+    <Compile Include="Models\UserCircuitBreaker.cs" />
     <Compile Include="Models\Dekraft.cs" />
     <Compile Include="Models\Dkc.cs" />
     <Compile Include="Models\Ekf.cs" />
@@ -292,6 +352,7 @@
     <Compile Include="Models\Keaz.cs" />
     <Compile Include="Models\Schneider.cs" />
     <Compile Include="Models\Tdm.cs" />
+    <Compile Include="Models\UserVariable.cs" />
     <Compile Include="Serializable\Entity\Interfaces\IFormSettings.cs" />
     <Compile Include="Serializable\Entity\Interfaces\ISaveState.cs" />
     <Compile Include="Serializable\Entity\Interfaces\ITypeNkySettings.cs" />
@@ -368,6 +429,9 @@
     <Content Include="iconexcel.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="DataLayer\DataBase\BdMain.sqlite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="ExcelMacroAdd_3_TemporaryKey.pfx" />
     <None Include="Resources\SelectionCircuitBreaker.png" />
     <None Include="Resources\TypeNky.png" />
@@ -376,6 +440,15 @@
     <None Include="Resources\EditCalculation.png" />
     <Content Include="x64\SQLite.Interop.dll" />
     <Content Include="x86\SQLite.Interop.dll" />
+    <EmbeddedResource Include="Forms\AdditionalDevicesForm.resx">
+      <DependentUpon>AdditionalDevicesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SelectionSwitch.resx">
+      <DependentUpon>SelectionSwitch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SelectionModularDevices.resx">
+      <DependentUpon>SelectionModularDevices.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\TypeNky.resx">
       <DependentUpon>TypeNky.cs</DependentUpon>
     </EmbeddedResource>
@@ -418,9 +491,6 @@
     <Content Include="Config\appSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="DataLayer\DataBase\BdMacro.sqlite">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="ExcelMacroAdd_1_TemporaryKey.pfx" />
     <None Include="Resources\tdm.png" />
     <None Include="Resources\none.png" />
@@ -445,12 +515,6 @@
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Content Include="Template\Паспорт Абиэлт_А5_навесные.docx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Template\Паспорт_напольные_А4.docx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.cs</DependentUpon>
     </None>

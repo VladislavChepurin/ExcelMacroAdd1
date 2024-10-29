@@ -35,7 +35,7 @@
 					<button id ="Dek_Button" size="large" image="dek" label="Формула ВПР DEK" onAction="OnActionCallbackCalculation"/>
 					<button id ="Chint_Button" size="large" image="chint" label="Формула ВПР CHINT" onAction="OnActionCallbackCalculation"/>
 					<separator id ="separator1"/>
-					<button id ="SelectionCircuitBreaker_Button" size="large" image="SelectionCircuitBreaker" label="Модульные аппараты" onAction="OnActionCallbackCalculation"/>
+					<button id ="SelectionModularDevices_Button" size="large" image="SelectionCircuitBreaker" label="Модульные аппараты" onAction="OnActionCallbackCalculation"/>
 					<button id ="SelectionTransformer_Button" size="large" image="SelectionTransformer" label="Трансф. тока" onAction="OnActionCallbackCalculation"/>
 					<button id ="SelectionTwinBlock_Button" size="large" image="SelectionTwinBlock" label="Рубильники TwinBlock" onAction="OnActionCallbackCalculation"/>
 					<button id ="TermoCalculation_Button" size="large" imageMso="EditPermissions" label="Расчет обогрева" onAction="OnActionCallbackCalculation"/>					

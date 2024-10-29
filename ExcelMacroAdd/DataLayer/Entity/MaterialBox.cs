@@ -2,9 +2,9 @@
 
 namespace ExcelMacroAdd.DataLayer.Entity
 {
-    public class Execution : IExecution
+    public class MaterialBox : IMaterialBox
     {
         public int Id { get; set; }
-        public string ExecutionValue { get; set; }
+        public string MaterialValue { get; set; }
     }
 }

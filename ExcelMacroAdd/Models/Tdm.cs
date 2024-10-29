@@ -10,8 +10,8 @@ namespace ExcelMacroAdd.Models
 
         public Tdm()
         {
-            RangeSearch = new[] { "TDM", "ТДМ" };
-            OutValue = "Tdm";
+            RangeSearch = new[] { "Tdm", "ТДМ" };
+            OutValue = "TDM";
         }
     }
 }

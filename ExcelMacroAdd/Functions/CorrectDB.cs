@@ -37,8 +37,7 @@ namespace ExcelMacroAdd.Functions
 
                 try
                 {
-                    var jornalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle.ToLower());
-                    if (jornalNku is null)
+                    if (!(await accessData.AccessJournalNku.GetEntityJournal(sArticle.ToLower()) is BoxBase journalNku))
                     {
                         MessageWarning($"В базе данных такого артикула нет.\n Необходимо сначала его занести. \nАртикул = {sArticle}",
                         "Ошибка записи!");
@@ -52,27 +51,30 @@ namespace ExcelMacroAdd.Functions
                     string sWidth = Convert.ToString(Worksheet.Cells[firstRow, 15].Value2);
                     string sDepth = Convert.ToString(Worksheet.Cells[firstRow, 16].Value2);
                     sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
-                    string sExecution = Convert.ToString(Worksheet.Cells[firstRow, 29].Value2);
+                    string sMaterial = Convert.ToString(Worksheet.Cells[firstRow, 30].Value2);
+                    string sExecution = Convert.ToString(Worksheet.Cells[firstRow, 28].Value2);                              
 
-                    if (sClimate == null || sReserve == null || sHeight == null || sWidth == null || sDepth == null || sArticle == null || sExecution == null)
+                    if (sClimate == null || sReserve == null || sHeight == null || sWidth == null || sDepth == null || sArticle == null || sMaterial == null || sExecution == null)
                     {
                         MessageWarning($"Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n Артикул = {sArticle}",
                             "Ошибка записи");
                         return;
                     }
 
-                    var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sExecution) ?? throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sExecution}\" недопустимо, пожайлуста используйте значение \"Пластик\" или \"Металл\"");
-                    
-                    jornalNku.Ip = sIp;
-                    jornalNku.Climate = sClimate;
-                    jornalNku.Reserve = sReserve;
-                    jornalNku.Height = sHeight;
-                    jornalNku.Width = sWidth;
-                    jornalNku.Depth = sDepth;
-                    jornalNku.Article = sArticle.ToLower();
-                    jornalNku.ExecutionId = executionEntity.Id;
+                    var materialEntity = await accessData.AccessJournalNku.GetMaterialEntityByName(sMaterial) ?? throw new DataBaseNotFoundValueException($"Введенный материал шкафа \"{sMaterial}\" недопустим, пожайлуста используйте значение \"Пластик\" или \"Металл\"");
+                    var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sExecution) ?? throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sExecution}\" недопустимо, пожайлуста используйте значение \"напольное\", или \"навесное\", или \"встраиваемое\", или \"навесное для IT оборудования\", или \"навесное для IT оборудования\".");
 
-                    accessData.AccessJournalNku.WriteUpdateDb((BoxBase)jornalNku);                                 
+                    journalNku.Ip = sIp;
+                    journalNku.Climate = sClimate;
+                    journalNku.Reserve = sReserve;
+                    journalNku.Height = sHeight;
+                    journalNku.Width = sWidth;
+                    journalNku.Depth = sDepth;
+                    journalNku.Article = sArticle.ToLower();
+                    journalNku.MaterialBoxId = materialEntity.Id;
+                    journalNku.ExecutionBoxId = executionEntity.Id;
+
+                    accessData.AccessJournalNku.WriteUpdateDb(journalNku);                                 
 
                     MessageInformation($"Запись успешно изменена! \nПоздравляем! \nАртикул = {sArticle}",
                                 "Запись успешна!");
@@ -80,7 +82,7 @@ namespace ExcelMacroAdd.Functions
 
                 catch (DataBaseNotFoundValueException e)
                 {
-                    MessageError($"Произошла ошибка, скорее всего непавильно было указано исполнение шкафа. {e.Message}",
+                    MessageError($"Произошла ошибка, скорее всего непавильно было указано одно из значений. {e.Message}",
                         "Ошибка базы данных");
                 }
 

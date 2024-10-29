@@ -1,8 +1,8 @@
 ﻿namespace ExcelMacroAdd.DataLayer.Interfaces
 {
-    public interface IExecution
+    public interface IMaterialBox
     {
         int Id { get; set; }
-        string ExecutionValue { get; set; }
+        string MaterialValue { get; set; }
     }
 }
