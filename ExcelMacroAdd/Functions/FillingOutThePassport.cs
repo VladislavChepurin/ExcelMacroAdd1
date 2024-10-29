@@ -269,8 +269,12 @@ namespace ExcelMacroAdd.Functions
                 }
             }).Start();
         }
-
-        private string FuncReplace(string mReplase)                          // Функция замены
+        /// <summary>
+        /// Функция склонения слов
+        /// </summary>
+        /// <param name="mReplase"></param>
+        /// <returns></returns>
+        private string FuncReplace(string mReplase)                          
         {
             string[] subs = mReplase.Split(' ');
 

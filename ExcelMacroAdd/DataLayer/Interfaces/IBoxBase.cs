@@ -7,7 +7,7 @@ namespace ExcelMacroAdd.DataLayer.Interfaces
         int Id { get; set; }
         int Ip { get; set; }
         string Climate { get; set; }
-        string Reserve { get; set; }
+        string Weight { get; set; }
         string Height { get; set; }
         string Width { get; set; }
         string Depth { get; set; }

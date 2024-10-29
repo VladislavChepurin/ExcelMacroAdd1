@@ -45,8 +45,9 @@ namespace ExcelMacroAdd.Functions
                     }
 
                     int.TryParse(Convert.ToString(Worksheet.Cells[firstRow, 11].Value2), out int sIp);
+
                     string sClimate = Convert.ToString(Worksheet.Cells[firstRow, 12].Value2);
-                    string sReserve = Convert.ToString(Worksheet.Cells[firstRow, 13].Value2);
+                    string sWeight = Convert.ToString(Worksheet.Cells[firstRow, 13].Value2);
                     string sHeight = Convert.ToString(Worksheet.Cells[firstRow, 14].Value2);
                     string sWidth = Convert.ToString(Worksheet.Cells[firstRow, 15].Value2);
                     string sDepth = Convert.ToString(Worksheet.Cells[firstRow, 16].Value2);
@@ -54,7 +55,7 @@ namespace ExcelMacroAdd.Functions
                     string sMaterial = Convert.ToString(Worksheet.Cells[firstRow, 30].Value2);
                     string sExecution = Convert.ToString(Worksheet.Cells[firstRow, 28].Value2);                              
 
-                    if (sClimate == null || sReserve == null || sHeight == null || sWidth == null || sDepth == null || sArticle == null || sMaterial == null || sExecution == null)
+                    if (sHeight == null || sWidth == null || sDepth == null || sArticle == null || sMaterial == null || sExecution == null)
                     {
                         MessageWarning($"Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n Артикул = {sArticle}",
                             "Ошибка записи");
@@ -65,8 +66,8 @@ namespace ExcelMacroAdd.Functions
                     var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sExecution) ?? throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sExecution}\" недопустимо, пожайлуста используйте значение \"напольное\", или \"навесное\", или \"встраиваемое\", или \"навесное для IT оборудования\", или \"навесное для IT оборудования\".");
 
                     journalNku.Ip = sIp;
-                    journalNku.Climate = sClimate;
-                    journalNku.Reserve = sReserve;
+                    journalNku.Climate = sClimate == "-" ? null : sClimate;
+                    journalNku.Weight = sWeight == "-" ? null : sWeight;
                     journalNku.Height = sHeight;
                     journalNku.Width = sWidth;
                     journalNku.Depth = sDepth;
@@ -100,4 +101,3 @@ namespace ExcelMacroAdd.Functions
         }
     }
 }
-

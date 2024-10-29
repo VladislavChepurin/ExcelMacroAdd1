@@ -7,7 +7,7 @@ namespace ExcelMacroAdd.DataLayer.Entity
         public int Id { get; set; }
         public int Ip { get; set; }       
         public string Climate { get; set; }
-        public string Reserve { get; set; }
+        public string Weight { get; set; }
         public string Height { get; set; }
         public string Width { get; set; }
         public string Depth { get; set; }

@@ -48,7 +48,7 @@ namespace ExcelMacroAdd.Functions
 
                     int.TryParse(Convert.ToString(Worksheet.Cells[firstRow, 11].Value2), out int sIp);
                     string sClimate = Convert.ToString(Worksheet.Cells[firstRow, 12].Value2);
-                    string sReserve = Convert.ToString(Worksheet.Cells[firstRow, 13].Value2);
+                    string sWeight = Convert.ToString(Worksheet.Cells[firstRow, 13].Value2);
                     string sHeight = Convert.ToString(Worksheet.Cells[firstRow, 14].Value2);
                     string sWidth = Convert.ToString(Worksheet.Cells[firstRow, 15].Value2);
                     string sDepth = Convert.ToString(Worksheet.Cells[firstRow, 16].Value2);
@@ -56,7 +56,7 @@ namespace ExcelMacroAdd.Functions
                     string sMaterial = Convert.ToString(Worksheet.Cells[firstRow, 30].Value2);
                     string sExecution = Convert.ToString(Worksheet.Cells[firstRow, 28].Value2);            
 
-                    if (sClimate == null || sReserve == null || sHeight == null || sWidth == null || sDepth == null || sArticle == null || sMaterial == null)
+                    if (sHeight == null || sWidth == null || sDepth == null || sArticle == null || sMaterial == null)
                     {
                         MessageWarning($"Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n Артикул = {sArticle}",
                             "Ошибка записи");
@@ -70,8 +70,8 @@ namespace ExcelMacroAdd.Functions
                     BoxBase journal = new BoxBase()
                     {
                         Ip = sIp,
-                        Climate = sClimate,
-                        Reserve = sReserve,
+                        Climate = sClimate == "-" ? null : sClimate,
+                        Weight = sWeight == "-" ? null : sWeight,
                         Height = sHeight,
                         Width = sWidth,
                         Depth = sDepth,
