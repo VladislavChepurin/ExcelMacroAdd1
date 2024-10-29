@@ -42,19 +42,31 @@ namespace ExcelMacroAdd.Forms
 
         private void SelectionModularDevices_Load(object sender, EventArgs e)
         {
-            button1.Click += async (s, a) =>
+            button1.Click += (s, a) =>
             {
-                await SelectionCircuitBreaker.getInstance(dataInXml, accessData, formSettings);                
+                Task.Run(() =>
+                {
+                    SelectionCircuitBreaker.getInstance(dataInXml, accessData, formSettings);
+                });
+                Close();
             };
 
-            button2.Click += async (s, a) =>
+            button2.Click += (s, a) =>
             {
-                await SelectionSwitch.getInstance(dataInXml, accessData, formSettings);
+                Task.Run(() =>
+                {
+                    SelectionSwitch.getInstance(dataInXml, accessData, formSettings);
+                });
+                Close();
             };
 
-            button3.Click += async (s, a) =>
+            button3.Click += (s, a) =>
             {
-                await AdditionalDevicesForm.getInstance(dataInXml, accessData, formSettings);
+                Task.Run(() =>
+                {
+                    AdditionalDevicesForm.getInstance(dataInXml, accessData, formSettings);
+                });
+                Close();
             };
         }
     }

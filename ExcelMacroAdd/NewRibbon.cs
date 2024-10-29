@@ -78,7 +78,7 @@ namespace ExcelMacroAdd
             {
                 if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/BdMacro.sqlite")))
                 {
-                    context.Switchs.AsParallel().Select(x => x.Id).ToList();
+                    context.Switches.AsParallel().Select(x => x.Id).ToList();
                 }
             }).Start();
 #endif

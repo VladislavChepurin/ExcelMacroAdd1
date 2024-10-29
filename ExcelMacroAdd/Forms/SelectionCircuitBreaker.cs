@@ -1,14 +1,12 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Models;
-using ExcelMacroAdd.ProxyObjects;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.Services.Interfaces;
 using System;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms
@@ -32,18 +30,15 @@ namespace ExcelMacroAdd.Forms
 
         //Singelton
         private static SelectionCircuitBreaker instance;
-        public static async Task getInstance(IDataInXml dataInXml, ISelectionCircuitBreakerData accessData, IFormSettings formSettings)
+        public static void getInstance(IDataInXml dataInXml, ISelectionCircuitBreakerData accessData, IFormSettings formSettings)
         {
             if (instance == null)
             {
-                await Task.Run(() =>
+                instance = new SelectionCircuitBreaker(dataInXml, accessData)
                 {
-                    instance = new SelectionCircuitBreaker(dataInXml, accessData)
-                    {
-                        TopMost = formSettings.FormTopMost
-                    };
-                    instance.ShowDialog();
-                });
+                    TopMost = formSettings.FormTopMost
+                };
+                instance.ShowDialog();
             }
         }
 

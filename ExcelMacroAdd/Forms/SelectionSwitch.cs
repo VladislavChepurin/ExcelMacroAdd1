@@ -31,18 +31,15 @@ namespace ExcelMacroAdd.Forms
 
         //Singelton
         private static SelectionSwitch instance;
-        public static async Task getInstance(IDataInXml dataInXml, ISelectionSwitchData accessData, IFormSettings formSettings)
+        public static void getInstance(IDataInXml dataInXml, ISelectionSwitchData accessData, IFormSettings formSettings)
         {
             if (instance == null)
             {
-                await Task.Run(() =>
+                instance = new SelectionSwitch(dataInXml, accessData)
                 {
-                    instance = new SelectionSwitch(dataInXml, accessData)
-                    {
-                        TopMost = formSettings.FormTopMost
-                    };
-                    instance.ShowDialog();
-                });
+                    TopMost = formSettings.FormTopMost
+                };
+                instance.ShowDialog();
             }
         }
 

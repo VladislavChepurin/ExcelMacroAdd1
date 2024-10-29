@@ -24,18 +24,15 @@ namespace ExcelMacroAdd.Forms
 
         //Singelton
         private static AdditionalDevicesForm instance;
-        public static async Task getInstance(IDataInXml dataInXml, IAccessAdditionalModularDevicesData accessData, IFormSettings formSettings)
+        public static void getInstance(IDataInXml dataInXml, IAccessAdditionalModularDevicesData accessData, IFormSettings formSettings)
         {
             if (instance == null)
             {
-                await Task.Run(() =>
+                instance = new AdditionalDevicesForm(dataInXml, accessData)
                 {
-                    instance = new AdditionalDevicesForm(dataInXml, accessData)
-                    {
-                        TopMost = formSettings.FormTopMost
-                    };
-                    instance.ShowDialog();
-                });
+                    TopMost = formSettings.FormTopMost
+                };
+                instance.ShowDialog();
             }
         }
         private void AdditionalDevicesForm_FormClosed(object sender, FormClosedEventArgs e)
