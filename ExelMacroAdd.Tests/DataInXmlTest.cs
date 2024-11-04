@@ -12,7 +12,7 @@ namespace ExelMacroAdd.Tests
         [Test]
         public void ReadElementXmlMustNotNull()
         {
-            var data = new DataInXml();            
+            var data = new DataInXml();
             Assert.IsNotNull(data.ReadElementXml("Iek", data.ReadFileXml()));
             Assert.IsNotNull(data.ReadElementXml("Ekf", data.ReadFileXml()));
             Assert.IsNotNull(data.ReadElementXml("Dkc", data.ReadFileXml()));
@@ -25,7 +25,7 @@ namespace ExelMacroAdd.Tests
         [Test]
         public void ReadElementXmlMustCorrectValue()
         {
-            var testVendorObject = new Vendor[] {            
+            var testVendorObject = new Vendor[] {
                 new Vendor
                 {
                     VendorAttribute = "IEK",
@@ -45,10 +45,10 @@ namespace ExelMacroAdd.Tests
                     Formula_3 = @"=ВПР(A11;'C:\Users\ПК\Desktop\Прайсы\[DKC-Prays_list-ot-14.01.2022.xlsx]Прайс ДКС'!$F$15:$N$65536;5;0)"
                 }
             };
-            
+
             var mock = new Mock<IDataInXml>();
             mock.Setup(p => p.ReadFileXml()).Returns(testVendorObject);
-            
+
             var data = new DataInXml();
             Assert.AreEqual(data.ReadElementXml("Iek", mock.Object.ReadFileXml()).VendorAttribute, "IEK");
             Assert.AreEqual(data.ReadElementXml("Iek", mock.Object.ReadFileXml()).Discount, 25);

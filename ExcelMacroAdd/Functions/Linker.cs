@@ -16,7 +16,7 @@ namespace ExcelMacroAdd.Functions
         }
 
         public override void Start()
-        {    
+        {
             //Создаем коллекцию
             List<int> list = new List<int>();
             // В коллекцию помещаем парсированые имена листов

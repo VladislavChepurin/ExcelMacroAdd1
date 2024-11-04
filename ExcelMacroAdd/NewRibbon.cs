@@ -53,17 +53,17 @@ namespace ExcelMacroAdd
             //stopwatch.Start();
 
             if (File.Exists(settings.GlobalDateBaseLocation + "BdMain.sqlite"))
-                {
-                    path = settings.GlobalDateBaseLocation;
-                    locationDataBase = true;
-                }
-                else
-                {
-                    path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/");
-                }
+            {
+                path = settings.GlobalDateBaseLocation;
+                locationDataBase = true;
+            }
+            else
+            {
+                path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/");
+            }
 
-                var context = new AppContext(path);
-                accessData = new AccessData(context, memoryCache);
+            var context = new AppContext(path);
+            accessData = new AccessData(context, memoryCache);
 
             //stopwatch.Stop();
             //Debug.WriteLine("Time: " + stopwatch.ElapsedMilliseconds);
@@ -82,8 +82,8 @@ namespace ExcelMacroAdd
                 }
             }).Start();
 #endif
-        }     
-        
+        }
+
         #region Элементы IRibbonExtensibility
 
         public string GetCustomUI(string ribbonID)
@@ -97,7 +97,7 @@ namespace ExcelMacroAdd
         //Информацию о методах создания обратного вызова см. здесь. Дополнительные сведения о методах добавления обратного вызова см. по ссылке https://go.microsoft.com/fwlink/?LinkID=271226
 
         public void Ribbon_Load(Office.IRibbonUI ribbonUI)
-        {           
+        {
             this.ribbon = ribbonUI;
         }
 
@@ -160,7 +160,7 @@ namespace ExcelMacroAdd
 
         public void OnActionCallbackDecoration(Office.IRibbonControl control)
         {
-            switch (control.Id)               
+            switch (control.Id)
             {
                 //Разметка листов
                 case "Linker_Button":
@@ -213,7 +213,7 @@ namespace ExcelMacroAdd
 
                 //Поиск в Google
                 case "Google_Button":
-                    var googleSearch = new GoogleSearch();  
+                    var googleSearch = new GoogleSearch();
                     googleSearch.Start();
                     break;
 
@@ -228,7 +228,7 @@ namespace ExcelMacroAdd
             {
                 //Вставка формулы Iek
                 case "Iek_Button":
-                   // writeExcel = new WriteExcel(dataInXml, "Iek");
+                    // writeExcel = new WriteExcel(dataInXml, "Iek");
                     writeExcel = new WriteExcel(dataInXml, "IEK");
                     writeExcel.Start();
                     break;
@@ -342,8 +342,8 @@ namespace ExcelMacroAdd
 
         public string GetLabelText(Office.IRibbonControl control)
         {
-            if (!locationDataBase)         
-                return "локальная";           
+            if (!locationDataBase)
+                return "локальная";
             return "глобальная";
         }
 

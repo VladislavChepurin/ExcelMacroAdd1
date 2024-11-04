@@ -24,7 +24,8 @@ namespace ExcelMacroAdd.BisinnesLayer
             var data = context.TwinBlockSwitchs
                 .AsNoTracking()
                 .Where(s => s.Current == current && s.IsReverse == isReverse)
-                .Select(s => new {
+                .Select(s => new
+                {
                     newArticle = s.Article,
                     newDirectMountingHandle = s.DirectMountingHandle.Article,
                     newDoorHandle = s.DoorHandle.Article,

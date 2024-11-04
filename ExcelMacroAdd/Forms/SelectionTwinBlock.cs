@@ -1,7 +1,7 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.Functions;
-using ExcelMacroAdd.Services.Interfaces;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
+using ExcelMacroAdd.Services.Interfaces;
 using System;
 using System.Drawing;
 using System.IO;
@@ -33,7 +33,7 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-        private void SelectionTwinBlock_FormClosed(object sender, FormClosedEventArgs e) =>      
+        private void SelectionTwinBlock_FormClosed(object sender, FormClosedEventArgs e) =>
             instance = null;
 
         private SelectionTwinBlock(IDataInXml dataInXml, ISelectionTwinBlockData accessData)
@@ -55,7 +55,7 @@ namespace ExcelMacroAdd.Forms
             Pen pen = new Pen(Color.FromArgb(40, 0, 0, 100));
             e.Graphics.DrawLine(pen, 275, 70, 465, 70);
         }
-        
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             CheckingAvailableAccessories();

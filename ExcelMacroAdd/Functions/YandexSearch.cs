@@ -25,10 +25,10 @@ namespace ExcelMacroAdd.Functions
                 else
                 {
                     request = Cell.Value.ToString();
-                }                    
-                string url = "http://www.yandex.ru/yandsearch?text=" + request; 
+                }
+                string url = "http://www.yandex.ru/yandsearch?text=" + request;
                 Process.Start(url);
-            }                             
+            }
         }
     }
 }

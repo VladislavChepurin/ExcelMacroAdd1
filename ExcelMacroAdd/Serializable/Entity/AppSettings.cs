@@ -17,7 +17,7 @@ namespace ExcelMacroAdd.Serializable.Entity
             CorrectFontResources = correctFontResources;
             FormSettings = formSettings;
             GlobalDateBaseLocation = globalDateBaseLocation;
-            TypeNkySettings = typeNkySettings;         
+            TypeNkySettings = typeNkySettings;
         }
     }
 }

@@ -53,8 +53,8 @@ namespace ExcelMacroAdd.Functions
                     string sWidth = Convert.ToString(Worksheet.Cells[firstRow, 15].Value2);
                     string sDepth = Convert.ToString(Worksheet.Cells[firstRow, 16].Value2);
                     sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
-                    string sMaterial = Convert.ToString(Worksheet.Cells[firstRow, 30].Value2);
-                    string sExecution = Convert.ToString(Worksheet.Cells[firstRow, 28].Value2);            
+                    string sMaterial = Convert.ToString(Worksheet.Cells[firstRow, 29].Value2);
+                    string sExecution = Convert.ToString(Worksheet.Cells[firstRow, 30].Value2);
 
                     if (sHeight == null || sWidth == null || sDepth == null || sArticle == null || sMaterial == null)
                     {
@@ -65,7 +65,7 @@ namespace ExcelMacroAdd.Functions
                     }
 
                     var materialEntity = await accessData.AccessJournalNku.GetMaterialEntityByName(sMaterial) ?? throw new DataBaseNotFoundValueException($"Введенный материал шкафа \"{sMaterial}\" недопустим, пожайлуста используйте значение \"Пластик\" или \"Металл\"");
-                    var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sExecution) ?? throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sExecution}\" недопустимо, пожайлуста используйте значение \"напольное\", или \"навесное\", или \"встраиваемое\", или \"навесное для IT оборудования\", или \"навесное для IT оборудования\".");
+                    var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sExecution) ?? throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sExecution}\" недопустимо, пожайлуста используйте значение \"напольное\", или \"навесное\", или \"встраиваемое\", или \"навесное для IT оборудования\", или \"напольное для IT оборудования\".");
 
                     BoxBase journal = new BoxBase()
                     {
@@ -104,7 +104,7 @@ namespace ExcelMacroAdd.Functions
                     MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {e.Message}",
                         "Ошибка базы данных");
                     return;
-                }            
+                }
                 firstRow++;
             }
             while (endRow > firstRow);

@@ -17,7 +17,8 @@ namespace ExcelMacroAdd.BisinnesLayer
             var data = context.CircuitBreakers
               .AsNoTracking()
               .Where(s => s.ArticleNumber == articleNumber)
-              .Select(s => new {
+              .Select(s => new
+              {
                   newVendor = s.ProductVendor.VendorName,
                   newShuntTrip24v = s.ShuntTrip24v.Article,
                   newShuntTrip48v = s.ShuntTrip48v.Article,
@@ -33,11 +34,12 @@ namespace ExcelMacroAdd.BisinnesLayer
         }
 
         public AdditionalDevices GetEntityAdditionalSwitch(string articleNumber)
-        {            
+        {
             var data = context.Switches
               .AsNoTracking()
               .Where(s => s.ArticleNumber == articleNumber)
-              .Select(s => new {
+              .Select(s => new
+              {
                   newVendor = s.ProductVendor.VendorName,
                   newShuntTrip24v = s.ShuntTrip24v.Article,
                   newShuntTrip48v = s.ShuntTrip48v.Article,
@@ -51,4 +53,5 @@ namespace ExcelMacroAdd.BisinnesLayer
             return (new AdditionalDevices(data?.newVendor, data?.newShuntTrip24v, data?.newShuntTrip48v, data?.newShuntTrip230v,
                 data?.newUndervoltageRelease, data?.newSignalContact, data?.newAuxiliaryContact, data?.newSignalOrAuxiliaryContact));
         }
-    }}
+    }
+}

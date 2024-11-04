@@ -27,7 +27,7 @@ namespace ExcelMacroAdd.Forms
                     {
                         TopMost = formSettings.FormTopMost
                     };
-                    instance.ShowDialog();                    
+                    instance.ShowDialog();
                 });
             }
         }
@@ -95,7 +95,7 @@ namespace ExcelMacroAdd.Forms
         {
             char number = e.KeyChar;
             if (!Char.IsDigit(number) && number != 8 && number != '-') // цифры и клавиша BackSpace    
-                e.Handled = true;          
+                e.Handled = true;
         }
 
         private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
@@ -187,15 +187,15 @@ namespace ExcelMacroAdd.Forms
 
         private double GetHeatTransferCoefficienBox()
         {
-            if(comboBox2.SelectedIndex == 0)
+            if (comboBox2.SelectedIndex == 0)
             {
                 return MathTermo.sheetSteel;
             }
-            else if(comboBox2.SelectedIndex == 1)
+            else if (comboBox2.SelectedIndex == 1)
             {
                 return MathTermo.stainlessSteel;
             }
-            else if(comboBox2.SelectedIndex == 2)
+            else if (comboBox2.SelectedIndex == 2)
             {
                 return MathTermo.seamlessPolymer;
             }
@@ -206,7 +206,7 @@ namespace ExcelMacroAdd.Forms
             return default;
         }
 
-        private double GetHeatTransferCoefficienInsulation() 
+        private double GetHeatTransferCoefficienInsulation()
         {
             if (comboBox3.SelectedIndex == 0)
             {

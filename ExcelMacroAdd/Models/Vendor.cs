@@ -24,7 +24,7 @@ namespace ExcelMacroAdd.UserVariables
         [XmlElement("Date")]
         public string Date { get; set; }
 
-        public Vendor() {  }
+        public Vendor() { }
 
         public Vendor(string vendorAttribute, string formula_1, string formula_2, string formula_3, int discount, string date)
         {

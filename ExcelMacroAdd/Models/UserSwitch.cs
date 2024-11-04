@@ -2,10 +2,10 @@
 
 namespace ExcelMacroAdd.Models
 {
-    public class UserSwitch: IUserSwitch
+    public class UserSwitch : IUserSwitch
     {
         public string group { get; set; }
-        public int[] current {  get; set; }
+        public int[] current { get; set; }
         public string[] quantityPole { get; set; }
 
         public UserSwitch(string group, int[] current, string[] quantityPole)

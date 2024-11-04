@@ -19,7 +19,7 @@ namespace ExcelMacroAdd.BisinnesLayer
         public async Task<IBoxBase> GetEntityJournal(string sArticle)
         {
             cache.TryGetValue(sArticle, out IBoxBase boxBase);
-            if ( boxBase == null)
+            if (boxBase == null)
             {
                 boxBase = await context.JornalNkus.Include(p => p.MaterialBox).Include(p => p.ExecutionBox).FirstOrDefaultAsync(p => p.Article == sArticle) as IBoxBase;
                 cache.Set(sArticle, boxBase, new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
@@ -37,7 +37,7 @@ namespace ExcelMacroAdd.BisinnesLayer
         }
 
         public async Task<IMaterialBox> GetMaterialEntityByName(string material)
-        {             
+        {
             return await context.Materials.FirstOrDefaultAsync(p => p.MaterialValue == material);
         }
 

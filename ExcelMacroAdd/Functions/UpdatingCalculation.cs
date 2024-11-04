@@ -48,13 +48,14 @@ namespace ExcelMacroAdd.Functions
                 {
                     counter++;
                 }
-                currentRow++;           
-            }               
+                currentRow++;
+            }
         }
 
         private void UpdateCalc(Vendors vendors, string currentVendor, int rowsLine)
         {
-            if (vendors.RangeSearch.Contains(currentVendor, new CustomStringComparer())) {
+            if (vendors.RangeSearch.Contains(currentVendor, new CustomStringComparer()))
+            {
                 WriteExcel writeExcel = new WriteExcel(dataInXml, vendors.OutValue, rowsLine - 2);
                 writeExcel.Start();
             }

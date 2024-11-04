@@ -5,7 +5,7 @@ namespace ExcelMacroAdd.DataLayer.Entity
     public class CircuitBreaker : ICircuitBreaker
     {
         public int Id { get; set; }
-        public  string MaxCurrent { get; set; } 
+        public string MaxCurrent { get; set; }
         public int Current { get; set; }
         public string Kurve { get; set; }
 

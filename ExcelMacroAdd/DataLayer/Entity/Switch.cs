@@ -29,7 +29,7 @@ namespace ExcelMacroAdd.DataLayer.Entity
 
         // Внешний ключ
         public int? ShuntTrip24vId { get; set; }
-         // Навигационное свойство
+        // Навигационное свойство
         public ShuntTrip24v ShuntTrip24v { get; set; }
 
         // Внешний ключ

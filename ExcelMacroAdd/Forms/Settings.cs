@@ -158,7 +158,7 @@ namespace ExcelMacroAdd.Forms
                 },
                 {
                    textBox29, textBox30, textBox31, textBox32   //Schneider
-                },                
+                },
                 {
                    textBox33, textBox34, textBox35, textBox36  //Chint
                 }
@@ -251,8 +251,8 @@ namespace ExcelMacroAdd.Forms
                 MessageBoxIcon.Error,
                 MessageBoxDefaultButton.Button1,
                 MessageBoxOptions.DefaultDesktopOnly);
-            }          
-        }        
+            }
+        }
         private void ReadExcelFunc(int rowsArray)
         {
             Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
@@ -263,8 +263,8 @@ namespace ExcelMacroAdd.Forms
             int currentRow = cell.Row;
 
             // Read Cells "B_" if value not empty then continue our work
-            string formula1 = worksheet.Cells[currentRow, 2]?.FormulaLocal;                    
-            if (formula1 != String.Empty) 
+            string formula1 = worksheet.Cells[currentRow, 2]?.FormulaLocal;
+            if (formula1 != String.Empty)
             {
                 textBoxes[rowsArray, 0].Text = VprFormulaReplace(formula1, currentRow);
             }
@@ -316,7 +316,7 @@ namespace ExcelMacroAdd.Forms
                                             textBoxes[line, 1].Text ?? String.Empty,
                                             textBoxes[line, 2].Text ?? String.Empty,
                                             textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString(new CultureInfo("ru-RU")));    
+                                            localDate.ToString(new CultureInfo("ru-RU")));
             labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
         }
 

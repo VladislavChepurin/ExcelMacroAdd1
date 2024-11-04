@@ -1,7 +1,7 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.Functions;
-using ExcelMacroAdd.Services.Interfaces;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
+using ExcelMacroAdd.Services.Interfaces;
 using System;
 using System.Drawing;
 using System.IO;
@@ -34,8 +34,8 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-        private void SelectionTransformer_FormClosed(object sender, FormClosedEventArgs e)=>
-            instance = null;       
+        private void SelectionTransformer_FormClosed(object sender, FormClosedEventArgs e) =>
+            instance = null;
 
         private SelectionTransformer(IDataInXml dataInXml, ISelectionTransformerData accessData)
         {

@@ -1,15 +1,14 @@
-﻿using ExcelMacroAdd.DataLayer.Interfaces;
-using System;
+﻿using System;
 using System.Data.Entity;
 
 namespace ExcelMacroAdd.DataLayer.Entity
 {
-    public class AppContext: DbContext
+    public class AppContext : DbContext
     {
         public AppContext(string path) : base("Context")
         {
             AppDomain.CurrentDomain.SetData("DataDirectory", path);
-        }        
+        }
         public DbSet<BoxBase> JornalNkus { get; set; }
         public DbSet<Switch> Switches { get; set; }
         public DbSet<CircuitBreaker> CircuitBreakers { get; set; }
@@ -19,7 +18,7 @@ namespace ExcelMacroAdd.DataLayer.Entity
         public DbSet<DoorHandle> DoorHandles { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<AdditionalPole> AdditionalPoles { get; set; }
-        public DbSet<TwinBlockSwitch> TwinBlockSwitchs { get; set; }    
+        public DbSet<TwinBlockSwitch> TwinBlockSwitchs { get; set; }
         public DbSet<MaterialBox> Materials { get; set; }
         public DbSet<ExecutionBox> Executions { get; set; }
         public DbSet<ProductVendor> ProductVendors { get; set; }

@@ -26,15 +26,15 @@ namespace ExcelMacroAdd.Forms.SupportiveFunction
                     Worksheet.Cells[firstRow, currentCollum].Value2 = Type;
                     firstRow++;
                     continue;
-                }     
+                }
                 var getType = currentValue.GetType();
 
                 if (getType.FullName == "System.Double")
                 {
                     var tempValue = Worksheet.Cells[firstRow, currentCollum].Value2.ToString();
                     Worksheet.Cells[firstRow, currentCollum].Value2 = tempValue + '+' + Type;
-                }  
-                
+                }
+
                 firstRow++;
             }
             while (endRow > firstRow);

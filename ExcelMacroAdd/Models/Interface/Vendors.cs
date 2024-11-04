@@ -2,7 +2,7 @@
 {
     internal interface Vendors
     {
-         string[] RangeSearch { get; }
-         string OutValue { get; }
+        string[] RangeSearch { get; }
+        string OutValue { get; }
     }
 }

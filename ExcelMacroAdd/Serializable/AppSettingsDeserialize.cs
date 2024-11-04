@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using ExcelMacroAdd.Serializable.Entity;
+﻿using ExcelMacroAdd.Serializable.Entity;
+using Newtonsoft.Json;
 using System.IO;
 
 namespace ExcelMacroAdd.Serializable
@@ -12,9 +12,9 @@ namespace ExcelMacroAdd.Serializable
         {
             this.jsonPatch = jsonPatch;
         }
-            
+
         public AppSettings GetSettingsModels()
-        {           
+        {
             JsonSerializer serializer = new JsonSerializer();
             using (StreamReader sw = new StreamReader(jsonPatch))
             {
@@ -22,7 +22,7 @@ namespace ExcelMacroAdd.Serializable
                 {
                     return serializer.Deserialize<AppSettings>(reader);
                 }
-            }              
+            }
         }
     }
 }

@@ -1,10 +1,9 @@
 ﻿using ExcelMacroAdd.Services.Interfaces;
 using System;
-using System.Collections.Generic;
 
 namespace ExcelMacroAdd.Functions
 {
-    internal sealed class WriteExcel : AbstractFunctions 
+    internal sealed class WriteExcel : AbstractFunctions
     {
         private readonly IDataInXml dataInXml;
         private readonly string vendor;
@@ -12,7 +11,7 @@ namespace ExcelMacroAdd.Functions
         private readonly string getArticle;
         private readonly int amount;
 
-        public WriteExcel(IDataInXml dataInXml, string vendor ,int rowsLine = default, string getArticle = null, int amount = default)
+        public WriteExcel(IDataInXml dataInXml, string vendor, int rowsLine = default, string getArticle = null, int amount = default)
         {
             this.dataInXml = dataInXml;
             this.vendor = vendor;
@@ -22,8 +21,8 @@ namespace ExcelMacroAdd.Functions
         }
 
         public override void Start()
-        {         
-            int endRow = default;          
+        {
+            int endRow = default;
             //Вычисляем столбец на который установлен фокус
             int firstRow = Cell.Row;
             if (firstRow == 1) firstRow++;
@@ -36,7 +35,7 @@ namespace ExcelMacroAdd.Functions
             {
                 endRow = firstRow + countRow;
             }
-           
+
             // Заполняем таблицу
             do
             {
@@ -60,7 +59,7 @@ namespace ExcelMacroAdd.Functions
                 Worksheet.Range["J" + firstRow].Value2 = DateTime.Now;
                 firstRow++;
             }
-            while (endRow > firstRow);                      
+            while (endRow > firstRow);
         }
     }
 }

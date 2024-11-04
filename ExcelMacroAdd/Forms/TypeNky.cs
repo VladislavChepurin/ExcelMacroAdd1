@@ -48,7 +48,7 @@ namespace ExcelMacroAdd.Forms
 
                 var typeNky = new AddTypeNky(cellValue);
                 typeNky.Start();
-            }           
+            }
         }
 
         private void deleteTypeButton_Click(object sender, EventArgs e)

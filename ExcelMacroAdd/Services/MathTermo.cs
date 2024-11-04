@@ -16,8 +16,8 @@ namespace ExcelMacroAdd.Services
         internal const double foamedPolyurethaneInsulation = 0.2;
 
         //Коэффициенты размещения
-        internal const double internalPlacement  = 1.0;
-        internal const double outdoorPlacement  = 1.7;
+        internal const double internalPlacement = 1.0;
+        internal const double outdoorPlacement = 1.7;
 
 
         private static double CalculationHeatTransferCoefficient(double heatTransferCoefficientBox, double heatTransferCoefficientInsulation)

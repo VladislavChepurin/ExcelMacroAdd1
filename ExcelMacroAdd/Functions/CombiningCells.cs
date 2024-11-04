@@ -8,7 +8,7 @@ namespace ExcelMacroAdd.Functions
     internal class CombiningCells : AbstractFunctions
     {
         public override void Start()
-        {          
+        {
             var value = Cell.Value;
             if (value != null && value is Object[,])
             {

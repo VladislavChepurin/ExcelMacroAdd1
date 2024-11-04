@@ -2,7 +2,7 @@
 
 namespace ExcelMacroAdd.Serializable.Entity
 {
-    public class FormSettings: IFormSettings
+    public class FormSettings : IFormSettings
     {
         public bool FormTopMost { get; set; }
 

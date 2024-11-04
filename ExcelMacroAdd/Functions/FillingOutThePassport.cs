@@ -38,7 +38,7 @@ namespace ExcelMacroAdd.Functions
         private readonly string pPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template");
 
         readonly Func<Find, string, string, bool> replacingTextLabels = (find, label, value) => find.Execute(label, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing,
-            ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing,  value, ref _replaceTypeObj, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing);
+            ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing, value, ref _replaceTypeObj, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing);
 
         public delegate void MetodProgressStep(int step);
         public event MetodProgressStep ProgressStep;
@@ -86,38 +86,53 @@ namespace ExcelMacroAdd.Functions
                     do
                     {
                         object filename;
-                        // Преобразование типов для определения формата сохранения 
-                        if (int.TryParse(Worksheet.Cells[firstRow, 14].Value2.ToString(), out int result) && result < resources.HeightMaxBox)
-                        {
-                            // переменная для открытия Word
-                            filename = Path.Combine(pPath, resources.TemplateWall);
-                        }
-                        else
-                        {
-                            // переменная для открытия Word
-                            filename = Path.Combine(pPath, resources.TemplateFloor);
-                        }
 
-                        string factoryNumber = Worksheet.Cells[firstRow, 21].Value2.ToString();
-                        string sTy = Worksheet.Cells[firstRow, 8].Value2.ToString();
-                        string sIcu = Worksheet.Cells[firstRow, 10].Value2.ToString();
-                        string sIp = Worksheet.Cells[firstRow, 11].Value2.ToString();
-                        string sGab = Worksheet.Cells[firstRow, 14].Value2.ToString() + "x"
-                                    + Worksheet.Cells[firstRow, 15].Value2.ToString() + "x"
-                                    + Worksheet.Cells[firstRow, 16].Value2.ToString();
+                        switch (Worksheet.Cells[firstRow, 30].Value2.ToString())
+                        {
+                            case "навесное":
+                                filename = Path.Combine(pPath, resources.TemplateWall);
+                                break;
+
+                            case "встраиваемое":
+                                filename = Path.Combine(pPath, resources.TemplateWall);
+                                break;
+
+                            case "напольное":
+                                filename = Path.Combine(pPath, resources.TemplateFloor);
+                                break;
+
+                            case "навесное для IT оборудования":
+                                filename = Path.Combine(pPath, resources.TemplateWallIt);
+                                break;
+
+                            case "напольное для IT оборудования":
+                                filename = Path.Combine(pPath, resources.TemplateFloorIt);
+                                break;
+
+                            default:
+                                filename = Path.Combine(pPath, resources.TemplateFloor);
+                                break;
+                        }
+                        string nameFolderSafe = Worksheet.Cells[firstRow, 1].Value2.ToString();
                         string sMark = Worksheet.Cells[firstRow, 4].Value2.ToString();
-                        string sNum = Worksheet.Cells[firstRow, 21].Value2.ToString();
-                        //string sClimate = worksheet.Cells[firstRow, 12].Value2.ToString();
-                        string sUe = Worksheet.Cells[firstRow, 9].Value2.ToString();
-                        string sGround = Worksheet.Cells[firstRow, 29].Value2.ToString();
                         string sName = Worksheet.Cells[firstRow, 6].Value2.ToString();
                         string sPaste = FuncReplace(sName ?? string.Empty); // ссылка на метод замены
                         string firstWords = Worksheet.Cells[firstRow, 7].Value2.ToString();
+                        string sTy = Worksheet.Cells[firstRow, 8].Value2.ToString();
+                        string sUe = Worksheet.Cells[firstRow, 9].Value2.ToString();
+                        string sIcu = Worksheet.Cells[firstRow, 10].Value2.ToString();
+                        string sIp = Worksheet.Cells[firstRow, 11].Value2.ToString();
+                        //string sClimate = worksheet.Cells[firstRow, 12].Value2.ToString();     
+                        string sGab = Worksheet.Cells[firstRow, 14].Value2.ToString() + "x"
+                                    + Worksheet.Cells[firstRow, 15].Value2.ToString() + "x"
+                                    + Worksheet.Cells[firstRow, 16].Value2.ToString();
                         string secondWords = FuncReplace(firstWords ?? string.Empty); // ссылка на метод замены
+                        string factoryNumber = Worksheet.Cells[firstRow, 21].Value2.ToString();
+                        string sNum = Worksheet.Cells[firstRow, 21].Value2.ToString();
                         string sIsp = Worksheet.Cells[firstRow, 27].Value2.ToString();
-                        string sMaterial = Worksheet.Cells[firstRow, 30].Value2.ToString();
-                        string sExecution = Worksheet.Cells[firstRow, 28].Value2.ToString();
-                        string nameFolderSafe = Worksheet.Cells[firstRow, 1].Value2.ToString();
+                        string sGround = Worksheet.Cells[firstRow, 28].Value2.ToString();
+                        string sMaterial = Worksheet.Cells[firstRow, 29].Value2.ToString();
+                        string sExecution = Worksheet.Cells[firstRow, 30].Value2.ToString();
 
                         //Открываем Word
                         var document = applicationWord.Documents.Open(filename, confirmConversions, readOnly, addToRecentFiles, passwordDocument, passwordTemplate,
@@ -185,6 +200,11 @@ namespace ExcelMacroAdd.Functions
                         {
                             verifyIsNotFind.Add(
                                 replacingTextLabels(find, "#Установка", "din-рейках"));
+                        }
+                        else if (sIsp == "19\"")
+                        {
+                            verifyIsNotFind.Add(
+                                replacingTextLabels(find, "#Установка", "19\u02EE стойках"));
                         }
                         else
                         {
@@ -274,7 +294,7 @@ namespace ExcelMacroAdd.Functions
         /// </summary>
         /// <param name="mReplase"></param>
         /// <returns></returns>
-        private string FuncReplace(string mReplase)                          
+        private string FuncReplace(string mReplase)
         {
             string[] subs = mReplase.Split(' ');
 
@@ -298,7 +318,7 @@ namespace ExcelMacroAdd.Functions
                     subs[i] = replace[subs[i]];
                 }
             }
-            return String.Join(" ", subs);           
+            return String.Join(" ", subs);
         }
     }
 }

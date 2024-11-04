@@ -7,7 +7,6 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms
@@ -27,7 +26,7 @@ namespace ExcelMacroAdd.Forms
 
         private readonly IDataInXml dataInXml;
         private readonly ISelectionSwitchData accessData;
-        private UserVariable [] userVariables = new UserVariable [6];        
+        private UserVariable[] userVariables = new UserVariable[6];
 
         //Singelton
         private static SelectionSwitch instance;
@@ -44,10 +43,10 @@ namespace ExcelMacroAdd.Forms
         }
 
         private void SelectionCircuitBreaker_FormClosed(object sender, FormClosedEventArgs e) =>
-            instance = null;       
+            instance = null;
 
         private SelectionSwitch(IDataInXml dataInXml, ISelectionSwitchData accessData)
-        {           
+        {
             this.dataInXml = dataInXml;
             this.accessData = accessData;
             InitializeComponent();
@@ -91,7 +90,7 @@ namespace ExcelMacroAdd.Forms
 
         private void textBox2_TextChanged(object sender, EventArgs e) =>
              CheckDataCircuitBreakAsync((int)ContainerAvt.SecondLineArray);
-    
+
         private void comboBox9_SelectedIndexChanged(object sender, EventArgs e) =>
              CheckDataCircuitBreakAsync((int)ContainerAvt.SecondLineArray);
 
@@ -283,7 +282,7 @@ namespace ExcelMacroAdd.Forms
             else
             {
                 comboBox9.SelectedIndex = 0;
-            }     
+            }
 
             comboBox12.Items.Clear();
             comboBox12.Items.AddRange(data.quantityPole);
@@ -351,7 +350,7 @@ namespace ExcelMacroAdd.Forms
             else
             {
                 comboBox21.SelectedIndex = 0;
-            }            
+            }
 
             comboBox24.Items.Clear();
             comboBox24.Items.AddRange(data.quantityPole);
@@ -385,7 +384,7 @@ namespace ExcelMacroAdd.Forms
             else
             {
                 comboBox27.SelectedIndex = 0;
-            }                       
+            }
 
             comboBox30.Items.Clear();
             comboBox30.Items.AddRange(data.quantityPole);
@@ -419,7 +418,7 @@ namespace ExcelMacroAdd.Forms
             else
             {
                 comboBox33.SelectedIndex = 0;
-            }           
+            }
 
             comboBox36.Items.Clear();
             comboBox36.Items.AddRange(data.quantityPole);
@@ -486,7 +485,7 @@ namespace ExcelMacroAdd.Forms
 
             var vendor = ComboBoxesArrayVendor()[rowsCheck].SelectedItem.ToString();
             var series = ComboBoxesArraySeries()[rowsCheck].SelectedItem.ToString();
-            int.TryParse(ComboBoxesArrayCurrent()[rowsCheck].SelectedItem.ToString(), out int current);         
+            int.TryParse(ComboBoxesArrayCurrent()[rowsCheck].SelectedItem.ToString(), out int current);
             var polus = ComboBoxesArrayPolus()[rowsCheck].SelectedItem.ToString();
             int.TryParse(TextBoxesArrayCircuitBreak()[rowsCheck].Text, out int quantity);
 
@@ -495,8 +494,8 @@ namespace ExcelMacroAdd.Forms
                 var modules = await accessData.AccessSwitch.GetEntitySwitch(vendor, series, current, polus);
 
                 if (modules != null)
-                {                    
-                    UserVariable userVariable = new UserVariable { article = modules.ArticleNumber, vendor = vendor , quantity = quantity, number = rowsCheck };
+                {
+                    UserVariable userVariable = new UserVariable { article = modules.ArticleNumber, vendor = vendor, quantity = quantity, number = rowsCheck };
                     userVariables[rowsCheck] = userVariable;
                     pictures[rowsCheck].BackColor = Color.Green;
                     return;
@@ -540,7 +539,7 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-        private PictureBox[] PictureBoxesSwitch() =>     
+        private PictureBox[] PictureBoxesSwitch() =>
             new PictureBox[] { pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6 };
 
         private TextBox[] TextBoxesArrayCircuitBreak() =>
@@ -557,7 +556,7 @@ namespace ExcelMacroAdd.Forms
 
         private ComboBox[] ComboBoxesArrayCurrent() =>
             new ComboBox[] { comboBox3, comboBox9, comboBox15, comboBox21, comboBox27, comboBox33 };
-        
+
         private ComboBox[] ComboBoxesArrayPolus() =>
             new ComboBox[] { comboBox6, comboBox12, comboBox18, comboBox24, comboBox30, comboBox36 };
 
@@ -630,6 +629,6 @@ namespace ExcelMacroAdd.Forms
                 comboBoxesArrayVendor[i].SelectedIndex = comboBoxesArrayVendor[4].SelectedIndex;
                 comboBoxesArraySeries[i].SelectedIndex = comboBoxesArraySeries[4].SelectedIndex;
             }
-        }          
+        }
     }
 }

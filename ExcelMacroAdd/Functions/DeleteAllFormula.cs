@@ -6,7 +6,7 @@ namespace ExcelMacroAdd.Functions
     internal sealed class DeleteAllFormula : AbstractFunctions
     {
         public override void Start()
-        {   
+        {
             var works = WorkBook.Sheets;
             foreach (Excel.Worksheet sheet in works)
             {
@@ -16,7 +16,7 @@ namespace ExcelMacroAdd.Functions
                     continue;
 
                 if (sheet.Visible == Excel.XlSheetVisibility.xlSheetHidden)
-                    continue;                  
+                    continue;
 
                 sheet.Range["A2", "G500"].Value = sheet.Range["A2", "G500"].Value;
                 sheet.Range["A1", Type.Missing].Select();   //Фокус на ячейку А1                

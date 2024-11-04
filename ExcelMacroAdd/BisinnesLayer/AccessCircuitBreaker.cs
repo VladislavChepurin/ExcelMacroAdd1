@@ -14,7 +14,7 @@ namespace ExcelMacroAdd.BisinnesLayer
         private readonly AppContext context;
         private readonly IMemoryCache cache;
         public AccessCircuitBreaker(AppContext context, IMemoryCache memoryCache)
-        {            
+        {
             this.context = context;
             this.cache = memoryCache;
         }
@@ -22,7 +22,7 @@ namespace ExcelMacroAdd.BisinnesLayer
         public async Task<ICircuitBreaker> GetEntityCircuitBreaker(string vendor, string series, int current, string curve, string maxCurrent, string quantityPole)
         {
             return await context.CircuitBreakers
-                .AsNoTracking()    
+                .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.ProductVendor.VendorName == vendor
                                        && p.ProductSeries.SeriesName == series
                                        && p.Current == current
@@ -33,7 +33,7 @@ namespace ExcelMacroAdd.BisinnesLayer
 
 
         public string[] GetAllUniqueVendors()
-        {       
+        {
             return context.CircuitBreakers
                 .AsNoTracking()
                 .Select(p => p.ProductVendor.VendorName)
@@ -62,7 +62,7 @@ namespace ExcelMacroAdd.BisinnesLayer
         {
             var keyCache = string.Concat(vendor, series);
 
-             cache.TryGetValue(keyCache, out IUserCircuitBreaker userCircuitBreaker);
+            cache.TryGetValue(keyCache, out IUserCircuitBreaker userCircuitBreaker);
             if (userCircuitBreaker == null)
             {
                 var group = context.CircuitBreakers
@@ -103,7 +103,7 @@ namespace ExcelMacroAdd.BisinnesLayer
                 userCircuitBreaker = new UserCircuitBreaker(group, current, kurve, maxCurrent, qantityPole);
                 if (userCircuitBreaker.current != null)
                     cache.Set(keyCache, userCircuitBreaker, new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
-            }     
+            }
             return userCircuitBreaker;
         }
     }

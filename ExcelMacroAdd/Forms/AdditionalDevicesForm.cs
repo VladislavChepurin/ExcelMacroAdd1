@@ -6,7 +6,6 @@ using ExcelMacroAdd.Services.Interfaces;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms
@@ -45,7 +44,7 @@ namespace ExcelMacroAdd.Forms
             InitializeComponent();
 
             this.dataInXml = dataInXml;
-            this.accessData = accessData;          
+            this.accessData = accessData;
 
             currentRow = Cell.Row;
             string sArticle = Convert.ToString(Worksheet.Cells[currentRow, 1].Value2);
@@ -109,14 +108,14 @@ namespace ExcelMacroAdd.Forms
                     checkBox6.Enabled = true;
                 if (addDevicesAgregate.signalOrAuxiliaryContactArticle != null)
                     checkBox7.Enabled = true;
-            }           
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             int rowsLine = currentRow;
 
-            while (Worksheet.Cells[rowsLine, 1].Value2 != null || Worksheet.Cells[rowsLine+1, 1].Value2 != null)
+            while (Worksheet.Cells[rowsLine, 1].Value2 != null || Worksheet.Cells[rowsLine + 1, 1].Value2 != null)
             {
                 ++rowsLine;
             }

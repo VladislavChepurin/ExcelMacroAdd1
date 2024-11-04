@@ -10,7 +10,7 @@ namespace ExcelMacroAdd.Models
 
         public Chint()
         {
-            RangeSearch = new[] { "CHINT", "CH", "Чинт"};
+            RangeSearch = new[] { "CHINT", "CH", "Чинт" };
             OutValue = "Chint";
         }
     }

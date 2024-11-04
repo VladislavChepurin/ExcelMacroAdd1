@@ -26,7 +26,7 @@ namespace ExcelMacroAdd.Forms
 
         private readonly IDataInXml dataInXml;
         private readonly ISelectionCircuitBreakerData accessData;
-        private UserVariable [] userVariables = new UserVariable [6];        
+        private UserVariable[] userVariables = new UserVariable[6];
 
         //Singelton
         private static SelectionCircuitBreaker instance;
@@ -43,10 +43,10 @@ namespace ExcelMacroAdd.Forms
         }
 
         private void SelectionCircuitBreaker_FormClosed(object sender, FormClosedEventArgs e) =>
-            instance = null;       
+            instance = null;
 
         private SelectionCircuitBreaker(IDataInXml dataInXml, ISelectionCircuitBreakerData accessData)
-        {           
+        {
             this.dataInXml = dataInXml;
             this.accessData = accessData;
             InitializeComponent();
@@ -96,7 +96,7 @@ namespace ExcelMacroAdd.Forms
 
         private void textBox2_TextChanged(object sender, EventArgs e) =>
              CheckDataCircuitBreakAsync((int)ContainerAvt.SecondLineArray);
-    
+
         private void comboBox9_SelectedIndexChanged(object sender, EventArgs e) =>
              CheckDataCircuitBreakAsync((int)ContainerAvt.SecondLineArray);
 
@@ -569,7 +569,7 @@ namespace ExcelMacroAdd.Forms
 
             var vendor = ComboBoxesArrayVendor()[rowsCheck].SelectedItem.ToString();
             var series = ComboBoxesArraySeries()[rowsCheck].SelectedItem.ToString();
-            int.TryParse(ComboBoxesArrayCurrent()[rowsCheck].SelectedItem.ToString(), out int current);           
+            int.TryParse(ComboBoxesArrayCurrent()[rowsCheck].SelectedItem.ToString(), out int current);
             var kurve = ComboBoxesArrayCurve()[rowsCheck].SelectedItem.ToString();
             var maxCurrent = ComboBoxesArrayMaxCurrent()[rowsCheck].SelectedItem.ToString();
             var polus = ComboBoxesArrayPolus()[rowsCheck].SelectedItem.ToString();
@@ -580,8 +580,8 @@ namespace ExcelMacroAdd.Forms
                 var modules = await accessData.AccessCircuitBreaker.GetEntityCircuitBreaker(vendor, series, current, kurve, maxCurrent, polus);
 
                 if (modules != null)
-                {                    
-                    UserVariable userVariable = new UserVariable { article = modules.ArticleNumber, vendor = vendor , quantity = quantity, number = rowsCheck };
+                {
+                    UserVariable userVariable = new UserVariable { article = modules.ArticleNumber, vendor = vendor, quantity = quantity, number = rowsCheck };
                     userVariables[rowsCheck] = userVariable;
                     pictures[rowsCheck].BackColor = Color.Green;
                     return;
@@ -625,7 +625,7 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-        private PictureBox[] PictureBoxesCircuitBreak() =>     
+        private PictureBox[] PictureBoxesCircuitBreak() =>
             new PictureBox[] { pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6 };
 
         private TextBox[] TextBoxesArrayCircuitBreak() =>
@@ -721,6 +721,6 @@ namespace ExcelMacroAdd.Forms
                 comboBoxesArrayVendor[i].SelectedIndex = comboBoxesArrayVendor[4].SelectedIndex;
                 comboBoxesArraySeries[i].SelectedIndex = comboBoxesArraySeries[4].SelectedIndex;
             }
-        }              
+        }
     }
 }

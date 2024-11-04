@@ -11,7 +11,7 @@ namespace Searilizator
     /// Она не участвует в работе основной программы.
     /// </summary>
     internal class Program
-    {  
+    {
         static void Main()
         {
             var appSettings = new AppSettings(Resources(), CorrectFontResources(), FormSettings(), GlobalDateBaseLocation(), TypeNkySettings());
@@ -40,12 +40,13 @@ namespace Searilizator
         private static FillingOutThePassportSettings Resources()
         {
             string nameFileJournal = "Книга1";
-            int heightMaxBox = 1500;
 
             string templateWall = "Паспорт_навесные.docx";
             string templateFloor = "Паспорт_напольные.docx";
+            string templateWallIt = "Паспорт_навесные IT.docx";
+            string templateFloorIt = "Паспорт_напольные IT.docx";
 
-            return new FillingOutThePassportSettings(nameFileJournal, heightMaxBox, templateWall, templateFloor);
+            return new FillingOutThePassportSettings(nameFileJournal, templateWall, templateFloor, templateWallIt, templateFloorIt);
         }
 
         private static FormSettings FormSettings()
@@ -65,8 +66,5 @@ namespace Searilizator
         {
             return null;
         }
-
-
-
     }
 }

@@ -52,24 +52,24 @@ namespace ExcelMacroAdd.Functions
                         Worksheet.Range["N" + firstRow].Value2 = journalNku.Height ?? string.Empty;
                         Worksheet.Range["O" + firstRow].Value2 = journalNku.Width ?? string.Empty;
                         Worksheet.Range["P" + firstRow].Value2 = journalNku.Depth ?? string.Empty;
-                        Worksheet.Range["AB" + firstRow].Value2 = journalNku.ExecutionBox.ExecutionValue ?? string.Empty;
-                        Worksheet.Range["AD" + firstRow].Value2 = journalNku.MaterialBox.MaterialValue ?? string.Empty;
+                        Worksheet.Range["AC" + firstRow].Value2 = journalNku.MaterialBox.MaterialValue ?? string.Empty;
+                        Worksheet.Range["AD" + firstRow].Value2 = journalNku.ExecutionBox.ExecutionValue ?? string.Empty;
                     }
-            }
+                }
 
                 catch (DataException)
                 {
-                MessageError("Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",
-                    "Ошибка базы данных");
-                return;
-            }
+                    MessageError("Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",
+                        "Ошибка базы данных");
+                    return;
+                }
                 catch (Exception e)
                 {
-                MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {e.Message}",
-                    "Ошибка базы данных");
-                return;
-            }
-            firstRow++;
+                    MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {e.Message}",
+                        "Ошибка базы данных");
+                    return;
+                }
+                firstRow++;
             }
             while (endRow > firstRow);
         }

@@ -4,7 +4,7 @@ using AppContext = ExcelMacroAdd.DataLayer.Entity.AppContext;
 
 namespace ExcelMacroAdd.BisinnesLayer
 {
-    public class AccessData: ISelectionSwitchData, ISelectionCircuitBreakerData, IJournalData, ISelectionTransformerData, ISelectionTwinBlockData, ITermoCalcData, IAccessAdditionalModularDevicesData
+    public class AccessData : ISelectionSwitchData, ISelectionCircuitBreakerData, IJournalData, ISelectionTransformerData, ISelectionTwinBlockData, ITermoCalcData, IAccessAdditionalModularDevicesData
     {
         public AccessCircuitBreaker AccessCircuitBreaker { get; set; }
         public AccessSwitch AccessSwitch { get; set; }
@@ -12,7 +12,7 @@ namespace ExcelMacroAdd.BisinnesLayer
         public AccessJournalNku AccessJournalNku { get; set; }
         public AccessTransformer AccessTransformer { get; set; }
         public AccessTwinBlock AccessTwinBlock { get; set; }
-        public AccessTermoCalc AccessTermoCalc { get; set; }    
+        public AccessTermoCalc AccessTermoCalc { get; set; }
 
         public AccessData(AppContext context, IMemoryCache memoryCache)
         {

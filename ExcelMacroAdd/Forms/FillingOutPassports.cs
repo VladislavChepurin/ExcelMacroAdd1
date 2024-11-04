@@ -9,7 +9,7 @@ namespace ExcelMacroAdd.Forms
 
         internal FillingOutPassports(int countRow)
         {
-            this.countRow = countRow;            
+            this.countRow = countRow;
             InitializeComponent();
         }
 
@@ -24,8 +24,8 @@ namespace ExcelMacroAdd.Forms
         {
             this.Invoke((MethodInvoker)delegate
             {
-            //this code is taken from 
-            //https://stackoverflow.com/questions/6071626/progressbar-is-slow-in-windows-forms
+                //this code is taken from 
+                //https://stackoverflow.com/questions/6071626/progressbar-is-slow-in-windows-forms
                 if (step == progressBar1.Maximum)
                 {
                     // Special case as value can't be set greater than Maximum.

@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ExcelMacroAdd.Services.Interfaces;
+using ExcelMacroAdd.UserVariables;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using ExcelMacroAdd.Services.Interfaces;
-using ExcelMacroAdd.UserVariables;
 
 namespace ExcelMacroAdd.Services
 {
-    public class DataInXml: IDataInXml
+    public class DataInXml : IDataInXml
     {
         // Folders AppData content Settings.xml
         readonly string file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/Settings.xml");
@@ -20,7 +19,7 @@ namespace ExcelMacroAdd.Services
         }
 
         public Vendor[] ReadFileXml()
-        {      
+        {
             XmlAttributes attrs = new XmlAttributes();
             XmlAttributeOverrides xOver = new XmlAttributeOverrides();
             XmlRootAttribute xRoot = new XmlRootAttribute
@@ -32,12 +31,12 @@ namespace ExcelMacroAdd.Services
             xOver.Add(typeof(Vendor[]), attrs);
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(Vendor[]), xOver);
 
-            try 
+            try
             {
                 // десериализуем
                 using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
                 {
-                    return xmlSerializer.Deserialize(fs) as Vendor[];                  
+                    return xmlSerializer.Deserialize(fs) as Vendor[];
                 }
             }
             catch (InvalidOperationException)
@@ -68,14 +67,14 @@ namespace ExcelMacroAdd.Services
                 // Записываем дату и время
 
                 var date = index.Element("Date");
-                if (date != null) date.Value = data[4];        
+                if (date != null) date.Value = data[4];
                 // Сохраняем документ
                 xdoc.Save(file);
             }
         }
 
         public void XmlFileCreate()
-        {    
+        {
             XmlAttributes attrs = new XmlAttributes();
             XmlAttributeOverrides xOver = new XmlAttributeOverrides();
             XmlRootAttribute xRoot = new XmlRootAttribute
@@ -84,7 +83,7 @@ namespace ExcelMacroAdd.Services
                 ElementName = "MetaSettings"
             };
             attrs.XmlRoot = xRoot;
-            xOver.Add(typeof(Vendor[]), attrs);           
+            xOver.Add(typeof(Vendor[]), attrs);
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(Vendor[]), xOver);
 
@@ -102,7 +101,7 @@ namespace ExcelMacroAdd.Services
             // получаем поток, куда будем записывать сериализованный объект
             using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
             {
-                xmlSerializer.Serialize(fs, vendor);    
+                xmlSerializer.Serialize(fs, vendor);
             }
         }
     }

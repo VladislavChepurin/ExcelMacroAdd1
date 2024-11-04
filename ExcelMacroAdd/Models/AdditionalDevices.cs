@@ -1,6 +1,4 @@
-﻿using ExcelMacroAdd.DataLayer.Entity;
-
-namespace ExcelMacroAdd.Models
+﻿namespace ExcelMacroAdd.Models
 {
     public class AdditionalDevices
     {
@@ -13,7 +11,7 @@ namespace ExcelMacroAdd.Models
         public string auxiliaryContactArticle;
         public string signalOrAuxiliaryContactArticle;
 
-        public AdditionalDevices(string vendor, string shuntTrip24vArticle, string shuntTrip48vArticle, string shuntTrip230vArticle, 
+        public AdditionalDevices(string vendor, string shuntTrip24vArticle, string shuntTrip48vArticle, string shuntTrip230vArticle,
             string undervoltageReleaseArticle, string signalContactArticle, string auxiliaryContactArticle, string signalOrAuxiliaryContactArticle)
         {
             this.vendor = vendor;

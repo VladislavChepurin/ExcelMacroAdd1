@@ -5,7 +5,7 @@ namespace ExcelMacroAdd.DataLayer.Entity
     public class BoxBase : IBoxBase
     {
         public int Id { get; set; }
-        public int Ip { get; set; }       
+        public int Ip { get; set; }
         public string Climate { get; set; }
         public string Weight { get; set; }
         public string Height { get; set; }
@@ -15,7 +15,7 @@ namespace ExcelMacroAdd.DataLayer.Entity
         // Внешний ключ
         public int? MaterialBoxId { get; set; }
         // Навигационное свойство
-        public MaterialBox MaterialBox {get; set; }
+        public MaterialBox MaterialBox { get; set; }
         // Внешний ключ
         public int? ProductVendorId { get; set; }
         // Навигационное свойство

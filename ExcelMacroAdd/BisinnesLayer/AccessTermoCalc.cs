@@ -11,7 +11,7 @@ namespace ExcelMacroAdd.BisinnesLayer
 
         public AccessTermoCalc(AppContext context)
         {
-           this.context = context;
+            this.context = context;
         }
 
         public async Task<IBoxBase> GetEntityJournal(string sArticle)

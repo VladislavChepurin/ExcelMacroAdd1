@@ -1,8 +1,8 @@
-﻿using ExcelMacroAdd.Services.Interfaces;
+﻿using ExcelMacroAdd.Services;
+using ExcelMacroAdd.Services.Interfaces;
 using ExcelMacroAdd.UserVariables;
 using System;
 using System.Collections.Generic;
-using ExcelMacroAdd.Services;
 namespace ExcelMacroAdd.ProxyObjects
 {
 
@@ -35,7 +35,7 @@ namespace ExcelMacroAdd.ProxyObjects
                 vendors = dataXml.Value.ReadFileXml();
                 return vendors;
             }
-            return vendors;          
+            return vendors;
         }
 
         public void WriteXml(string vendor, params string[] data)

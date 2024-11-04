@@ -2,10 +2,10 @@
 
 namespace ExcelMacroAdd.Models
 {
-    public class UserCircuitBreaker: IUserCircuitBreaker
+    public class UserCircuitBreaker : IUserCircuitBreaker
     {
         public string group { get; set; }
-        public int[] current {  get; set; }
+        public int[] current { get; set; }
         public string[] kurve { get; set; }
         public string[] maxCurrent { get; set; }
         public string[] quantityPole { get; set; }
