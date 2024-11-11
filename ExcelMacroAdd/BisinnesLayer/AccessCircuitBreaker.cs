@@ -12,11 +12,11 @@ namespace ExcelMacroAdd.BisinnesLayer
     public class AccessCircuitBreaker
     {
         private readonly AppContext context;
-        private readonly IMemoryCache cache;
+        private readonly IMemoryCache memoryCache;
         public AccessCircuitBreaker(AppContext context, IMemoryCache memoryCache)
         {
             this.context = context;
-            this.cache = memoryCache;
+            this.memoryCache = memoryCache;
         }
 
         public async Task<ICircuitBreaker> GetEntityCircuitBreaker(string vendor, string series, int current, string curve, string maxCurrent, string quantityPole)
@@ -43,7 +43,9 @@ namespace ExcelMacroAdd.BisinnesLayer
 
         public string[] GetAllUniqueSeries(string vendor)
         {
-            cache.TryGetValue(vendor, out string[] series);
+            var keyCache = string.Concat(vendor, "keyCircuitBreaker");
+
+            memoryCache.TryGetValue(keyCache, out string[] series);
             if (series == null)
             {
                 series = context.CircuitBreakers
@@ -53,16 +55,16 @@ namespace ExcelMacroAdd.BisinnesLayer
                .ToHashSet()
                .ToArray();
                 if (series != null)
-                    cache.Set(vendor, series, new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
+                    memoryCache.Set(keyCache, series, new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
             }
             return series;
         }
 
         public IUserCircuitBreaker GetDataCircutBreaker(string vendor, string series)
         {
-            var keyCache = string.Concat(vendor, series);
+            var keyCache = string.Concat(vendor, series, "keyCircuitBreaker");
 
-            cache.TryGetValue(keyCache, out IUserCircuitBreaker userCircuitBreaker);
+            memoryCache.TryGetValue(keyCache, out IUserCircuitBreaker userCircuitBreaker);
             if (userCircuitBreaker == null)
             {
                 var group = context.CircuitBreakers
@@ -102,7 +104,7 @@ namespace ExcelMacroAdd.BisinnesLayer
 
                 userCircuitBreaker = new UserCircuitBreaker(group, current, kurve, maxCurrent, qantityPole);
                 if (userCircuitBreaker.current != null)
-                    cache.Set(keyCache, userCircuitBreaker, new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
+                    memoryCache.Set(keyCache, userCircuitBreaker, new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
             }
             return userCircuitBreaker;
         }

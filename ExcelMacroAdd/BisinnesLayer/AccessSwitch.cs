@@ -12,11 +12,11 @@ namespace ExcelMacroAdd.BisinnesLayer
     public class AccessSwitch
     {
         private readonly AppContext context;
-        private readonly IMemoryCache cache;
-        public AccessSwitch(AppContext context, IMemoryCache cache)
+        private readonly IMemoryCache memoryCache;
+        public AccessSwitch(AppContext context, IMemoryCache memoryCache)
         {
             this.context = context;
-            this.cache = cache;
+            this.memoryCache = memoryCache;
         }
 
         public async Task<ISwitch> GetEntitySwitch(string vendor, string series, int current, string quantityPole)
@@ -40,7 +40,9 @@ namespace ExcelMacroAdd.BisinnesLayer
 
         public string[] GetAllUniqueSeries(string vendor)
         {
-            cache.TryGetValue(vendor, out string[] series);
+            var keyCache = string.Concat(vendor, "keySwitch");
+
+            memoryCache.TryGetValue(keyCache, out string[] series);
             if (series == null)
             {
                 series = context.Switches
@@ -50,16 +52,16 @@ namespace ExcelMacroAdd.BisinnesLayer
                 .ToHashSet()
                 .ToArray();
                 if (series != null)
-                    cache.Set(vendor, series, new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
+                    memoryCache.Set(keyCache, series, new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
             }
             return series;
         }
 
         public IUserSwitch GetDataSwitch(string vendor, string series)
         {
-            var keyCache = string.Concat(vendor, series);
+            var keyCache = string.Concat(vendor, series, "keySwitch");
 
-            cache.TryGetValue(keyCache, out IUserSwitch userSwitch);
+            memoryCache.TryGetValue(keyCache, out IUserSwitch userSwitch);
             if (userSwitch == null)
             {
                 var group = context.Switches
@@ -85,7 +87,7 @@ namespace ExcelMacroAdd.BisinnesLayer
 
                 userSwitch = new UserSwitch(group, current, qantityPole);
                 if (userSwitch.current != null)
-                    cache.Set(keyCache, userSwitch, new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
+                    memoryCache.Set(keyCache, userSwitch, new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
             }
             return userSwitch;
         }
