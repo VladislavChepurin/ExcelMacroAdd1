@@ -5,7 +5,7 @@ using ExcelMacroAdd.Services.Interfaces;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms
@@ -15,29 +15,23 @@ namespace ExcelMacroAdd.Forms
         private const byte StartSwitchCurrent = 5; // Начальный ток трансформации
         private readonly IDataInXml dataInXml;
         private readonly ISelectionTwinBlockData accessData;
-
-        //Singelton
-        private static SelectionTwinBlock instance;
-        public static async Task getInstance(IDataInXml dataInXml, ISelectionTwinBlockData accessData, IFormSettings formSettings)
-        {
-            if (instance == null)
-            {
-                await Task.Run(() =>
-                {
-                    instance = new SelectionTwinBlock(dataInXml, accessData)
-                    {
-                        TopMost = formSettings.FormTopMost
-                    };
-                    instance.ShowDialog();
-                });
-            }
-        }
+        static readonly Mutex Mutex = new Mutex(false, "MutexSelectionTwinBlock_SingleInstance");
 
         private void SelectionTwinBlock_FormClosed(object sender, FormClosedEventArgs e) =>
-            instance = null;
+           Mutex.ReleaseMutex();
 
-        private SelectionTwinBlock(IDataInXml dataInXml, ISelectionTwinBlockData accessData)
+        public SelectionTwinBlock(IDataInXml dataInXml, ISelectionTwinBlockData accessData, IFormSettings formSettings)
         {
+            // проверяем, находится ли мьютекс в сигнальном состоянии
+            var signaled = Mutex.WaitOne(TimeSpan.FromSeconds(1), false);
+
+            // Если состояние несигнальное (несвободное) — значит другой поток уже владеет мьютексом
+            if (!signaled)
+            {
+                Close();
+            }
+
+            TopMost = formSettings.FormTopMost;
             this.dataInXml = dataInXml;
             this.accessData = accessData;
             InitializeComponent();
@@ -45,7 +39,6 @@ namespace ExcelMacroAdd.Forms
 
         private void SelectionTwinBlock_Load(object sender, EventArgs e)
         {
-            // ReSharper disable once CoVariantArrayConversion
             comboBox1.Items.AddRange(accessData.AccessTwinBlock.GetComboBox1Items());
             comboBox1.SelectedIndex = StartSwitchCurrent;
         }

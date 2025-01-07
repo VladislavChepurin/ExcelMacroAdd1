@@ -68,13 +68,12 @@ namespace ExcelMacroAdd
             //stopwatch.Stop();
             //Debug.WriteLine("Time: " + stopwatch.ElapsedMilliseconds);
 
-
             //Создание внедряемых зависимостей
             dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());
 
 #if !DEBUG
             //Будет утекать немного памяти
-            new Thread(() =>
+            new Task(() =>
             {
                 if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/BdMacro.sqlite")))
                 {
@@ -154,7 +153,6 @@ namespace ExcelMacroAdd
                         correctDb.Start();
                     }
                     break;
-
             }
         }
 
@@ -197,7 +195,6 @@ namespace ExcelMacroAdd
                     var combiningCells = new CombiningCells();
                     combiningCells.Start();
                     break;
-
             }
         }
 
@@ -216,7 +213,6 @@ namespace ExcelMacroAdd
                     var googleSearch = new GoogleSearch();
                     googleSearch.Start();
                     break;
-
             }
         }
 
@@ -227,36 +223,31 @@ namespace ExcelMacroAdd
             switch (control.Id)
             {
                 //Вставка формулы Iek
-                case "Iek_Button":
-                    // writeExcel = new WriteExcel(dataInXml, "Iek");
+                case "Iek_Button":                    
                     writeExcel = new WriteExcel(dataInXml, "IEK");
                     writeExcel.Start();
                     break;
 
                 //Вставка формулы Ekf
-                case "Ekf_Button":
-                    //writeExcel = new WriteExcel(dataInXml, "Ekf");
+                case "Ekf_Button":                  
                     writeExcel = new WriteExcel(dataInXml, "EKF");
                     writeExcel.Start();
                     break;
 
                 //Вставка формулы Dkc
-                case "Dkc_Button":
-                    //writeExcel = new WriteExcel(dataInXml, "Dkc");
+                case "Dkc_Button":                  
                     writeExcel = new WriteExcel(dataInXml, "DKC");
                     writeExcel.Start();
                     break;
 
                 //Вставка формулы Keaz
-                case "Keaz_Button":
-                    //writeExcel = new WriteExcel(dataInXml, "Keaz");
+                case "Keaz_Button":                   
                     writeExcel = new WriteExcel(dataInXml, "KEAZ");
                     writeExcel.Start();
                     break;
 
                 //Вставка формулы Dek
-                case "Dek_Button":
-                    //writeExcel = new WriteExcel(dataInXml, "Dekraft");
+                case "Dek_Button":                   
                     writeExcel = new WriteExcel(dataInXml, "DEKraft");
                     writeExcel.Start();
                     break;
@@ -269,26 +260,46 @@ namespace ExcelMacroAdd
 
                 //Модульные аппараты
                 case "SelectionModularDevices_Button":
-                    if (accessData != null)
-                        await SelectionModularDevices.getInstance(dataInXml, accessData, formSettings);
+                    if (accessData != null) {
+                        await Task.Run(() =>
+                        {
+                            var selectionModularDevices = new SelectionModularDevices(dataInXml, accessData, formSettings);
+                            selectionModularDevices.ShowDialog();
+                        });     
+                    }
+
                     break;
 
                 //Трансформаторы тока
                 case "SelectionTransformer_Button":
                     if (accessData != null)
-                        await SelectionTransformer.getInstance(dataInXml, accessData, formSettings);
+                        await Task.Run(() =>
+                        {
+                            var selectionTransformer = new SelectionTransformer(dataInXml, accessData, formSettings);
+                            selectionTransformer.ShowDialog();
+                        });
                     break;
 
                 //Рубильники TwinBlock
                 case "SelectionTwinBlock_Button":
                     if (accessData != null)
-                        await SelectionTwinBlock.getInstance(dataInXml, accessData, formSettings);
+                        await Task.Run(() =>
+                        {
+                            var selectionTwinBlock = new SelectionTwinBlock(dataInXml, accessData, formSettings);
+                            selectionTwinBlock.ShowDialog();
+                        });
+
                     break;
 
                 //Расчет обогрева
                 case "TermoCalculation_Button":
                     if (accessData != null)
-                        await TermoCalculation.getInstance(formSettings, accessData);
+                        await Task.Run(() =>
+                        {
+                            var termoCalculation = new TermoCalculation(accessData, formSettings);
+                            termoCalculation.ShowDialog();
+                        });
+
                     break;
 
                 //Таблица типов
@@ -304,7 +315,6 @@ namespace ExcelMacroAdd
                     var updatingCalculation = new UpdatingCalculation(dataInXml);
                     updatingCalculation.Start();
                     break;
-
             }
         }
 
@@ -336,7 +346,6 @@ namespace ExcelMacroAdd
                 case "Open_Button":
                     Process.Start("explorer.exe", AppDomain.CurrentDomain.BaseDirectory);
                     break;
-
             }
         }
 

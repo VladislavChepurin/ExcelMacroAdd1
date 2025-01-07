@@ -6,7 +6,6 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms
@@ -16,29 +15,23 @@ namespace ExcelMacroAdd.Forms
         private const byte StartTransformerCurrent = 0; // Начальный ток трансформации
         private readonly IDataInXml dataInXml;
         private readonly ISelectionTransformerData accessData;
-
-        //Singelton
-        private static SelectionTransformer instance;
-        public static async Task getInstance(IDataInXml dataInXml, ISelectionTransformerData accessData, IFormSettings formSettings)
-        {
-            if (instance == null)
-            {
-                await Task.Run(() =>
-                {
-                    instance = new SelectionTransformer(dataInXml, accessData)
-                    {
-                        TopMost = formSettings.FormTopMost
-                    };
-                    instance.ShowDialog();
-                });
-            }
-        }
+        static readonly Mutex Mutex = new Mutex(false, "MutexSelectionTransformer_SingleInstance");
 
         private void SelectionTransformer_FormClosed(object sender, FormClosedEventArgs e) =>
-            instance = null;
+             Mutex.ReleaseMutex();
 
-        private SelectionTransformer(IDataInXml dataInXml, ISelectionTransformerData accessData)
+        public SelectionTransformer(IDataInXml dataInXml, ISelectionTransformerData accessData, IFormSettings formSettings)
         {
+            // проверяем, находится ли мьютекс в сигнальном состоянии
+            var signaled = Mutex.WaitOne(TimeSpan.FromSeconds(1), false);
+
+            // Если состояние несигнальное (несвободное) — значит другой поток уже владеет мьютексом
+            if (!signaled)
+            {
+                Close();
+            }
+
+            TopMost = formSettings.FormTopMost;
             this.dataInXml = dataInXml;
             this.accessData = accessData;
             InitializeComponent();

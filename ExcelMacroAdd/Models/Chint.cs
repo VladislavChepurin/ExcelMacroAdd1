@@ -2,7 +2,7 @@
 
 namespace ExcelMacroAdd.Models
 {
-    internal class Chint : Vendors
+    internal class Chint : IVendors
     {
         public string[] RangeSearch { get; }
 

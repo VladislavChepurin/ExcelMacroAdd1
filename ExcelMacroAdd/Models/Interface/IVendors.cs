@@ -1,6 +1,6 @@
 ﻿namespace ExcelMacroAdd.Models.Interface
 {
-    internal interface Vendors
+    internal interface IVendors
     {
         string[] RangeSearch { get; }
         string OutValue { get; }

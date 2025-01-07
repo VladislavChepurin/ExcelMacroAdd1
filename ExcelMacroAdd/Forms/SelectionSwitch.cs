@@ -28,25 +28,15 @@ namespace ExcelMacroAdd.Forms
         private readonly ISelectionSwitchData accessData;
         private UserVariable[] userVariables = new UserVariable[6];
 
-        //Singelton
-        private static SelectionSwitch instance;
-        public static void getInstance(IDataInXml dataInXml, ISelectionSwitchData accessData, IFormSettings formSettings)
+        private void SelectionCircuitBreaker_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (instance == null)
-            {
-                instance = new SelectionSwitch(dataInXml, accessData)
-                {
-                    TopMost = formSettings.FormTopMost
-                };
-                instance.ShowDialog();
-            }
-        }
+            SelectionModularDevices main = this.Owner as SelectionModularDevices;
+            main?.Show();
+        }          
 
-        private void SelectionCircuitBreaker_FormClosed(object sender, FormClosedEventArgs e) =>
-            instance = null;
-
-        private SelectionSwitch(IDataInXml dataInXml, ISelectionSwitchData accessData)
+        public SelectionSwitch(IDataInXml dataInXml, ISelectionSwitchData accessData, IFormSettings formSettings)
         {
+            TopMost = formSettings.FormTopMost;
             this.dataInXml = dataInXml;
             this.accessData = accessData;
             InitializeComponent();
@@ -54,7 +44,6 @@ namespace ExcelMacroAdd.Forms
 
         private void SelectionCircuitBreaker_Load(object sender, EventArgs e)
         {
-
             //Массивы параметров модульных рубильников    
             var loadVendor = accessData.AccessSwitch.GetAllUniqueVendors();
             ComboBox[] comboBoxItVendor = { comboBox1, comboBox7, comboBox13, comboBox19, comboBox25, comboBox31 };

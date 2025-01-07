@@ -52,7 +52,7 @@ namespace ExcelMacroAdd.Functions
             }
         }
 
-        private void UpdateCalc(Vendors vendors, string currentVendor, int rowsLine)
+        private void UpdateCalc(IVendors vendors, string currentVendor, int rowsLine)
         {
             if (vendors.RangeSearch.Contains(currentVendor, new CustomStringComparer()))
             {

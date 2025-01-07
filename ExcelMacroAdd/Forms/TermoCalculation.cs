@@ -4,7 +4,7 @@ using ExcelMacroAdd.Services;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Drawing;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms
@@ -14,26 +14,20 @@ namespace ExcelMacroAdd.Forms
         private readonly ITermoCalcData accessData;
         protected readonly Worksheet Worksheet = Globals.ThisAddIn.GetActiveWorksheet();
         protected readonly Range Cell = Globals.ThisAddIn.GetActiveCell();
+        static readonly Mutex Mutex = new Mutex(false, "MutexTermoCalculation_SingleInstance");
 
-        //Singelton
-        private static TermoCalculation instance;
-        public static async Task getInstance(IFormSettings formSettings, ITermoCalcData accessData)
+        public TermoCalculation(ITermoCalcData accessData, IFormSettings formSettings)
         {
-            if (instance == null)
+            // проверяем, находится ли мьютекс в сигнальном состоянии
+            var signaled = Mutex.WaitOne(TimeSpan.FromSeconds(1), false);
+
+            // Если состояние несигнальное (несвободное) — значит другой поток уже владеет мьютексом
+            if (!signaled)
             {
-                await Task.Run(() =>
-                {
-                    instance = new TermoCalculation(accessData)
-                    {
-                        TopMost = formSettings.FormTopMost
-                    };
-                    instance.ShowDialog();
-                });
+                Close();
             }
-        }
 
-        private TermoCalculation(ITermoCalcData accessData)
-        {
+            TopMost = formSettings.FormTopMost;
             this.accessData = accessData;
             InitializeComponent();
         }
@@ -65,7 +59,7 @@ namespace ExcelMacroAdd.Forms
         }
 
         private void TermoCalculation_FormClosed(object sender, FormClosedEventArgs e) =>
-            instance = null;
+           Mutex.ReleaseMutex();
 
 
         #region KeyPress

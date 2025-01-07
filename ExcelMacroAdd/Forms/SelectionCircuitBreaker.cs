@@ -5,13 +5,14 @@ using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.Services.Interfaces;
 using System;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms
 {
-
     internal partial class SelectionCircuitBreaker : Form
     {
         private enum ContainerAvt
@@ -26,27 +27,17 @@ namespace ExcelMacroAdd.Forms
 
         private readonly IDataInXml dataInXml;
         private readonly ISelectionCircuitBreakerData accessData;
-        private UserVariable[] userVariables = new UserVariable[6];
+        private UserVariable[] userVariables = new UserVariable[6];        
 
-        //Singelton
-        private static SelectionCircuitBreaker instance;
-        public static void getInstance(IDataInXml dataInXml, ISelectionCircuitBreakerData accessData, IFormSettings formSettings)
+        private void SelectionCircuitBreaker_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (instance == null)
-            {
-                instance = new SelectionCircuitBreaker(dataInXml, accessData)
-                {
-                    TopMost = formSettings.FormTopMost
-                };
-                instance.ShowDialog();
-            }
+            SelectionModularDevices main = this.Owner as SelectionModularDevices;
+            main?.Show();
         }
-
-        private void SelectionCircuitBreaker_FormClosed(object sender, FormClosedEventArgs e) =>
-            instance = null;
-
-        private SelectionCircuitBreaker(IDataInXml dataInXml, ISelectionCircuitBreakerData accessData)
+  
+        public SelectionCircuitBreaker(IDataInXml dataInXml, ISelectionCircuitBreakerData accessData, IFormSettings formSettings)
         {
+            TopMost = formSettings.FormTopMost;
             this.dataInXml = dataInXml;
             this.accessData = accessData;
             InitializeComponent();
@@ -54,7 +45,6 @@ namespace ExcelMacroAdd.Forms
 
         private void SelectionCircuitBreaker_Load(object sender, EventArgs e)
         {
-
             //Массивы параметров модульных автоматов     
             var loadVendor = accessData.AccessCircuitBreaker.GetAllUniqueVendors();
             ComboBox[] comboBoxItVendor = { comboBox1, comboBox7, comboBox13, comboBox19, comboBox25, comboBox31 };

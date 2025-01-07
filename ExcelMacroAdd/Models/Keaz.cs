@@ -2,7 +2,7 @@
 
 namespace ExcelMacroAdd.Models
 {
-    internal class Keaz : Vendors
+    internal class Keaz : IVendors
     {
         public string[] RangeSearch { get; }
 

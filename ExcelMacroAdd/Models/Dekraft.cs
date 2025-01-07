@@ -2,7 +2,7 @@
 
 namespace ExcelMacroAdd.Models
 {
-    internal class Dekraft : Vendors
+    internal class Dekraft : IVendors
     {
         public string[] RangeSearch { get; }
 

@@ -20,31 +20,19 @@ namespace ExcelMacroAdd.Forms
         private readonly AdditionalDevices circuitBreakerData;
         private readonly AdditionalDevices switchData;
         private readonly AdditionalDevices addDevicesAgregate;
-
-        //Singelton
-        private static AdditionalDevicesForm instance;
-        public static void getInstance(IDataInXml dataInXml, IAccessAdditionalModularDevicesData accessData, IFormSettings formSettings)
-        {
-            if (instance == null)
-            {
-                instance = new AdditionalDevicesForm(dataInXml, accessData)
-                {
-                    TopMost = formSettings.FormTopMost
-                };
-                instance.ShowDialog();
-            }
-        }
+               
         private void AdditionalDevicesForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            instance = null;
+            SelectionModularDevices main = this.Owner as SelectionModularDevices;
+            main?.Show();
         }
 
-        private AdditionalDevicesForm(IDataInXml dataInXml, IAccessAdditionalModularDevicesData accessData)
+        public AdditionalDevicesForm(IDataInXml dataInXml, IAccessAdditionalModularDevicesData accessData, IFormSettings formSettings)
         {
-            InitializeComponent();
-
+            TopMost = formSettings.FormTopMost;
             this.dataInXml = dataInXml;
             this.accessData = accessData;
+            InitializeComponent();
 
             currentRow = Cell.Row;
             string sArticle = Convert.ToString(Worksheet.Cells[currentRow, 1].Value2);

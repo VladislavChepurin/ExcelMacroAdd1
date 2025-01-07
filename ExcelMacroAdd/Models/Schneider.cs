@@ -2,7 +2,7 @@
 
 namespace ExcelMacroAdd.Models
 {
-    internal class Schneider : Vendors
+    internal class Schneider : IVendors
     {
         public string[] RangeSearch { get; }
 

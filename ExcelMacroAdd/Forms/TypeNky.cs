@@ -1,6 +1,7 @@
 ﻿using ExcelMacroAdd.Forms.SupportiveFunction;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -36,7 +37,7 @@ namespace ExcelMacroAdd.Forms
                 string[] row = { item.Number.ToString(), item.Description, item.BuildTime.ToString() };
                 nkyDataGridView.Rows.Add(row);
             }
-        }
+        }        
 
         private void addTypeButton_Click(object sender, EventArgs e)
         {

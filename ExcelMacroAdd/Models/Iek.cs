@@ -2,7 +2,7 @@
 
 namespace ExcelMacroAdd.Models
 {
-    internal class Iek : Vendors
+    internal class Iek : IVendors
     {
         public string[] RangeSearch { get; }
 

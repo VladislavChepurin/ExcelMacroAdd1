@@ -37,7 +37,7 @@
     <PublishUrl>publication\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>2.5.2.3</ApplicationVersion>
+    <ApplicationVersion>2.5.3.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -348,7 +348,7 @@
     <Compile Include="Models\Dkc.cs" />
     <Compile Include="Models\Ekf.cs" />
     <Compile Include="Models\Iek.cs" />
-    <Compile Include="Models\Interface\Vendors.cs" />
+    <Compile Include="Models\Interface\IVendors.cs" />
     <Compile Include="Models\Keaz.cs" />
     <Compile Include="Models\Schneider.cs" />
     <Compile Include="Models\Tdm.cs" />

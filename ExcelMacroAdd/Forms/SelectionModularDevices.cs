@@ -2,7 +2,7 @@
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.Services.Interfaces;
 using System;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms
@@ -12,61 +12,59 @@ namespace ExcelMacroAdd.Forms
         private readonly IDataInXml dataInXml;
         private readonly AccessData accessData;
         private readonly IFormSettings formSettings;
+        static readonly Mutex Mutex = new Mutex(false, "MutexSelectionModularDevices_SingleInstance");
 
-        private SelectionModularDevices(IDataInXml dataInXml, AccessData accessData, IFormSettings formSettings)
+        public SelectionModularDevices(IDataInXml dataInXml, AccessData accessData, IFormSettings formSettings)
         {
+            // проверяем, находится ли мьютекс в сигнальном состоянии
+            var signaled = Mutex.WaitOne(TimeSpan.FromSeconds(1), false);
+
+            // Если состояние несигнальное (несвободное) — значит другой поток уже владеет мьютексом
+            if (!signaled)
+            {
+                Close();
+            }
+
             this.dataInXml = dataInXml;
             this.accessData = accessData;
             this.formSettings = formSettings;
+            TopMost  = formSettings.FormTopMost;
             InitializeComponent();
         }
 
-        //Singelton
-        private static SelectionModularDevices instance;
-        public static async Task getInstance(IDataInXml dataInXml, AccessData accessData, IFormSettings formSettings)
-        {
-            if (instance == null)
-            {
-                await Task.Run(() =>
-                {
-                    instance = new SelectionModularDevices(dataInXml, accessData, formSettings)
-                    {
-                        TopMost = formSettings.FormTopMost
-                    };
-                    instance.ShowDialog();
-                });
-            }
-        }
         private void SelectionModularDevices_FormClosed(object sender, FormClosedEventArgs e) =>
-              instance = null;
+            Mutex.ReleaseMutex();
 
         private void SelectionModularDevices_Load(object sender, EventArgs e)
         {
             button1.Click += (s, a) =>
             {
-                Task.Run(() =>
+                Hide();
+                var selectionCircuitBreaker = new SelectionCircuitBreaker(dataInXml, accessData, formSettings)
                 {
-                    SelectionCircuitBreaker.getInstance(dataInXml, accessData, formSettings);
-                });
-                Close();
+                    Owner = this
+                };
+                selectionCircuitBreaker.ShowDialog();
             };
 
             button2.Click += (s, a) =>
             {
-                Task.Run(() =>
+                Hide();
+                var selectionSwitch = new SelectionSwitch(dataInXml, accessData, formSettings)
                 {
-                    SelectionSwitch.getInstance(dataInXml, accessData, formSettings);
-                });
-                Close();
+                    Owner = this
+                };
+                selectionSwitch.ShowDialog();
             };
 
             button3.Click += (s, a) =>
             {
-                Task.Run(() =>
+                Hide();
+                var additionalDevicesForm = new AdditionalDevicesForm(dataInXml, accessData, formSettings)
                 {
-                    AdditionalDevicesForm.getInstance(dataInXml, accessData, formSettings);
-                });
-                Close();
+                    Owner = this
+                };
+                additionalDevicesForm.ShowDialog();
             };
         }
     }
