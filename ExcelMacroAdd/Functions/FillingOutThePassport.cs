@@ -113,7 +113,7 @@ namespace ExcelMacroAdd.Functions
                                 filename = Path.Combine(pPath, resources.TemplateFloor);
                                 break;
                         }
-                        string nameFolderSafe = Worksheet.Cells[firstRow, 1].Value2.ToString();
+                        string nameFolderSafe = Worksheet.Cells[firstRow, 1].Value2.ToString().Replace('/', '_');
                         string sMark = Worksheet.Cells[firstRow, 4].Value2.ToString();
                         string sName = Worksheet.Cells[firstRow, 6].Value2.ToString();
                         string sPaste = FuncReplace(sName ?? string.Empty); // ссылка на метод замены
