@@ -9,6 +9,7 @@ namespace ExcelMacroAdd.Serializable.Entity
         public CorrectFontSettings CorrectFontResources { get; set; }
         public FormSettings FormSettings { get; set; }
         public string GlobalDateBaseLocation { get; set; }
+        public bool GlobalDateBaseLocationEnable { get; set; }
         public TypeNkySettings[] TypeNkySettings { get; set; }
 
         public AppSettings(FillingOutThePassportSettings resources, CorrectFontSettings correctFontResources, FormSettings formSettings, string globalDateBaseLocation, TypeNkySettings[] typeNkySettings)

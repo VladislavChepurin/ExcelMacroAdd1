@@ -47,12 +47,7 @@ namespace ExcelMacroAdd
 
             string path;
 
-            ////Проблемный участок, при запуске если не находит файл БД теряется 2-5 секунд.
-            //Stopwatch stopwatch = new Stopwatch();
-            ////засекаем время начала операции
-            //stopwatch.Start();
-
-            if (File.Exists(settings.GlobalDateBaseLocation + "BdMain.sqlite"))
+            if  (settings.GlobalDateBaseLocationEnable && File.Exists(settings.GlobalDateBaseLocation + "BdMain.sqlite") )
             {
                 path = settings.GlobalDateBaseLocation;
                 locationDataBase = true;
@@ -64,9 +59,6 @@ namespace ExcelMacroAdd
 
             var context = new AppContext(path);
             accessData = new AccessData(context, memoryCache);
-
-            //stopwatch.Stop();
-            //Debug.WriteLine("Time: " + stopwatch.ElapsedMilliseconds);
 
             //Создание внедряемых зависимостей
             dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());

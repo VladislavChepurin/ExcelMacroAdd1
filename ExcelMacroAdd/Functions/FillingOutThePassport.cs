@@ -85,7 +85,7 @@ namespace ExcelMacroAdd.Functions
                     // Цикл переборки строк
                     do
                     {
-                        object filename;
+                        string filename;
 
                         switch (Worksheet.Cells[firstRow, 30].Value2.ToString())
                         {
@@ -119,7 +119,7 @@ namespace ExcelMacroAdd.Functions
                         string sPaste = FuncReplace(sName ?? string.Empty); // ссылка на метод замены
                         string firstWords = Worksheet.Cells[firstRow, 7].Value2.ToString();
                         string sTy = Worksheet.Cells[firstRow, 8].Value2.ToString();
-                        string sUe = Worksheet.Cells[firstRow, 9].Value2.ToString();
+                        string sVoltage = Worksheet.Cells[firstRow, 9].Value2.ToString();
                         string sIcu = Worksheet.Cells[firstRow, 10].Value2.ToString();
                         string sIp = Worksheet.Cells[firstRow, 11].Value2.ToString();
                         //string sClimate = worksheet.Cells[firstRow, 12].Value2.ToString();     
@@ -127,9 +127,9 @@ namespace ExcelMacroAdd.Functions
                                     + Worksheet.Cells[firstRow, 15].Value2.ToString() + "x"
                                     + Worksheet.Cells[firstRow, 16].Value2.ToString();
                         string secondWords = FuncReplace(firstWords ?? string.Empty); // ссылка на метод замены
-                        string factoryNumber = Worksheet.Cells[firstRow, 21].Value2.ToString();
-                        string sNum = Worksheet.Cells[firstRow, 21].Value2.ToString();
-                        string sIsp = Worksheet.Cells[firstRow, 27].Value2.ToString();
+                        var buildDate = Worksheet.Cells[firstRow, 20].Value2;
+                        string factoryNumber = Worksheet.Cells[firstRow, 21].Value2.ToString();                          
+                        string sInstalling = Worksheet.Cells[firstRow, 27].Value2.ToString();
                         string sGround = Worksheet.Cells[firstRow, 28].Value2.ToString();
                         string sMaterial = Worksheet.Cells[firstRow, 29].Value2.ToString();
                         string sExecution = Worksheet.Cells[firstRow, 30].Value2.ToString();
@@ -142,7 +142,7 @@ namespace ExcelMacroAdd.Functions
                         //Инициализация метода Find
                         Find find = applicationWord.Selection.Find;
 
-                        var verifyIsNotFind = new List<bool>(15)
+                        var verifyIsNotFind = new List<bool>(16)
                         {
                             // Замены ТУ
                             replacingTextLabels(find, "#ТУ", sTy),
@@ -155,7 +155,7 @@ namespace ExcelMacroAdd.Functions
                             // Замены Марка
                             replacingTextLabels(find, "#Марка", sMark),
                             // Замены Номер
-                            replacingTextLabels(find, "#Номер", sNum),
+                            replacingTextLabels(find, "#Номер", factoryNumber),
                             // Замены Климат
                             //verifyIsNotFind.Add(
                             //replacingTextLabels(find, "#Климат", sClimate));
@@ -170,65 +170,17 @@ namespace ExcelMacroAdd.Functions
                             // Замена Склонение
                             replacingTextLabels(find, "#Склонение", secondWords),
                             // Замена Исполнения
-                            replacingTextLabels(find, "#Исполнение", sExecution)
-                        };
-
-                        // Замены Напряжение
-                        if (sUe == "380")
-                        {
-                            verifyIsNotFind.Add(
-                                replacingTextLabels(find, "#Напряжение", "~230/380 В."));
-                        }
-                        else if (sIsp == "220")
-                        {
-                            verifyIsNotFind.Add(
-                                replacingTextLabels(find, "#Напряжение", "~230В."));
-                        }
-                        else
-                        {
-                            verifyIsNotFind.Add(
-                                replacingTextLabels(find, "#Напряжение", sUe + "В."));
-                        }
-
-                        // Замены Исполнение
-                        if (sIsp == "МП")
-                        {
-                            verifyIsNotFind.Add(
-                                replacingTextLabels(find, "#Установка", "монтажной плате"));
-                        }
-                        else if (sIsp == "ДР")
-                        {
-                            verifyIsNotFind.Add(
-                                replacingTextLabels(find, "#Установка", "din-рейках"));
-                        }
-                        else if (sIsp == "19\"")
-                        {
-                            verifyIsNotFind.Add(
-                                replacingTextLabels(find, "#Установка", "19\u02EE стойках"));
-                        }
-                        else
-                        {
-                            verifyIsNotFind.Add(
-                                replacingTextLabels(find, "#Установка", "монтажной плате, din-рейках"));
-                        }
-
-                        // Замены Материал
-                        if (sMaterial == "Металл")
-                        {
-                            verifyIsNotFind.Add(
-                                replacingTextLabels(find, "#Корпус", "металлическом"));
-                        }
-                        else if (sIsp == "ДР")
-                        {
-                            verifyIsNotFind.Add(
-                                replacingTextLabels(find, "#Корпус", "пластиковом"));
-                        }
-                        else
-                        {
-                            verifyIsNotFind.Add(
-                                replacingTextLabels(find, "#Корпус", "металлическом или пластиковом"));
-                        }
-
+                            replacingTextLabels(find, "#Исполнение", sExecution),
+                            // Замена Даты
+                            replacingTextLabels(find, "#Дата", FormingData(buildDate)),
+                            // Замены Исполнение
+                            replacingTextLabels(find, "#Установка", FormingInstalling(sInstalling)),
+                            // Замены материал корпуса
+                            replacingTextLabels(find, "#Корпус", FormingMaterial(sMaterial)),
+                            //Замены напряжения
+                            replacingTextLabels(find, "#Напряжение", FormingVoltage(sVoltage))
+                        };                 
+                          
                         //Путь к папке Рабочего стола                                     
                         string folderName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Паспорта " + nameFolderSafe);
                         DirectoryInfo drInfo = new DirectoryInfo(folderName);
@@ -289,6 +241,84 @@ namespace ExcelMacroAdd.Functions
                 }
             }).Start();
         }
+
+        /// <summary>
+        /// Функция форматирует напряжение для паспорта
+        /// </summary>
+        /// <param name="voltage"></param>
+        /// <returns></returns>
+        private string FormingVoltage(string voltage)
+        {
+            switch (voltage)
+            {
+                case "380":
+                    return "~230/380 В.";
+                case "220":
+                    return "~230В.";
+                case "230":
+                    return "~230В.";
+                default:
+                    return voltage + "В.";
+            }
+        }
+
+        /// <summary>
+        /// Функция форматирует материал шкафа в паспорте
+        /// </summary>
+        /// <param name="material"></param>
+        /// <returns></returns>
+        private string FormingMaterial(string material)
+        {
+            switch (material)
+            {
+                case "Металл":
+                    return "металлическом";
+                case "Пластик":
+                    return "пластиковом";
+                case "Композит":
+                    return "композитном";
+                default:
+                    return "металлическом или пластиковом";
+            }
+        }
+
+        /// <summary>
+        /// Функция форматирует установку аппаратов паспорте
+        /// </summary>
+        /// <param name="installing"></param>
+        /// <returns></returns>
+        private string FormingInstalling(string installing)
+        {
+           switch (installing)
+            {
+                case "МП":
+                    return "монтажной плате";
+                case "ДР":
+                    return "din-рейках";
+                case "19\"":
+                    return "19\u02EE стойках";
+                default:
+                    return "монтажной плате, din-рейках";
+            }
+        }
+
+        /// <summary>
+        /// Функция преобразования даты получаемой от Excel
+        /// </summary>
+        /// <param name="buildData"></param>
+        /// <returns></returns>
+        private string FormingData (dynamic buildData)
+        {
+            if (buildData != null)
+            {
+                if (buildData is double v)
+                {            
+                    return DateTime.FromOADate(v).ToString("D");
+                }
+            }
+            return "«____» __________ 202_ г.";            
+        }
+
         /// <summary>
         /// Функция склонения слов
         /// </summary>
@@ -308,7 +338,12 @@ namespace ExcelMacroAdd.Functions
                 { "Ящик", "Ящика"},
                 { "Бокс", "Бокса"},
                 { "Панель", "Панели"},
-                { "распределительный", "распределительного"}
+                { "распределительный", "распределительного"},
+                { "телекоммуникационный", "телекоммуникационного"},
+                { "Источник", "Источника"},
+                { "источник", "источника"},
+                { "Система", "Системы"},
+                { "система", "системы"}
             };
 
             for (int i = 0; i < subs.Length; i++)
