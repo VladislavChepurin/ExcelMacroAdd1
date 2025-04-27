@@ -92,6 +92,16 @@ namespace ExcelMacroAdd.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap DefaultImage {
+            get {
+                object obj = ResourceManager.GetObject("DefaultImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap dek {
             get {
                 object obj = ResourceManager.GetObject("dek", resourceCulture);
@@ -126,6 +136,15 @@ namespace ExcelMacroAdd.Properties {
             get {
                 object obj = ResourceManager.GetObject("ekf", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на глобальная.
+        /// </summary>
+        internal static string Global {
+            get {
+                return ResourceManager.GetString("Global", resourceCulture);
             }
         }
         
@@ -169,12 +188,48 @@ namespace ExcelMacroAdd.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Данная копия программного обеспечения не лицензированна. Просим обратиться к автору программы для получения ключа приложения. Ключи привязываются к имени пользователя и текущему году. Срок действия ключа 1 (один) год..
+        /// </summary>
+        internal static string LicenseText {
+            get {
+                return ResourceManager.GetString("LicenseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на локальная.
+        /// </summary>
+        internal static string Local {
+            get {
+                return ResourceManager.GetString("Local", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Имя книги не совпадает с целевой..
+        /// </summary>
+        internal static string NameWorkbook {
+            get {
+                return ResourceManager.GetString("NameWorkbook", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap none {
             get {
                 object obj = ResourceManager.GetObject("none", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Функция работает только в &quot;Журнале учета НКУ&quot; текущего года. Пожайлуста откройте необходимую книгу Excel..
+        /// </summary>
+        internal static string NotJornal {
+            get {
+                return ResourceManager.GetString("NotJornal", resourceCulture);
             }
         }
         

@@ -28,16 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.cmbTransformerRatio = new System.Windows.Forms.ComboBox();
+            this.cmbTransformerExecution = new System.Windows.Forms.ComboBox();
+            this.cmbTransformerAccuracy = new System.Windows.Forms.ComboBox();
+            this.cmbTransformerPower = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnCopyIekTti = new System.Windows.Forms.Button();
+            this.btnWriteIekTti = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -51,22 +51,22 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button12 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
+            this.lblIekTti = new System.Windows.Forms.Label();
+            this.lblEkfTte = new System.Windows.Forms.Label();
+            this.lblKeazTtk = new System.Windows.Forms.Label();
+            this.lblTdmTtn = new System.Windows.Forms.Label();
+            this.lblIekTop = new System.Windows.Forms.Label();
+            this.lblDekTop = new System.Windows.Forms.Label();
+            this.btnWriteEkfTte = new System.Windows.Forms.Button();
+            this.btnCopyEkfTte = new System.Windows.Forms.Button();
+            this.btnWriteKeazTtk = new System.Windows.Forms.Button();
+            this.btnCopyKeazTtk = new System.Windows.Forms.Button();
+            this.btnWriteTdmTtn = new System.Windows.Forms.Button();
+            this.btnCopyTdmTtn = new System.Windows.Forms.Button();
+            this.btnWriteIekTop = new System.Windows.Forms.Button();
+            this.btnCopyIekTop = new System.Windows.Forms.Button();
+            this.btnWriteDekTop = new System.Windows.Forms.Button();
+            this.btnCopyDekTop = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
@@ -76,42 +76,42 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // comboBox1
+            // cmbTransformerRatio
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.comboBox1.Location = new System.Drawing.Point(268, 32);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(88, 21);
-            this.comboBox1.TabIndex = 1;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.cmbTransformerRatio.FormattingEnabled = true;
+            this.cmbTransformerRatio.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.cmbTransformerRatio.Location = new System.Drawing.Point(268, 32);
+            this.cmbTransformerRatio.Name = "cmbTransformerRatio";
+            this.cmbTransformerRatio.Size = new System.Drawing.Size(88, 21);
+            this.cmbTransformerRatio.TabIndex = 1;
+            this.cmbTransformerRatio.SelectedIndexChanged += new System.EventHandler(this.cmbTransformerRatio_SelectedIndexChanged);
             // 
-            // comboBox2
+            // cmbTransformerExecution
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(362, 32);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(88, 21);
-            this.comboBox2.TabIndex = 2;
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+            this.cmbTransformerExecution.FormattingEnabled = true;
+            this.cmbTransformerExecution.Location = new System.Drawing.Point(362, 32);
+            this.cmbTransformerExecution.Name = "cmbTransformerExecution";
+            this.cmbTransformerExecution.Size = new System.Drawing.Size(88, 21);
+            this.cmbTransformerExecution.TabIndex = 2;
+            this.cmbTransformerExecution.SelectedIndexChanged += new System.EventHandler(this.cmbTransformerExecution_SelectedIndexChanged);
             // 
-            // comboBox3
+            // cmbTransformerAccuracy
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(456, 32);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(88, 21);
-            this.comboBox3.TabIndex = 3;
-            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
+            this.cmbTransformerAccuracy.FormattingEnabled = true;
+            this.cmbTransformerAccuracy.Location = new System.Drawing.Point(456, 32);
+            this.cmbTransformerAccuracy.Name = "cmbTransformerAccuracy";
+            this.cmbTransformerAccuracy.Size = new System.Drawing.Size(88, 21);
+            this.cmbTransformerAccuracy.TabIndex = 3;
+            this.cmbTransformerAccuracy.SelectedIndexChanged += new System.EventHandler(this.cmbTransformerAccuracy_SelectedIndexChanged);
             // 
-            // comboBox4
+            // cmbTransformerPower
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(550, 32);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(88, 21);
-            this.comboBox4.TabIndex = 4;
-            this.comboBox4.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
+            this.cmbTransformerPower.FormattingEnabled = true;
+            this.cmbTransformerPower.Location = new System.Drawing.Point(550, 32);
+            this.cmbTransformerPower.Name = "cmbTransformerPower";
+            this.cmbTransformerPower.Size = new System.Drawing.Size(88, 21);
+            this.cmbTransformerPower.TabIndex = 4;
+            this.cmbTransformerPower.SelectedIndexChanged += new System.EventHandler(this.cmbTransformerPower_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -149,23 +149,23 @@
             this.label4.TabIndex = 8;
             this.label4.Text = "Мощность";
             // 
-            // button1
+            // btnCopyIekTti
             // 
-            this.button1.Location = new System.Drawing.Point(482, 70);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "В буфер";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnCopyIekTti.Location = new System.Drawing.Point(482, 70);
+            this.btnCopyIekTti.Name = "btnCopyIekTti";
+            this.btnCopyIekTti.Size = new System.Drawing.Size(75, 23);
+            this.btnCopyIekTti.TabIndex = 9;
+            this.btnCopyIekTti.Text = "В буфер";
+            this.btnCopyIekTti.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnWriteIekTti
             // 
-            this.button2.Location = new System.Drawing.Point(563, 70);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "На лист";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnWriteIekTti.Location = new System.Drawing.Point(563, 70);
+            this.btnWriteIekTti.Name = "btnWriteIekTti";
+            this.btnWriteIekTti.Size = new System.Drawing.Size(75, 23);
+            this.btnWriteIekTti.TabIndex = 10;
+            this.btnWriteIekTti.Text = "На лист";
+            this.btnWriteIekTti.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
@@ -301,177 +301,177 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // label11
+            // lblIekTti
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label11.Location = new System.Drawing.Point(380, 73);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(48, 15);
-            this.label11.TabIndex = 28;
-            this.label11.Text = "label11";
+            this.lblIekTti.AutoSize = true;
+            this.lblIekTti.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblIekTti.Location = new System.Drawing.Point(380, 73);
+            this.lblIekTti.Name = "lblIekTti";
+            this.lblIekTti.Size = new System.Drawing.Size(48, 15);
+            this.lblIekTti.TabIndex = 28;
+            this.lblIekTti.Text = "label11";
             // 
-            // label12
+            // lblEkfTte
             // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label12.Location = new System.Drawing.Point(380, 114);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(48, 15);
-            this.label12.TabIndex = 29;
-            this.label12.Text = "label12";
+            this.lblEkfTte.AutoSize = true;
+            this.lblEkfTte.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblEkfTte.Location = new System.Drawing.Point(380, 114);
+            this.lblEkfTte.Name = "lblEkfTte";
+            this.lblEkfTte.Size = new System.Drawing.Size(48, 15);
+            this.lblEkfTte.TabIndex = 29;
+            this.lblEkfTte.Text = "label12";
             // 
-            // label13
+            // lblKeazTtk
             // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label13.Location = new System.Drawing.Point(380, 155);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(48, 15);
-            this.label13.TabIndex = 30;
-            this.label13.Text = "label13";
+            this.lblKeazTtk.AutoSize = true;
+            this.lblKeazTtk.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblKeazTtk.Location = new System.Drawing.Point(380, 155);
+            this.lblKeazTtk.Name = "lblKeazTtk";
+            this.lblKeazTtk.Size = new System.Drawing.Size(48, 15);
+            this.lblKeazTtk.TabIndex = 30;
+            this.lblKeazTtk.Text = "label13";
             // 
-            // label14
+            // lblTdmTtn
             // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label14.Location = new System.Drawing.Point(380, 196);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(48, 15);
-            this.label14.TabIndex = 31;
-            this.label14.Text = "label14";
+            this.lblTdmTtn.AutoSize = true;
+            this.lblTdmTtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblTdmTtn.Location = new System.Drawing.Point(380, 196);
+            this.lblTdmTtn.Name = "lblTdmTtn";
+            this.lblTdmTtn.Size = new System.Drawing.Size(48, 15);
+            this.lblTdmTtn.TabIndex = 31;
+            this.lblTdmTtn.Text = "label14";
             // 
-            // label15
+            // lblIekTop
             // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label15.Location = new System.Drawing.Point(380, 237);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(48, 15);
-            this.label15.TabIndex = 32;
-            this.label15.Text = "label15";
+            this.lblIekTop.AutoSize = true;
+            this.lblIekTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblIekTop.Location = new System.Drawing.Point(380, 237);
+            this.lblIekTop.Name = "lblIekTop";
+            this.lblIekTop.Size = new System.Drawing.Size(48, 15);
+            this.lblIekTop.TabIndex = 32;
+            this.lblIekTop.Text = "label15";
             // 
-            // label16
+            // lblDekTop
             // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label16.Location = new System.Drawing.Point(380, 278);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(48, 15);
-            this.label16.TabIndex = 33;
-            this.label16.Text = "label16";
+            this.lblDekTop.AutoSize = true;
+            this.lblDekTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblDekTop.Location = new System.Drawing.Point(380, 278);
+            this.lblDekTop.Name = "lblDekTop";
+            this.lblDekTop.Size = new System.Drawing.Size(48, 15);
+            this.lblDekTop.TabIndex = 33;
+            this.lblDekTop.Text = "label16";
             // 
-            // button4
+            // btnWriteEkfTte
             // 
-            this.button4.Location = new System.Drawing.Point(563, 111);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 35;
-            this.button4.Text = "На лист";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnWriteEkfTte.Location = new System.Drawing.Point(563, 111);
+            this.btnWriteEkfTte.Name = "btnWriteEkfTte";
+            this.btnWriteEkfTte.Size = new System.Drawing.Size(75, 23);
+            this.btnWriteEkfTte.TabIndex = 35;
+            this.btnWriteEkfTte.Text = "На лист";
+            this.btnWriteEkfTte.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btnCopyEkfTte
             // 
-            this.button3.Location = new System.Drawing.Point(482, 111);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 34;
-            this.button3.Text = "В буфер";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnCopyEkfTte.Location = new System.Drawing.Point(482, 111);
+            this.btnCopyEkfTte.Name = "btnCopyEkfTte";
+            this.btnCopyEkfTte.Size = new System.Drawing.Size(75, 23);
+            this.btnCopyEkfTte.TabIndex = 34;
+            this.btnCopyEkfTte.Text = "В буфер";
+            this.btnCopyEkfTte.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // btnWriteKeazTtk
             // 
-            this.button6.Location = new System.Drawing.Point(563, 152);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 37;
-            this.button6.Text = "На лист";
-            this.button6.UseVisualStyleBackColor = true;
+            this.btnWriteKeazTtk.Location = new System.Drawing.Point(563, 152);
+            this.btnWriteKeazTtk.Name = "btnWriteKeazTtk";
+            this.btnWriteKeazTtk.Size = new System.Drawing.Size(75, 23);
+            this.btnWriteKeazTtk.TabIndex = 37;
+            this.btnWriteKeazTtk.Text = "На лист";
+            this.btnWriteKeazTtk.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // btnCopyKeazTtk
             // 
-            this.button5.Location = new System.Drawing.Point(482, 152);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 36;
-            this.button5.Text = "В буфер";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnCopyKeazTtk.Location = new System.Drawing.Point(482, 152);
+            this.btnCopyKeazTtk.Name = "btnCopyKeazTtk";
+            this.btnCopyKeazTtk.Size = new System.Drawing.Size(75, 23);
+            this.btnCopyKeazTtk.TabIndex = 36;
+            this.btnCopyKeazTtk.Text = "В буфер";
+            this.btnCopyKeazTtk.UseVisualStyleBackColor = true;
             // 
-            // button8
+            // btnWriteTdmTtn
             // 
-            this.button8.Location = new System.Drawing.Point(562, 193);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 23);
-            this.button8.TabIndex = 39;
-            this.button8.Text = "На лист";
-            this.button8.UseVisualStyleBackColor = true;
+            this.btnWriteTdmTtn.Location = new System.Drawing.Point(562, 193);
+            this.btnWriteTdmTtn.Name = "btnWriteTdmTtn";
+            this.btnWriteTdmTtn.Size = new System.Drawing.Size(75, 23);
+            this.btnWriteTdmTtn.TabIndex = 39;
+            this.btnWriteTdmTtn.Text = "На лист";
+            this.btnWriteTdmTtn.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // btnCopyTdmTtn
             // 
-            this.button7.Location = new System.Drawing.Point(481, 193);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 38;
-            this.button7.Text = "В буфер";
-            this.button7.UseVisualStyleBackColor = true;
+            this.btnCopyTdmTtn.Location = new System.Drawing.Point(481, 193);
+            this.btnCopyTdmTtn.Name = "btnCopyTdmTtn";
+            this.btnCopyTdmTtn.Size = new System.Drawing.Size(75, 23);
+            this.btnCopyTdmTtn.TabIndex = 38;
+            this.btnCopyTdmTtn.Text = "В буфер";
+            this.btnCopyTdmTtn.UseVisualStyleBackColor = true;
             // 
-            // button10
+            // btnWriteIekTop
             // 
-            this.button10.Location = new System.Drawing.Point(562, 234);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(75, 23);
-            this.button10.TabIndex = 41;
-            this.button10.Text = "На лист";
-            this.button10.UseVisualStyleBackColor = true;
+            this.btnWriteIekTop.Location = new System.Drawing.Point(562, 234);
+            this.btnWriteIekTop.Name = "btnWriteIekTop";
+            this.btnWriteIekTop.Size = new System.Drawing.Size(75, 23);
+            this.btnWriteIekTop.TabIndex = 41;
+            this.btnWriteIekTop.Text = "На лист";
+            this.btnWriteIekTop.UseVisualStyleBackColor = true;
             // 
-            // button9
+            // btnCopyIekTop
             // 
-            this.button9.Location = new System.Drawing.Point(481, 234);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(75, 23);
-            this.button9.TabIndex = 40;
-            this.button9.Text = "В буфер";
-            this.button9.UseVisualStyleBackColor = true;
+            this.btnCopyIekTop.Location = new System.Drawing.Point(481, 234);
+            this.btnCopyIekTop.Name = "btnCopyIekTop";
+            this.btnCopyIekTop.Size = new System.Drawing.Size(75, 23);
+            this.btnCopyIekTop.TabIndex = 40;
+            this.btnCopyIekTop.Text = "В буфер";
+            this.btnCopyIekTop.UseVisualStyleBackColor = true;
             // 
-            // button12
+            // btnWriteDekTop
             // 
-            this.button12.Location = new System.Drawing.Point(562, 275);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(75, 23);
-            this.button12.TabIndex = 43;
-            this.button12.Text = "На лист";
-            this.button12.UseVisualStyleBackColor = true;
+            this.btnWriteDekTop.Location = new System.Drawing.Point(562, 275);
+            this.btnWriteDekTop.Name = "btnWriteDekTop";
+            this.btnWriteDekTop.Size = new System.Drawing.Size(75, 23);
+            this.btnWriteDekTop.TabIndex = 43;
+            this.btnWriteDekTop.Text = "На лист";
+            this.btnWriteDekTop.UseVisualStyleBackColor = true;
             // 
-            // button11
+            // btnCopyDekTop
             // 
-            this.button11.Location = new System.Drawing.Point(481, 275);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(75, 23);
-            this.button11.TabIndex = 42;
-            this.button11.Text = "В буфер";
-            this.button11.UseVisualStyleBackColor = true;
+            this.btnCopyDekTop.Location = new System.Drawing.Point(481, 275);
+            this.btnCopyDekTop.Name = "btnCopyDekTop";
+            this.btnCopyDekTop.Size = new System.Drawing.Size(75, 23);
+            this.btnCopyDekTop.TabIndex = 42;
+            this.btnCopyDekTop.Text = "В буфер";
+            this.btnCopyDekTop.UseVisualStyleBackColor = true;
             // 
             // SelectionTransformer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(649, 309);
-            this.Controls.Add(this.button12);
-            this.Controls.Add(this.button11);
-            this.Controls.Add(this.button10);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.label16);
-            this.Controls.Add(this.label15);
-            this.Controls.Add(this.label14);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.label11);
+            this.Controls.Add(this.btnWriteDekTop);
+            this.Controls.Add(this.btnCopyDekTop);
+            this.Controls.Add(this.btnWriteIekTop);
+            this.Controls.Add(this.btnCopyIekTop);
+            this.Controls.Add(this.btnWriteTdmTtn);
+            this.Controls.Add(this.btnCopyTdmTtn);
+            this.Controls.Add(this.btnWriteKeazTtk);
+            this.Controls.Add(this.btnCopyKeazTtk);
+            this.Controls.Add(this.btnWriteEkfTte);
+            this.Controls.Add(this.btnCopyEkfTte);
+            this.Controls.Add(this.lblDekTop);
+            this.Controls.Add(this.lblIekTop);
+            this.Controls.Add(this.lblTdmTtn);
+            this.Controls.Add(this.lblKeazTtk);
+            this.Controls.Add(this.lblEkfTte);
+            this.Controls.Add(this.lblIekTti);
             this.Controls.Add(this.pictureBox7);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.pictureBox6);
@@ -484,16 +484,16 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnWriteIekTti);
+            this.Controls.Add(this.btnCopyIekTti);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox4);
-            this.Controls.Add(this.comboBox3);
-            this.Controls.Add(this.comboBox2);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cmbTransformerPower);
+            this.Controls.Add(this.cmbTransformerAccuracy);
+            this.Controls.Add(this.cmbTransformerExecution);
+            this.Controls.Add(this.cmbTransformerRatio);
             this.Controls.Add(this.pictureBox1);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(665, 348);
@@ -518,16 +518,16 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox cmbTransformerRatio;
+        private System.Windows.Forms.ComboBox cmbTransformerExecution;
+        private System.Windows.Forms.ComboBox cmbTransformerAccuracy;
+        private System.Windows.Forms.ComboBox cmbTransformerPower;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnCopyIekTti;
+        private System.Windows.Forms.Button btnWriteIekTti;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox3;
@@ -540,21 +540,21 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.PictureBox pictureBox7;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Label lblIekTti;
+        private System.Windows.Forms.Label lblEkfTte;
+        private System.Windows.Forms.Label lblKeazTtk;
+        private System.Windows.Forms.Label lblTdmTtn;
+        private System.Windows.Forms.Label lblIekTop;
+        private System.Windows.Forms.Label lblDekTop;
+        private System.Windows.Forms.Button btnWriteEkfTte;
+        private System.Windows.Forms.Button btnCopyEkfTte;
+        private System.Windows.Forms.Button btnWriteKeazTtk;
+        private System.Windows.Forms.Button btnCopyKeazTtk;
+        private System.Windows.Forms.Button btnWriteTdmTtn;
+        private System.Windows.Forms.Button btnCopyTdmTtn;
+        private System.Windows.Forms.Button btnWriteIekTop;
+        private System.Windows.Forms.Button btnCopyIekTop;
+        private System.Windows.Forms.Button btnWriteDekTop;
+        private System.Windows.Forms.Button btnCopyDekTop;
     }
 }

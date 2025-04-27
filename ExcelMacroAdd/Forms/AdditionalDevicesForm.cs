@@ -20,7 +20,8 @@ namespace ExcelMacroAdd.Forms
         private readonly AdditionalDevices circuitBreakerData;
         private readonly AdditionalDevices switchData;
         private readonly AdditionalDevices addDevicesAgregate;
-               
+        private bool AllNull(params string[] values) => values.All(v => v == null);
+
         private void AdditionalDevicesForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             SelectionModularDevices main = this.Owner as SelectionModularDevices;
@@ -37,8 +38,11 @@ namespace ExcelMacroAdd.Forms
             currentRow = Cell.Row;
             string sArticle = Convert.ToString(Worksheet.Cells[currentRow, 1].Value2);
 
-            if (sArticle == null)
-                return;
+            if (string.IsNullOrEmpty(sArticle))
+            {
+                MessageBox.Show("Ошибка: не указан артикул.");
+                Close();
+            }
 
             circuitBreakerData = accessData.AccessAdditionalModularDevices.GetEntityAdditionalCircuitBreaker(sArticle);
             switchData = accessData.AccessAdditionalModularDevices.GetEntityAdditionalSwitch(sArticle);
@@ -51,18 +55,12 @@ namespace ExcelMacroAdd.Forms
             {
                 addDevicesAgregate = switchData;
             }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+        }      
 
         private void AdditionalDevicesForm_Load(object sender, EventArgs e)
         {
             if (circuitBreakerData == null && switchData == null)
                 return;
-
 
             bool additionalDevicesAgregateCheck = AllNull(
                 addDevicesAgregate.shuntTrip24vArticle,
@@ -71,85 +69,66 @@ namespace ExcelMacroAdd.Forms
                 addDevicesAgregate.undervoltageReleaseArticle,
                 addDevicesAgregate.signalContactArticle,
                 addDevicesAgregate.auxiliaryContactArticle,
-                addDevicesAgregate.signalOrAuxiliaryContactArticle);
-
-            bool AllNull(params string[] strings)
-            {
-                return strings.All(s => s == null);
-            }
+                addDevicesAgregate.signalOrAuxiliaryContactArticle);          
 
             if (!additionalDevicesAgregateCheck)
             {
-                button1.Enabled = true;
+                btnApply.Enabled = true;
                 label1.Visible = false;
                 if (addDevicesAgregate.shuntTrip24vArticle != null)
-                    checkBox1.Enabled = true;
+                    checkBoxShuntTrip24V.Enabled = true;
                 if (addDevicesAgregate.shuntTrip48vArticle != null)
-                    checkBox2.Enabled = true;
+                    checkBoxShuntTrip48V.Enabled = true;
                 if (addDevicesAgregate.shuntTrip230vArticle != null)
-                    checkBox3.Enabled = true;
+                    checkBoxShuntTrip230V.Enabled = true;
                 if (addDevicesAgregate.undervoltageReleaseArticle != null)
-                    checkBox4.Enabled = true;
+                    checkBoxUndervoltageRelease.Enabled = true;
                 if (addDevicesAgregate.signalContactArticle != null)
-                    checkBox5.Enabled = true;
+                    checkBoxSignalContact.Enabled = true;
                 if (addDevicesAgregate.auxiliaryContactArticle != null)
-                    checkBox6.Enabled = true;
+                    checkBoxAuxiliaryContact.Enabled = true;
                 if (addDevicesAgregate.signalOrAuxiliaryContactArticle != null)
-                    checkBox7.Enabled = true;
+                    checkBoxSignalOrAuxiliaryContact.Enabled = true;
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void WriteDeviceData(string article, int rowOffset)
         {
+            if (string.IsNullOrEmpty(article)) return;
+            var writeExcel = new WriteExcel(dataInXml, addDevicesAgregate.vendor, rowOffset, article);
+            writeExcel.Start();
+        }
+
+        private void btnApply_Click(object sender, EventArgs e)
+        {
+            int maxRows = 1000;
             int rowsLine = currentRow;
 
-            while (Worksheet.Cells[rowsLine, 1].Value2 != null || Worksheet.Cells[rowsLine + 1, 1].Value2 != null)
+            while (rowsLine < maxRows && Worksheet.Cells[rowsLine, 1].Value2 != null || Worksheet.Cells[rowsLine + 1, 1].Value2 != null)
             {
                 ++rowsLine;
             }
 
-            if (checkBox1.Checked)
-            {
-                var writeExcel = new WriteExcel(dataInXml, addDevicesAgregate.vendor, rowsLine++ - currentRow, addDevicesAgregate.shuntTrip24vArticle);
-                writeExcel.Start();
-            }
+            if (checkBoxShuntTrip24V.Checked) WriteDeviceData(addDevicesAgregate.shuntTrip24vArticle, rowsLine++ - currentRow);
 
-            if (checkBox2.Checked)
-            {
-                var writeExcel = new WriteExcel(dataInXml, addDevicesAgregate.vendor, rowsLine++ - currentRow, addDevicesAgregate.shuntTrip48vArticle);
-                writeExcel.Start();
-            }
+            if (checkBoxShuntTrip48V.Checked) WriteDeviceData(addDevicesAgregate.shuntTrip48vArticle, rowsLine++ - currentRow);
 
-            if (checkBox3.Checked)
-            {
-                var writeExcel = new WriteExcel(dataInXml, addDevicesAgregate.vendor, rowsLine++ - currentRow, addDevicesAgregate.shuntTrip230vArticle);
-                writeExcel.Start();
-            }
+            if (checkBoxShuntTrip230V.Checked) WriteDeviceData(addDevicesAgregate.shuntTrip230vArticle, rowsLine++ - currentRow);
 
-            if (checkBox4.Checked)
-            {
-                var writeExcel = new WriteExcel(dataInXml, addDevicesAgregate.vendor, rowsLine++ - currentRow, addDevicesAgregate.undervoltageReleaseArticle);
-                writeExcel.Start();
-            }
+            if (checkBoxUndervoltageRelease.Checked) WriteDeviceData(addDevicesAgregate.undervoltageReleaseArticle, rowsLine++ - currentRow);
+           
+            if (checkBoxSignalContact.Checked) WriteDeviceData(addDevicesAgregate.signalContactArticle, rowsLine++ - currentRow);
 
-            if (checkBox5.Checked)
-            {
-                var writeExcel = new WriteExcel(dataInXml, addDevicesAgregate.vendor, rowsLine++ - currentRow, addDevicesAgregate.signalContactArticle);
-                writeExcel.Start();
-            }
+            if (checkBoxAuxiliaryContact.Checked) WriteDeviceData(addDevicesAgregate.auxiliaryContactArticle, rowsLine++ - currentRow);
 
-            if (checkBox6.Checked)
-            {
-                var writeExcel = new WriteExcel(dataInXml, addDevicesAgregate.vendor, rowsLine++ - currentRow, addDevicesAgregate.auxiliaryContactArticle);
-                writeExcel.Start();
-            }
+            if (checkBoxSignalOrAuxiliaryContact.Checked) WriteDeviceData(addDevicesAgregate.signalOrAuxiliaryContactArticle, rowsLine++ - currentRow);
 
-            if (checkBox7.Checked)
-            {
-                var writeExcel = new WriteExcel(dataInXml, addDevicesAgregate.vendor, rowsLine++ - currentRow, addDevicesAgregate.signalOrAuxiliaryContactArticle);
-                writeExcel.Start();
-            }
             Close();
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

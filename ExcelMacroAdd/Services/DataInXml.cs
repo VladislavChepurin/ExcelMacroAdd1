@@ -7,12 +7,23 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
+//Rewiew OK 22.04.2025
 namespace ExcelMacroAdd.Services
 {
     public class DataInXml : IDataInXml
     {
+        private XmlSerializer CreateXmlSerializer()
+        {
+            var attrs = new XmlAttributes();
+            var xRoot = new XmlRootAttribute { ElementName = "MetaSettings" };
+            attrs.XmlRoot = xRoot;
+            var xOver = new XmlAttributeOverrides();
+            xOver.Add(typeof(Vendor[]), attrs);
+            return new XmlSerializer(typeof(Vendor[]), xOver);
+        }
+
         // Folders AppData content Settings.xml
-        readonly string file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/Settings.xml");
+        readonly string file = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/Settings.xml");
         public Vendor ReadElementXml(string vendor, Vendor[] dataXmlContinue)
         {
             return dataXmlContinue.Single(p => p.VendorAttribute == vendor);
@@ -20,30 +31,46 @@ namespace ExcelMacroAdd.Services
 
         public Vendor[] ReadFileXml()
         {
-            XmlAttributes attrs = new XmlAttributes();
-            XmlAttributeOverrides xOver = new XmlAttributeOverrides();
-            XmlRootAttribute xRoot = new XmlRootAttribute
-            {
-                // Set a new Namespace and ElementName for the root element.
-                ElementName = "MetaSettings"
-            };
-            attrs.XmlRoot = xRoot;
-            xOver.Add(typeof(Vendor[]), attrs);
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Vendor[]), xOver);
+            int maxAttempts = 2; // Максимальное количество попыток
+            int attempt = 0;
 
-            try
+            while (attempt < maxAttempts)
             {
-                // десериализуем
-                using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
+                try
                 {
-                    return xmlSerializer.Deserialize(fs) as Vendor[];
+                    using (FileStream fs = new FileStream(file, FileMode.Open))
+                    {                       
+                        var serializer = CreateXmlSerializer();
+                        var result = serializer.Deserialize(fs) as Vendor[];
+
+                        // Проверяем результат десериализации
+                        return result ?? Array.Empty<Vendor>();
+                    }
+                }
+
+                catch (InvalidOperationException ex)
+                {
+                    // Ошибка десериализации (некорректный формат)
+                    Logger.LogException(ex, "Ошибка десериализации XML");
+                    XmlFileCreate();
+                    attempt++;
+                }
+                catch (IOException ex)
+                {
+                    // Ошибка доступа к файлу
+                    Logger.LogException(ex, "Ошибка доступа к файлу");
+                    XmlFileCreate();
+                    return Array.Empty<Vendor>();
+                }
+                catch (Exception ex)
+                {
+                    // Все остальные исключения
+                    Logger.LogException(ex, "Неизвестная ошибка");
+                    return Array.Empty<Vendor>();
                 }
             }
-            catch (InvalidOperationException)
-            {
-                XmlFileCreate();
-                return default;
-            }
+
+            return Array.Empty<Vendor>();
         }
 
         public void WriteXml(string vendor, params string[] data)
@@ -75,28 +102,18 @@ namespace ExcelMacroAdd.Services
 
         public void XmlFileCreate()
         {
-            XmlAttributes attrs = new XmlAttributes();
-            XmlAttributeOverrides xOver = new XmlAttributeOverrides();
-            XmlRootAttribute xRoot = new XmlRootAttribute
-            {
-                // Set a new Namespace and ElementName for the root element.
-                ElementName = "MetaSettings"
-            };
-            attrs.XmlRoot = xRoot;
-            xOver.Add(typeof(Vendor[]), attrs);
-
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Vendor[]), xOver);
+            var xmlSerializer = CreateXmlSerializer();
 
             Vendor[] vendor = {
-                new Vendor("IEK", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("EKF", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("DKC", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("KEAZ", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("DEKraft", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("TDM", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("ABB", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("Schneider", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU"))),
-                new Vendor("Chint", "_", "_", "_", 0, DateTime.Now.ToString(new CultureInfo("ru-RU")))
+                new Vendor("IEK", "_", "_", "_", 0, DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU"))),
+                new Vendor("EKF", "_", "_", "_", 0, DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU"))),
+                new Vendor("DKC", "_", "_", "_", 0, DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU"))),
+                new Vendor("KEAZ", "_", "_", "_", 0, DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU"))),
+                new Vendor("DEKraft", "_", "_", "_", 0, DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU"))),
+                new Vendor("TDM", "_", "_", "_", 0, DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU"))),
+                new Vendor("ABB", "_", "_", "_", 0, DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU"))),
+                new Vendor("Schneider", "_", "_", "_", 0, DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU"))),
+                new Vendor("Chint", "_", "_", "_", 0, DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU")))
             };
             // получаем поток, куда будем записывать сериализованный объект
             using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))

@@ -1,4 +1,5 @@
 ﻿using ExcelMacroAdd.Serializable.Entity.Interfaces;
+using ExcelMacroAdd.Services;
 using System.Runtime.InteropServices;
 
 namespace ExcelMacroAdd.Functions
@@ -20,9 +21,10 @@ namespace ExcelMacroAdd.Functions
                 excelCells.Font.Name = correctFontResources.NameFont;
                 excelCells.Font.Size = correctFontResources.SizeFont;
             }
-            catch (COMException)
+            catch (COMException ex)
             {
                 MessageError("В файле appSettings.json установлены не верные параметры шрифта, пожайлуста установите правильные и доступные значения.", "Ошибка параметров шрифта");
+                Logger.LogException(ex);
             }
         }
     }

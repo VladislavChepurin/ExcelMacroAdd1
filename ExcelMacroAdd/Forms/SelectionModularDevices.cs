@@ -5,6 +5,7 @@ using System;
 using System.Threading;
 using System.Windows.Forms;
 
+//Rewiew OK 21.04.2025
 namespace ExcelMacroAdd.Forms
 {
     public partial class SelectionModularDevices : Form
@@ -13,58 +14,62 @@ namespace ExcelMacroAdd.Forms
         private readonly AccessData accessData;
         private readonly IFormSettings formSettings;
         static readonly Mutex Mutex = new Mutex(false, "MutexSelectionModularDevices_SingleInstance");
-
+        private bool _mutexAcquired = false;
+           
         public SelectionModularDevices(IDataInXml dataInXml, AccessData accessData, IFormSettings formSettings)
         {
-            // проверяем, находится ли мьютекс в сигнальном состоянии
-            var signaled = Mutex.WaitOne(TimeSpan.FromSeconds(1), false);
-
-            // Если состояние несигнальное (несвободное) — значит другой поток уже владеет мьютексом
-            if (!signaled)
+            InitializeComponent();
+            try
             {
-                Close();
+                _mutexAcquired = Mutex.WaitOne(TimeSpan.FromSeconds(1), false);
+                if (!_mutexAcquired)
+                {
+                    Close();
+                }
             }
-
+            catch (AbandonedMutexException)
+            {
+                _mutexAcquired = true; // Мьютекс был оставлен, но теперь принадлежит текущему потоку
+            }
             this.dataInXml = dataInXml;
             this.accessData = accessData;
             this.formSettings = formSettings;
-            TopMost  = formSettings.FormTopMost;
-            InitializeComponent();
+            TopMost  = formSettings.FormTopMost;           
         }
 
-        private void SelectionModularDevices_FormClosed(object sender, FormClosedEventArgs e) =>
-            Mutex.ReleaseMutex();
+        private void SelectionModularDevices_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (_mutexAcquired)
+            {
+                Mutex.ReleaseMutex();
+                _mutexAcquired = false;
+            }
+        }
+        private void ShowChildForm(Form childForm)
+        {
+            childForm.FormClosed += (s, e) => Show();
+            Hide();
+            childForm.ShowDialog();
+        }
 
         private void SelectionModularDevices_Load(object sender, EventArgs e)
         {
-            button1.Click += (s, a) =>
+            btnSelectionCircuitBreakerShow.Click += (s, a) =>
             {
-                Hide();
-                var selectionCircuitBreaker = new SelectionCircuitBreaker(dataInXml, accessData, formSettings)
-                {
-                    Owner = this
-                };
-                selectionCircuitBreaker.ShowDialog();
+                using (var form = new SelectionCircuitBreaker(dataInXml, accessData, formSettings))                
+                    ShowChildForm(form);
             };
 
-            button2.Click += (s, a) =>
+            btnSelectionSwitchShow.Click += (s, a) =>
             {
-                Hide();
-                var selectionSwitch = new SelectionSwitch(dataInXml, accessData, formSettings)
-                {
-                    Owner = this
-                };
-                selectionSwitch.ShowDialog();
+                using (var form = new SelectionSwitch(dataInXml, accessData, formSettings))
+                    ShowChildForm(form);
             };
 
-            button3.Click += (s, a) =>
+            btnAdditionalDevicesShow.Click += (s, a) =>
             {
-                Hide();
-                var additionalDevicesForm = new AdditionalDevicesForm(dataInXml, accessData, formSettings)
-                {
-                    Owner = this
-                };
-                additionalDevicesForm.ShowDialog();
+                using (var form = new AdditionalDevicesForm(dataInXml, accessData, formSettings))
+                    ShowChildForm(form);
             };
         }
     }

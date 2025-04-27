@@ -1,42 +1,43 @@
 ﻿using Microsoft.Office.Interop.Excel;
+using System.Runtime.InteropServices;
+using System;
+using ExcelMacroAdd.Services;
 
+//Rewiew OK 21.04.2025
 namespace ExcelMacroAdd.Functions
 {
     internal sealed class BordersTable : AbstractFunctions
     {
+        private const int ExcelAutoColor = 0;
+
         public override void Start()
         {
-            var excelCells = Application.Selection;
+            try
+            {
+                Application.ScreenUpdating = false;
 
-            var borderIndex = XlBordersIndex.xlEdgeLeft; //Левая граница
-            excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-            excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-            excelCells.Borders[borderIndex].ColorIndex = 0;
+                var excelCells = Application.Selection as Range;
 
-            borderIndex = XlBordersIndex.xlEdgeTop; //Верхняя граница
-            excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-            excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-            excelCells.Borders[borderIndex].ColorIndex = 0;
-
-            borderIndex = XlBordersIndex.xlEdgeBottom; //Нижняя граница
-            excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-            excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-            excelCells.Borders[borderIndex].ColorIndex = 0;
-
-            borderIndex = XlBordersIndex.xlEdgeRight;  //Правая граница
-            excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-            excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-            excelCells.Borders[borderIndex].ColorIndex = 0;
-
-            borderIndex = XlBordersIndex.xlInsideHorizontal;  //Внутренняя горизонтальня граница
-            excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-            excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-            excelCells.Borders[borderIndex].ColorIndex = 0;
-
-            borderIndex = XlBordersIndex.xlInsideVertical;  //Внутренняя горизонтальня граница
-            excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-            excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-            excelCells.Borders[borderIndex].ColorIndex = 0;
-        }
+                if (excelCells == null)
+                {
+                    MessageInformation("Выделите диапазон ячеек.", "Внимание!");                   
+                    return;
+                } 
+                
+                excelCells.Borders.LineStyle = XlLineStyle.xlContinuous;  // Добавлено оформление границ  
+            }
+            catch (COMException ex)
+            {
+                Logger.LogException(ex, "Ошибка Excel");             
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex, "Неизвестная ошибка");                
+            }
+            finally
+            {
+                Application.ScreenUpdating = true;
+            }
+        }       
     }
 }

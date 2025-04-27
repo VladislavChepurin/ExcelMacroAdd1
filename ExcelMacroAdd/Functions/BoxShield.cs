@@ -1,5 +1,6 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
+using ExcelMacroAdd.Services;
 using System;
 using System.Data;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -21,57 +22,60 @@ namespace ExcelMacroAdd.Functions
         {
             if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
             {
-                MessageWarning("Функция работает только в \"Журнале учета НКУ\" текущего года. \n Пожайлуста откройте необходимую книгу Excel.",
-                    "Имя книги не совпадает с целевой");
+                MessageWarning(Properties.Resources.NotJornal, Properties.Resources.NameWorkbook);
                 return;
             }
 
             var firstRow = Cell.Row; // Вычисляем верхний элемент
             var countRow = Cell.Rows.Count; // Вычисляем кол-во выделенных строк
-            var endRow = firstRow + countRow;
+            var endRow = firstRow + countRow - 1;
+            var currentRow = firstRow;
+
             do
             {
                 try
                 {
-                    string sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
+                    string sCabinetArticle = Convert.ToString(Worksheet.Cells[firstRow, CabinetArticleColumn].Value2);
 
-                    if (!String.IsNullOrEmpty(sArticle))
+                    if (!String.IsNullOrEmpty(sCabinetArticle))
                     {
-                        var journalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle.ToLower());
+                        var journalNku = await accessData.AccessJournalNku.GetEntityJournal(sCabinetArticle.ToLower());
 
                         if (journalNku is null)
                         {
-                            Worksheet.Range["Z" + firstRow].Interior.Color = Excel.XlRgbColor.rgbPaleGoldenrod;
-                            firstRow++;
+                            Worksheet.Range["Z" + currentRow].Interior.Color = Excel.XlRgbColor.rgbPaleGoldenrod;
+                            currentRow++;
                             continue;
                         }
 
-                        Worksheet.Range["K" + firstRow].Value2 = journalNku.Ip.ToString();
-                        Worksheet.Range["L" + firstRow].Value2 = journalNku.Climate ?? "-";
-                        Worksheet.Range["M" + firstRow].Value2 = journalNku.Weight ?? "-";
-                        Worksheet.Range["N" + firstRow].Value2 = journalNku.Height ?? string.Empty;
-                        Worksheet.Range["O" + firstRow].Value2 = journalNku.Width ?? string.Empty;
-                        Worksheet.Range["P" + firstRow].Value2 = journalNku.Depth ?? string.Empty;
-                        Worksheet.Range["AC" + firstRow].Value2 = journalNku.MaterialBox.MaterialValue ?? string.Empty;
-                        Worksheet.Range["AD" + firstRow].Value2 = journalNku.ExecutionBox.ExecutionValue ?? string.Empty;
+                        Worksheet.Cells[currentRow, IPRatingColumn].Value2 = journalNku.Ip.ToString();
+                        Worksheet.Cells[currentRow, ClimaticCategoryColumn].Value2 = journalNku.Climate ?? "-";
+                        Worksheet.Cells[currentRow, MassColumn].Value2 = journalNku.Weight ?? "-";
+                        Worksheet.Cells[currentRow, EnclosureHeightColumn].Value2 = journalNku.Height ?? string.Empty;
+                        Worksheet.Cells[currentRow, EnclosureWidthColumn].Value2 = journalNku.Width ?? string.Empty;
+                        Worksheet.Cells[currentRow, EnclosureDepthColumn].Value2 = journalNku.Depth ?? string.Empty;
+                        Worksheet.Cells[currentRow, CabinetMaterialTypeColumn].Value2 = journalNku.MaterialBox.MaterialValue ?? string.Empty;
+                        Worksheet.Cells[currentRow, MountingTypeColumn].Value2 = journalNku.ExecutionBox.ExecutionValue ?? string.Empty;
                     }
                 }
 
-                catch (DataException)
+                catch (DataException ex)
                 {
                     MessageError("Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",
                         "Ошибка базы данных");
+                    Logger.LogException(ex);
                     return;
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {e.Message}",
+                    MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {ex.Message}",
                         "Ошибка базы данных");
+                    Logger.LogException(ex);
                     return;
                 }
-                firstRow++;
+                currentRow++;
             }
-            while (endRow > firstRow);
+            while (currentRow <= endRow);
         }
     }
 }

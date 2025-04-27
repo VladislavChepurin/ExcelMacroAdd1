@@ -28,115 +28,115 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.checkBoxShuntTrip24V = new System.Windows.Forms.CheckBox();
+            this.checkBoxShuntTrip48V = new System.Windows.Forms.CheckBox();
+            this.checkBoxShuntTrip230V = new System.Windows.Forms.CheckBox();
+            this.checkBoxUndervoltageRelease = new System.Windows.Forms.CheckBox();
+            this.checkBoxSignalContact = new System.Windows.Forms.CheckBox();
+            this.checkBoxAuxiliaryContact = new System.Windows.Forms.CheckBox();
+            this.checkBoxSignalOrAuxiliaryContact = new System.Windows.Forms.CheckBox();
+            this.btnApply = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // checkBox1
+            // checkBoxShuntTrip24V
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Enabled = false;
-            this.checkBox1.Location = new System.Drawing.Point(12, 12);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(191, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Независимый расцепитель 24 В";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBoxShuntTrip24V.AutoSize = true;
+            this.checkBoxShuntTrip24V.Enabled = false;
+            this.checkBoxShuntTrip24V.Location = new System.Drawing.Point(12, 12);
+            this.checkBoxShuntTrip24V.Name = "checkBoxShuntTrip24V";
+            this.checkBoxShuntTrip24V.Size = new System.Drawing.Size(191, 17);
+            this.checkBoxShuntTrip24V.TabIndex = 0;
+            this.checkBoxShuntTrip24V.Text = "Независимый расцепитель 24 В";
+            this.checkBoxShuntTrip24V.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // checkBoxShuntTrip48V
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Enabled = false;
-            this.checkBox2.Location = new System.Drawing.Point(12, 35);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(191, 17);
-            this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "Независимый расцепитель 48 В";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBoxShuntTrip48V.AutoSize = true;
+            this.checkBoxShuntTrip48V.Enabled = false;
+            this.checkBoxShuntTrip48V.Location = new System.Drawing.Point(12, 35);
+            this.checkBoxShuntTrip48V.Name = "checkBoxShuntTrip48V";
+            this.checkBoxShuntTrip48V.Size = new System.Drawing.Size(191, 17);
+            this.checkBoxShuntTrip48V.TabIndex = 1;
+            this.checkBoxShuntTrip48V.Text = "Независимый расцепитель 48 В";
+            this.checkBoxShuntTrip48V.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // checkBoxShuntTrip230V
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Enabled = false;
-            this.checkBox3.Location = new System.Drawing.Point(12, 58);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(197, 17);
-            this.checkBox3.TabIndex = 2;
-            this.checkBox3.Text = "Независимый расцепитель 230 В";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBoxShuntTrip230V.AutoSize = true;
+            this.checkBoxShuntTrip230V.Enabled = false;
+            this.checkBoxShuntTrip230V.Location = new System.Drawing.Point(12, 58);
+            this.checkBoxShuntTrip230V.Name = "checkBoxShuntTrip230V";
+            this.checkBoxShuntTrip230V.Size = new System.Drawing.Size(197, 17);
+            this.checkBoxShuntTrip230V.TabIndex = 2;
+            this.checkBoxShuntTrip230V.Text = "Независимый расцепитель 230 В";
+            this.checkBoxShuntTrip230V.UseVisualStyleBackColor = true;
             // 
-            // checkBox4
+            // checkBoxUndervoltageRelease
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Enabled = false;
-            this.checkBox4.Location = new System.Drawing.Point(12, 81);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(235, 17);
-            this.checkBox4.TabIndex = 3;
-            this.checkBox4.Text = "Расцепитель минимального напряжения";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBoxUndervoltageRelease.AutoSize = true;
+            this.checkBoxUndervoltageRelease.Enabled = false;
+            this.checkBoxUndervoltageRelease.Location = new System.Drawing.Point(12, 81);
+            this.checkBoxUndervoltageRelease.Name = "checkBoxUndervoltageRelease";
+            this.checkBoxUndervoltageRelease.Size = new System.Drawing.Size(235, 17);
+            this.checkBoxUndervoltageRelease.TabIndex = 3;
+            this.checkBoxUndervoltageRelease.Text = "Расцепитель минимального напряжения";
+            this.checkBoxUndervoltageRelease.UseVisualStyleBackColor = true;
             // 
-            // checkBox5
+            // checkBoxSignalContact
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Enabled = false;
-            this.checkBox5.Location = new System.Drawing.Point(12, 106);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(131, 17);
-            this.checkBox5.TabIndex = 7;
-            this.checkBox5.Text = "Сигнальный контакт";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBoxSignalContact.AutoSize = true;
+            this.checkBoxSignalContact.Enabled = false;
+            this.checkBoxSignalContact.Location = new System.Drawing.Point(12, 106);
+            this.checkBoxSignalContact.Name = "checkBoxSignalContact";
+            this.checkBoxSignalContact.Size = new System.Drawing.Size(131, 17);
+            this.checkBoxSignalContact.TabIndex = 7;
+            this.checkBoxSignalContact.Text = "Сигнальный контакт";
+            this.checkBoxSignalContact.UseVisualStyleBackColor = true;
             // 
-            // checkBox6
+            // checkBoxAuxiliaryContact
             // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Enabled = false;
-            this.checkBox6.Location = new System.Drawing.Point(12, 129);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(126, 17);
-            this.checkBox6.TabIndex = 6;
-            this.checkBox6.Text = "Аварийный контакт";
-            this.checkBox6.UseVisualStyleBackColor = true;
+            this.checkBoxAuxiliaryContact.AutoSize = true;
+            this.checkBoxAuxiliaryContact.Enabled = false;
+            this.checkBoxAuxiliaryContact.Location = new System.Drawing.Point(12, 129);
+            this.checkBoxAuxiliaryContact.Name = "checkBoxAuxiliaryContact";
+            this.checkBoxAuxiliaryContact.Size = new System.Drawing.Size(126, 17);
+            this.checkBoxAuxiliaryContact.TabIndex = 6;
+            this.checkBoxAuxiliaryContact.Text = "Аварийный контакт";
+            this.checkBoxAuxiliaryContact.UseVisualStyleBackColor = true;
             // 
-            // checkBox7
+            // checkBoxSignalOrAuxiliaryContact
             // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Enabled = false;
-            this.checkBox7.Location = new System.Drawing.Point(12, 152);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(275, 17);
-            this.checkBox7.TabIndex = 5;
-            this.checkBox7.Text = "Совмещенный сигнальный и аварийный контакт";
-            this.checkBox7.UseVisualStyleBackColor = true;
+            this.checkBoxSignalOrAuxiliaryContact.AutoSize = true;
+            this.checkBoxSignalOrAuxiliaryContact.Enabled = false;
+            this.checkBoxSignalOrAuxiliaryContact.Location = new System.Drawing.Point(12, 152);
+            this.checkBoxSignalOrAuxiliaryContact.Name = "checkBoxSignalOrAuxiliaryContact";
+            this.checkBoxSignalOrAuxiliaryContact.Size = new System.Drawing.Size(275, 17);
+            this.checkBoxSignalOrAuxiliaryContact.TabIndex = 5;
+            this.checkBoxSignalOrAuxiliaryContact.Text = "Совмещенный сигнальный и аварийный контакт";
+            this.checkBoxSignalOrAuxiliaryContact.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnApply
             // 
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(12, 210);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 25);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Сделать хорошо";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnApply.Enabled = false;
+            this.btnApply.Location = new System.Drawing.Point(12, 210);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(100, 25);
+            this.btnApply.TabIndex = 8;
+            this.btnApply.Text = "Сделать хорошо";
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
-            // button2
+            // btnClose
             // 
-            this.button2.Location = new System.Drawing.Point(182, 210);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 25);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "Закрыть";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnClose.Location = new System.Drawing.Point(182, 210);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(100, 25);
+            this.btnClose.TabIndex = 9;
+            this.btnClose.Text = "Закрыть";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // label1
             // 
@@ -154,15 +154,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(294, 251);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.checkBox5);
-            this.Controls.Add(this.checkBox6);
-            this.Controls.Add(this.checkBox7);
-            this.Controls.Add(this.checkBox4);
-            this.Controls.Add(this.checkBox3);
-            this.Controls.Add(this.checkBox2);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.btnApply);
+            this.Controls.Add(this.checkBoxSignalContact);
+            this.Controls.Add(this.checkBoxAuxiliaryContact);
+            this.Controls.Add(this.checkBoxSignalOrAuxiliaryContact);
+            this.Controls.Add(this.checkBoxUndervoltageRelease);
+            this.Controls.Add(this.checkBoxShuntTrip230V);
+            this.Controls.Add(this.checkBoxShuntTrip48V);
+            this.Controls.Add(this.checkBoxShuntTrip24V);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(310, 290);
@@ -179,15 +179,15 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.CheckBox checkBox6;
-        private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.CheckBox checkBoxShuntTrip24V;
+        private System.Windows.Forms.CheckBox checkBoxShuntTrip48V;
+        private System.Windows.Forms.CheckBox checkBoxShuntTrip230V;
+        private System.Windows.Forms.CheckBox checkBoxUndervoltageRelease;
+        private System.Windows.Forms.CheckBox checkBoxSignalContact;
+        private System.Windows.Forms.CheckBox checkBoxAuxiliaryContact;
+        private System.Windows.Forms.CheckBox checkBoxSignalOrAuxiliaryContact;
+        private System.Windows.Forms.Button btnApply;
+        private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label label1;
     }
 }

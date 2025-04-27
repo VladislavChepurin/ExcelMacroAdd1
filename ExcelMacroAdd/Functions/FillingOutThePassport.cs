@@ -1,6 +1,6 @@
 ﻿using ExcelMacroAdd.Forms;
-using ExcelMacroAdd.Forms.Services;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
+using ExcelMacroAdd.Services;
 using Microsoft.CSharp.RuntimeBinder;
 using Microsoft.Office.Interop.Word;
 using System;
@@ -62,7 +62,8 @@ namespace ExcelMacroAdd.Functions
 
             var firstRow = Cell.Row; // Вычисляем верхний элемент
             var countRow = Cell.Rows.Count; // Вычисляем кол-во выделенных строк
-            var endRow = firstRow + countRow;
+            var endRow = firstRow + countRow - 1;
+            var currentRow = firstRow;
             int numberStep = 0;
 
             new Thread(() =>
@@ -77,17 +78,20 @@ namespace ExcelMacroAdd.Functions
             new Thread(() =>
             {
                 //Инициализируем параметры Word
-                Word.Application applicationWord = new Word.Application();
+                Word.Application applicationWord = new Word.Application();              
                 // Переменная объект документа
+                Word.Document document = null;
+                string numberProject, serialNumber, model, titleLVSwitchgear, paste, designationOfLVSwitchgear, technicalSpecifications, voltage, current, iPRating, cabinetDimensions, secondWords, apparatusMounting, earthingSystem, cabinetMaterialType, mountingType;                      
+                dynamic manufacturingData;
 
-                try
-                {
-                    // Цикл переборки строк
-                    do
+                // Цикл переборки строк
+                do
+                {                    
+                    try
                     {
                         string filename;
 
-                        switch (Worksheet.Cells[firstRow, 30].Value2.ToString())
+                        switch (Worksheet.Cells[currentRow, 30].Value2.ToString())
                         {
                             case "навесное":
                                 filename = Path.Combine(pPath, resources.TemplateWall);
@@ -113,132 +117,152 @@ namespace ExcelMacroAdd.Functions
                                 filename = Path.Combine(pPath, resources.TemplateFloor);
                                 break;
                         }
-                        string nameFolderSafe = Worksheet.Cells[firstRow, 1].Value2.ToString().Replace('/', '_');
-                        string sMark = Worksheet.Cells[firstRow, 4].Value2.ToString();
-                        string sName = Worksheet.Cells[firstRow, 6].Value2.ToString();
-                        string sPaste = FuncReplace(sName ?? string.Empty); // ссылка на метод замены
-                        string firstWords = Worksheet.Cells[firstRow, 7].Value2.ToString();
-                        string sTy = Worksheet.Cells[firstRow, 8].Value2.ToString();
-                        string sVoltage = Worksheet.Cells[firstRow, 9].Value2.ToString();
-                        string sIcu = Worksheet.Cells[firstRow, 10].Value2.ToString();
-                        string sIp = Worksheet.Cells[firstRow, 11].Value2.ToString();
-                        //string sClimate = worksheet.Cells[firstRow, 12].Value2.ToString();     
-                        string sGab = Worksheet.Cells[firstRow, 14].Value2.ToString() + "x"
-                                    + Worksheet.Cells[firstRow, 15].Value2.ToString() + "x"
-                                    + Worksheet.Cells[firstRow, 16].Value2.ToString();
-                        string secondWords = FuncReplace(firstWords ?? string.Empty); // ссылка на метод замены
-                        var buildDate = Worksheet.Cells[firstRow, 20].Value2;
-                        string factoryNumber = Worksheet.Cells[firstRow, 21].Value2.ToString();                          
-                        string sInstalling = Worksheet.Cells[firstRow, 27].Value2.ToString();
-                        string sGround = Worksheet.Cells[firstRow, 28].Value2.ToString();
-                        string sMaterial = Worksheet.Cells[firstRow, 29].Value2.ToString();
-                        string sExecution = Worksheet.Cells[firstRow, 30].Value2.ToString();
+                        numberProject = Worksheet.Cells[currentRow, NumberProjectColumn].Value2.ToString().Replace('/', '_');
+                        model = Worksheet.Cells[currentRow, ModelColumn].Value2.ToString();
+                        titleLVSwitchgear = Worksheet.Cells[currentRow, TitleLVSwitchgearColumn].Value2.ToString();
+                        paste = FuncReplace(titleLVSwitchgear ?? string.Empty); // ссылка на метод замены
+                        designationOfLVSwitchgear = Worksheet.Cells[currentRow, DesignationOfLVSwitchgearColumn].Value2.ToString();
+                        technicalSpecifications = Worksheet.Cells[currentRow, TechnicalSpecificationsColumn].Value2.ToString();
+                        voltage = Worksheet.Cells[currentRow, VoltageColumn].Value2.ToString();
+                        current = Worksheet.Cells[currentRow, CurrentColumn].Value2.ToString();
+                        iPRating = Worksheet.Cells[currentRow, IPRatingColumn].Value2.ToString();                        
+                        cabinetDimensions = Worksheet.Cells[currentRow, EnclosureHeightColumn].Value2.ToString() + "x"
+                                          + Worksheet.Cells[currentRow, EnclosureWidthColumn].Value2.ToString() + "x"
+                                          + Worksheet.Cells[currentRow, EnclosureDepthColumn].Value2.ToString();
+                        secondWords = FuncReplace(designationOfLVSwitchgear ?? string.Empty); // ссылка на метод замены
+                        manufacturingData = Worksheet.Cells[currentRow, ManufacturingDataColumn].Value2;
+                        serialNumber = Worksheet.Cells[currentRow, SerialNumberColumn].Value2.ToString();
+                        apparatusMounting = Worksheet.Cells[currentRow, ApparatusMountingColumn].Value2.ToString();
+                        earthingSystem = Worksheet.Cells[currentRow, EarthingSystemColumn].Value2.ToString();
+                        cabinetMaterialType = Worksheet.Cells[currentRow, CabinetMaterialTypeColumn].Value2.ToString();
+                        mountingType = Worksheet.Cells[currentRow, MountingTypeColumn].Value2.ToString();
 
-                        //Открываем Word
-                        var document = applicationWord.Documents.Open(filename, confirmConversions, readOnly, addToRecentFiles, passwordDocument, passwordTemplate,
+                        //Открываем Word                   
+                        document = applicationWord.Documents.Open(filename, confirmConversions, readOnly, addToRecentFiles, passwordDocument, passwordTemplate,
                             revert, writePasswordDocument, writePasswordTemplate, format, encoding, oVisible, openAndRepair, documentDirection,
                             noEncodingDialog, xmlTransform);
                         applicationWord.Visible = false;
                         //Инициализация метода Find
-                        Find find = applicationWord.Selection.Find;
+                        Find find = applicationWord.Selection.Find;                
 
                         var verifyIsNotFind = new List<bool>(16)
                         {
                             // Замены ТУ
-                            replacingTextLabels(find, "#ТУ", sTy),
+                            replacingTextLabels(find, "#ТУ", technicalSpecifications),
                             // Замены Ток
-                            replacingTextLabels(find, "#Ток", sIcu),
+                            replacingTextLabels(find, "#Ток", current),
                             // Замены IP
-                            replacingTextLabels(find, "#IP", sIp),
+                            replacingTextLabels(find, "#IP", iPRating),
                             // Замены Габарит
-                            replacingTextLabels(find, "#Габарит", sGab),
+                            replacingTextLabels(find, "#Габарит", cabinetDimensions),
                             // Замены Марка
-                            replacingTextLabels(find, "#Марка", sMark),
+                            replacingTextLabels(find, "#Марка", model),
                             // Замены Номер
-                            replacingTextLabels(find, "#Номер", factoryNumber),
+                            replacingTextLabels(find, "#Номер", serialNumber),
                             // Замены Климат
                             //verifyIsNotFind.Add(
                             //replacingTextLabels(find, "#Климат", sClimate));
                             // Замены Заземление
-                            replacingTextLabels(find, "#Заземление", sGround),
+                            replacingTextLabels(find, "#Заземление", earthingSystem),
                             // Замены Название
-                            replacingTextLabels(find, "#Название", sName),
+                            replacingTextLabels(find, "#Название", titleLVSwitchgear),
                             // Замена Вставка
-                            replacingTextLabels(find, "#Вставка", sPaste),
+                            replacingTextLabels(find, "#Вставка", paste),
                             // Замены Заполнение
-                            replacingTextLabels(find, "#Заполнение", firstWords),
+                            replacingTextLabels(find, "#Заполнение", designationOfLVSwitchgear),
                             // Замена Склонение
                             replacingTextLabels(find, "#Склонение", secondWords),
                             // Замена Исполнения
-                            replacingTextLabels(find, "#Исполнение", sExecution),
+                            replacingTextLabels(find, "#Исполнение", mountingType),
                             // Замена Даты
-                            replacingTextLabels(find, "#Дата", FormingData(buildDate)),
+                            replacingTextLabels(find, "#Дата", FormingData(manufacturingData)),
                             // Замены Исполнение
-                            replacingTextLabels(find, "#Установка", FormingInstalling(sInstalling)),
+                            replacingTextLabels(find, "#Установка", FormingInstalling(apparatusMounting)),
                             // Замены материал корпуса
-                            replacingTextLabels(find, "#Корпус", FormingMaterial(sMaterial)),
+                            replacingTextLabels(find, "#Корпус", FormingMaterial(cabinetMaterialType)),
                             //Замены напряжения
-                            replacingTextLabels(find, "#Напряжение", FormingVoltage(sVoltage))
-                        };                 
-                          
+                            replacingTextLabels(find, "#Напряжение", FormingVoltage(voltage))
+                        };
+
                         //Путь к папке Рабочего стола                                     
-                        string folderName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Паспорта " + nameFolderSafe);
+                        string folderName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Паспорта " + numberProject);
                         DirectoryInfo drInfo = new DirectoryInfo(folderName);
                         // Проверяем есть ли папка, если нет создаем
                         if (!drInfo.Exists)
                         {
-                            drInfo.Create();
-                            WriteLog.Logger(folderName);
+                            drInfo.Create();                          
                         }
 
-                        document.SaveAs($@"{folderName}\Паспорт {factoryNumber.Replace("/", "_")}.docx");
+                        document.SaveAs($@"{folderName}\Паспорт {serialNumber.Replace("/", "_")}.docx");
 
-                        int amountSheet = document.ComputeStatistics(WdStatistic.wdStatisticPages, false);
+                        int amountSheet = document.ComputeStatistics(WdStatistic.wdStatisticPages, false);                                              
 
-                        // Вызов логгера
-                        WriteLog.Logger(folderName, factoryNumber, amountSheet);
+                        if (verifyIsNotFind.All(item => item))
+                        {
+                            // Вызов местного логгера                       
+                            ThisWriteLog(folderName, $"{DateTime.Now} | Паспорт {serialNumber} сформирован успешно." +
+                                $" В паспорте {amountSheet} листов");
+                        }
+                        else
+                        {
+                            // Вызов местного логгера                       
+                            ThisWriteLog(folderName, $"{DateTime.Now} | Паспорт {serialNumber} сформирован, но не произошла вставка одного или нескольких значений." +
+                                $"  В паспорте {amountSheet} листов");
+                        }                                                                     
+                    }
 
-                        document.Close();
+                    catch (COMException ex)
+                    {
+                        MessageError(
+                            $@"Проверьте имя проекта внимательно,{Environment.NewLine} экстрасенсы говорят что есть ошибки в заполнеии столбцов.",
+                            @"Ошибка надстройки");
+                        Logger.LogException(ex);                    
+                    }
 
-                        if (!verifyIsNotFind.All(item => item))
-                            MessageWarning(
-                                $@"В шаблоне не произошла вставка{Environment.NewLine} одного или нескольких значений.",
-                                @"Проблема шаблона");
+                    catch (RuntimeBinderException ex)
+                    {
+                        MessageError(
+                            $@"Проверьте заполнение всех столбцов паспорта {null},{Environment.NewLine} где-то нехватает данных.",
+                            @"Ошибка надстройки");
+                        Logger.LogException(ex);                       
+                    }
+
+                    catch (Exception ex)
+                    {
+                        MessageError(
+                            $"Произошла неизветсная ошибка при заполнении паспорта",
+                            @"Ошибка надстройки");
+                        Logger.LogException(ex);                      
+                    }
+
+                    finally
+                    {
+                        if (document != null)
+                        {
+                            document.Close();
+                            Marshal.ReleaseComObject(document);
+                        }
 
                         // Работа с элементами формы через событие
                         ProgressStep?.Invoke(++numberStep);
+                        currentRow++;
+                    }                
+                }
+                while (currentRow <= endRow);
 
-                        firstRow++;
-                    }
-                    while (endRow > firstRow);
-                }
-                catch (COMException)
+                if (applicationWord != null)
                 {
-                    MessageError(
-                        $@"Проверьте имя проекта внимательно,{Environment.NewLine} экстрасенсы говорят что есть ошибки в заполнеии столбцов.",
-                        @"Ошибка надстройки");
-                    applicationWord?.Quit();
-                }
-                catch (RuntimeBinderException)
-                {
-                    MessageError(
-                        $@"Проверьте заполнение всех столбцов,{Environment.NewLine} где-то нехватает данных.",
-                        @"Ошибка надстройки");
-                    applicationWord?.Quit();
-                }
-                catch (Exception exception)
-                {
-                    MessageError(
-                        exception.ToString(),
-                        @"Ошибка надстройки");
-                    applicationWord?.Quit();
-                }
-                finally
-                {
-                    // Работа с элементами формы через событие
-                    ProgressFinal?.Invoke();
                     applicationWord.Quit();
+                    Marshal.ReleaseComObject(applicationWord);
                 }
+
+                //Сборка мусора (опционально, но рекомендуется)
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                // Работа с элементами UI через событие                  
+                ProgressFinal?.Invoke();
+
             }).Start();
         }
 
@@ -289,7 +313,7 @@ namespace ExcelMacroAdd.Functions
         /// <returns></returns>
         private string FormingInstalling(string installing)
         {
-           switch (installing)
+            switch (installing)
             {
                 case "МП":
                     return "монтажной плате";
@@ -307,16 +331,18 @@ namespace ExcelMacroAdd.Functions
         /// </summary>
         /// <param name="buildData"></param>
         /// <returns></returns>
-        private string FormingData (dynamic buildData)
+        private string FormingData(dynamic buildData)
         {
-            if (buildData != null)
+            try
             {
-                if (buildData is double v)
-                {            
-                    return DateTime.FromOADate(v).ToString("D");
-                }
+                if (buildData != null & double.TryParse(buildData.ToString(), out double dateValue))
+                    return DateTime.FromOADate(dateValue).ToString("D");
             }
-            return "«____» __________ 202_ г.";            
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return "«____» __________ 202_ г.";
         }
 
         /// <summary>
@@ -328,7 +354,7 @@ namespace ExcelMacroAdd.Functions
         {
             string[] subs = mReplase.Split(' ');
 
-            var replace = new Dictionary<string, string>()
+            var replace = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 { "Щиток", "Щитка"},
                 { "Щит", "Щита"},
@@ -341,9 +367,7 @@ namespace ExcelMacroAdd.Functions
                 { "распределительный", "распределительного"},
                 { "телекоммуникационный", "телекоммуникационного"},
                 { "Источник", "Источника"},
-                { "источник", "источника"},
                 { "Система", "Системы"},
-                { "система", "системы"}
             };
 
             for (int i = 0; i < subs.Length; i++)
@@ -354,6 +378,21 @@ namespace ExcelMacroAdd.Functions
                 }
             }
             return String.Join(" ", subs);
+        }
+
+        /// <summary>
+        /// Метод для записи логов формиррования паспортов
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <param name="saveNum"></param> 
+        /// <param name="amount"></param>        
+        private void ThisWriteLog(string folder, string logText)
+        {
+            string patch = Path.Combine(folder, "log.txt");
+            using (StreamWriter output = File.AppendText(patch))
+            {
+                output.WriteLine(logText);
+            }
         }
     }
 }

@@ -5,10 +5,8 @@ using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.Services.Interfaces;
 using System;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms

@@ -1,6 +1,7 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
+using ExcelMacroAdd.Services;
 using ExcelMacroAdd.UserException;
 using Microsoft.Office.Interop.Word;
 using System;
@@ -20,94 +21,98 @@ namespace ExcelMacroAdd.Functions
         }
         public override async void Start()
         {
-            if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
+            if (Application.ActiveWorkbook?.Name != resources.NameFileJournal) // Проверка по имени книги
             {
-                MessageWarning("Функция работает только в \"Журнале учета НКУ\" текущего года. \n Пожайлуста откройте необходимую книгу Excel.",
-                    "Имя книги не совпадает с целевой");
+                MessageWarning(Properties.Resources.NotJornal, Properties.Resources.NameWorkbook);              
                 return;
             }
 
             var firstRow = Cell.Row; // Вычисляем верхний элемент
             var countRow = Cell.Rows.Count; // Вычисляем кол-во выделенных строк
-            var endRow = firstRow + countRow;
+            var endRow = firstRow + countRow - 1;
+            var currentRow = firstRow;
 
             do
             {
                 try
                 {
-                    string sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
-                    var journalNku = await accessData.AccessJournalNku.GetEntityJournal(sArticle.ToLower());
+                    string sCabinetArticle = Convert.ToString(Worksheet.Cells[currentRow, CabinetArticleColumn].Value2);
+                    var journalNku = await accessData.AccessJournalNku.GetEntityJournal(sCabinetArticle.ToLower());
 
                     if (!(journalNku is null))
                     {
-                        MessageWarning($"В базе данных уже есть такой артикул.\n Создавать новую запись не нужно. \nАртикул = {sArticle}",
+                        MessageWarning($"В базе данных уже есть такой артикул.\n Создавать новую запись не нужно. \nАртикул = {sCabinetArticle}",
                             "Ошибка записи!");
-                        firstRow++;
+                        currentRow++;
                         continue;
                     }
 
-                    int.TryParse(Convert.ToString(Worksheet.Cells[firstRow, 11].Value2), out int sIp);
-                    string sClimate = Convert.ToString(Worksheet.Cells[firstRow, 12].Value2);
-                    string sWeight = Convert.ToString(Worksheet.Cells[firstRow, 13].Value2);
-                    string sHeight = Convert.ToString(Worksheet.Cells[firstRow, 14].Value2);
-                    string sWidth = Convert.ToString(Worksheet.Cells[firstRow, 15].Value2);
-                    string sDepth = Convert.ToString(Worksheet.Cells[firstRow, 16].Value2);
-                    sArticle = Convert.ToString(Worksheet.Cells[firstRow, 26].Value2);
-                    string sMaterial = Convert.ToString(Worksheet.Cells[firstRow, 29].Value2);
-                    string sExecution = Convert.ToString(Worksheet.Cells[firstRow, 30].Value2);
+                    int.TryParse(Convert.ToString(Worksheet.Cells[currentRow, IPRatingColumn].Value2), out int sIp);
+                    string sClimate = Convert.ToString(Worksheet.Cells[currentRow, ClimaticCategoryColumn].Value2);
+                    string sMass = Convert.ToString(Worksheet.Cells[currentRow, MassColumn].Value2);
+                    string sHeight = Convert.ToString(Worksheet.Cells[currentRow, EnclosureHeightColumn].Value2);
+                    string sWidth = Convert.ToString(Worksheet.Cells[currentRow, EnclosureWidthColumn].Value2);
+                    string sDepth = Convert.ToString(Worksheet.Cells[currentRow, EnclosureDepthColumn].Value2);
+                    sCabinetArticle = Convert.ToString(Worksheet.Cells[currentRow, CabinetArticleColumn].Value2);
+                    string sMaterial = Convert.ToString(Worksheet.Cells[currentRow, CabinetMaterialTypeColumn].Value2);
+                    string sMountingType = Convert.ToString(Worksheet.Cells[currentRow, MountingTypeColumn].Value2);
 
-                    if (sHeight == null || sWidth == null || sDepth == null || sArticle == null || sMaterial == null)
+                    if (string.IsNullOrEmpty(sHeight) || string.IsNullOrEmpty(sWidth) || string.IsNullOrEmpty(sDepth) || string.IsNullOrEmpty(sCabinetArticle) || string.IsNullOrEmpty(sMaterial))
                     {
-                        MessageWarning($"Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n Артикул = {sArticle}",
+                        MessageWarning($"Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n Артикул = {sCabinetArticle}",
                             "Ошибка записи");
-                        firstRow++;
+                        currentRow++;
                         continue;
                     }
 
                     var materialEntity = await accessData.AccessJournalNku.GetMaterialEntityByName(sMaterial) ?? throw new DataBaseNotFoundValueException($"Введенный материал шкафа \"{sMaterial}\" недопустим, пожайлуста используйте значение \"Пластик\", или  \"Металл\", или \"Композит\"");
-                    var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sExecution) ?? throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sExecution}\" недопустимо, пожайлуста используйте значение \"напольное\", или \"навесное\", или \"встраиваемое\", или \"навесное для IT оборудования\", или \"напольное для IT оборудования\".");
+                    var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sMountingType) ?? throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sMountingType}\" недопустимо, пожайлуста используйте значение \"напольное\", или \"навесное\", или \"встраиваемое\", или \"навесное для IT оборудования\", или \"напольное для IT оборудования\".");
 
                     BoxBase journal = new BoxBase()
                     {
                         Ip = sIp,
                         Climate = sClimate == "-" ? null : sClimate,
-                        Weight = sWeight == "-" ? null : sWeight,
+                        Weight = sMass == "-" ? null : sMass,
                         Height = sHeight,
                         Width = sWidth,
                         Depth = sDepth,
-                        Article = sArticle.ToLower(),
+                        Article = sCabinetArticle.ToLower(),
                         MaterialBoxId = materialEntity.Id,
                         ExecutionBoxId = executionEntity.Id
                     };
 
                     accessData.AccessJournalNku.AddValueDb(journal);
 
-                    MessageInformation($"Успешно записано в базу данных. Теперь доступна новая запись.\n Поздравляем! \nАртикул = {sArticle}",
+                    MessageInformation($"Успешно записано в базу данных. Теперь доступна новая запись.\n Поздравляем! \nАртикул = {sCabinetArticle}",
                                "Запись успешна!");
                 }
 
-                catch (DataBaseNotFoundValueException e)
+                catch (DataBaseNotFoundValueException ex)
                 {
-                    MessageError($"Произошла ошибка, скорее всего непавильно было указано исполнение шкафа. {e.Message}",
+                    MessageError($"Произошла ошибка, скорее всего непавильно было указано исполнение шкафа. {ex.Message}",
                         "Ошибка базы данных");
+                    Logger.LogException(ex);
+                    continue;
                 }
 
-                catch (DataException)
+                catch (DataException ex)
                 {
                     MessageError("Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",
                         "Ошибка базы данных");
-                    return;
+                    Logger.LogException(ex);
+                    continue;
                 }
 
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {e.Message}",
+                    MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {ex.Message}",
                         "Ошибка базы данных");
-                    return;
+                    Logger.LogException(ex);
+                    continue;
                 }
-                firstRow++;
+                currentRow++;
             }
-            while (endRow > firstRow);
+            while (currentRow <= endRow);
         }
     }
 }

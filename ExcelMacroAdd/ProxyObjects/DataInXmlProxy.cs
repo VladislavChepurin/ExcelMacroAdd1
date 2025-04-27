@@ -1,38 +1,36 @@
 ﻿using ExcelMacroAdd.Services;
 using ExcelMacroAdd.Services.Interfaces;
 using ExcelMacroAdd.UserVariables;
-using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Linq;
+
+//Rewiew OK 22.04.2025
 namespace ExcelMacroAdd.ProxyObjects
-{
-
-    internal class DataInXmlProxy : IDataInXml
+{    internal class DataInXmlProxy : IDataInXml
     {
-        private readonly Lazy<DataInXml> dataXml;
-        private readonly IDictionary<string, Vendor> cacheSeveralXmlRecords = new Dictionary<string, Vendor>();
-        private Vendor[] vendors;
+        private readonly IDataInXml _dataInXml;
+        private readonly ConcurrentDictionary<string, Vendor> _cache = new ConcurrentDictionary<string, Vendor>();
+        private Vendor[] vendors;      
 
-        public DataInXmlProxy(Lazy<DataInXml> dataXml)
+        public DataInXmlProxy(DataInXml dataInXml)
         {
-            this.dataXml = dataXml;
+            this._dataInXml = dataInXml;
         }
 
         public Vendor ReadElementXml(string vendor, Vendor[] dataXmlContinue)
         {
-            if (!cacheSeveralXmlRecords.ContainsKey(vendor))
+            return _cache.GetOrAdd(vendor, key =>
             {
-                var value = dataXml.Value.ReadElementXml(vendor, dataXml.Value.ReadFileXml());
-                cacheSeveralXmlRecords.Add(vendor, value);
-                return value;
-            }
-            return cacheSeveralXmlRecords[vendor];
+                var vendors = _dataInXml.ReadFileXml();
+                return vendors.Single(p => p.VendorAttribute == key);
+            });         
         }
 
         public Vendor[] ReadFileXml()
         {
             if (vendors == null)
             {
-                vendors = dataXml.Value.ReadFileXml();
+                vendors = _dataInXml.ReadFileXml();
                 return vendors;
             }
             return vendors;
@@ -41,16 +39,16 @@ namespace ExcelMacroAdd.ProxyObjects
         public void WriteXml(string vendor, params string[] data)
         {
             //Очищаем 
-            cacheSeveralXmlRecords.Clear();
+            _cache.Clear();
             vendors = null;
             //Проксируем вызов на прямую
-            dataXml.Value.WriteXml(vendor, data);
+            _dataInXml.WriteXml(vendor, data);
         }
 
         public void XmlFileCreate()
         {
             //Проксируем вызов на прямую
-            dataXml.Value.XmlFileCreate();
+            _dataInXml.XmlFileCreate();
         }
     }
 }

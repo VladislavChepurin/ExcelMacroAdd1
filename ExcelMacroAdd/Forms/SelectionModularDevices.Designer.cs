@@ -28,49 +28,49 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnSelectionCircuitBreakerShow = new System.Windows.Forms.Button();
+            this.btnSelectionSwitchShow = new System.Windows.Forms.Button();
+            this.btnAdditionalDevicesShow = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // btnSelectionCircuitBreakerShow
             // 
-            this.button1.Location = new System.Drawing.Point(21, 17);
-            this.button1.Margin = new System.Windows.Forms.Padding(12, 8, 8, 8);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(180, 50);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Модульные автоматические включатели";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnSelectionCircuitBreakerShow.Location = new System.Drawing.Point(21, 17);
+            this.btnSelectionCircuitBreakerShow.Margin = new System.Windows.Forms.Padding(12, 8, 8, 8);
+            this.btnSelectionCircuitBreakerShow.Name = "btnSelectionCircuitBreakerShow";
+            this.btnSelectionCircuitBreakerShow.Size = new System.Drawing.Size(180, 50);
+            this.btnSelectionCircuitBreakerShow.TabIndex = 1;
+            this.btnSelectionCircuitBreakerShow.Text = "Модульные автоматические включатели";
+            this.btnSelectionCircuitBreakerShow.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnSelectionSwitchShow
             // 
-            this.button2.Location = new System.Drawing.Point(21, 83);
-            this.button2.Margin = new System.Windows.Forms.Padding(8);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(180, 50);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Модульные рубильники";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnSelectionSwitchShow.Location = new System.Drawing.Point(21, 83);
+            this.btnSelectionSwitchShow.Margin = new System.Windows.Forms.Padding(8);
+            this.btnSelectionSwitchShow.Name = "btnSelectionSwitchShow";
+            this.btnSelectionSwitchShow.Size = new System.Drawing.Size(180, 50);
+            this.btnSelectionSwitchShow.TabIndex = 2;
+            this.btnSelectionSwitchShow.Text = "Модульные рубильники";
+            this.btnSelectionSwitchShow.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btnAdditionalDevicesShow
             // 
-            this.button3.Location = new System.Drawing.Point(21, 149);
-            this.button3.Margin = new System.Windows.Forms.Padding(8);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(180, 50);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Модульные аксесуары";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnAdditionalDevicesShow.Location = new System.Drawing.Point(21, 149);
+            this.btnAdditionalDevicesShow.Margin = new System.Windows.Forms.Padding(8);
+            this.btnAdditionalDevicesShow.Name = "btnAdditionalDevicesShow";
+            this.btnAdditionalDevicesShow.Size = new System.Drawing.Size(180, 50);
+            this.btnAdditionalDevicesShow.TabIndex = 3;
+            this.btnAdditionalDevicesShow.Text = "Модульные аксесуары";
+            this.btnAdditionalDevicesShow.UseVisualStyleBackColor = true;
             // 
             // SelectionModularDevices
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(222, 219);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnAdditionalDevicesShow);
+            this.Controls.Add(this.btnSelectionSwitchShow);
+            this.Controls.Add(this.btnSelectionCircuitBreakerShow);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(238, 258);
             this.MinimizeBox = false;
@@ -84,8 +84,8 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnSelectionCircuitBreakerShow;
+        private System.Windows.Forms.Button btnSelectionSwitchShow;
+        private System.Windows.Forms.Button btnAdditionalDevicesShow;
     }
 }

@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using AppContext = ExcelMacroAdd.DataLayer.Entity.AppContext;
 using Office = Microsoft.Office.Core;
 
@@ -34,6 +35,7 @@ namespace ExcelMacroAdd
         private readonly AccessData accessData;
         private readonly bool locationDataBase = default;
         private readonly IMemoryCache memoryCache;
+        private readonly IValidateLicenseKey validateLicenseKey;
 
         public NewRibbon()
         {
@@ -43,7 +45,11 @@ namespace ExcelMacroAdd
             correctFontResources = settings.CorrectFontResources;
             formSettings = settings.FormSettings;
             typeNkySettings = settings.TypeNkySettings;
-            memoryCache = new MemoryCache(new MemoryCacheOptions());
+            var cacheOptions = new MemoryCacheOptions
+            {             
+                ExpirationScanFrequency = TimeSpan.FromMinutes(30)
+            };
+            memoryCache = new MemoryCache(cacheOptions);           
 
             string path;
 
@@ -59,12 +65,13 @@ namespace ExcelMacroAdd
 
             var context = new AppContext(path);
             accessData = new AccessData(context, memoryCache);
+            validateLicenseKey = new ValidateLicenseKey(settings.LineseKey);
 
             //Создание внедряемых зависимостей
-            dataInXml = new DataInXmlProxy(new Lazy<DataInXml>());
+            dataInXml = new DataInXmlProxy(new DataInXml());
 
 #if !DEBUG
-            //Будет утекать немного памяти
+            //Чтобы не тормозил интерфейс при первом запросе в базу данных
             new Task(() =>
             {
                 if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/BdMacro.sqlite")))
@@ -99,6 +106,13 @@ namespace ExcelMacroAdd
 
         public void OnActionCallbackBase(Office.IRibbonControl control)
         {
+            
+            if (!validateLicenseKey.ValidateKey())
+            {
+                MessageBox.Show(Properties.Resources.LicenseText, "Внимание");
+                return;
+            }
+
             switch (control.Id)
             {
                 //Заполнение паспортов
@@ -150,6 +164,12 @@ namespace ExcelMacroAdd
 
         public void OnActionCallbackDecoration(Office.IRibbonControl control)
         {
+            if (!validateLicenseKey.ValidateKey())
+            {
+                MessageBox.Show(Properties.Resources.LicenseText, "Внимание");
+                return;
+            }
+
             switch (control.Id)
             {
                 //Разметка листов
@@ -196,13 +216,13 @@ namespace ExcelMacroAdd
             {
                 //Поиск в Яндексе
                 case "Yandex_Button":
-                    var yandexSearch = new YandexSearch();
+                    var yandexSearch = new InternetSearch("http://www.yandex.ru/yandsearch?text=");
                     yandexSearch.Start();
                     break;
 
                 //Поиск в Google
                 case "Google_Button":
-                    var googleSearch = new GoogleSearch();
+                    var googleSearch = new InternetSearch("https://www.google.ru/search?q=");
                     googleSearch.Start();
                     break;
             }
@@ -210,6 +230,12 @@ namespace ExcelMacroAdd
 
         public async Task OnActionCallbackCalculation(Office.IRibbonControl control)
         {
+            if (!validateLicenseKey.ValidateKey())
+            {
+                MessageBox.Show(Properties.Resources.LicenseText, "Внимание");
+                return;
+            }
+
             WriteExcel writeExcel;
 
             switch (control.Id)
@@ -235,12 +261,6 @@ namespace ExcelMacroAdd
                 //Вставка формулы Keaz
                 case "Keaz_Button":                   
                     writeExcel = new WriteExcel(dataInXml, "KEAZ");
-                    writeExcel.Start();
-                    break;
-
-                //Вставка формулы Dek
-                case "Dek_Button":                   
-                    writeExcel = new WriteExcel(dataInXml, "DEKraft");
                     writeExcel.Start();
                     break;
 
@@ -343,9 +363,7 @@ namespace ExcelMacroAdd
 
         public string GetLabelText(Office.IRibbonControl control)
         {
-            if (!locationDataBase)
-                return "локальная";
-            return "глобальная";
+            return locationDataBase ? Properties.Resources.Global : Properties.Resources.Local;         
         }
 
         #endregion

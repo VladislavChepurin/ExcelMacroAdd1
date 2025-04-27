@@ -24,7 +24,7 @@ namespace ExcelMacroAdd.Functions
                 sheet.Range["D1", Type.Missing].EntireColumn.Insert(XlInsertShiftDirection.xlShiftToRight, XlInsertFormatOrigin.xlFormatFromRightOrBelow);
                 sheet.Range["D1", Type.Missing].Value2 = "Кратность";
                 sheet.Range["D1", Type.Missing].EntireColumn.ColumnWidth = 10;
-            }
+            }        
         }
     }
 }

@@ -1,11 +1,13 @@
 ﻿using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using Microsoft.Office.Interop.Excel;
-using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace ExcelMacroAdd.Functions
 {
     internal sealed class CalculationMarkup : AbstractFunctions
     {
+        private const int ExcelAutoColor = 0;
         private readonly ICorrectFontResources correctFontResources;
 
         public CalculationMarkup(ICorrectFontResources correctFontResources)
@@ -16,87 +18,92 @@ namespace ExcelMacroAdd.Functions
         public override void Start()
         {
             //Проверяем наличие данных в таблице, A1:H9
-            Boolean resultCellNull = true;
-            for (int column = 1; column <= 9; column++)
+            bool allCellsAreNull = true;
+
+            // Loop through columns 1-9 and rows 1-8
+            for (int col = 1; col <= 9 && allCellsAreNull; col++)
             {
-                for (int row = 1; row <= 8; row++)
+                for (int row = 1; row <= 8 && allCellsAreNull; row++)
                 {
-                    if (Worksheet.Cells[column, row].Value2 != null)
+                    if (Worksheet.Cells[col, row].Value2 != null)
                     {
-                        resultCellNull = false;
+                        allCellsAreNull = false;
+                        // Exit both loops immediately when first non-null cell is found
+                        break;
                     }
                 }
             }
+
             //Проверяем результат переменной
-            if (resultCellNull)
+            if (allCellsAreNull)
             {
-                //состовляем надписи колонок           
-                Worksheet.Range["A1", Type.Missing].Value2 = "Наименование проекта";
-                Worksheet.Range["A2", Type.Missing].Value2 = "Производитель коммутационной аппаратуры";
-                Worksheet.Range["A3", Type.Missing].Value2 = "№п/п";
-                Worksheet.Range["B3", Type.Missing].Value2 = "Наименование щита";
-                Worksheet.Range["C3", Type.Missing].Value2 = "Номер схемы";
-                Worksheet.Range["D3", Type.Missing].Value2 = "Кол-во";
-                Worksheet.Range["E3", Type.Missing].Value2 = "Цена";
-                Worksheet.Range["F3", Type.Missing].Value2 = "Стоимость";
-                Worksheet.Range["G3", Type.Missing].Value2 = "Тип шкафа";
-                Worksheet.Range["H3", Type.Missing].Value2 = "Примечания";
-
-                Worksheet.Range["B1", Type.Missing].Interior.Color = XlRgbColor.rgbYellow;
-                Worksheet.Range["B2", Type.Missing].Interior.Color = XlRgbColor.rgbGreen;
-
-                //увеличиваем размер по ширине диапазон ячеек
-                Worksheet.Range["A1", Type.Missing].EntireColumn.ColumnWidth = 22;
-                Worksheet.Range["B1", Type.Missing].EntireColumn.ColumnWidth = 50;
-                Worksheet.Range["C1", Type.Missing].EntireColumn.ColumnWidth = 40;
-                Worksheet.Range["D1", "G1"].EntireColumn.ColumnWidth = 10;
-                Worksheet.Range["H1", Type.Missing].EntireColumn.ColumnWidth = 45;
-
-                //Вставка формул
-                for (int i = 4; i < 10; i++)
+                // Заголовки столбцов
+                var headers = new List<(string Cell, string Value)>
                 {
-                    Worksheet.Range["F" + i, Type.Missing].Formula = string.Format("=D{0}*E{0}", i);
-                    Worksheet.Range["A" + i, Type.Missing].Value2 = (i - 3).ToString();
+                    ("A1", "Наименование проекта"),
+                    ("A2", "Производитель коммутационной аппаратуры"),
+                    ("A3", "№п/п"),
+                    ("B3", "Наименование щита"),
+                    ("C3", "Номер схемы"),
+                    ("D3", "Кол-во"),
+                    ("E3", "Цена"),
+                    ("F3", "Стоимость"),
+                    ("G3", "Тип шкафа"),
+                    ("H3", "Примечания")
+                };
+
+                foreach (var header in headers)
+                {
+                    Worksheet.Range[header.Cell].Value2 = header.Value;
                 }
 
-                //размечаем границы и правим шрифты
-                Worksheet.Range["A1", "H100"].Cells.Font.Name = correctFontResources.NameFont;
-                Worksheet.Range["A1", "H100"].Cells.Font.Size = correctFontResources.SizeFont;
+                // Заливка ячеек
+                var coloredCells = new Dictionary<string, XlRgbColor>
+                {
+                    ["B1"] = XlRgbColor.rgbYellow,
+                    ["B2"] = XlRgbColor.rgbGreen
+                };
 
-                var excelCells = Worksheet.Range["A1", "H9"];
+                foreach (var cell in coloredCells)
+                {
+                    Worksheet.Range[cell.Key].Interior.Color = cell.Value;
+                }
 
-                excelCells.Rows.AutoFit();
-                excelCells.WrapText = true;
+                // Ширина столбцов
+                var columnWidths = new Dictionary<string, double>
+                {
+                    ["A:A"] = 22,
+                    ["B:B"] = 50,
+                    ["C:C"] = 40,
+                    ["D:G"] = 10,
+                    ["H:H"] = 45
+                };
 
-                var borderIndex = XlBordersIndex.xlEdgeLeft; //Левая граница
-                excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-                excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-                excelCells.Borders[borderIndex].ColorIndex = 0;
+                foreach (var width in columnWidths)
+                {
+                    Worksheet.Range[width.Key].ColumnWidth = width.Value;
+                }
 
-                borderIndex = XlBordersIndex.xlEdgeTop; //Верхняя граница
-                excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-                excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-                excelCells.Borders[borderIndex].ColorIndex = 0;
+                // Формулы и нумерация
+                const int startRow = 4;
+                const int endRow = 23;
 
-                borderIndex = XlBordersIndex.xlEdgeBottom; //Нижняя граница
-                excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-                excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-                excelCells.Borders[borderIndex].ColorIndex = 0;
+                for (int row = startRow; row <= endRow; row++)
+                {
+                    Worksheet.Range[$"F{row}"].Formula = $"=D{row}*E{row}";
+                    Worksheet.Range[$"A{row}"].Value2 = (row - 3).ToString();
+                }                              
 
-                borderIndex = XlBordersIndex.xlEdgeRight;  //Правая граница
-                excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-                excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-                excelCells.Borders[borderIndex].ColorIndex = 0;
+                // Форматирование
+                var fontRange = Worksheet.Range[$"A1:H{endRow}"];
+                fontRange.Font.Name = correctFontResources.NameFont;
+                fontRange.Font.Size = correctFontResources.SizeFont;
+                fontRange.Borders.LineStyle = XlLineStyle.xlContinuous;  // Добавлено оформление границ
+                fontRange.Rows.AutoFit();
+                fontRange.WrapText = true;
 
-                borderIndex = XlBordersIndex.xlInsideHorizontal;  //Внутренняя горизонтальня граница
-                excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-                excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-                excelCells.Borders[borderIndex].ColorIndex = 0;
-
-                borderIndex = XlBordersIndex.xlInsideVertical;  //Внутренняя горизонтальня граница
-                excelCells.Borders[borderIndex].Weight = XlBorderWeight.xlThin;
-                excelCells.Borders[borderIndex].LineStyle = XlLineStyle.xlContinuous;
-                excelCells.Borders[borderIndex].ColorIndex = 0;
+                // Оптимизация производительности
+                Marshal.ReleaseComObject(fontRange);
             }
             else
             {

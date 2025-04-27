@@ -175,4 +175,22 @@
   <data name="TypeNky" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TypeNky.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DefaultImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DefaultImage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Global" xml:space="preserve">
+    <value>глобальная</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>локальная</value>
+  </data>
+  <data name="LicenseText" xml:space="preserve">
+    <value>Данная копия программного обеспечения не лицензированна. Просим обратиться к автору программы для получения ключа приложения. Ключи привязываются к имени пользователя и текущему году. Срок действия ключа 1 (один) год.</value>
+  </data>
+  <data name="NotJornal" xml:space="preserve">
+    <value>Функция работает только в "Журнале учета НКУ" текущего года. Пожайлуста откройте необходимую книгу Excel.</value>
+  </data>
+  <data name="NameWorkbook" xml:space="preserve">
+    <value>Имя книги не совпадает с целевой.</value>
+  </data>
 </root>
