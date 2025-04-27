@@ -33,17 +33,18 @@
             textBoxUserName = new TextBox();
             label2 = new Label();
             printDocument1 = new System.Drawing.Printing.PrintDocument();
-            domainUpDown1 = new DomainUpDown();
             textBoxKey = new TextBox();
+            numericUpDownYear = new NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownYear).BeginInit();
             SuspendLayout();
             // 
             // button1
             // 
-            button1.Location = new Point(114, 80);
+            button1.Location = new Point(110, 80);
             button1.Name = "button1";
-            button1.Size = new Size(98, 23);
+            button1.Size = new Size(87, 23);
             button1.TabIndex = 0;
-            button1.Text = "Сгенерировать";
+            button1.Text = "ДА!";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
@@ -60,7 +61,7 @@
             // 
             textBoxUserName.Location = new Point(12, 27);
             textBoxUserName.Name = "textBoxUserName";
-            textBoxUserName.Size = new Size(200, 23);
+            textBoxUserName.Size = new Size(185, 23);
             textBoxUserName.TabIndex = 2;
             // 
             // label2
@@ -72,38 +73,38 @@
             label2.TabIndex = 3;
             label2.Text = "Год действия ключа";
             // 
-            // domainUpDown1
-            // 
-            domainUpDown1.Location = new Point(12, 80);
-            domainUpDown1.Name = "domainUpDown1";
-            domainUpDown1.Size = new Size(96, 23);
-            domainUpDown1.TabIndex = 4;
-            domainUpDown1.Text = "domainUpDown1";
-            // 
             // textBoxKey
             // 
             textBoxKey.Location = new Point(12, 109);
             textBoxKey.Name = "textBoxKey";
-            textBoxKey.Size = new Size(200, 23);
+            textBoxKey.Size = new Size(185, 23);
             textBoxKey.TabIndex = 5;
+            // 
+            // numericUpDownYear
+            // 
+            numericUpDownYear.Location = new Point(12, 82);
+            numericUpDownYear.Name = "numericUpDownYear";
+            numericUpDownYear.Size = new Size(82, 23);
+            numericUpDownYear.TabIndex = 6;
             // 
             // LicenceForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(220, 145);
+            ClientSize = new Size(210, 145);
+            Controls.Add(numericUpDownYear);
             Controls.Add(textBoxKey);
-            Controls.Add(domainUpDown1);
             Controls.Add(label2);
             Controls.Add(textBoxUserName);
             Controls.Add(label1);
             Controls.Add(button1);
             MaximizeBox = false;
-            MaximumSize = new Size(236, 184);
+            MaximumSize = new Size(226, 184);
             MinimizeBox = false;
-            MinimumSize = new Size(236, 184);
+            MinimumSize = new Size(226, 184);
             Name = "LicenceForm";
             Text = "Генератор ключей";
+            ((System.ComponentModel.ISupportInitialize)numericUpDownYear).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -115,7 +116,7 @@
         private TextBox textBoxUserName;
         private Label label2;
         private System.Drawing.Printing.PrintDocument printDocument1;
-        private DomainUpDown domainUpDown1;
         private TextBox textBoxKey;
+        private NumericUpDown numericUpDownYear;
     }
 }

@@ -10,13 +10,15 @@ namespace LicenseKeyGeneratorApp
         private static readonly byte[] SecretKey = Encoding.UTF8.GetBytes("MySuperSecretKey@12345");
 
         public LicenceForm()
-        {
+        {    
             InitializeComponent();
+            numericUpDownYear.Minimum = 2025;
+            numericUpDownYear.Maximum = 2035;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int currentYear = DateTime.Now.Year;
+            int currentYear = (int)numericUpDownYear.Value;
             string rawData = $"{textBoxUserName.Text.ToLower()}|{currentYear}";
 
             using (var hmac = new HMACSHA256(SecretKey))
