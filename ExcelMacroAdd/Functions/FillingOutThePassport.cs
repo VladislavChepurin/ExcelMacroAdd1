@@ -55,8 +55,7 @@ namespace ExcelMacroAdd.Functions
         {
             if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
             {
-                MessageWarning("Функция работает только в \"Журнале учета НКУ\" текущего года. \n Пожайлуста откройте необходимую книгу Excel.",
-                            "Имя книги не совпадает с целевой");
+                MessageWarning(Properties.Resources.NotJornal, Properties.Resources.NameWorkbook);
                 return;
             }
 
@@ -91,7 +90,7 @@ namespace ExcelMacroAdd.Functions
                     {
                         string filename;
 
-                        switch (Worksheet.Cells[currentRow, 30].Value2.ToString())
+                        switch (Worksheet.Cells[currentRow, MountingTypeColumn].Value2.ToString())
                         {
                             case "навесное":
                                 filename = Path.Combine(pPath, resources.TemplateWall);
@@ -354,12 +353,13 @@ namespace ExcelMacroAdd.Functions
         {
             string[] subs = mReplase.Split(' ');
 
-            var replace = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            var replace = new Dictionary<string, string>()
             {
                 { "Щиток", "Щитка"},
                 { "Щит", "Щита"},
                 { "Шкаф", "Шкафа"},
                 { "Устройство", "Устройства"},
+                { "устройство", "устройства"},
                 { "Корпус", "Корпуса"},
                 { "Ящик", "Ящика"},
                 { "Бокс", "Бокса"},
@@ -367,7 +367,9 @@ namespace ExcelMacroAdd.Functions
                 { "распределительный", "распределительного"},
                 { "телекоммуникационный", "телекоммуникационного"},
                 { "Источник", "Источника"},
+                { "источник", "источника"},
                 { "Система", "Системы"},
+                { "система", "системы"},
             };
 
             for (int i = 0; i < subs.Length; i++)

@@ -1,6 +1,6 @@
 ﻿using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using Microsoft.Office.Interop.Excel;
-using System;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelMacroAdd.Functions
 {
@@ -17,13 +17,14 @@ namespace ExcelMacroAdd.Functions
         {
             foreach (Worksheet sheet in WorkBook.Sheets)
             {
-                sheet.Activate();
-                if (sheet.Index == 1) continue;
+                // Пропускаем лист по индексу 1 и скрытые листы
+                if (sheet.Index == 1 || sheet.Visible != Excel.XlSheetVisibility.xlSheetVisible)
+                    continue;              
                 sheet.Range["A1", "i500"].Cells.Font.Name = correctFontResources.NameFont;
                 sheet.Range["A1", "i500"].Cells.Font.Size = correctFontResources.SizeFont;
-                sheet.Range["D1", Type.Missing].EntireColumn.Insert(XlInsertShiftDirection.xlShiftToRight, XlInsertFormatOrigin.xlFormatFromRightOrBelow);
-                sheet.Range["D1", Type.Missing].Value2 = "Кратность";
-                sheet.Range["D1", Type.Missing].EntireColumn.ColumnWidth = 10;
+                sheet.Cells[1, 4].EntireColumn.Insert(XlInsertShiftDirection.xlShiftToRight, XlInsertFormatOrigin.xlFormatFromRightOrBelow);
+                sheet.Cells[1, 4].Value2 = "Кратность";
+                sheet.Cells[1, 4].EntireColumn.ColumnWidth = 10;
             }        
         }
     }
