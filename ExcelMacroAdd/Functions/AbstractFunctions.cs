@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Functions
 {
-    internal abstract class AbstractFunctions
+    public abstract class AbstractFunctions
     {       
         internal const int NumberProjectColumn = 1;
         internal const int TitleProjectColumn = 2;

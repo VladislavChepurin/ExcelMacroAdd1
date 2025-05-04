@@ -3,6 +3,7 @@ using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading;
@@ -12,7 +13,7 @@ namespace ExcelMacroAdd.Forms
 {
     public partial class SelectionTwinBlock : Form
     {
-        private const byte StartSwitchCurrent = 5; // Начальный ток трансформации
+        private const byte StartSwitchCurrent = 5;
         private readonly IDataInXml dataInXml;
         private readonly ISelectionTwinBlockData accessData;
         static readonly Mutex Mutex = new Mutex(false, "MutexSelectionTwinBlock_SingleInstance");
@@ -44,87 +45,63 @@ namespace ExcelMacroAdd.Forms
             }
             TopMost = formSettings.FormTopMost;
             this.dataInXml = dataInXml;
-            this.accessData = accessData;            
+            this.accessData = accessData;  
+            
+            comboBoxCurrent.SelectedIndexChanged += (s, e) => CheckingAvailableAccessories();
+            checkBoxReverse.CheckedChanged += (s, e) => CheckingAvailableAccessories();
         }
 
         private void SelectionTwinBlock_Load(object sender, EventArgs e)
         {
-            comboBox1.Items.AddRange(accessData.AccessTwinBlock.GetComboBox1Items());
-            comboBox1.SelectedIndex = StartSwitchCurrent;
+            comboBoxCurrent.Items.AddRange(accessData.AccessTwinBlock.GetComboBox1Items());
+            comboBoxCurrent.SelectedIndex = StartSwitchCurrent;
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             Pen pen = new Pen(Color.FromArgb(40, 0, 0, 100));
             e.Graphics.DrawLine(pen, 275, 70, 465, 70);
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CheckingAvailableAccessories();
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckingAvailableAccessories();
-        }
+        }        
 
         private void CheckingAvailableAccessories()
         {
-            var data = accessData.AccessTwinBlock.GetDataInTableDb(comboBox1.SelectedItem.ToString(), checkBox1.Checked);
+            var data = accessData.AccessTwinBlock.GetDataInTableDb(comboBoxCurrent.SelectedItem.ToString(), checkBoxReverse.Checked);
 
             if (!string.IsNullOrEmpty(data.Item1))
             {
-                pictureBox1.Image =
-                    ByteArrayToImage(accessData.AccessTwinBlock.GetBlobPictureDb(comboBox1.SelectedItem.ToString(),
-                        checkBox1.Checked));
-                button1.Enabled = true;
+                pictureBox.Image =
+                    ByteArrayToImage(accessData.AccessTwinBlock.GetBlobPictureDb(comboBoxCurrent.SelectedItem.ToString(),
+                        checkBoxReverse.Checked));
+                btnGoSheet.Enabled = true;
             }
             else
             {
-                pictureBox1.Image = Properties.Resources.none;
-                button1.Enabled = false;
+                pictureBox.Image = Properties.Resources.none;
+                btnGoSheet.Enabled = false;
             }
 
             if (string.IsNullOrEmpty(data.Item2))
             {
-                checkBox2.Checked = false;
-                checkBox2.Enabled = false;
+                checkBoxDirectMountingHandle.Checked = false;
+                checkBoxDirectMountingHandle.Enabled = false;
             }
             else
             {
-                checkBox2.Enabled = true;
+                checkBoxDirectMountingHandle.Enabled = true;
             }
 
-            if (string.IsNullOrEmpty(data.Item3))
-            {
-                checkBox3.Checked = false;
-                checkBox3.Enabled = false;
-            }
-            else
-            {
-                checkBox3.Enabled = true;
-            }
+            UpdateCheckBox(checkBoxDirectMountingHandle, data.Item2);
+            UpdateCheckBox(checkBoxHandleOnDoor, data.Item3);
+            UpdateCheckBox(checkBoxHandleRod, data.Item4);
+            UpdateCheckBox(checkBoxAdditionalPole, data.Item5);
 
-            if (string.IsNullOrEmpty(data.Item4))
-            {
-                checkBox4.Checked = false;
-                checkBox4.Enabled = false;
-            }
-            else
-            {
-                checkBox4.Enabled = true;
-            }
+        }
 
-            if (string.IsNullOrEmpty(data.Item5))
-            {
-                checkBox5.Checked = false;
-                checkBox5.Enabled = false;
-            }
-            else
-            {
-                checkBox5.Enabled = true;
-            }
+        private void UpdateCheckBox(CheckBox checkBox, string itemValue)
+        {
+            bool shouldEnable = !string.IsNullOrEmpty(itemValue);
+            checkBox.Enabled = shouldEnable;
+            if (!shouldEnable) checkBox.Checked = false;
         }
 
         private Image ByteArrayToImage(byte[] byteArrayIn)
@@ -136,46 +113,31 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnGoSheet_Click(object sender, EventArgs e)
         {
-            int rowsLine = default;
-            var data = accessData.AccessTwinBlock.GetDataInTableDb(comboBox1.SelectedItem.ToString(), checkBox1.Checked);
+            int offsetRow = 0;
+            var data = accessData.AccessTwinBlock.GetDataInTableDb(comboBoxCurrent.SelectedItem.ToString(), checkBoxReverse.Checked);
 
-            var writeExcel = new WriteExcel(dataInXml, "EKF", rowsLine, data.Item1);
+            var writeExcel = new WriteExcel(dataInXml, "EKF", data.Item1, offsetRow);
             writeExcel.Start();
 
-            if (!string.IsNullOrEmpty(data.Item2) && checkBox2.Checked)
+
+            var itemsToProcess = new List<(string ItemValue, CheckBox CheckBox)>
+            {      
+                (data.Item2, checkBoxDirectMountingHandle),
+                (data.Item3, checkBoxHandleOnDoor),
+                (data.Item4, checkBoxHandleRod),
+                (data.Item5, checkBoxAdditionalPole)
+            };
+
+            foreach (var item in itemsToProcess)
             {
-                rowsLine++;
-                writeExcel = new WriteExcel(dataInXml, "EKF", rowsLine, data.Item2);
-                writeExcel.Start();
+                if (item.CheckBox.Checked && !string.IsNullOrEmpty(item.ItemValue))
+                {
+                    writeExcel = new WriteExcel(dataInXml, "EKF", item.ItemValue, ++offsetRow);
+                    writeExcel.Start();
+                }
             }
-
-            if (!string.IsNullOrEmpty(data.Item3) && checkBox3.Checked)
-            {
-                rowsLine++;
-                writeExcel = new WriteExcel(dataInXml, "EKF", rowsLine, data.Item3);
-                writeExcel.Start();
-            }
-
-            if (!string.IsNullOrEmpty(data.Item4) && checkBox4.Checked)
-            {
-                rowsLine++;
-                writeExcel = new WriteExcel(dataInXml, "EKF", rowsLine, data.Item4);
-                writeExcel.Start();
-            }
-
-            if (!string.IsNullOrEmpty(data.Item5) && checkBox5.Checked)
-            {
-                rowsLine++;
-                writeExcel = new WriteExcel(dataInXml, "EKF", rowsLine, data.Item5);
-                writeExcel.Start();
-            }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

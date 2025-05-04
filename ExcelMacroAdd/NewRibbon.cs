@@ -16,9 +16,11 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
+using System.Windows.Forms;
 using AppContext = ExcelMacroAdd.DataLayer.Entity.AppContext;
 using Office = Microsoft.Office.Core;
+
+
 
 namespace ExcelMacroAdd
 {
@@ -35,8 +37,8 @@ namespace ExcelMacroAdd
         private readonly AccessData accessData;
         private readonly bool locationDataBase = default;
         private readonly IMemoryCache memoryCache;
-        private readonly IValidateLicenseKey validateLicenseKey;
-
+        private readonly IValidateLicenseKey validateLicenseKey;      
+        
         public NewRibbon()
         {
             AppSettingsDeserialize app = new AppSettingsDeserialize(jsonFilePath);
@@ -106,19 +108,20 @@ namespace ExcelMacroAdd
 
         public void OnActionCallbackBase(Office.IRibbonControl control)
         {
-            
+#if !DEBUG
             if (!validateLicenseKey.ValidateKey())
             {
+
                 MessageBox.Show(Properties.Resources.LicenseText, "Внимание");
                 return;
             }
-
+#endif
             switch (control.Id)
             {
                 //Заполнение паспортов
                 case "FillingOutThePassport_Button":
-                    var fillingOutThePassport = new FillingOutThePassport(resources);
-                    fillingOutThePassport.Start();
+                    var fillingOutThePassport = new FillingOutPassports(resources);
+                    fillingOutThePassport.Show();
                     break;
 
                 //Удалить формулы выделенной области
@@ -164,12 +167,13 @@ namespace ExcelMacroAdd
 
         public void OnActionCallbackDecoration(Office.IRibbonControl control)
         {
+#if !DEBUG
             if (!validateLicenseKey.ValidateKey())
             {
                 MessageBox.Show(Properties.Resources.LicenseText, "Внимание");
                 return;
             }
-
+#endif
             switch (control.Id)
             {
                 //Разметка листов
@@ -230,18 +234,19 @@ namespace ExcelMacroAdd
 
         public async Task OnActionCallbackCalculation(Office.IRibbonControl control)
         {
+#if !DEBUG
             if (!validateLicenseKey.ValidateKey())
             {
                 MessageBox.Show(Properties.Resources.LicenseText, "Внимание");
                 return;
             }
-
+#endif
             WriteExcel writeExcel;
 
             switch (control.Id)
             {
                 //Вставка формулы Iek
-                case "Iek_Button":                    
+                case "Iek_Button":
                     writeExcel = new WriteExcel(dataInXml, "IEK");
                     writeExcel.Start();
                     break;
@@ -261,6 +266,13 @@ namespace ExcelMacroAdd
                 //Вставка формулы Keaz
                 case "Keaz_Button":                   
                     writeExcel = new WriteExcel(dataInXml, "KEAZ");
+                    writeExcel.Start();
+                    break;
+
+                //Вставка формулы Dek
+                case "Dek_Button":
+                    //writeExcel = new WriteExcel(dataInXml, "Dekraft");
+                    writeExcel = new WriteExcel(dataInXml, "DEKraft");
                     writeExcel.Start();
                     break;
 
@@ -316,16 +328,19 @@ namespace ExcelMacroAdd
 
                 //Таблица типов
                 case "TypeNky_Button":
-                    var typeNky = new TypeNky(typeNkySettings);
-                    var taskPane = Globals.ThisAddIn.CustomTaskPanes.Add(typeNky, "Тип шкафов");
-                    taskPane.Width = 400;
-                    taskPane.DockPosition = Office.MsoCTPDockPosition.msoCTPDockPositionRight;
-                    taskPane.Visible = true;
-                    break;
+                    // Проверяем, есть ли уже такая панель
+                    var existingPane = Globals.ThisAddIn.CustomTaskPanes
+                        .FirstOrDefault(p => p.Title == "Тип шкафов");
 
-                case "UpdatingCalculation":
-                    var updatingCalculation = new UpdatingCalculation(dataInXml);
-                    updatingCalculation.Start();
+                    if (existingPane == null)
+                    {
+                        var typeNky = new TypeNky(typeNkySettings);
+                        existingPane = Globals.ThisAddIn.CustomTaskPanes.Add(typeNky, "Тип шкафов");
+                        existingPane.Width = 400;
+                        existingPane.DockPosition = Office.MsoCTPDockPosition.msoCTPDockPositionRight;
+                    }
+                    existingPane.Visible = true;
+
                     break;
             }
         }

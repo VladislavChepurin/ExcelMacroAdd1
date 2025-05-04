@@ -1,38 +1,27 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
+using ExcelMacroAdd.Forms.ViewModels;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
-using Microsoft.Office.Interop.Excel;
 using System;
-using System.Drawing;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using static ExcelMacroAdd.Forms.ViewModels.TermoCalculationViewModel;
 
 namespace ExcelMacroAdd.Forms
 {
     public partial class TermoCalculation : Form
     {
-        private readonly ITermoCalcData accessData;
-        protected readonly Worksheet Worksheet = Globals.ThisAddIn.GetActiveWorksheet();
-        protected readonly Range Cell = Globals.ThisAddIn.GetActiveCell();
+        private readonly TermoCalculationViewModel termoCalculationViewModel;
         static readonly Mutex Mutex = new Mutex(false, "MutexTermoCalculation_SingleInstance");
         private bool _mutexAcquired = false;
-
-        //Материал шкафа
-        private const double sheetSteel = 5.5;
-        private const double stainlessSteel = 4.5;
-        private const double seamlessPolymer = 3.5;
-        private const double aluminum = 12.0;
-        //Материал утеплителя
-        private const double withoutInsulation = 0.0;
-        private const double metallizedReinforcedInsulation = 1.0;
-        private const double doubleMetallizedReinforcedInsulation = 0.5;
-        private const double foamedPolyurethaneInsulation = 0.2;
-        //Коэффициенты размещения
-        private const double internalPlacement = 1.0;
-        private const double outdoorPlacement = 1.7;
-
+               
         public TermoCalculation(ITermoCalcData accessData, IFormSettings formSettings)
         {
+            termoCalculationViewModel = new TermoCalculationViewModel(accessData);
+
             InitializeComponent();
+            InitializeDataBindings();
             try
             {
                 _mutexAcquired = Mutex.WaitOne(TimeSpan.FromSeconds(1), false);
@@ -47,33 +36,150 @@ namespace ExcelMacroAdd.Forms
             }
 
             TopMost = formSettings.FormTopMost;
-            this.accessData = accessData;          
+            this.Load += (s, e) => termoCalculationViewModel.Start();            
+            textBoxHeight.KeyPress += NumericTextBox_KeyPress;
+            textBoxWidth.KeyPress += NumericTextBox_KeyPress;
+            textBoxDepth.KeyPress += NumericTextBox_KeyPress;
+            textBoxHeatDissipation.KeyPress += NumericTextBox_KeyPress;
+            textBoxMinTemp.KeyPress += NumericTextBox_KeyPressSigned;
+            textBoxTargetTemp.KeyPress += NumericTextBox_KeyPressSigned;        
+            btnAplly.Click += (s, e) => termoCalculationViewModel.BthApllyClick();
         }
 
-        private async void TermoCalculation_Load(object sender, EventArgs e)
+        private void NumericTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            comboBox1.SelectedIndex = 0;
-            comboBox2.SelectedIndex = 0;
-            comboBox3.SelectedIndex = 0;
+            var textBox = sender as TextBox;
 
-            int currentRow = Cell.Row;
-            string sArticle = Convert.ToString(Worksheet.Cells[currentRow, 1].Value2);
+            // Разрешаем:
+            // - Цифры
+            // - Backspace
+            // - Delete           
+            bool isDigit = char.IsDigit(e.KeyChar);
+            bool isControl = char.IsControl(e.KeyChar);  
+            
+            e.Handled = !(isDigit || isControl);
+        }
 
-            if (sArticle == null)
-                return;
+        private void NumericTextBox_KeyPressSigned(object sender, KeyPressEventArgs e)
+        {
+            var textBox = sender as TextBox;
 
-            var boxData = await accessData.AccessTermoCalc.GetEntityJournal(sArticle.ToLower());
+            // Разрешаем:
+            // - Цифры
+            // - Знак минуса только в начале
+            // - Backspace
+            // - Delete
+            bool isDigit = char.IsDigit(e.KeyChar);
+            bool isControl = char.IsControl(e.KeyChar);
+            bool isMinus = e.KeyChar == '-';
+            bool canInsertMinus = textBox.SelectionStart == 0 && !textBox.Text.Contains('-');
 
-            if (boxData == null)
-                return;
+            e.Handled = !(isDigit || isControl || (isMinus && canInsertMinus));
+        }
 
-            textBox1.Clear();
-            textBox2.Clear();
-            textBox3.Clear();
+        private void InitializeDataBindings()
+        {
+            var textBoxBindings = new Dictionary<System.Windows.Forms.TextBox, string>
+            {
+                { textBoxHeight, "Height" },
+                { textBoxWidth, "Width" },
+                { textBoxDepth, "Depth" },
+                { textBoxMinTemp, "MinTemp" },
+                { textBoxTargetTemp, "TargetTemp" },
+                { textBoxDifferenceTemp, "DifferenceTemp" },
+                { textBoxHeatDissipation, "HeatDissipation" }
+            };
 
-            textBox1.Text = boxData.Height.ToString();
-            textBox2.Text = boxData.Width.ToString();
-            textBox3.Text = boxData.Depth.ToString();
+            foreach (var textBox in textBoxBindings)
+            {
+                // Привязка для свойства Text
+                textBox.Key.DataBindings.Add(
+                    "Text",
+                    termoCalculationViewModel,
+                    $"TextBox{textBox.Value}",
+                    false,
+                    DataSourceUpdateMode.OnPropertyChanged
+                );
+            }                     
+
+            AddRadioButtonBinding(radioComprehensiveAccess, Options.ComprehensiveAccess);
+            AddRadioButtonBinding(radioPlacementWall, Options.PlacementWall);
+            AddRadioButtonBinding(radioLastRow, Options.LastRow);
+            AddRadioButtonBinding(radioLastRowNearWall, Options.LastRowNearWall);
+            AddRadioButtonBinding(radioMiddleRow, Options.MiddleRow);
+            AddRadioButtonBinding(radioMiddleRowNearWall, Options.MiddleRowNearWall);
+            AddRadioButtonBinding(radioMiddleRowNearWallWithUpperClosed, Options.MiddleRowNearWallWithUpperClosed);
+
+            labelResult.DataBindings.Add
+            (
+                "Text",
+                termoCalculationViewModel,
+                nameof(termoCalculationViewModel.TextResultLabel),
+                false,
+                DataSourceUpdateMode.OnPropertyChanged
+            );
+
+            labelResult.DataBindings.Add
+            (
+                "Visible",
+                termoCalculationViewModel,
+                nameof(termoCalculationViewModel.IsVisibleLabel),         
+                false,
+                DataSourceUpdateMode.OnPropertyChanged
+            );
+
+            comboBoxInstallation.DataBindings.Add
+            (
+                "SelectedIndex",
+                termoCalculationViewModel,
+                nameof(termoCalculationViewModel.InstallationIndex),
+                false,
+                DataSourceUpdateMode.OnPropertyChanged
+            );
+
+
+            comboBoxCabinetMaterial.DataBindings.Add
+            (
+                "SelectedIndex",
+                termoCalculationViewModel,
+                nameof(termoCalculationViewModel.CabinetMaterialIndex),
+                false,
+                DataSourceUpdateMode.OnPropertyChanged
+            );
+
+            comboBoxInsulationМaterial.DataBindings.Add
+            (
+                "SelectedIndex",
+                termoCalculationViewModel,
+                nameof(termoCalculationViewModel.InsulationМaterialIndex),
+                false,
+                DataSourceUpdateMode.OnPropertyChanged
+            );
+        }
+
+        private void AddRadioButtonBinding(RadioButton radioButton, Options optionValue)
+        {
+            var binding = new Binding(
+                "Checked",
+                termoCalculationViewModel,
+                nameof(termoCalculationViewModel.SelectedOption),
+                false, // форматирование включено
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            binding.Format += (sender, e) =>
+            {
+                e.Value = e.Value != null && (Options)e.Value == optionValue;
+            };
+
+            binding.Parse += (sender, e) =>
+            {
+                if ((bool)e.Value)
+                {
+                    termoCalculationViewModel.SelectedOption = optionValue;
+                }
+            };
+
+            radioButton.DataBindings.Add(binding);
         }
 
         private void TermoCalculation_FormClosed(object sender, FormClosedEventArgs e)
@@ -83,339 +189,6 @@ namespace ExcelMacroAdd.Forms
                 Mutex.ReleaseMutex();
                 _mutexAcquired = false;
             }
-        }     
-
-        #region KeyPress
-
-        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace        
-                e.Handled = true;
-        }
-
-        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace        
-                e.Handled = true;
-        }
-
-        private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace        
-                e.Handled = true;
-        }
-
-        private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8 && number != '-') // цифры и клавиша BackSpace    
-                e.Handled = true;
-        }
-
-        private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8 && number != '-') // цифры и клавиша BackSpace    
-                e.Handled = true;
-        }
-
-        private void textBox6_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace        
-                e.Handled = true;
-        }
-
-        #endregion
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-            if (int.TryParse(textBox4.Text, out int lowTemp) && int.TryParse(textBox5.Text, out int internalTemp))
-            {
-                if (internalTemp >= lowTemp)
-                {
-                    textBox6.Text = (internalTemp - lowTemp).ToString();
-                    textBox4.ForeColor = Color.Black;
-                    textBox5.ForeColor = Color.Black;
-                }
-                else
-                {
-                    textBox6.Text = "0";
-                    textBox4.ForeColor = Color.Red;
-                    textBox5.ForeColor = Color.Red;
-                }
-            }
-        }
-
-        private void textBox5_TextChanged(object sender, EventArgs e)
-        {
-            if (int.TryParse(textBox4.Text, out int lowTemp) && int.TryParse(textBox5.Text, out int internalTemp))
-            {
-                if (internalTemp >= lowTemp)
-                {
-                    textBox6.Text = (internalTemp - lowTemp).ToString();
-                    textBox4.ForeColor = Color.Black;
-                    textBox5.ForeColor = Color.Black;
-                }
-                else
-                {
-                    textBox6.Text = "0";
-                    textBox4.ForeColor = Color.Red;
-                    textBox5.ForeColor = Color.Red;
-                }
-            }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            double effectiveArea = GetEffectiveArea();
-            double heatTransferCoefficientBox = GetHeatTransferCoefficienBox();
-            double heatTransferCoefficientInsulation = GetHeatTransferCoefficienInsulation();
-            double placementCoefficient = GetPlacementCoefficient();
-
-
-            if (int.TryParse(textBox6.Text, out int temperatureDifference))
-            {
-                int.TryParse(textBox7.Text, out int totalHeatGeneration);
-
-                var heaterPower = CalculationOfHeating(placementCoefficient, effectiveArea, heatTransferCoefficientBox, heatTransferCoefficientInsulation, temperatureDifference, totalHeatGeneration);
-
-                label13.Text = heaterPower.ToString() + " Вт";
-                label13.Visible = true;
-            }
-        }
-
-        private double GetPlacementCoefficient()
-        {
-            if (comboBox1.SelectedIndex == 0)
-            {
-                return internalPlacement;
-            }
-            else if (comboBox1.SelectedIndex == 1)
-            {
-                return outdoorPlacement;
-            }
-            return default;
-        }
-
-        private double GetHeatTransferCoefficienBox()
-        {
-            if (comboBox2.SelectedIndex == 0)
-            {
-                return sheetSteel;
-            }
-            else if (comboBox2.SelectedIndex == 1)
-            {
-                return stainlessSteel;
-            }
-            else if (comboBox2.SelectedIndex == 2)
-            {
-                return seamlessPolymer;
-            }
-            else if (comboBox2.SelectedIndex == 3)
-            {
-                return aluminum;
-            }
-            return default;
-        }
-
-        private double GetHeatTransferCoefficienInsulation()
-        {
-            if (comboBox3.SelectedIndex == 0)
-            {
-                return GetHeatTransferCoefficienBox();
-            }
-            else if (comboBox3.SelectedIndex == 1)
-            {
-                return metallizedReinforcedInsulation;
-            }
-            else if (comboBox3.SelectedIndex == 2)
-            {
-                return doubleMetallizedReinforcedInsulation;
-            }
-            else if (comboBox3.SelectedIndex == 3)
-            {
-                return foamedPolyurethaneInsulation;
-            }
-            return default;
-        }
-
-        private double GetEffectiveArea()
-        {
-            if (int.TryParse(textBox1.Text, out int height) && int.TryParse(textBox2.Text, out int width) && int.TryParse(textBox3.Text, out int depth))
-            {
-                if (radioButton1.Checked)
-                {
-                    return SeparatePlacement(height, width, depth);
-                }
-                else if (radioButton2.Checked)
-                {
-                    return LocationOnWall(height, width, depth);
-                }
-                else if (radioButton3.Checked)
-                {
-                    return LastPlaceInRowOfCabinets(height, width, depth);
-                }
-                else if (radioButton4.Checked)
-                {
-                    return LastPlaceInRowOnWall(height, width, depth);
-                }
-                else if (radioButton5.Checked)
-                {
-                    return LocationInMiddleOfRow(height, width, depth);
-                }
-                else if (radioButton6.Checked)
-                {
-                    return InMiddleOfRowOnWall(height, width, depth);
-                }
-                else if (radioButton7.Checked)
-                {
-                    return LocationOnWallInMiddleOfRowUnderCanopy(height, width, depth);
-                }
-            }
-            return default;
-        }
-
-        private double CalculationHeatTransferCoefficient(double heatTransferCoefficientBox, double heatTransferCoefficientInsulation)
-        {
-            return (5 * heatTransferCoefficientInsulation + heatTransferCoefficientBox) / 6;
-        }
-
-        /// <summary>
-        /// Расчет мощности
-        /// </summary>
-        /// <param name="effectiveArea"></param>
-        /// <param name="heatTransferCoefficient"></param>
-        /// <param name="temperatureDifference"></param>
-        /// <param name="totalHeatGeneration"></param>
-        /// <returns></returns>
-        internal int CalculationOfHeating(double placementCoefficient, double effectiveArea, double heatTransferCoefficientBox, double heatTransferCoefficientInsulation, int temperatureDifference, int totalHeatGeneration)
-        {
-            var heatTransferCoefficient = CalculationHeatTransferCoefficient(heatTransferCoefficientBox, heatTransferCoefficientInsulation);
-
-            var powerOfHeating = placementCoefficient * (effectiveArea * heatTransferCoefficient * temperatureDifference - totalHeatGeneration);
-            return (int)Math.Round(powerOfHeating);
-        }
-
-        /// <summary>
-        /// Отдельное размещение 
-        /// </summary>
-        /// <param name="height"></param>
-        /// <param name="width"></param>
-        /// <param name="depth"></param>
-        /// <returns></returns>
-        internal double SeparatePlacement(int height, int width, int depth)
-        {
-            double heightM = height / 1000.0;
-            double widthM = width / 1000.0;
-            double depthM = depth / 1000.0;
-
-            double effectiveArea = 1.8 * heightM * (widthM + depthM) + 1.4 * widthM * depthM;
-            return Math.Round(effectiveArea, 2);
-        }
-
-        /// <summary>
-        /// Расположение на стене 
-        /// </summary>
-        /// <param name="height"></param>
-        /// <param name="width"></param>
-        /// <param name="depth"></param>
-        /// <returns></returns>
-        internal double LocationOnWall(int height, int width, int depth)
-        {
-            double heightM = height / 1000.0;
-            double widthM = width / 1000.0;
-            double depthM = depth / 1000.0;
-            var effectiveArea = 1.4 * widthM * (heightM + depthM) + 1.8 * depthM * heightM;
-            return Math.Round(effectiveArea, 2);
-        }
-
-        /// <summary>
-        /// Крайнее место в ряду шкафов 
-        /// </summary>
-        /// <param name="height"></param>
-        /// <param name="width"></param>
-        /// <param name="depth"></param>
-        /// <returns></returns>
-        internal double LastPlaceInRowOfCabinets(int height, int width, int depth)
-        {
-            double heightM = height / 1000.0;
-            double widthM = width / 1000.0;
-            double depthM = depth / 1000.0;
-
-            var effectiveArea = 1.4 * depthM * (heightM + widthM) + 1.8 * widthM * heightM;
-            return Math.Round(effectiveArea, 2);
-        }
-
-        /// <summary>
-        /// Крайнее место в ряду на стене 
-        /// </summary>
-        /// <param name="height"></param>
-        /// <param name="width"></param>
-        /// <param name="depth"></param>
-        /// <returns></returns>
-        internal double LastPlaceInRowOnWall(int height, int width, int depth)
-        {
-            double heightM = height / 1000.0;
-            double widthM = width / 1000.0;
-            double depthM = depth / 1000.0;
-
-            var effectiveArea = 1.4 * heightM * (widthM + depthM) + 1.4 * widthM * depthM;
-            return Math.Round(effectiveArea, 2);
-        }
-
-        /// <summary>
-        /// Расположение в середине ряда 
-        /// </summary>
-        /// <param name="height"></param>
-        /// <param name="width"></param>
-        /// <param name="depth"></param>
-        /// <returns></returns>
-        internal double LocationInMiddleOfRow(int height, int width, int depth)
-        {
-            double heightM = height / 1000.0;
-            double widthM = width / 1000.0;
-            double depthM = depth / 1000.0;
-
-            var effectiveArea = 1.8 * widthM * heightM + 1.4 * widthM * depthM + depthM * heightM;
-            return Math.Round(effectiveArea, 2);
-        }
-
-        /// <summary>
-        /// В середине ряда на стене 
-        /// </summary>
-        /// <param name="height"></param>
-        /// <param name="width"></param>
-        /// <param name="depth"></param>
-        /// <returns></returns>
-        internal double InMiddleOfRowOnWall(int height, int width, int depth)
-        {
-            double heightM = height / 1000.0;
-            double widthM = width / 1000.0;
-            double depthM = depth / 1000.0;
-
-            var effectiveArea = 1.4 * widthM * (heightM + depthM) + depthM * heightM;
-            return Math.Round(effectiveArea, 2);
-        }
-
-        /// <summary>
-        /// Расположение на стене в середине ряда под козырьком 
-        /// </summary>
-        /// <param name="height"></param>
-        /// <param name="width"></param>
-        /// <param name="depth"></param>
-        /// <returns></returns>
-        internal double LocationOnWallInMiddleOfRowUnderCanopy(int height, int width, int depth)
-        {
-            double heightM = height / 1000.0;
-            double widthM = width / 1000.0;
-            double depthM = depth / 1000.0;
-
-            var effectiveArea = 1.4 * widthM * heightM + 0.7 * widthM * depthM + depthM * heightM;
-            return Math.Round(effectiveArea, 2);
-        }
+        }                              
     }
 }

@@ -28,69 +28,66 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.comboBoxCurrent = new System.Windows.Forms.ComboBox();
+            this.checkBoxReverse = new System.Windows.Forms.CheckBox();
+            this.checkBoxDirectMountingHandle = new System.Windows.Forms.CheckBox();
+            this.checkBoxHandleOnDoor = new System.Windows.Forms.CheckBox();
+            this.checkBoxHandleRod = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.checkBoxAdditionalPole = new System.Windows.Forms.CheckBox();
+            this.btnGoSheet = new System.Windows.Forms.Button();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // comboBox1
+            // comboBoxCurrent
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(278, 33);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(94, 21);
-            this.comboBox1.TabIndex = 0;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBoxCurrent.FormattingEnabled = true;
+            this.comboBoxCurrent.Location = new System.Drawing.Point(278, 33);
+            this.comboBoxCurrent.Name = "comboBoxCurrent";
+            this.comboBoxCurrent.Size = new System.Drawing.Size(94, 21);
+            this.comboBoxCurrent.TabIndex = 0;
             // 
-            // checkBox1
+            // checkBoxReverse
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(378, 37);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(94, 17);
-            this.checkBox1.TabIndex = 1;
-            this.checkBox1.Text = "реверсивный";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.checkBoxReverse.AutoSize = true;
+            this.checkBoxReverse.Location = new System.Drawing.Point(378, 37);
+            this.checkBoxReverse.Name = "checkBoxReverse";
+            this.checkBoxReverse.Size = new System.Drawing.Size(94, 17);
+            this.checkBoxReverse.TabIndex = 1;
+            this.checkBoxReverse.Text = "реверсивный";
+            this.checkBoxReverse.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // checkBoxDirectMountingHandle
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(278, 97);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(149, 17);
-            this.checkBox2.TabIndex = 2;
-            this.checkBox2.Text = "Ручка прямого монтажа";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBoxDirectMountingHandle.AutoSize = true;
+            this.checkBoxDirectMountingHandle.Location = new System.Drawing.Point(278, 97);
+            this.checkBoxDirectMountingHandle.Name = "checkBoxDirectMountingHandle";
+            this.checkBoxDirectMountingHandle.Size = new System.Drawing.Size(149, 17);
+            this.checkBoxDirectMountingHandle.TabIndex = 2;
+            this.checkBoxDirectMountingHandle.Text = "Ручка прямого монтажа";
+            this.checkBoxDirectMountingHandle.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // checkBoxHandleOnDoor
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(278, 120);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(103, 17);
-            this.checkBox3.TabIndex = 3;
-            this.checkBox3.Text = "Ручка на дверь";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBoxHandleOnDoor.AutoSize = true;
+            this.checkBoxHandleOnDoor.Location = new System.Drawing.Point(278, 120);
+            this.checkBoxHandleOnDoor.Name = "checkBoxHandleOnDoor";
+            this.checkBoxHandleOnDoor.Size = new System.Drawing.Size(103, 17);
+            this.checkBoxHandleOnDoor.TabIndex = 3;
+            this.checkBoxHandleOnDoor.Text = "Ручка на дверь";
+            this.checkBoxHandleOnDoor.UseVisualStyleBackColor = true;
             // 
-            // checkBox4
+            // checkBoxHandleRod
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(278, 143);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(104, 17);
-            this.checkBox4.TabIndex = 4;
-            this.checkBox4.Text = "Шток для ручки";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBoxHandleRod.AutoSize = true;
+            this.checkBoxHandleRod.Location = new System.Drawing.Point(278, 143);
+            this.checkBoxHandleRod.Name = "checkBoxHandleRod";
+            this.checkBoxHandleRod.Size = new System.Drawing.Size(104, 17);
+            this.checkBoxHandleRod.TabIndex = 4;
+            this.checkBoxHandleRod.Text = "Шток для ручки";
+            this.checkBoxHandleRod.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -101,33 +98,33 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "Аксесуары";
             // 
-            // checkBox5
+            // checkBoxAdditionalPole
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(278, 166);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(149, 17);
-            this.checkBox5.TabIndex = 6;
-            this.checkBox5.Text = "Дополнительный полюс";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBoxAdditionalPole.AutoSize = true;
+            this.checkBoxAdditionalPole.Location = new System.Drawing.Point(278, 166);
+            this.checkBoxAdditionalPole.Name = "checkBoxAdditionalPole";
+            this.checkBoxAdditionalPole.Size = new System.Drawing.Size(149, 17);
+            this.checkBoxAdditionalPole.TabIndex = 6;
+            this.checkBoxAdditionalPole.Text = "Дополнительный полюс";
+            this.checkBoxAdditionalPole.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnGoSheet
             // 
-            this.button1.Location = new System.Drawing.Point(378, 229);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "На лист";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnGoSheet.Location = new System.Drawing.Point(278, 223);
+            this.btnGoSheet.Name = "btnGoSheet";
+            this.btnGoSheet.Size = new System.Drawing.Size(85, 28);
+            this.btnGoSheet.TabIndex = 7;
+            this.btnGoSheet.Text = "На лист";
+            this.btnGoSheet.UseVisualStyleBackColor = true;
+            this.btnGoSheet.Click += new System.EventHandler(this.btnGoSheet_Click);
             // 
-            // pictureBox1
+            // pictureBox
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(240, 240);
-            this.pictureBox1.TabIndex = 8;
-            this.pictureBox1.TabStop = false;
+            this.pictureBox.Location = new System.Drawing.Point(12, 12);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(240, 240);
+            this.pictureBox.TabIndex = 8;
+            this.pictureBox.TabStop = false;
             // 
             // label2
             // 
@@ -138,33 +135,21 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "Ток рубильника";
             // 
-            // button2
-            // 
-            this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(278, 229);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "Open DWG";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // SelectionTwinBlock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(480, 263);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.checkBox5);
+            this.Controls.Add(this.pictureBox);
+            this.Controls.Add(this.btnGoSheet);
+            this.Controls.Add(this.checkBoxAdditionalPole);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.checkBox4);
-            this.Controls.Add(this.checkBox3);
-            this.Controls.Add(this.checkBox2);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.checkBoxHandleRod);
+            this.Controls.Add(this.checkBoxHandleOnDoor);
+            this.Controls.Add(this.checkBoxDirectMountingHandle);
+            this.Controls.Add(this.checkBoxReverse);
+            this.Controls.Add(this.comboBoxCurrent);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(496, 302);
             this.MinimizeBox = false;
@@ -174,7 +159,7 @@
             this.Text = "Рубильники TwinBlock";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SelectionTwinBlock_FormClosed);
             this.Load += new System.EventHandler(this.SelectionTwinBlock_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -182,16 +167,15 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.ComboBox comboBoxCurrent;
+        private System.Windows.Forms.CheckBox checkBoxReverse;
+        private System.Windows.Forms.CheckBox checkBoxDirectMountingHandle;
+        private System.Windows.Forms.CheckBox checkBoxHandleOnDoor;
+        private System.Windows.Forms.CheckBox checkBoxHandleRod;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.CheckBox checkBoxAdditionalPole;
+        private System.Windows.Forms.Button btnGoSheet;
+        private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button2;
     }
 }

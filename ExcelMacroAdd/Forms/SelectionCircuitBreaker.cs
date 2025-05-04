@@ -601,13 +601,13 @@ namespace ExcelMacroAdd.Forms
 
         private void CreateFillInCircutBreakAsync()
         {
-            int rows = default;
+            int offsetRow = default;
             foreach (var item in userVariables)
             {
                 if (item == null) continue;
                 if (CheckBoxArrayCircuitBreak()[item.number].Checked)
                 {
-                    var writeExcel = new WriteExcel(dataInXml, item.vendor, rows++, item.article, item.quantity);
+                    var writeExcel = new WriteExcel(dataInXml, item.vendor, item.article, offsetRow++, item.quantity);
                     writeExcel.Start();
                 }
             }

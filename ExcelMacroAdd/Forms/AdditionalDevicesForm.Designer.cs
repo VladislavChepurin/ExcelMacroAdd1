@@ -33,8 +33,8 @@
             this.checkBoxShuntTrip230V = new System.Windows.Forms.CheckBox();
             this.checkBoxUndervoltageRelease = new System.Windows.Forms.CheckBox();
             this.checkBoxSignalContact = new System.Windows.Forms.CheckBox();
-            this.checkBoxAuxiliaryContact = new System.Windows.Forms.CheckBox();
-            this.checkBoxSignalOrAuxiliaryContact = new System.Windows.Forms.CheckBox();
+            this.checkBoxAuxContact = new System.Windows.Forms.CheckBox();
+            this.checkBoxSignalOrAuxContact = new System.Windows.Forms.CheckBox();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -95,27 +95,27 @@
             this.checkBoxSignalContact.Text = "Сигнальный контакт";
             this.checkBoxSignalContact.UseVisualStyleBackColor = true;
             // 
-            // checkBoxAuxiliaryContact
+            // checkBoxAuxContact
             // 
-            this.checkBoxAuxiliaryContact.AutoSize = true;
-            this.checkBoxAuxiliaryContact.Enabled = false;
-            this.checkBoxAuxiliaryContact.Location = new System.Drawing.Point(12, 129);
-            this.checkBoxAuxiliaryContact.Name = "checkBoxAuxiliaryContact";
-            this.checkBoxAuxiliaryContact.Size = new System.Drawing.Size(126, 17);
-            this.checkBoxAuxiliaryContact.TabIndex = 6;
-            this.checkBoxAuxiliaryContact.Text = "Аварийный контакт";
-            this.checkBoxAuxiliaryContact.UseVisualStyleBackColor = true;
+            this.checkBoxAuxContact.AutoSize = true;
+            this.checkBoxAuxContact.Enabled = false;
+            this.checkBoxAuxContact.Location = new System.Drawing.Point(12, 129);
+            this.checkBoxAuxContact.Name = "checkBoxAuxContact";
+            this.checkBoxAuxContact.Size = new System.Drawing.Size(126, 17);
+            this.checkBoxAuxContact.TabIndex = 6;
+            this.checkBoxAuxContact.Text = "Аварийный контакт";
+            this.checkBoxAuxContact.UseVisualStyleBackColor = true;
             // 
-            // checkBoxSignalOrAuxiliaryContact
+            // checkBoxSignalOrAuxContact
             // 
-            this.checkBoxSignalOrAuxiliaryContact.AutoSize = true;
-            this.checkBoxSignalOrAuxiliaryContact.Enabled = false;
-            this.checkBoxSignalOrAuxiliaryContact.Location = new System.Drawing.Point(12, 152);
-            this.checkBoxSignalOrAuxiliaryContact.Name = "checkBoxSignalOrAuxiliaryContact";
-            this.checkBoxSignalOrAuxiliaryContact.Size = new System.Drawing.Size(275, 17);
-            this.checkBoxSignalOrAuxiliaryContact.TabIndex = 5;
-            this.checkBoxSignalOrAuxiliaryContact.Text = "Совмещенный сигнальный и аварийный контакт";
-            this.checkBoxSignalOrAuxiliaryContact.UseVisualStyleBackColor = true;
+            this.checkBoxSignalOrAuxContact.AutoSize = true;
+            this.checkBoxSignalOrAuxContact.Enabled = false;
+            this.checkBoxSignalOrAuxContact.Location = new System.Drawing.Point(12, 152);
+            this.checkBoxSignalOrAuxContact.Name = "checkBoxSignalOrAuxContact";
+            this.checkBoxSignalOrAuxContact.Size = new System.Drawing.Size(275, 17);
+            this.checkBoxSignalOrAuxContact.TabIndex = 5;
+            this.checkBoxSignalOrAuxContact.Text = "Совмещенный сигнальный и аварийный контакт";
+            this.checkBoxSignalOrAuxContact.UseVisualStyleBackColor = true;
             // 
             // btnApply
             // 
@@ -126,7 +126,6 @@
             this.btnApply.TabIndex = 8;
             this.btnApply.Text = "Сделать хорошо";
             this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
             // btnClose
             // 
@@ -136,7 +135,6 @@
             this.btnClose.TabIndex = 9;
             this.btnClose.Text = "Закрыть";
             this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // label1
             // 
@@ -157,8 +155,8 @@
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.checkBoxSignalContact);
-            this.Controls.Add(this.checkBoxAuxiliaryContact);
-            this.Controls.Add(this.checkBoxSignalOrAuxiliaryContact);
+            this.Controls.Add(this.checkBoxAuxContact);
+            this.Controls.Add(this.checkBoxSignalOrAuxContact);
             this.Controls.Add(this.checkBoxUndervoltageRelease);
             this.Controls.Add(this.checkBoxShuntTrip230V);
             this.Controls.Add(this.checkBoxShuntTrip48V);
@@ -171,23 +169,21 @@
             this.Name = "AdditionalDevicesForm";
             this.Text = "Дополнительные модульные устройства";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AdditionalDevicesForm_FormClosed);
-            this.Load += new System.EventHandler(this.AdditionalDevicesForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.CheckBox checkBoxShuntTrip24V;
         private System.Windows.Forms.CheckBox checkBoxShuntTrip48V;
         private System.Windows.Forms.CheckBox checkBoxShuntTrip230V;
         private System.Windows.Forms.CheckBox checkBoxUndervoltageRelease;
         private System.Windows.Forms.CheckBox checkBoxSignalContact;
-        private System.Windows.Forms.CheckBox checkBoxAuxiliaryContact;
-        private System.Windows.Forms.CheckBox checkBoxSignalOrAuxiliaryContact;
+        private System.Windows.Forms.CheckBox checkBoxAuxContact;
+        private System.Windows.Forms.CheckBox checkBoxSignalOrAuxContact;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox checkBoxShuntTrip24V;
     }
 }

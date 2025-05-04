@@ -1,5 +1,6 @@
 ﻿using ExcelMacroAdd.Services;
 using ExcelMacroAdd.Services.Interfaces;
+using Microsoft.Office.Interop.Word;
 using System;
 using System.Runtime.InteropServices;
 
@@ -10,9 +11,10 @@ namespace ExcelMacroAdd.Functions
     {
         private readonly IDataInXml _dataInXml;
         private readonly string _vendor;
-        private readonly int _rowsOffset;
+        private readonly int _startRow;
         private readonly string _article;
         private readonly int _amount;
+        private readonly int _countRows;
 
         private const int ArticleColumn = 1;
         private const int DescriptionColumn = 2;
@@ -23,17 +25,26 @@ namespace ExcelMacroAdd.Functions
         private const int PriceColumn = 7;
         private const int TotalPriceColumn = 8;
         private const int CoastColumn = 9;
-        private const int DateColumn = 10;
+        private const int DateColumn = 10;                 
 
-        public WriteExcel(IDataInXml dataInXml, string vendor, int rowsOffset = 0, string article = null, int amount = 0)
+        public WriteExcel(IDataInXml dataInXml, string vendor)
         {
             _dataInXml = dataInXml ?? throw new ArgumentNullException(nameof(dataInXml));
             _vendor = vendor ?? throw new ArgumentNullException(nameof(vendor));
-            _rowsOffset = rowsOffset;
-            _article = article;
-            _amount = amount;
+            _startRow = Cell.Row;
+            _countRows = Cell.Rows.Count; 
         }
 
+        public WriteExcel(IDataInXml dataInXml, string vendor, string article, int startOffset = 0, int amount = 0)
+        {
+            _dataInXml = dataInXml ?? throw new ArgumentNullException(nameof(dataInXml));
+            _vendor = vendor ?? throw new ArgumentNullException(nameof(vendor));
+            _startRow = Cell.Row + startOffset;
+            _countRows = 1;
+            _article = article;
+            _amount = amount;
+        }               
+           
         public override void Start()
         {
             try
@@ -45,23 +56,21 @@ namespace ExcelMacroAdd.Functions
                 var vendorData = _dataInXml.ReadElementXml(_vendor, vendors)
                     ?? throw new ArgumentException($"Вендор {_vendor} не найден.");
 
-                int startRow = Cell.Row;
-                int totalRows = (_article != null) ? 1 : Cell.Rows.Count;
+                int currentRow;
 
-                var data = new object[totalRows, 10]; // 10 столбцов
-
-                for (int i = 0; i < totalRows; i++)
+                for (int i = 0; i < _countRows; i++)
                 {
-                    int currentRow = startRow + _rowsOffset + i;
-
-                    Worksheet.Cells[currentRow, ArticleColumn] = _article;
+                    currentRow = _startRow + i;
+                    if (_article != null)
+                        Worksheet.Cells[currentRow, ArticleColumn] = _article;
                     Worksheet.Cells[currentRow, DescriptionColumn].FormulaLocal = string.Format(vendorData.Formula_1, currentRow);
-                    Worksheet.Cells[currentRow, QuantityColumn] = _amount != 0 ? (int?)_amount : null;
+                    if (_amount != 0)
+                        Worksheet.Cells[currentRow, QuantityColumn] = _amount;
                     Worksheet.Cells[currentRow, MultiplicityColumn].FormulaLocal = string.Format(vendorData.Formula_2, currentRow);
                     Worksheet.Cells[currentRow, VendorColumn] = _vendor;
                     Worksheet.Cells[currentRow, DiscountColumn] = vendorData.Discount;
-                    Worksheet.Cells[currentRow, PriceColumn].FormulaLocal = string.Format(vendorData.Formula_3, currentRow);
-                    Worksheet.Cells[currentRow, TotalPriceColumn].Formula = $"=G{currentRow}*(100-F{currentRow})/100";
+                    Worksheet.Cells[currentRow, PriceColumn].FormulaLocal = string.Format(vendorData.Formula_3, _startRow);
+                    Worksheet.Cells[currentRow, TotalPriceColumn].Formula = $"=G{_startRow}*(100-F{currentRow})/100";
                     Worksheet.Cells[currentRow, CoastColumn].Formula = $"=H{currentRow}*C{currentRow}";
                     Worksheet.Cells[currentRow, DateColumn].NumberFormat = "ДД.ММ.ГГ ч:мм";
                     Worksheet.Cells[currentRow, DateColumn] = DateTime.Now;                   

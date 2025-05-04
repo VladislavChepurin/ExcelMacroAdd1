@@ -30,49 +30,49 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TermoCalculation));
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnAplly = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBoxDepth = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBoxWidth = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxHeight = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.radioButton7 = new System.Windows.Forms.RadioButton();
-            this.radioButton6 = new System.Windows.Forms.RadioButton();
-            this.radioButton5 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioMiddleRowNearWallWithUpperClosed = new System.Windows.Forms.RadioButton();
+            this.radioMiddleRowNearWall = new System.Windows.Forms.RadioButton();
+            this.radioMiddleRow = new System.Windows.Forms.RadioButton();
+            this.radioLastRowNearWall = new System.Windows.Forms.RadioButton();
+            this.radioLastRow = new System.Windows.Forms.RadioButton();
+            this.radioPlacementWall = new System.Windows.Forms.RadioButton();
+            this.radioComprehensiveAccess = new System.Windows.Forms.RadioButton();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.textBoxDifferenceTemp = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBoxMinTemp = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label17 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.textBoxHeatDissipation = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBoxInstallation = new System.Windows.Forms.ComboBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.comboBoxCabinetMaterial = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.label13 = new System.Windows.Forms.Label();
+            this.comboBoxInsulationМaterial = new System.Windows.Forms.ComboBox();
+            this.labelResult = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.textBoxTargetTemp = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -82,26 +82,25 @@
             this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // btnAplly
             // 
-            this.button1.Location = new System.Drawing.Point(12, 656);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(102, 29);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Сделать хорошо";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnAplly.Location = new System.Drawing.Point(12, 656);
+            this.btnAplly.Name = "btnAplly";
+            this.btnAplly.Size = new System.Drawing.Size(102, 29);
+            this.btnAplly.TabIndex = 0;
+            this.btnAplly.Text = "Сделать хорошо";
+            this.btnAplly.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.textBox3);
+            this.groupBox1.Controls.Add(this.textBoxDepth);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.textBoxWidth);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.textBoxHeight);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
@@ -121,15 +120,14 @@
             this.label5.TabIndex = 8;
             this.label5.Text = "mm";
             // 
-            // textBox3
+            // textBoxDepth
             // 
-            this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox3.Location = new System.Drawing.Point(232, 73);
-            this.textBox3.MaxLength = 3;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(46, 20);
-            this.textBox3.TabIndex = 7;
-            this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox3_KeyPress);
+            this.textBoxDepth.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxDepth.Location = new System.Drawing.Point(232, 73);
+            this.textBoxDepth.MaxLength = 3;
+            this.textBoxDepth.Name = "textBoxDepth";
+            this.textBoxDepth.Size = new System.Drawing.Size(46, 20);
+            this.textBoxDepth.TabIndex = 7;
             // 
             // label6
             // 
@@ -151,15 +149,14 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "mm";
             // 
-            // textBox2
+            // textBoxWidth
             // 
-            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox2.Location = new System.Drawing.Point(232, 46);
-            this.textBox2.MaxLength = 4;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(46, 20);
-            this.textBox2.TabIndex = 4;
-            this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
+            this.textBoxWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxWidth.Location = new System.Drawing.Point(232, 46);
+            this.textBoxWidth.MaxLength = 4;
+            this.textBoxWidth.Name = "textBoxWidth";
+            this.textBoxWidth.Size = new System.Drawing.Size(46, 20);
+            this.textBoxWidth.TabIndex = 4;
             // 
             // label4
             // 
@@ -181,15 +178,14 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "mm";
             // 
-            // textBox1
+            // textBoxHeight
             // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox1.Location = new System.Drawing.Point(232, 20);
-            this.textBox1.MaxLength = 4;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(46, 20);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
+            this.textBoxHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxHeight.Location = new System.Drawing.Point(232, 20);
+            this.textBoxHeight.MaxLength = 4;
+            this.textBoxHeight.Name = "textBoxHeight";
+            this.textBoxHeight.Size = new System.Drawing.Size(46, 20);
+            this.textBoxHeight.TabIndex = 1;
             // 
             // label1
             // 
@@ -203,13 +199,13 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.radioButton7);
-            this.groupBox2.Controls.Add(this.radioButton6);
-            this.groupBox2.Controls.Add(this.radioButton5);
-            this.groupBox2.Controls.Add(this.radioButton4);
-            this.groupBox2.Controls.Add(this.radioButton3);
-            this.groupBox2.Controls.Add(this.radioButton2);
-            this.groupBox2.Controls.Add(this.radioButton1);
+            this.groupBox2.Controls.Add(this.radioMiddleRowNearWallWithUpperClosed);
+            this.groupBox2.Controls.Add(this.radioMiddleRowNearWall);
+            this.groupBox2.Controls.Add(this.radioMiddleRow);
+            this.groupBox2.Controls.Add(this.radioLastRowNearWall);
+            this.groupBox2.Controls.Add(this.radioLastRow);
+            this.groupBox2.Controls.Add(this.radioPlacementWall);
+            this.groupBox2.Controls.Add(this.radioComprehensiveAccess);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox2.Location = new System.Drawing.Point(13, 118);
             this.groupBox2.Name = "groupBox2";
@@ -218,95 +214,95 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Место установки шкафа";
             // 
-            // radioButton7
+            // radioMiddleRowNearWallWithUpperClosed
             // 
-            this.radioButton7.AutoSize = true;
-            this.radioButton7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.radioButton7.Location = new System.Drawing.Point(5, 158);
-            this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(321, 17);
-            this.radioButton7.TabIndex = 6;
-            this.radioButton7.Text = "В середине ряда около стены с закрытой верхней частью";
-            this.radioButton7.UseVisualStyleBackColor = true;
+            this.radioMiddleRowNearWallWithUpperClosed.AutoSize = true;
+            this.radioMiddleRowNearWallWithUpperClosed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.radioMiddleRowNearWallWithUpperClosed.Location = new System.Drawing.Point(5, 158);
+            this.radioMiddleRowNearWallWithUpperClosed.Name = "radioMiddleRowNearWallWithUpperClosed";
+            this.radioMiddleRowNearWallWithUpperClosed.Size = new System.Drawing.Size(321, 17);
+            this.radioMiddleRowNearWallWithUpperClosed.TabIndex = 6;
+            this.radioMiddleRowNearWallWithUpperClosed.Text = "В середине ряда около стены с закрытой верхней частью";
+            this.radioMiddleRowNearWallWithUpperClosed.UseVisualStyleBackColor = true;
             // 
-            // radioButton6
+            // radioMiddleRowNearWall
             // 
-            this.radioButton6.AutoSize = true;
-            this.radioButton6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.radioButton6.Location = new System.Drawing.Point(5, 135);
-            this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(177, 17);
-            this.radioButton6.TabIndex = 5;
-            this.radioButton6.Text = "В серидине ряда около стены";
-            this.radioButton6.UseVisualStyleBackColor = true;
+            this.radioMiddleRowNearWall.AutoSize = true;
+            this.radioMiddleRowNearWall.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.radioMiddleRowNearWall.Location = new System.Drawing.Point(5, 135);
+            this.radioMiddleRowNearWall.Name = "radioMiddleRowNearWall";
+            this.radioMiddleRowNearWall.Size = new System.Drawing.Size(177, 17);
+            this.radioMiddleRowNearWall.TabIndex = 5;
+            this.radioMiddleRowNearWall.Text = "В серидине ряда около стены";
+            this.radioMiddleRowNearWall.UseVisualStyleBackColor = true;
             // 
-            // radioButton5
+            // radioMiddleRow
             // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.radioButton5.Location = new System.Drawing.Point(5, 112);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(153, 17);
-            this.radioButton5.TabIndex = 4;
-            this.radioButton5.Text = "В серидине ряда шкафов";
-            this.radioButton5.UseVisualStyleBackColor = true;
+            this.radioMiddleRow.AutoSize = true;
+            this.radioMiddleRow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.radioMiddleRow.Location = new System.Drawing.Point(5, 112);
+            this.radioMiddleRow.Name = "radioMiddleRow";
+            this.radioMiddleRow.Size = new System.Drawing.Size(153, 17);
+            this.radioMiddleRow.TabIndex = 4;
+            this.radioMiddleRow.Text = "В серидине ряда шкафов";
+            this.radioMiddleRow.UseVisualStyleBackColor = true;
             // 
-            // radioButton4
+            // radioLastRowNearWall
             // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.radioButton4.Location = new System.Drawing.Point(5, 89);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(201, 17);
-            this.radioButton4.TabIndex = 3;
-            this.radioButton4.Text = "Крайний шкаф в ряду возле стены";
-            this.radioButton4.UseVisualStyleBackColor = true;
+            this.radioLastRowNearWall.AutoSize = true;
+            this.radioLastRowNearWall.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.radioLastRowNearWall.Location = new System.Drawing.Point(5, 89);
+            this.radioLastRowNearWall.Name = "radioLastRowNearWall";
+            this.radioLastRowNearWall.Size = new System.Drawing.Size(201, 17);
+            this.radioLastRowNearWall.TabIndex = 3;
+            this.radioLastRowNearWall.Text = "Крайний шкаф в ряду возле стены";
+            this.radioLastRowNearWall.UseVisualStyleBackColor = true;
             // 
-            // radioButton3
+            // radioLastRow
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.radioButton3.Location = new System.Drawing.Point(6, 66);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(134, 17);
-            this.radioButton3.TabIndex = 2;
-            this.radioButton3.Text = "Крайний шкаф в ряду";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.radioLastRow.AutoSize = true;
+            this.radioLastRow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.radioLastRow.Location = new System.Drawing.Point(6, 66);
+            this.radioLastRow.Name = "radioLastRow";
+            this.radioLastRow.Size = new System.Drawing.Size(134, 17);
+            this.radioLastRow.TabIndex = 2;
+            this.radioLastRow.Text = "Крайний шкаф в ряду";
+            this.radioLastRow.UseVisualStyleBackColor = true;
             // 
-            // radioButton2
+            // radioPlacementWall
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.radioButton2.Location = new System.Drawing.Point(6, 43);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(158, 17);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.Text = "Размещение около стены";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioPlacementWall.AutoSize = true;
+            this.radioPlacementWall.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.radioPlacementWall.Location = new System.Drawing.Point(6, 43);
+            this.radioPlacementWall.Name = "radioPlacementWall";
+            this.radioPlacementWall.Size = new System.Drawing.Size(158, 17);
+            this.radioPlacementWall.TabIndex = 1;
+            this.radioPlacementWall.Text = "Размещение около стены";
+            this.radioPlacementWall.UseVisualStyleBackColor = true;
             // 
-            // radioButton1
+            // radioComprehensiveAccess
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.radioButton1.Location = new System.Drawing.Point(6, 20);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(134, 17);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Всесторонний доступ";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioComprehensiveAccess.AutoSize = true;
+            this.radioComprehensiveAccess.Checked = true;
+            this.radioComprehensiveAccess.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.radioComprehensiveAccess.Location = new System.Drawing.Point(6, 20);
+            this.radioComprehensiveAccess.Name = "radioComprehensiveAccess";
+            this.radioComprehensiveAccess.Size = new System.Drawing.Size(134, 17);
+            this.radioComprehensiveAccess.TabIndex = 0;
+            this.radioComprehensiveAccess.TabStop = true;
+            this.radioComprehensiveAccess.Text = "Всесторонний доступ";
+            this.radioComprehensiveAccess.UseVisualStyleBackColor = true;
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.textBoxTargetTemp);
             this.groupBox5.Controls.Add(this.label7);
-            this.groupBox5.Controls.Add(this.textBox6);
+            this.groupBox5.Controls.Add(this.textBoxDifferenceTemp);
             this.groupBox5.Controls.Add(this.label8);
             this.groupBox5.Controls.Add(this.label9);
-            this.groupBox5.Controls.Add(this.textBox5);
             this.groupBox5.Controls.Add(this.label10);
             this.groupBox5.Controls.Add(this.label11);
-            this.groupBox5.Controls.Add(this.textBox4);
+            this.groupBox5.Controls.Add(this.textBoxMinTemp);
             this.groupBox5.Controls.Add(this.label12);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox5.Location = new System.Drawing.Point(12, 495);
@@ -321,22 +317,21 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(283, 73);
+            this.label7.Location = new System.Drawing.Point(284, 74);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(18, 13);
             this.label7.TabIndex = 8;
             this.label7.Text = "°С";
             // 
-            // textBox6
+            // textBoxDifferenceTemp
             // 
-            this.textBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox6.Location = new System.Drawing.Point(231, 70);
-            this.textBox6.MaxLength = 3;
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(46, 20);
-            this.textBox6.TabIndex = 7;
-            this.textBox6.Text = "40";
-            this.textBox6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox6_KeyPress);
+            this.textBoxDifferenceTemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxDifferenceTemp.Location = new System.Drawing.Point(231, 70);
+            this.textBoxDifferenceTemp.MaxLength = 3;
+            this.textBoxDifferenceTemp.Name = "textBoxDifferenceTemp";
+            this.textBoxDifferenceTemp.ReadOnly = true;
+            this.textBoxDifferenceTemp.Size = new System.Drawing.Size(46, 20);
+            this.textBoxDifferenceTemp.TabIndex = 7;
             // 
             // label8
             // 
@@ -352,23 +347,11 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label9.Location = new System.Drawing.Point(283, 46);
+            this.label9.Location = new System.Drawing.Point(283, 50);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(18, 13);
             this.label9.TabIndex = 5;
             this.label9.Text = "°С";
-            // 
-            // textBox5
-            // 
-            this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox5.Location = new System.Drawing.Point(231, 43);
-            this.textBox5.MaxLength = 3;
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(46, 20);
-            this.textBox5.TabIndex = 4;
-            this.textBox5.Text = "5";
-            this.textBox5.TextChanged += new System.EventHandler(this.textBox5_TextChanged);
-            this.textBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox5_KeyPress);
             // 
             // label10
             // 
@@ -384,23 +367,20 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label11.Location = new System.Drawing.Point(283, 20);
+            this.label11.Location = new System.Drawing.Point(283, 24);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(18, 13);
             this.label11.TabIndex = 2;
             this.label11.Text = "°С";
             // 
-            // textBox4
+            // textBoxMinTemp
             // 
-            this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox4.Location = new System.Drawing.Point(231, 17);
-            this.textBox4.MaxLength = 3;
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(46, 20);
-            this.textBox4.TabIndex = 1;
-            this.textBox4.Text = "-35";
-            this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
-            this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox4_KeyPress);
+            this.textBoxMinTemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxMinTemp.Location = new System.Drawing.Point(231, 17);
+            this.textBoxMinTemp.MaxLength = 3;
+            this.textBoxMinTemp.Name = "textBoxMinTemp";
+            this.textBoxMinTemp.Size = new System.Drawing.Size(46, 20);
+            this.textBoxMinTemp.TabIndex = 1;
             // 
             // label12
             // 
@@ -415,7 +395,7 @@
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.label17);
-            this.groupBox6.Controls.Add(this.textBox7);
+            this.groupBox6.Controls.Add(this.textBoxHeatDissipation);
             this.groupBox6.Controls.Add(this.label18);
             this.groupBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox6.Location = new System.Drawing.Point(12, 603);
@@ -436,14 +416,14 @@
             this.label17.TabIndex = 2;
             this.label17.Text = "Вт";
             // 
-            // textBox7
+            // textBoxHeatDissipation
             // 
-            this.textBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox7.Location = new System.Drawing.Point(231, 17);
-            this.textBox7.MaxLength = 4;
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(46, 20);
-            this.textBox7.TabIndex = 1;
+            this.textBoxHeatDissipation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxHeatDissipation.Location = new System.Drawing.Point(231, 17);
+            this.textBoxHeatDissipation.MaxLength = 4;
+            this.textBoxHeatDissipation.Name = "textBoxHeatDissipation";
+            this.textBoxHeatDissipation.Size = new System.Drawing.Size(46, 20);
+            this.textBoxHeatDissipation.TabIndex = 1;
             // 
             // label18
             // 
@@ -471,7 +451,7 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.comboBox1);
+            this.groupBox3.Controls.Add(this.comboBoxInstallation);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox3.Location = new System.Drawing.Point(13, 309);
             this.groupBox3.Name = "groupBox3";
@@ -480,21 +460,21 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Установка внутри или снаружи";
             // 
-            // comboBox1
+            // comboBoxInstallation
             // 
-            this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.comboBoxInstallation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBoxInstallation.FormattingEnabled = true;
+            this.comboBoxInstallation.Items.AddRange(new object[] {
             "Внутренняя установка",
             "Наружная установка"});
-            this.comboBox1.Location = new System.Drawing.Point(6, 20);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(318, 21);
-            this.comboBox1.TabIndex = 2;
+            this.comboBoxInstallation.Location = new System.Drawing.Point(6, 20);
+            this.comboBoxInstallation.Name = "comboBoxInstallation";
+            this.comboBoxInstallation.Size = new System.Drawing.Size(318, 21);
+            this.comboBoxInstallation.TabIndex = 2;
             // 
             // groupBox8
             // 
-            this.groupBox8.Controls.Add(this.comboBox2);
+            this.groupBox8.Controls.Add(this.comboBoxCabinetMaterial);
             this.groupBox8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox8.Location = new System.Drawing.Point(13, 371);
             this.groupBox8.Name = "groupBox8";
@@ -503,23 +483,23 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Материал шкафа";
             // 
-            // comboBox2
+            // comboBoxCabinetMaterial
             // 
-            this.comboBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
+            this.comboBoxCabinetMaterial.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBoxCabinetMaterial.FormattingEnabled = true;
+            this.comboBoxCabinetMaterial.Items.AddRange(new object[] {
             "Малоуглеродистая сталь с лакокрасочным покрытием",
             "Нержавеющая сталь 08X18H10 по ГОСТ 5632-76 (AISI 304)",
             "Ударопрочный бесшовный полимер",
             "Алюминево-кремнивый сплав GALSi13 марки \"KSi13\""});
-            this.comboBox2.Location = new System.Drawing.Point(6, 20);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(318, 21);
-            this.comboBox2.TabIndex = 2;
+            this.comboBoxCabinetMaterial.Location = new System.Drawing.Point(6, 20);
+            this.comboBoxCabinetMaterial.Name = "comboBoxCabinetMaterial";
+            this.comboBoxCabinetMaterial.Size = new System.Drawing.Size(318, 21);
+            this.comboBoxCabinetMaterial.TabIndex = 2;
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.comboBox3);
+            this.groupBox4.Controls.Add(this.comboBoxInsulationМaterial);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox4.Location = new System.Drawing.Point(13, 433);
             this.groupBox4.Name = "groupBox4";
@@ -528,31 +508,31 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Материал утеплителя";
             // 
-            // comboBox3
+            // comboBoxInsulationМaterial
             // 
-            this.comboBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Items.AddRange(new object[] {
+            this.comboBoxInsulationМaterial.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBoxInsulationМaterial.FormattingEnabled = true;
+            this.comboBoxInsulationМaterial.Items.AddRange(new object[] {
             "Без утеплителя",
             "Металлизированный армированный утеплитель",
             "Двойной металлизированный армированный утеплитель ",
             "Экструзионный вспененный полимерный утеплитель"});
-            this.comboBox3.Location = new System.Drawing.Point(6, 20);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(318, 21);
-            this.comboBox3.TabIndex = 2;
+            this.comboBoxInsulationМaterial.Location = new System.Drawing.Point(6, 20);
+            this.comboBoxInsulationМaterial.Name = "comboBoxInsulationМaterial";
+            this.comboBoxInsulationМaterial.Size = new System.Drawing.Size(318, 21);
+            this.comboBoxInsulationМaterial.TabIndex = 2;
             // 
-            // label13
+            // labelResult
             // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label13.ForeColor = System.Drawing.Color.Navy;
-            this.label13.Location = new System.Drawing.Point(286, 662);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(55, 15);
-            this.label13.TabIndex = 13;
-            this.label13.Text = "label13";
-            this.label13.Visible = false;
+            this.labelResult.AutoSize = true;
+            this.labelResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelResult.ForeColor = System.Drawing.Color.Navy;
+            this.labelResult.Location = new System.Drawing.Point(286, 662);
+            this.labelResult.Name = "labelResult";
+            this.labelResult.Size = new System.Drawing.Size(55, 15);
+            this.labelResult.TabIndex = 13;
+            this.labelResult.Text = "label13";
+            this.labelResult.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label14
             // 
@@ -565,13 +545,22 @@
             this.label14.TabIndex = 14;
             this.label14.Text = "Рекомендуемая мощность:";
             // 
+            // textBoxTargetTemp
+            // 
+            this.textBoxTargetTemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxTargetTemp.Location = new System.Drawing.Point(232, 43);
+            this.textBoxTargetTemp.MaxLength = 3;
+            this.textBoxTargetTemp.Name = "textBoxTargetTemp";
+            this.textBoxTargetTemp.Size = new System.Drawing.Size(46, 20);
+            this.textBoxTargetTemp.TabIndex = 9;
+            // 
             // TermoCalculation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(354, 696);
             this.Controls.Add(this.label14);
-            this.Controls.Add(this.label13);
+            this.Controls.Add(this.labelResult);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBox6);
@@ -579,7 +568,7 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnAplly);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(370, 735);
             this.MinimizeBox = false;
@@ -589,7 +578,6 @@
             this.ShowInTaskbar = false;
             this.Text = "Расчет обогрева шкафа";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TermoCalculation_FormClosed);
-            this.Load += new System.EventHandler(this.TermoCalculation_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -608,48 +596,48 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnAplly;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxHeight;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBoxDepth;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBoxWidth;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton7;
-        private System.Windows.Forms.RadioButton radioButton6;
-        private System.Windows.Forms.RadioButton radioButton5;
+        private System.Windows.Forms.RadioButton radioLastRowNearWall;
+        private System.Windows.Forms.RadioButton radioLastRow;
+        private System.Windows.Forms.RadioButton radioPlacementWall;
+        private System.Windows.Forms.RadioButton radioComprehensiveAccess;
+        private System.Windows.Forms.RadioButton radioMiddleRowNearWallWithUpperClosed;
+        private System.Windows.Forms.RadioButton radioMiddleRowNearWall;
+        private System.Windows.Forms.RadioButton radioMiddleRow;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox textBoxDifferenceTemp;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBoxMinTemp;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox textBoxHeatDissipation;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolTip toolTip2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBoxInstallation;
         private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox comboBoxCabinetMaterial;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox comboBoxInsulationМaterial;
+        private System.Windows.Forms.Label labelResult;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBoxTargetTemp;
     }
 }

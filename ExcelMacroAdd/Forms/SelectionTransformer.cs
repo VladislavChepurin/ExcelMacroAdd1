@@ -19,7 +19,7 @@ namespace ExcelMacroAdd.Forms
         private bool _mutexAcquired = false;
         private readonly string[] _transformerRatios = {"5/5", "10/5", "15/5", "20/5", "25/5", "30/5", "40/5", "50/5", "60/5", "75/5", "80/5", "100/5", "120/5", "125/5", "150/5", "200/5", "250/5", "300/5",
                 "400/5", "500/5", "600/5", "750/5", "800/5", "1000/5", "1200/5", "1250/5", "1500/5", "1600/5", "2000/5", "2250/5", "2500/5", "3000/5", "4000/5", "5000/5" };
-
+       
         private void SelectionTransformer_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (_mutexAcquired)
@@ -78,7 +78,7 @@ namespace ExcelMacroAdd.Forms
         private void WriteToExcel(string vendor, string article)
         {
             if (string.IsNullOrEmpty(article)) return;
-            var writeExcel = new WriteExcel(dataInXml, vendor, 0, article);
+            var writeExcel = new WriteExcel(dataInXml, vendor, article);
             writeExcel.Start();
         }
 

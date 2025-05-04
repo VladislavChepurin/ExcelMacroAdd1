@@ -319,8 +319,6 @@
     <Compile Include="Forms\SelectionModularDevices.Designer.cs">
       <DependentUpon>SelectionModularDevices.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SupportiveFunction\AddTypeNky.cs" />
-    <Compile Include="Forms\SupportiveFunction\DeleteTypeNky.cs" />
     <Compile Include="Forms\TermoCalculation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -333,24 +331,16 @@
     <Compile Include="Forms\TypeNky.Designer.cs">
       <DependentUpon>TypeNky.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ViewModels\AdditionalDevicesViewModel.cs" />
+    <Compile Include="Forms\ViewModels\FillingOutPassportViewModel.cs" />
+    <Compile Include="Forms\ViewModels\TermoCalculationViewModel.cs" />
     <Compile Include="Functions\CombiningCells.cs" />
     <Compile Include="Functions\InternetSearch.cs" />
-    <Compile Include="Functions\UpdatingCalculation.cs" />
-    <Compile Include="Models\Abb.cs" />
     <Compile Include="Models\AdditionalDevices.cs" />
-    <Compile Include="Models\Chint.cs" />
     <Compile Include="Models\Interface\IUserSwitch.cs" />
     <Compile Include="Models\Interface\IUserCircuitBreaker.cs" />
     <Compile Include="Models\UserSwitch.cs" />
     <Compile Include="Models\UserCircuitBreaker.cs" />
-    <Compile Include="Models\Dekraft.cs" />
-    <Compile Include="Models\Dkc.cs" />
-    <Compile Include="Models\Ekf.cs" />
-    <Compile Include="Models\Iek.cs" />
-    <Compile Include="Models\Interface\IVendors.cs" />
-    <Compile Include="Models\Keaz.cs" />
-    <Compile Include="Models\Schneider.cs" />
-    <Compile Include="Models\Tdm.cs" />
     <Compile Include="Models\UserVariable.cs" />
     <Compile Include="Serializable\Entity\Interfaces\IFormSettings.cs" />
     <Compile Include="Serializable\Entity\Interfaces\ITypeNkySettings.cs" />
@@ -396,7 +386,6 @@
     <Compile Include="Functions\CorrectFont.cs" />
     <Compile Include="Functions\DeleteAllFormula.cs" />
     <Compile Include="Functions\EditCalculation.cs" />
-    <Compile Include="Functions\FillingOutThePassport.cs" />
     <Compile Include="Functions\AbstractFunctions.cs" />
     <Compile Include="Forms\FillingOutPassports.cs">
       <SubType>Form</SubType>

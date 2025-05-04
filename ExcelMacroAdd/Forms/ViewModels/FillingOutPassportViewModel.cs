@@ -1,61 +1,110 @@
-﻿using ExcelMacroAdd.Forms;
+﻿using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.Services;
 using Microsoft.CSharp.RuntimeBinder;
 using Microsoft.Office.Interop.Word;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using Word = Microsoft.Office.Interop.Word;
 
-namespace ExcelMacroAdd.Functions
+namespace ExcelMacroAdd.Forms.ViewModels
 {
-    internal sealed class FillingOutThePassport : AbstractFunctions
-    {
+    internal class FillingOutPassportViewModel : AbstractFunctions, INotifyPropertyChanged
+    {       
         // Переменные иницализации                   
-        private readonly object confirmConversions = false;
-        private readonly object readOnly = false;
-        private readonly object addToRecentFiles = false;
-        private readonly object passwordDocument = Type.Missing;
-        private readonly object passwordTemplate = Type.Missing;
-        private readonly object revert = false;
-        private readonly object writePasswordDocument = Type.Missing;
-        private readonly object writePasswordTemplate = Type.Missing;
-        private readonly object format = Type.Missing;
-        private readonly object encoding = Type.Missing;
-        private readonly object oVisible = Type.Missing;
-        private readonly object openAndRepair = Type.Missing;
-        private readonly object documentDirection = Type.Missing;
-        private readonly object noEncodingDialog = false;
-        private readonly object xmlTransform = Type.Missing;
+        private readonly object _confirmConversions = false;
+        private readonly object _readOnly = false;
+        private readonly object _addToRecentFiles = false;
+        private readonly object _passwordDocument = Type.Missing;
+        private readonly object _passwordTemplate = Type.Missing;
+        private readonly object _revert = false;
+        private readonly object _writePasswordDocument = Type.Missing;
+        private readonly object _writePasswordTemplate = Type.Missing;
+        private readonly object _format = Type.Missing;
+        private readonly object _encoding = Type.Missing;
+        private readonly object _oVisible = Type.Missing;
+        private readonly object _openAndRepair = Type.Missing;
+        private readonly object _documentDirection = Type.Missing;
+        private readonly object _noEncodingDialog = false;
+        private readonly object _xmlTransform = Type.Missing;
         private static object _replaceTypeObj = WdReplace.wdReplaceAll;
         private static object _wordMissing = Missing.Value;
-        private readonly IFillingOutThePassportSettings resources;
-        private readonly string pPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template");
+        private readonly IFillingOutThePassportSettings _resources;
+        private readonly string _pPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template");
+
+        private readonly SynchronizationContext _syncContext;
 
         readonly Func<Find, string, string, bool> replacingTextLabels = (find, label, value) => find.Execute(label, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing,
             ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing, value, ref _replaceTypeObj, ref _wordMissing, ref _wordMissing, ref _wordMissing, ref _wordMissing);
 
-        public delegate void MetodProgressStep(int step);
-        public event MetodProgressStep ProgressStep;
+        #region Binding Property
+        private string _infoLabelText;
+        private bool _isEnabledBtnClose;
+        private int _progressBarMinimum;
+        private int _progressBarMaximum;
+        private int _progressBarStep;
+        private int _progressBarValue;
 
-        public delegate void MetodProgressFinal();
-        public event MetodProgressFinal ProgressFinal;
-
-        public FillingOutThePassport(IFillingOutThePassportSettings resources)
+        public bool IsEnabledBtnClose
         {
-            this.resources = resources;
+            get => _isEnabledBtnClose;
+            set { _isEnabledBtnClose = value; OnPropertyChanged(nameof(IsEnabledBtnClose)); }
+        }
+
+        public string InfoLabelText
+        {
+            get => _infoLabelText;
+            set { _infoLabelText = value; OnPropertyChanged(nameof(InfoLabelText)); }
+        }
+
+        public int ProgressBarMinimum
+        {
+            get => _progressBarMinimum;
+            set { _progressBarMinimum = value; OnPropertyChanged(nameof(ProgressBarMinimum)); }
+        }
+
+        public int ProgressBarMaximum
+        {
+            get => _progressBarMaximum;
+            set { _progressBarMaximum = value; OnPropertyChanged(nameof(ProgressBarMaximum)); }
+        }
+
+        public int ProgressBarStep
+        {
+            get => _progressBarStep;
+            set { _progressBarStep = value; OnPropertyChanged(nameof(ProgressBarStep)); }
+        }
+
+        public int ProgressBarValue
+        {
+            get => _progressBarValue;
+            set { _progressBarValue = value; OnPropertyChanged(nameof(ProgressBarValue)); }
+        }
+
+        #endregion
+
+
+        public FillingOutPassportViewModel(IFillingOutThePassportSettings resources)
+        {                        
+            // Сохраняем контекст синхронизации UI-потока
+            _syncContext = SynchronizationContext.Current;
+            this._resources = resources;
         }
 
         public override void Start()
-        {
-            if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
+        {            
+            if (Application.ActiveWorkbook.Name != _resources.NameFileJournal) // Проверка по имени книги
             {
                 MessageWarning(Properties.Resources.NotJornal, Properties.Resources.NameWorkbook);
+                RequestClose?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
@@ -63,18 +112,13 @@ namespace ExcelMacroAdd.Functions
             var countRow = Cell.Rows.Count; // Вычисляем кол-во выделенных строк
             var endRow = firstRow + countRow - 1;
             var currentRow = firstRow;
-            int numberStep = 0;
+        
 
-            new Thread(() =>
-            {
-                FillingOutPassports fs = new FillingOutPassports(countRow);
-                ProgressStep += fs.OnStep;
-                ProgressFinal += fs.OnFinal;
-                fs.ShowDialog();
-                Thread.Sleep(500);
-            }).Start();
+            ProgressBarMinimum = 0;
+            ProgressBarStep = 1;
+            ProgressBarMaximum = countRow;
 
-            new Thread(() =>
+            System.Threading.Tasks.Task.Run(() =>
             {
                 //Инициализируем параметры Word
                 Word.Application applicationWord = new Word.Application();              
@@ -83,6 +127,7 @@ namespace ExcelMacroAdd.Functions
                 string numberProject, serialNumber, model, titleLVSwitchgear, paste, designationOfLVSwitchgear, technicalSpecifications, voltage, current, iPRating, cabinetDimensions, secondWords, apparatusMounting, earthingSystem, cabinetMaterialType, mountingType;                      
                 dynamic manufacturingData;
 
+                int step = 0;
                 // Цикл переборки строк
                 do
                 {                    
@@ -93,27 +138,27 @@ namespace ExcelMacroAdd.Functions
                         switch (Worksheet.Cells[currentRow, MountingTypeColumn].Value2.ToString())
                         {
                             case "навесное":
-                                filename = Path.Combine(pPath, resources.TemplateWall);
+                                filename = Path.Combine(_pPath, _resources.TemplateWall);
                                 break;
 
                             case "встраиваемое":
-                                filename = Path.Combine(pPath, resources.TemplateWall);
+                                filename = Path.Combine(_pPath, _resources.TemplateWall);
                                 break;
 
                             case "напольное":
-                                filename = Path.Combine(pPath, resources.TemplateFloor);
+                                filename = Path.Combine(_pPath, _resources.TemplateFloor);
                                 break;
 
                             case "навесное для IT оборудования":
-                                filename = Path.Combine(pPath, resources.TemplateWallIt);
+                                filename = Path.Combine(_pPath, _resources.TemplateWallIt);
                                 break;
 
                             case "напольное для IT оборудования":
-                                filename = Path.Combine(pPath, resources.TemplateFloorIt);
+                                filename = Path.Combine(_pPath, _resources.TemplateFloorIt);
                                 break;
 
                             default:
-                                filename = Path.Combine(pPath, resources.TemplateFloor);
+                                filename = Path.Combine(_pPath, _resources.TemplateFloor);
                                 break;
                         }
                         numberProject = Worksheet.Cells[currentRow, NumberProjectColumn].Value2.ToString().Replace('/', '_');
@@ -137,9 +182,9 @@ namespace ExcelMacroAdd.Functions
                         mountingType = Worksheet.Cells[currentRow, MountingTypeColumn].Value2.ToString();
 
                         //Открываем Word                   
-                        document = applicationWord.Documents.Open(filename, confirmConversions, readOnly, addToRecentFiles, passwordDocument, passwordTemplate,
-                            revert, writePasswordDocument, writePasswordTemplate, format, encoding, oVisible, openAndRepair, documentDirection,
-                            noEncodingDialog, xmlTransform);
+                        document = applicationWord.Documents.Open(filename, _confirmConversions, _readOnly, _addToRecentFiles, _passwordDocument, _passwordTemplate,
+                            _revert, _writePasswordDocument, _writePasswordTemplate, _format, _encoding, _oVisible, _openAndRepair, _documentDirection,
+                            _noEncodingDialog, _xmlTransform);
                         applicationWord.Visible = false;
                         //Инициализация метода Find
                         Find find = applicationWord.Selection.Find;                
@@ -242,8 +287,14 @@ namespace ExcelMacroAdd.Functions
                             Marshal.ReleaseComObject(document);
                         }
 
-                        // Работа с элементами формы через событие
-                        ProgressStep?.Invoke(++numberStep);
+                        // Работа с элементами UI
+                        _syncContext.Post(_ =>
+                        {
+                            progressBarUI(++step);                                  
+                            InfoLabelText = $@"Подождите пожайлуста, идет заполнение паспортов {step}/{countRow}.";
+
+                        }, null);
+
                         currentRow++;
                     }                
                 }
@@ -257,13 +308,40 @@ namespace ExcelMacroAdd.Functions
 
                 //Сборка мусора (опционально, но рекомендуется)
                 GC.Collect();
-                GC.WaitForPendingFinalizers();
-
-                // Работа с элементами UI через событие                  
-                ProgressFinal?.Invoke();
-
-            }).Start();
+                GC.WaitForPendingFinalizers();              
+            })
+                .ContinueWith(t =>
+                {
+                    // Этот код выполнится после завершения фоновой задачи
+                    if (t.IsCompleted)
+                    {
+                        InfoLabelText = "Паспота заполнены.Ты молодец";
+                        IsEnabledBtnClose = true;
+                    }
+                    else if (t.IsFaulted)
+                    {
+                        // Обработка ошибок
+                        Logger.LogException(t.Exception);
+                    }
+                }, TaskScheduler.FromCurrentSynchronizationContext()); // Гарантирует выполнение в UI потоке
         }
+
+        private void progressBarUI(int step)
+        {
+            if (step == ProgressBarMaximum)
+            {
+                // Special case as value can't be set greater than Maximum.
+                ProgressBarMaximum = step + 1;     // Temporarily Increase Maximum
+                ProgressBarValue = step;           // Move past
+                ProgressBarMaximum = step;         // Reset maximum
+            }
+            else
+            {
+                ProgressBarValue = step + 1;       // Move past
+            }
+            //ProgressBarValue = step;             // Move to correct value
+        }
+
 
         /// <summary>
         /// Функция форматирует напряжение для паспорта
@@ -395,6 +473,15 @@ namespace ExcelMacroAdd.Functions
             {
                 output.WriteLine(logText);
             }
+        }
+
+        public event EventHandler RequestClose;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

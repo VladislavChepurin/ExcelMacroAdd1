@@ -1,60 +1,67 @@
-﻿using System;
+﻿using ExcelMacroAdd.Forms.ViewModels;
+using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Forms
 {
     internal partial class FillingOutPassports : Form
     {
-        private readonly int countRow;
+        private readonly FillingOutPassportViewModel fillingOutPassportViewModel;
 
-        internal FillingOutPassports(int countRow)
+        public FillingOutPassports(IFillingOutThePassportSettings resources)
         {
-            this.countRow = countRow;
+            fillingOutPassportViewModel = new FillingOutPassportViewModel(resources);
             InitializeComponent();
+            InitializeDataBindings();
+
+            fillingOutPassportViewModel.RequestClose += (s, e) => this.Close();
+            this.Load += (s, e) => fillingOutPassportViewModel.Start();
+            btnClose.Click += (s, e) => this.Close();
         }
 
-        private void FillingOutPassports_Load(object sender, EventArgs e)
+        private void InitializeDataBindings()
         {
-            progressBar1.Minimum = 0;
-            progressBar1.Maximum = countRow;
-            progressBar1.Step = 1;
-        }
+            infoLabel.DataBindings.Add("Text",
+               fillingOutPassportViewModel,
+               nameof(fillingOutPassportViewModel.InfoLabelText),
+               false,
+               DataSourceUpdateMode.OnPropertyChanged
+            );
 
-        public void OnStep(int step)
-        {
-            this.Invoke((MethodInvoker)delegate
-            {
-                //this code is taken from 
-                //https://stackoverflow.com/questions/6071626/progressbar-is-slow-in-windows-forms
-                if (step == progressBar1.Maximum)
-                {
-                    // Special case as value can't be set greater than Maximum.
-                    progressBar1.Maximum = step + 1;     // Temporarily Increase Maximum
-                    progressBar1.Value = step + 1;       // Move past
-                    progressBar1.Maximum = step;         // Reset maximum
-                }
-                else
-                {
-                    progressBar1.Value = step + 1;       // Move past
-                }
-                progressBar1.Value = step;               // Move to correct value
+            btnClose.DataBindings.Add("Enabled",
+               fillingOutPassportViewModel,
+               nameof(fillingOutPassportViewModel.IsEnabledBtnClose),             
+               false,
+               DataSourceUpdateMode.OnPropertyChanged
+            );
 
-                label1.Text = $@"Подождите пожайлуста, идет заполнение паспортов {step}/{countRow}.";
-            });
-        }
+            progressBar.DataBindings.Add("Minimum",
+               fillingOutPassportViewModel,
+               nameof(fillingOutPassportViewModel.ProgressBarMinimum),
+               false,
+               DataSourceUpdateMode.OnPropertyChanged
+            );
 
-        public void OnFinal()
-        {
-            this.Invoke((MethodInvoker)delegate
-            {
-                label1.Text = @"Паспота заполнены. Ты молодец";
-                button1.Enabled = true;
-            });
-        }
+            progressBar.DataBindings.Add("Maximum",
+               fillingOutPassportViewModel,
+               nameof(fillingOutPassportViewModel.ProgressBarMaximum),
+               false,
+               DataSourceUpdateMode.OnPropertyChanged
+            );
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Close(); // Закрываем форму
+            progressBar.DataBindings.Add("Step",
+              fillingOutPassportViewModel,
+              nameof(fillingOutPassportViewModel.ProgressBarStep),
+              false,
+              DataSourceUpdateMode.OnPropertyChanged
+           );
+
+            progressBar.DataBindings.Add("Value",
+              fillingOutPassportViewModel,
+              nameof(fillingOutPassportViewModel.ProgressBarValue),
+              false,
+              DataSourceUpdateMode.OnPropertyChanged
+           );                        
         }
     }
 }

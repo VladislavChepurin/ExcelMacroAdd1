@@ -31,15 +31,15 @@
 					<button id ="Iek_Button" size="large" image="iek" label="Формула ВПР IEK" onAction="OnActionCallbackCalculation"/>
 					<button id ="Ekf_Button" size="large" image="ekf" label="Формула ВПР EKF" onAction="OnActionCallbackCalculation"/>
 					<button id ="Dkc_Button" size="large" image="dkc" label="Формула ВПР DKC" onAction="OnActionCallbackCalculation"/>
-					<button id ="Keaz_Button" size="large" image="keaz" label="Формула ВПР KEAZ" onAction="OnActionCallbackCalculation"/>					
+					<button id ="Keaz_Button" size="large" image="keaz" label="Формула ВПР KEAZ" onAction="OnActionCallbackCalculation"/>
+					<button id ="Dek_Button" size="large" image="dek" label="Формула ВПР DEK" onAction="OnActionCallbackCalculation"/>
 					<button id ="Chint_Button" size="large" image="chint" label="Формула ВПР CHINT" onAction="OnActionCallbackCalculation"/>
 					<separator id ="separator1"/>
 					<button id ="SelectionModularDevices_Button" size="large" image="SelectionCircuitBreaker" label="Модульные аппараты" onAction="OnActionCallbackCalculation"/>
 					<button id ="SelectionTransformer_Button" size="large" image="SelectionTransformer" label="Трансф. тока" onAction="OnActionCallbackCalculation"/>
 					<button id ="SelectionTwinBlock_Button" size="large" image="SelectionTwinBlock" label="Рубильники TwinBlock" onAction="OnActionCallbackCalculation"/>
 					<button id ="TermoCalculation_Button" size="large" imageMso="EditPermissions" label="Расчет обогрева" onAction="OnActionCallbackCalculation"/>					
-					<separator id ="separator2"/>
-					<button id ="UpdatingCalculation" size="large" imageMso="SynchronizeAll"  label="Обновление расчета" onAction="OnActionCallbackCalculation"/>
+					<separator id ="separator2"/>					
 					<button id ="TypeNky_Button" size="large" image="TypeNky"  label="Типы шкафов" onAction="OnActionCallbackCalculation"/>					
 				</group>
 
