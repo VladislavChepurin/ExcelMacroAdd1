@@ -69,8 +69,8 @@ namespace ExcelMacroAdd.Functions
                     Worksheet.Cells[currentRow, MultiplicityColumn].FormulaLocal = string.Format(vendorData.Formula_2, currentRow);
                     Worksheet.Cells[currentRow, VendorColumn] = _vendor;
                     Worksheet.Cells[currentRow, DiscountColumn] = vendorData.Discount;
-                    Worksheet.Cells[currentRow, PriceColumn].FormulaLocal = string.Format(vendorData.Formula_3, _startRow);
-                    Worksheet.Cells[currentRow, TotalPriceColumn].Formula = $"=G{_startRow}*(100-F{currentRow})/100";
+                    Worksheet.Cells[currentRow, PriceColumn].FormulaLocal = string.Format(vendorData.Formula_3, currentRow);
+                    Worksheet.Cells[currentRow, TotalPriceColumn].Formula = $"=G{currentRow}*(100-F{currentRow})/100";
                     Worksheet.Cells[currentRow, CoastColumn].Formula = $"=H{currentRow}*C{currentRow}";
                     Worksheet.Cells[currentRow, DateColumn].NumberFormat = "ДД.ММ.ГГ ч:мм";
                     Worksheet.Cells[currentRow, DateColumn] = DateTime.Now;                   
