@@ -1,0 +1,167 @@
+﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
+using ExcelMacroAdd.Forms.ViewModels;
+using ExcelMacroAdd.Serializable.Entity.Interfaces;
+using System;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+
+namespace ExcelMacroAdd.Forms
+{
+    public partial class NotPriceComponents : Form
+    {
+        private readonly NotPriceComponentsViewModel notPriceComponentsViewModel;
+        static readonly Mutex Mutex = new Mutex(false, "MutexNotPriceComponents_SingleInstance");
+        private bool _mutexAcquired = false;  
+
+        public NotPriceComponents(INotPriceComponent accessData, IFormSettings formSettings)
+        {
+            notPriceComponentsViewModel = new NotPriceComponentsViewModel(accessData);
+            InitializeComponent();
+            InitializeDataBindings();
+            SetupDataGridView();
+
+            this.Load += async (s, e) =>
+            {
+                await Task.Run(() => notPriceComponentsViewModel.Start());
+            };
+
+            try
+            {
+                _mutexAcquired = Mutex.WaitOne(TimeSpan.FromSeconds(1), false);
+                if (!_mutexAcquired)
+                {
+                    Close();
+                }
+            }
+            catch (AbandonedMutexException)
+            {
+                _mutexAcquired = true; // Мьютекс был оставлен, но теперь принадлежит текущему потоку
+            }
+
+            TopMost = formSettings.FormTopMost;
+
+            btnWritingToSheet.Click += (s, e) => notPriceComponentsViewModel.BtnWritingToSheet();
+            btnAddRecord.Click += (s, e) => notPriceComponentsViewModel.BtnAddRecord();
+            btnDeleteRecord.Click += (s, e) => notPriceComponentsViewModel.BtnDeleteRecord();
+            searchTextBox.TextChanged += SearchTextBox_TextChanged;
+        }
+
+        private void InitializeDataBindings()
+        {
+
+            // Настройка привязки данных
+            dataGridView.DataSource = notPriceComponentsViewModel.FilteredList;
+
+            // Подписка на обновления коллекции
+            notPriceComponentsViewModel.PropertyChanged += (s, e) =>
+            {
+                // Было: nameof(NotPriceComponentsViewModel.RecordList)
+                if (e.PropertyName == nameof(NotPriceComponentsViewModel.FilteredList))
+                {
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        // Обновляем DataSource на FilteredList
+                        dataGridView.DataSource = notPriceComponentsViewModel.FilteredList;
+                    }));
+                }
+            };
+        }
+
+        private void SearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            // Обновляем SearchTerm во ViewModel
+            notPriceComponentsViewModel.SearchTerm = searchTextBox.Text;
+        }
+
+
+        private void SetupDataGridView()
+        {           
+            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.ColumnHeadersDefaultCellStyle.Font =
+                new System.Drawing.Font(dataGridView.Font, FontStyle.Bold);
+
+
+            dataGridView.AutoSizeRowsMode =
+                DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+            dataGridView.ColumnHeadersBorderStyle =
+                DataGridViewHeaderBorderStyle.Single;
+            dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            dataGridView.GridColor = Color.Black;
+            dataGridView.RowHeadersVisible = false;
+
+
+            dataGridView.AutoGenerateColumns = false;
+            dataGridView.Columns.Clear();
+
+            // Настраиваем колонки для привязки данных
+            // Колонка "Артикул"
+            dataGridView.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Article",
+                HeaderText = "Артикул",
+                Width = 80
+            });
+            // Колонка "Описание"
+            dataGridView.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Description",
+                HeaderText = "Описание",
+                Width = 380
+            });
+
+            // Колонка "Вендор" с обработкой null
+            dataGridView.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "VendorDisplayName", // Используем вычисляемое свойство
+                HeaderText = "Вендор",
+                Width = 75
+            });
+
+            // Колонка "Цена" с форматированием
+            var priceColumn = new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Price",
+                HeaderText = "Цена",
+                Width = 75
+            };
+            priceColumn.DefaultCellStyle.Format = "N2";
+            priceColumn.DefaultCellStyle.NullValue = "0.00";
+            dataGridView.Columns.Add(priceColumn);
+
+
+            // Колонка "Скидка"
+            var discountColumn = new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Discount",
+                HeaderText = "Скидка",
+                Width = 75
+            };
+            discountColumn.DefaultCellStyle.Format = "N0";
+            dataGridView.Columns.Add(discountColumn);
+
+            dataGridView.SelectionMode =
+                DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.MultiSelect = false;
+
+            dataGridView.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+            dataGridView.ReadOnly = true;
+
+            dataGridView.BackgroundColor = Color.White;                                     
+        }
+
+        private void NotPriceComponents_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (_mutexAcquired)
+            {
+                Mutex.ReleaseMutex();
+                _mutexAcquired = false;
+            }
+        }
+    }
+}

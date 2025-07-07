@@ -15,7 +15,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
     public class AdditionalDevicesViewModel: AbstractFunctions, INotifyPropertyChanged
     {
         private readonly IDataInXml _dataInXml;
-        private readonly IAccessAdditionalModularDevicesData _accessData;
+        private readonly IAdditionalModularDevicesData _accessData;
         private readonly int _currentRow;
         private readonly string _article;
         private readonly AdditionalDevices _circuitBreakerData;
@@ -155,7 +155,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             return values.All(v => string.IsNullOrEmpty(v));
         }
 
-        public AdditionalDevicesViewModel(IDataInXml dataInXml, IAccessAdditionalModularDevicesData accessData)
+        public AdditionalDevicesViewModel(IDataInXml dataInXml, IAdditionalModularDevicesData accessData)
         {
             this._dataInXml = dataInXml;
             this._accessData = accessData;       

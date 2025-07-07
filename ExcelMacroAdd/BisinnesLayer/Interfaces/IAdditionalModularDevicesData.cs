@@ -1,6 +1,6 @@
 ﻿namespace ExcelMacroAdd.BisinnesLayer.Interfaces
 {
-    public interface IAccessAdditionalModularDevicesData
+    public interface IAdditionalModularDevicesData
     {
         AccessAdditionalModularDevices AccessAdditionalModularDevices { get; set; }
     }

@@ -31,6 +31,7 @@ namespace ExcelMacroAdd.DataLayer.Entity
         public DbSet<SignalContact> SignalContacts { get; set; }
         public DbSet<AuxiliaryContact> AuxiliaryContacts { get; set; }
         public DbSet<SignalOrAuxiliaryContact> SignalOrAuxiliaryContacts { get; set; }
+        public DbSet<NotPriceComponent> NotPriceComponents { get; set; }
 
     }
 }

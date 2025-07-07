@@ -326,6 +326,18 @@ namespace ExcelMacroAdd
 
                     break;
 
+
+                //Расчет обогрева
+                case "NotPriceComponent_Button":
+                    if (accessData != null)
+                        await Task.Run(() =>
+                        {
+                            var termoCalculation = new NotPriceComponents(accessData, formSettings);
+                            termoCalculation.ShowDialog();
+                        });
+
+                    break;
+
                 //Таблица типов
                 case "TypeNky_Button":
                     // Проверяем, есть ли уже такая панель

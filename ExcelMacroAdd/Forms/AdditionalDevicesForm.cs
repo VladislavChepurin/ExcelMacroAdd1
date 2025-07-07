@@ -17,7 +17,7 @@ namespace ExcelMacroAdd.Forms
             main?.Show();
         }
 
-        public AdditionalDevicesForm(IDataInXml dataInXml, IAccessAdditionalModularDevicesData accessData, IFormSettings formSettings)
+        public AdditionalDevicesForm(IDataInXml dataInXml, IAdditionalModularDevicesData accessData, IFormSettings formSettings)
         {
             TopMost = formSettings.FormTopMost;
             additionalDevicesViewModel = new AdditionalDevicesViewModel(dataInXml, accessData);

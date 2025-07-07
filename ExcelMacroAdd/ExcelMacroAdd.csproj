@@ -262,11 +262,13 @@
     <Compile Include="BisinnesLayer\AccessCircuitBreaker.cs" />
     <Compile Include="BisinnesLayer\AccessData.cs" />
     <Compile Include="BisinnesLayer\AccessJournalNku.cs" />
+    <Compile Include="BisinnesLayer\AccessNotPriceComponent.cs" />
     <Compile Include="BisinnesLayer\AccessSwitch.cs" />
     <Compile Include="BisinnesLayer\AccessTermoCalc.cs" />
     <Compile Include="BisinnesLayer\AccessTransformer.cs" />
     <Compile Include="BisinnesLayer\AccessTwinBlock.cs" />
-    <Compile Include="BisinnesLayer\Interfaces\IAccessAdditionalModularDevicesData.cs" />
+    <Compile Include="BisinnesLayer\Interfaces\IAdditionalModularDevicesData.cs" />
+    <Compile Include="BisinnesLayer\Interfaces\INotPriceComponent.cs" />
     <Compile Include="BisinnesLayer\Interfaces\ISelectionSwitchData.cs" />
     <Compile Include="BisinnesLayer\Interfaces\ISelectionTwinBlockData.cs" />
     <Compile Include="BisinnesLayer\Interfaces\ISelectionTransformerData.cs" />
@@ -277,6 +279,7 @@
     <Compile Include="DataLayer\Entity\AuxiliaryContact.cs" />
     <Compile Include="DataLayer\Entity\ExecutionBox.cs" />
     <Compile Include="DataLayer\Entity\MaterialBox.cs" />
+    <Compile Include="DataLayer\Entity\NotPriceComponent.cs" />
     <Compile Include="DataLayer\Entity\ProductGroup.cs" />
     <Compile Include="DataLayer\Entity\ProductSeries.cs" />
     <Compile Include="DataLayer\Entity\ShuntTrip230v.cs" />
@@ -300,12 +303,19 @@
     <Compile Include="DataLayer\Interfaces\IExecutionBox.cs" />
     <Compile Include="DataLayer\Interfaces\IMaterialBox.cs" />
     <Compile Include="DataLayer\Interfaces\ICircuitBreaker.cs" />
+    <Compile Include="DataLayer\Interfaces\IProductVendor.cs" />
     <Compile Include="DataLayer\Interfaces\ISwitch.cs" />
     <Compile Include="Forms\AdditionalDevicesForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\AdditionalDevicesForm.Designer.cs">
       <DependentUpon>AdditionalDevicesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NotPriceComponents.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NotPriceComponents.Designer.cs">
+      <DependentUpon>NotPriceComponents.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SelectionSwitch.cs">
       <SubType>Form</SubType>
@@ -333,6 +343,7 @@
     </Compile>
     <Compile Include="Forms\ViewModels\AdditionalDevicesViewModel.cs" />
     <Compile Include="Forms\ViewModels\FillingOutPassportViewModel.cs" />
+    <Compile Include="Forms\ViewModels\NotPriceComponentsViewModel.cs" />
     <Compile Include="Forms\ViewModels\TermoCalculationViewModel.cs" />
     <Compile Include="Functions\CombiningCells.cs" />
     <Compile Include="Functions\InternetSearch.cs" />
@@ -432,6 +443,9 @@
     <Content Include="x86\SQLite.Interop.dll" />
     <EmbeddedResource Include="Forms\AdditionalDevicesForm.resx">
       <DependentUpon>AdditionalDevicesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NotPriceComponents.resx">
+      <DependentUpon>NotPriceComponents.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SelectionSwitch.resx">
       <DependentUpon>SelectionSwitch.cs</DependentUpon>

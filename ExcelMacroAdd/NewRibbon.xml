@@ -38,7 +38,8 @@
 					<button id ="SelectionModularDevices_Button" size="large" image="SelectionCircuitBreaker" label="Модульные аппараты" onAction="OnActionCallbackCalculation"/>
 					<button id ="SelectionTransformer_Button" size="large" image="SelectionTransformer" label="Трансф. тока" onAction="OnActionCallbackCalculation"/>
 					<button id ="SelectionTwinBlock_Button" size="large" image="SelectionTwinBlock" label="Рубильники TwinBlock" onAction="OnActionCallbackCalculation"/>
-					<button id ="TermoCalculation_Button" size="large" imageMso="EditPermissions" label="Расчет обогрева" onAction="OnActionCallbackCalculation"/>					
+					<button id ="TermoCalculation_Button" size="large" imageMso="EditPermissions" label="Расчет обогрева" onAction="OnActionCallbackCalculation"/>
+					<button id ="NotPriceComponent_Button" size="large" image="SelectionCircuitBreaker" label="Не тарифные позиции" onAction="OnActionCallbackCalculation"/>
 					<separator id ="separator2"/>					
 					<button id ="TypeNky_Button" size="large" image="TypeNky"  label="Типы шкафов" onAction="OnActionCallbackCalculation"/>					
 				</group>
