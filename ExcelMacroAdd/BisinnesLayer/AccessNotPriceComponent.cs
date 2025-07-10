@@ -1,5 +1,4 @@
 ﻿using ExcelMacroAdd.DataLayer.Entity;
-using ExcelMacroAdd.DataLayer.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -38,12 +37,60 @@ namespace ExcelMacroAdd.BisinnesLayer
                 context.NotPriceComponents.Add(entity);
                 await context.SaveChangesAsync();
             }
-        }
-
-        public async Task<IProductVendor> GetProductVendorEntityByName(string execution)
+        }        
+        
+        public async Task<ProductVendor> AddProductVendor(ProductVendor vendor)
         {
-            return await context.ProductVendors.FirstOrDefaultAsync(p => p.VendorName == execution);
+            if (vendor != null)
+            {
+                context.ProductVendors.Add(vendor);
+                await context.SaveChangesAsync();
+                return vendor; // Возвращаем объект с обновленным ID
+            }
+            return null;
         }
 
+        public async Task<ProductVendor> GetProductVendorEntityByName(string vendorName)
+        {
+            return await context.ProductVendors
+                .FirstOrDefaultAsync(p => p.VendorName == vendorName);
+        }
+
+
+        public async Task<bool> DeleteRecord(int id)
+        {
+            try
+            {
+                var entity = await context.NotPriceComponents
+                    .FirstOrDefaultAsync(p => p.Id == id);
+
+                if (entity == null)
+                    return false;
+
+                context.NotPriceComponents.Remove(entity);
+                await context.SaveChangesAsync();
+                return true;
+            }
+            catch (System.Exception)
+            {
+                return false;
+            }
+        }
+
+
+        public async Task UpdateRecord(NotPriceComponent entity)
+        {
+            if (entity != null)
+            {
+                context.Entry(entity).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+            }
+        }
+        public async Task<NotPriceComponent> GetRecordByArticle(string article)
+        {
+            return await context.NotPriceComponents
+                .Include(p => p.ProductVendor)
+                .FirstOrDefaultAsync(p => p.Article == article);
+        }
     }
 }

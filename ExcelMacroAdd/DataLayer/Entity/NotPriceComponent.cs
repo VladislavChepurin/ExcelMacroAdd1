@@ -15,10 +15,10 @@ namespace ExcelMacroAdd.DataLayer.Entity
         public ProductVendor ProductVendor { get; set; }
         // Внешний ключ
 
-        public float? Price
+        public double? Price
         {
             get => _price;
-            set => _price = value ?? 0f; // Преобразуем null в 0
+            set => _price = (float?)(value ?? 0f); // Преобразуем null в 0
         }
         public int Discount{ get; set; }
 

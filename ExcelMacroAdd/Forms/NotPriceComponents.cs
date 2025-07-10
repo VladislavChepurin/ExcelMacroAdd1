@@ -1,4 +1,5 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
+using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Forms.ViewModels;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using System;
@@ -48,7 +49,21 @@ namespace ExcelMacroAdd.Forms
             btnWritingToSheet.Click += (s, e) => notPriceComponentsViewModel.BtnWritingToSheet();
             btnAddRecord.Click += (s, e) => notPriceComponentsViewModel.BtnAddRecord();
             btnDeleteRecord.Click += (s, e) => notPriceComponentsViewModel.BtnDeleteRecord();
+            btnUpdateRecord.Click += (s, e) => notPriceComponentsViewModel.BtnUpdateRecord();
             searchTextBox.TextChanged += SearchTextBox_TextChanged;
+            dataGridView.SelectionChanged += DataGridView_SelectionChanged;
+        }
+        private void DataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridView.CurrentRow != null &&
+                dataGridView.CurrentRow.DataBoundItem is NotPriceComponent record)
+            {
+                notPriceComponentsViewModel.SelectedRecord = record;
+            }
+            else
+            {
+                notPriceComponentsViewModel.SelectedRecord = null;
+            }
         }
 
         private void InitializeDataBindings()
@@ -162,6 +177,6 @@ namespace ExcelMacroAdd.Forms
                 Mutex.ReleaseMutex();
                 _mutexAcquired = false;
             }
-        }
+        }      
     }
 }
