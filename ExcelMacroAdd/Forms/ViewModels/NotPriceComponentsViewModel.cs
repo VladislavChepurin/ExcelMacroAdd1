@@ -199,7 +199,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 Marshal.FinalReleaseComObject(Worksheet.Cells);
 
                 // Записываем данные
-                Worksheet.Cells[currentRow, ArticleColumn] = article;
+                Worksheet.Cells[currentRow, DiscountColumn].NumberFormat = "#,#0";
                 Worksheet.Cells[currentRow, DescriptionColumn] = description;
                 Worksheet.Cells[currentRow, MultiplicityColumn] = multiplicity;
                 Worksheet.Cells[currentRow, ProductVendorColumn] = vendor;
