@@ -93,14 +93,12 @@ namespace ExcelMacroAdd.Forms
             notPriceComponentsViewModel.SearchTerm = searchTextBox.Text;
         }
 
-
         private void SetupDataGridView()
         {           
             dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dataGridView.ColumnHeadersDefaultCellStyle.Font =
                 new System.Drawing.Font(dataGridView.Font, FontStyle.Bold);
-
 
             dataGridView.AutoSizeRowsMode =
                 DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
@@ -130,6 +128,13 @@ namespace ExcelMacroAdd.Forms
                 Width = 380
             });
 
+            dataGridView.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "MultiplicityDisplayName", // Используем вычисляемое свойство
+                HeaderText = "Кратность",
+                Width = 70
+            });
+
             // Колонка "Вендор" с обработкой null
             dataGridView.Columns.Add(new DataGridViewTextBoxColumn
             {
@@ -149,13 +154,12 @@ namespace ExcelMacroAdd.Forms
             priceColumn.DefaultCellStyle.NullValue = "0.00";
             dataGridView.Columns.Add(priceColumn);
 
-
             // Колонка "Скидка"
             var discountColumn = new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Discount",
                 HeaderText = "Скидка",
-                Width = 75
+                Width = 60
             };
             discountColumn.DefaultCellStyle.Format = "N0";
             dataGridView.Columns.Add(discountColumn);
@@ -177,6 +181,7 @@ namespace ExcelMacroAdd.Forms
                 Mutex.ReleaseMutex();
                 _mutexAcquired = false;
             }
-        }      
+        }
+
     }
 }

@@ -17,7 +17,7 @@ namespace ExcelMacroAdd.Functions
 
         private const int ArticleColumn = 1;
         private const int DescriptionColumn = 2;
-        new private const int  QuantityColumn = 3;
+        private const int  QuantityColumn = 3;
         private const int MultiplicityColumn = 4;
         private const int VendorColumn = 5;
         private const int DiscountColumn = 6;

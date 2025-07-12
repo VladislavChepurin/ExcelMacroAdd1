@@ -40,7 +40,7 @@
             // 
             // btnWritingToSheet
             // 
-            this.btnWritingToSheet.Location = new System.Drawing.Point(31, 491);
+            this.btnWritingToSheet.Location = new System.Drawing.Point(29, 530);
             this.btnWritingToSheet.Name = "btnWritingToSheet";
             this.btnWritingToSheet.Size = new System.Drawing.Size(75, 23);
             this.btnWritingToSheet.TabIndex = 0;
@@ -49,7 +49,7 @@
             // 
             // btnAddRecord
             // 
-            this.btnAddRecord.Location = new System.Drawing.Point(544, 491);
+            this.btnAddRecord.Location = new System.Drawing.Point(542, 530);
             this.btnAddRecord.Name = "btnAddRecord";
             this.btnAddRecord.Size = new System.Drawing.Size(75, 23);
             this.btnAddRecord.TabIndex = 1;
@@ -59,21 +59,21 @@
             // dataGridView
             // 
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Location = new System.Drawing.Point(31, 54);
+            this.dataGridView.Location = new System.Drawing.Point(29, 54);
             this.dataGridView.Name = "dataGridView";
-            this.dataGridView.Size = new System.Drawing.Size(700, 400);
+            this.dataGridView.Size = new System.Drawing.Size(742, 450);
             this.dataGridView.TabIndex = 2;
             // 
             // searchTextBox
             // 
-            this.searchTextBox.Location = new System.Drawing.Point(31, 28);
+            this.searchTextBox.Location = new System.Drawing.Point(29, 28);
             this.searchTextBox.Name = "searchTextBox";
-            this.searchTextBox.Size = new System.Drawing.Size(700, 20);
+            this.searchTextBox.Size = new System.Drawing.Size(742, 20);
             this.searchTextBox.TabIndex = 3;
             // 
             // btnDeleteRecord
             // 
-            this.btnDeleteRecord.Location = new System.Drawing.Point(656, 491);
+            this.btnDeleteRecord.Location = new System.Drawing.Point(654, 530);
             this.btnDeleteRecord.Name = "btnDeleteRecord";
             this.btnDeleteRecord.Size = new System.Drawing.Size(75, 23);
             this.btnDeleteRecord.TabIndex = 4;
@@ -83,7 +83,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(28, 9);
+            this.label1.Location = new System.Drawing.Point(26, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(139, 13);
             this.label1.TabIndex = 5;
@@ -91,7 +91,7 @@
             // 
             // btnUpdateRecord
             // 
-            this.btnUpdateRecord.Location = new System.Drawing.Point(440, 491);
+            this.btnUpdateRecord.Location = new System.Drawing.Point(438, 530);
             this.btnUpdateRecord.Name = "btnUpdateRecord";
             this.btnUpdateRecord.Size = new System.Drawing.Size(75, 23);
             this.btnUpdateRecord.TabIndex = 6;
@@ -102,7 +102,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 526);
+            this.ClientSize = new System.Drawing.Size(800, 576);
             this.Controls.Add(this.btnUpdateRecord);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnDeleteRecord);

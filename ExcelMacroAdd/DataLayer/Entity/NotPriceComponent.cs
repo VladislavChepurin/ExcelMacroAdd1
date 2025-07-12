@@ -9,11 +9,16 @@ namespace ExcelMacroAdd.DataLayer.Entity
         public int Id { get; set; }
         public string Article { get; set; }
         public string Description { get; set; }
+
+        // Внешний ключ
+        public int? MultiplicityId { get; set; }
+        // Навигационное свойство
+        public Multiplicity Multiplicity { get; set; }
+
         // Внешний ключ
         public int? ProductVendorId { get; set; }
         // Навигационное свойство
         public ProductVendor ProductVendor { get; set; }
-        // Внешний ключ
 
         public double? Price
         {
@@ -26,6 +31,9 @@ namespace ExcelMacroAdd.DataLayer.Entity
         // Вычисляемое свойство для безопасного отображения вендора
         [NotMapped] // Не добавлять в базу данных
         public string VendorDisplayName => ProductVendor?.VendorName ?? "Нет вендора";
+
+        [NotMapped] // Не добавлять в базу данных
+        public string MultiplicityDisplayName => Multiplicity?.Value ?? "шт";
 
     }
 }

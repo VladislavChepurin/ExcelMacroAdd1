@@ -10,7 +10,7 @@ namespace ExcelMacroAdd.Functions
         internal const int NumberItemColumn = 3;
         internal const int TitleMRTColumn = 4;
         internal const int ModelColumn = 5;
-        internal const int QuantityColumn = 6;
+        internal const int QuantityJournalColumn = 6;
         internal const int TitleLVSwitchgearColumn = 7;
         internal const int DesignationOfLVSwitchgearColumn = 8;
         internal const int TechnicalSpecificationsColumn = 9;

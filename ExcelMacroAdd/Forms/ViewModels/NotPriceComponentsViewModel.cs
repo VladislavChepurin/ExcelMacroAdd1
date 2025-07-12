@@ -1,11 +1,14 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Functions;
+using ExcelMacroAdd.Services;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,9 +19,14 @@ namespace ExcelMacroAdd.Forms.ViewModels
     {
         private const int ArticleColumn = 1;
         private const int DescriptionColumn = 2;
+        private const int QuantityColumn = 3;
+        private const int MultiplicityColumn = 4;
         private const int ProductVendorColumn = 5;
         private const int DiscountColumn = 6;
-        private const int PriceColumn = 7;     
+        private const int PriceColumn = 7;
+        private const int TotalPriceColumn = 8;
+        private const int CoastColumn = 9;
+        private const int DateColumn = 10;
 
         private readonly INotPriceComponent accessData;
         private BindingList<NotPriceComponent> _filteredList;
@@ -162,12 +170,85 @@ namespace ExcelMacroAdd.Forms.ViewModels
 
         public void BtnWritingToSheet()
         {
-            throw new NotImplementedException();
+            if (SelectedRecord == null)
+            {
+                MessageWarning("Пожалуйста, выберите запись для переноса в лист", "Запись не выбрана");
+                return;
+            }
+
+            // Получаем текущую активную ячейку ПЕРЕД записью
+            var activeCell = Worksheet.Application.ActiveCell;
+            int currentRow = activeCell.Row;
+
+            var selectedRecord = SelectedRecord;
+            Write(currentRow,
+                  selectedRecord.Article,
+                  selectedRecord.Description,
+                  selectedRecord.MultiplicityDisplayName,
+                  selectedRecord.VendorDisplayName,
+                  selectedRecord.Discount,
+                  selectedRecord.Price, 
+                  activeCell);
         }
+
+        private void Write(int currentRow, string article, string description, string multiplicity, string vendor, int discount, double? price, Range activeCell)
+        {
+            try
+            {
+                // Освобождаем предыдущие COM-объекты
+                Marshal.FinalReleaseComObject(Worksheet.Cells);
+
+                // Записываем данные
+                Worksheet.Cells[currentRow, ArticleColumn] = article;
+                Worksheet.Cells[currentRow, DescriptionColumn] = description;
+                Worksheet.Cells[currentRow, MultiplicityColumn] = multiplicity;
+                Worksheet.Cells[currentRow, ProductVendorColumn] = vendor;
+
+                // Записываем и форматируем скидку
+                Range discountCell = Worksheet.Cells[currentRow, DiscountColumn];
+                discountCell.Value2 = discount;
+                discountCell.NumberFormat = "0"; // Целое число
+
+                // Записываем и форматируем цену
+                Range priceCell = Worksheet.Cells[currentRow, PriceColumn];
+                priceCell.Value2 = price ?? 0.0; // Если null, используем 0
+                priceCell.NumberFormat = "#,##0.00";
+
+                Range totalPriceCell = Worksheet.Cells[currentRow, TotalPriceColumn];
+                totalPriceCell.Formula = $"=G{currentRow}*(100-F{currentRow})/100";
+                totalPriceCell.NumberFormat = "#,##0.00";
+
+                Range coastCell = Worksheet.Cells[currentRow, CoastColumn];
+                coastCell.Formula = $"=H{currentRow}*C{currentRow}";
+                coastCell.NumberFormat = "#,##0.00";
+
+                // Форматирование даты
+                Worksheet.Cells[currentRow, DateColumn].NumberFormat = "ДД.ММ.ГГ ч:мм";
+                Worksheet.Cells[currentRow, DateColumn] = DateTime.Now;               
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            finally
+            {
+                // Освобождаем ресурсы
+                Marshal.FinalReleaseComObject(activeCell);
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+        }
+
 
         public async void BtnAddRecord()
         {
-            var currentRow = Cell.Row; // Вычисляем верхний элемент
+
+            // Получаем текущую активную ячейку ПЕРЕД записью
+            var activeCell = Worksheet.Application.ActiveCell;
+            int currentRow = activeCell.Row;
+
+
+
             string article = Convert.ToString(Worksheet.Cells[currentRow, ArticleColumn].Value2);
             
             if (string.IsNullOrWhiteSpace(article))
@@ -185,52 +266,66 @@ namespace ExcelMacroAdd.Forms.ViewModels
             int.TryParse(Convert.ToString(Worksheet.Cells[currentRow, DiscountColumn].Value2), out int discount);
             string description = Convert.ToString(Worksheet.Cells[currentRow, DescriptionColumn].Value2);
             string productVendorName = Convert.ToString(Worksheet.Cells[currentRow, ProductVendorColumn].Value2);
-            double price = Convert.ToDouble(Worksheet.Cells[currentRow, PriceColumn].Value2);     
+            string multiplicityName = Convert.ToString(Worksheet.Cells[currentRow, MultiplicityColumn].Value2);
+            double price = Convert.ToDouble(Worksheet.Cells[currentRow, PriceColumn].Value2);
 
             if (string.IsNullOrEmpty(article) || string.IsNullOrEmpty(description) || string.IsNullOrEmpty(productVendorName))
             {
                 MessageWarning($"Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n Артикул = {article}",
-                    "Ошибка записи");     
+                    "Ошибка записи");
                 return;
             }
 
-            var productVendorEntity = await accessData.AccessNotPriceComponent.GetProductVendorEntityByName(productVendorName);
-            // Если вендора нет в базе
-            if (productVendorEntity == null)
+            try
             {
-                // Запрос пользователю
-                var dialogResult = MessageBox.Show(
-                    $"В БД вендора '{productVendorName}' нет. Добавить нового вендора?",
-                    "Добавление нового вендора",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
-
-                if (dialogResult != DialogResult.Yes)
+                var productVendorEntity = await accessData.AccessNotPriceComponent.GetProductVendorEntityByName(productVendorName);
+                //Если вендора нет в базе
+                if (productVendorEntity == null)
                 {
-                    MessageInformation("Добавление записи отменено", "Отмена операции");
-                    return;
+                    // Запрос пользователю
+                    var dialogResult = MessageBox.Show(
+                        $"В БД вендора '{productVendorName}' нет. Добавить нового вендора?",
+                        "Добавление нового вендора",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (dialogResult != DialogResult.Yes)
+                    {
+                        MessageInformation("Добавление записи отменено", "Отмена операции");
+                        return;
+                    }
+
+                    // Создаем нового вендора                
+                    productVendorEntity = await accessData.AccessNotPriceComponent.AddProductVendor(new ProductVendor { VendorName = productVendorName });
                 }
 
-                // Создаем нового вендора                
-                productVendorEntity = await accessData.AccessNotPriceComponent.AddProductVendor(new ProductVendor { VendorName = productVendorName });              
+                var multiplicityEntity = await accessData.AccessNotPriceComponent.GetMultiplicityEntityByName(multiplicityName) ?? new Multiplicity() { Id = 1 };
+                // Создаем и сохраняем запись
+                var entity = new NotPriceComponent()
+                {
+                    Article = article,
+                    Description = description,
+                    MultiplicityId = multiplicityEntity.Id,
+                    ProductVendorId = productVendorEntity.Id,
+                    Price = price,
+                    Discount = discount
+                };
+
+                await accessData.AccessNotPriceComponent.AddValueDb(entity);           
+                // Обновляем данные
+                Start();
+
+                MessageInformation($"Успешно записано в базу данных!\nАртикул: {article}\nВендор: {productVendorName}",
+                    "Запись успешна!");
+
             }
-
-            // Создаем и сохраняем запись
-            var entity = new NotPriceComponent()
+            finally
             {
-                Article = article,
-                Description = description,
-                ProductVendorId = productVendorEntity.Id,
-                Price = price,
-                Discount = discount
-            };
-
-            await accessData.AccessNotPriceComponent.AddValueDb(entity);
-            // Обновляем данные
-            Start();
-
-            MessageInformation($"Успешно записано в базу данных!\nАртикул: {article}\nВендор: {productVendorName}",
-                "Запись успешна!");        
+                // Освобождаем ресурсы
+                Marshal.FinalReleaseComObject(activeCell);
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
         }
 
         public async void BtnDeleteRecord()
@@ -281,7 +376,6 @@ namespace ExcelMacroAdd.Forms.ViewModels
             }
         }
 
-
         public async void BtnUpdateRecord()
         {
             var currentRow = Cell.Row; // Текущая строка в Excel
@@ -322,8 +416,6 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 existingRecord.Discount = discount;
 
                 // Обработка вендора
-                
-                
                 var productVendorEntity = await accessData.AccessNotPriceComponent.GetProductVendorEntityByName(productVendorName);
                 // Если вендора нет в базе
                 if (productVendorEntity == null)
@@ -363,7 +455,6 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 MessageError($"Ошибка при обновлении: {ex.Message}", "Ошибка БД");
             }
         }
-
 
 
         // Реализация INotifyPropertyChanged

@@ -1,7 +1,9 @@
 ﻿using ExcelMacroAdd.DataLayer.Entity;
+using ExcelMacroAdd.DataLayer.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ExcelMacroAdd.BisinnesLayer
@@ -14,11 +16,16 @@ namespace ExcelMacroAdd.BisinnesLayer
         public AccessNotPriceComponent(AppContext context, IMemoryCache cache)
         {
             this.context = context;
+            this.cache = cache;
         }
 
         public async Task<IList<NotPriceComponent>> GetAllRecord()
         {           
-            return await context.NotPriceComponents.Include(p => p.ProductVendor).AsNoTracking().ToListAsync();
+            return await context.NotPriceComponents
+                .Include(p => p.ProductVendor)
+                .Include(p => p.Multiplicity)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<bool> IsThereIsDBRecord (string аrticle)
@@ -34,12 +41,13 @@ namespace ExcelMacroAdd.BisinnesLayer
         {
             if (entity != null)
             {
+                context.Entry(entity).State = EntityState.Detached;
                 context.NotPriceComponents.Add(entity);
                 await context.SaveChangesAsync();
             }
         }        
         
-        public async Task<ProductVendor> AddProductVendor(ProductVendor vendor)
+        public async Task<IProductVendor> AddProductVendor(ProductVendor vendor)
         {
             if (vendor != null)
             {
@@ -50,12 +58,17 @@ namespace ExcelMacroAdd.BisinnesLayer
             return null;
         }
 
-        public async Task<ProductVendor> GetProductVendorEntityByName(string vendorName)
+        public async Task<IProductVendor> GetProductVendorEntityByName(string vendorName)
         {
             return await context.ProductVendors
                 .FirstOrDefaultAsync(p => p.VendorName == vendorName);
         }
 
+        public async Task<IMultiplicity> GetMultiplicityEntityByName(string multiplicityName)
+        {
+            return await context.Multiplicities
+                .FirstOrDefaultAsync(p => p.Value == multiplicityName);
+        }
 
         public async Task<bool> DeleteRecord(int id)
         {
@@ -76,7 +89,6 @@ namespace ExcelMacroAdd.BisinnesLayer
                 return false;
             }
         }
-
 
         public async Task UpdateRecord(NotPriceComponent entity)
         {
