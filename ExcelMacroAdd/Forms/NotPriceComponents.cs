@@ -1,5 +1,6 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
+using ExcelMacroAdd.Forms.CustomUI;
 using ExcelMacroAdd.Forms.ViewModels;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using System;
@@ -53,6 +54,7 @@ namespace ExcelMacroAdd.Forms
             searchTextBox.TextChanged += SearchTextBox_TextChanged;
             dataGridView.SelectionChanged += DataGridView_SelectionChanged;
         }
+
         private void DataGridView_SelectionChanged(object sender, EventArgs e)
         {
             if (dataGridView.CurrentRow != null &&
@@ -94,7 +96,8 @@ namespace ExcelMacroAdd.Forms
         }
 
         private void SetupDataGridView()
-        {           
+        {             
+
             dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dataGridView.ColumnHeadersDefaultCellStyle.Font =
@@ -106,8 +109,7 @@ namespace ExcelMacroAdd.Forms
                 DataGridViewHeaderBorderStyle.Single;
             dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
             dataGridView.GridColor = Color.Black;
-            dataGridView.RowHeadersVisible = false;
-
+            dataGridView.RowHeadersVisible = false;                                 
 
             dataGridView.AutoGenerateColumns = false;
             dataGridView.Columns.Clear();

@@ -310,6 +310,9 @@
     <Compile Include="Forms\AdditionalDevicesForm.Designer.cs">
       <DependentUpon>AdditionalDevicesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CustomUI\CustomDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\NotPriceComponents.cs">
       <SubType>Form</SubType>
     </Compile>

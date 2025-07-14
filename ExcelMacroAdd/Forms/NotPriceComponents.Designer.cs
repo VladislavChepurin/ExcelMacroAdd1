@@ -1,4 +1,6 @@
-﻿namespace ExcelMacroAdd.Forms
+﻿using ExcelMacroAdd.Forms.CustomUI;
+
+namespace ExcelMacroAdd.Forms
 {
     partial class NotPriceComponents
     {
@@ -30,7 +32,7 @@
         {
             this.btnWritingToSheet = new System.Windows.Forms.Button();
             this.btnAddRecord = new System.Windows.Forms.Button();
-            this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridView = new CustomDataGridView();
             this.searchTextBox = new System.Windows.Forms.TextBox();
             this.btnDeleteRecord = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -59,16 +61,18 @@
             // dataGridView
             // 
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Location = new System.Drawing.Point(29, 54);
+            this.dataGridView.Location = new System.Drawing.Point(10, 56);
+            this.dataGridView.Margin = new System.Windows.Forms.Padding(5);
             this.dataGridView.Name = "dataGridView";
-            this.dataGridView.Size = new System.Drawing.Size(742, 450);
+            this.dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataGridView.Size = new System.Drawing.Size(760, 368);
             this.dataGridView.TabIndex = 2;
             // 
             // searchTextBox
             // 
-            this.searchTextBox.Location = new System.Drawing.Point(29, 28);
+            this.searchTextBox.Location = new System.Drawing.Point(10, 28);
             this.searchTextBox.Name = "searchTextBox";
-            this.searchTextBox.Size = new System.Drawing.Size(742, 20);
+            this.searchTextBox.Size = new System.Drawing.Size(759, 20);
             this.searchTextBox.TabIndex = 3;
             // 
             // btnDeleteRecord
@@ -83,11 +87,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 9);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(139, 13);
+            this.label1.Size = new System.Drawing.Size(199, 13);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Введите ключевые слова:";
+            this.label1.Text = "Введите ключевые слова для поиска:";
             // 
             // btnUpdateRecord
             // 
@@ -102,7 +106,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 576);
+            this.ClientSize = new System.Drawing.Size(779, 576);
             this.Controls.Add(this.btnUpdateRecord);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnDeleteRecord);
