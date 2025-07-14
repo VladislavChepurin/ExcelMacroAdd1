@@ -38,6 +38,17 @@ namespace ExcelMacroAdd.Forms.ViewModels
         private CancellationTokenSource _filterTokenSource;
         private bool _isLoading;
 
+        private string _countStatusList;
+        public string CountStatusList
+        {
+            get => _countStatusList;
+            set
+            {
+                _countStatusList = value;
+                OnPropertyChanged(nameof(CountStatusList));
+            }
+        }                       
+
         public BindingList<NotPriceComponent> RecordList
         {
             get => _recordList;
@@ -63,6 +74,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 }
             }
         }
+
 
         public NotPriceComponent SelectedRecord
         {
@@ -119,6 +131,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 var records = await _accessData.AccessNotPriceComponent.GetAllRecord().ConfigureAwait(false);
                 RecordList = new BindingList<NotPriceComponent>(records.ToList());
                 FilteredList = new BindingList<NotPriceComponent>(records.ToList());
+                CountStatusList = $"Всего доступно {RecordList.Count} записей, выбрано {FilteredList.Count} записей";
             }
             catch (Exception ex)
             {
@@ -171,6 +184,8 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 }
 
                 FilteredList = new BindingList<NotPriceComponent>(result.ToList());
+
+                CountStatusList = $"Всего доступно {RecordList.Count} записей, выбрано {FilteredList.Count} записей";
             }
             catch (TaskCanceledException)
             {

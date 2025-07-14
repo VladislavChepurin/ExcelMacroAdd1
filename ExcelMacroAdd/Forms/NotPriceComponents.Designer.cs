@@ -32,17 +32,20 @@ namespace ExcelMacroAdd.Forms
         {
             this.btnWritingToSheet = new System.Windows.Forms.Button();
             this.btnAddRecord = new System.Windows.Forms.Button();
-            this.dataGridView = new CustomDataGridView();
+            this.dataGridView = new ExcelMacroAdd.Forms.CustomUI.CustomDataGridView();
             this.searchTextBox = new System.Windows.Forms.TextBox();
             this.btnDeleteRecord = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btnUpdateRecord = new System.Windows.Forms.Button();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnWritingToSheet
             // 
-            this.btnWritingToSheet.Location = new System.Drawing.Point(29, 530);
+            this.btnWritingToSheet.Location = new System.Drawing.Point(695, 515);
             this.btnWritingToSheet.Name = "btnWritingToSheet";
             this.btnWritingToSheet.Size = new System.Drawing.Size(75, 23);
             this.btnWritingToSheet.TabIndex = 0;
@@ -51,7 +54,7 @@ namespace ExcelMacroAdd.Forms
             // 
             // btnAddRecord
             // 
-            this.btnAddRecord.Location = new System.Drawing.Point(542, 530);
+            this.btnAddRecord.Location = new System.Drawing.Point(10, 515);
             this.btnAddRecord.Name = "btnAddRecord";
             this.btnAddRecord.Size = new System.Drawing.Size(75, 23);
             this.btnAddRecord.TabIndex = 1;
@@ -65,7 +68,7 @@ namespace ExcelMacroAdd.Forms
             this.dataGridView.Margin = new System.Windows.Forms.Padding(5);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView.Size = new System.Drawing.Size(760, 368);
+            this.dataGridView.Size = new System.Drawing.Size(760, 440);
             this.dataGridView.TabIndex = 2;
             // 
             // searchTextBox
@@ -77,7 +80,7 @@ namespace ExcelMacroAdd.Forms
             // 
             // btnDeleteRecord
             // 
-            this.btnDeleteRecord.Location = new System.Drawing.Point(654, 530);
+            this.btnDeleteRecord.Location = new System.Drawing.Point(190, 515);
             this.btnDeleteRecord.Name = "btnDeleteRecord";
             this.btnDeleteRecord.Size = new System.Drawing.Size(75, 23);
             this.btnDeleteRecord.TabIndex = 4;
@@ -95,18 +98,35 @@ namespace ExcelMacroAdd.Forms
             // 
             // btnUpdateRecord
             // 
-            this.btnUpdateRecord.Location = new System.Drawing.Point(438, 530);
+            this.btnUpdateRecord.Location = new System.Drawing.Point(100, 515);
             this.btnUpdateRecord.Name = "btnUpdateRecord";
             this.btnUpdateRecord.Size = new System.Drawing.Size(75, 23);
             this.btnUpdateRecord.TabIndex = 6;
             this.btnUpdateRecord.Text = "Обновить";
             this.btnUpdateRecord.UseVisualStyleBackColor = true;
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 554);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(779, 22);
+            this.statusStrip1.TabIndex = 7;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
             // NotPriceComponents
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(779, 576);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnUpdateRecord);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnDeleteRecord);
@@ -114,10 +134,17 @@ namespace ExcelMacroAdd.Forms
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.btnAddRecord);
             this.Controls.Add(this.btnWritingToSheet);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(795, 615);
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(795, 615);
             this.Name = "NotPriceComponents";
             this.Text = "NotPriceComponents";
+            this.TopMost = true;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.NotPriceComponents_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -127,10 +154,12 @@ namespace ExcelMacroAdd.Forms
 
         private System.Windows.Forms.Button btnWritingToSheet;
         private System.Windows.Forms.Button btnAddRecord;
-        private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.TextBox searchTextBox;
         private System.Windows.Forms.Button btnDeleteRecord;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnUpdateRecord;
+        private CustomDataGridView dataGridView;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }

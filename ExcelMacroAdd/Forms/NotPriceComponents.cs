@@ -1,6 +1,5 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
-using ExcelMacroAdd.Forms.CustomUI;
 using ExcelMacroAdd.Forms.ViewModels;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using System;
@@ -87,7 +86,29 @@ namespace ExcelMacroAdd.Forms
                     }));
                 }
             };
+
+
+            notPriceComponentsViewModel.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(NotPriceComponentsViewModel.CountStatusList))
+                {
+                    UpdateStatus(notPriceComponentsViewModel.CountStatusList);
+                }
+            };
         }
+
+        private void UpdateStatus(string text)
+        {
+            if (statusStrip1.InvokeRequired)
+            {
+                statusStrip1.BeginInvoke(new Action(() => toolStripStatusLabel1.Text = text));
+            }
+            else
+            {
+                toolStripStatusLabel1.Text = text;
+            }
+        }
+
 
         private void SearchTextBox_TextChanged(object sender, EventArgs e)
         {
