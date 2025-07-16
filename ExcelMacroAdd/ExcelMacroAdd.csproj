@@ -37,7 +37,7 @@
     <PublishUrl>publication\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>2.6.2.0</ApplicationVersion>
+    <ApplicationVersion>2.7.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>false</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -62,7 +62,7 @@
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
-      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
+      <ProductName>Среда выполнения Microsoft Visual Studio 2010 Tools for Office %28x86 и x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
@@ -434,6 +434,8 @@
     <Content Include="DataLayer\DataBase\BdMain.sqlite">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="x64\SQLite.Interop.dll" />
+    <Content Include="x86\SQLite.Interop.dll" />
     <None Include="ExcelMacroAdd_3_TemporaryKey.pfx" />
     <None Include="Resources\SelectionCircuitBreaker.png" />
     <None Include="Resources\TypeNky.png" />
@@ -441,8 +443,6 @@
     <None Include="Resources\SelectionTransformer.png" />
     <None Include="Resources\EditCalculation.png" />
     <Resource Include="Resources\DefaultImage.png" />
-    <Content Include="x64\SQLite.Interop.dll" />
-    <Content Include="x86\SQLite.Interop.dll" />
     <EmbeddedResource Include="Forms\AdditionalDevicesForm.resx">
       <DependentUpon>AdditionalDevicesForm.cs</DependentUpon>
     </EmbeddedResource>
