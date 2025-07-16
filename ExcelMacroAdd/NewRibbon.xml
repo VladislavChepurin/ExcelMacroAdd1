@@ -39,7 +39,7 @@
 					<button id ="SelectionTransformer_Button" size="large" image="SelectionTransformer" label="Трансф. тока" onAction="OnActionCallbackCalculation"/>
 					<button id ="SelectionTwinBlock_Button" size="large" image="SelectionTwinBlock" label="Рубильники TwinBlock" onAction="OnActionCallbackCalculation"/>
 					<button id ="TermoCalculation_Button" size="large" imageMso="EditPermissions" label="Расчет обогрева" onAction="OnActionCallbackCalculation"/>
-					<button id ="NotPriceComponent_Button" size="large" image="SelectionCircuitBreaker" label="Не тарифные позиции" onAction="OnActionCallbackCalculation"/>
+					<button id ="NotPriceComponent_Button" size="large" imageMso="PageProperties" label="Не тарифные позиции" onAction="OnActionCallbackCalculation"/>
 					<separator id ="separator2"/>					
 					<button id ="TypeNky_Button" size="large" image="TypeNky"  label="Типы шкафов" onAction="OnActionCallbackCalculation"/>					
 				</group>
@@ -50,10 +50,10 @@
 					<button id ="About_Button" size="normal" imageMso="Info" label="About" onAction="OnActionCallbackOther"/>
 				</group>
 
-				<group id="group5">
+				<!--<group id="group5">
 					<labelControl id ="label1" label="База данных"/>
 					<labelControl id ="baseLocation" getLabel="GetLabelText"/>
-				</group>
+				</group>-->
 
 			</tab>
 		</tabs>

@@ -6,7 +6,8 @@ namespace ExcelMacroAdd.Forms
 {
     partial class AboutBox1 : Form
     {
-        public AboutBox1()
+        private bool locationDataBase;
+        public AboutBox1(bool locationDataBase)
         {
             InitializeComponent();
             this.Text = String.Format("О программе {0}", AssemblyTitle);
@@ -15,6 +16,8 @@ namespace ExcelMacroAdd.Forms
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription;
+            this.locationDataBase = locationDataBase;
+            this.labelDataBaseLocation.Text = DataBaseLocation;
         }
 
         #region Методы доступа к атрибутам сборки
@@ -97,6 +100,18 @@ namespace ExcelMacroAdd.Forms
         }
         #endregion
 
+        public string DataBaseLocation
+        {
+            get
+            {               
+                if (locationDataBase)
+                {
+                    return "База данных глобальная";
+                }
+                return "База данных локальная";
+            }
+        }
+
         private void AboutBox1_Load(object sender, EventArgs e)
         {
 
@@ -106,5 +121,6 @@ namespace ExcelMacroAdd.Forms
         {
 
         }
+
     }
 }

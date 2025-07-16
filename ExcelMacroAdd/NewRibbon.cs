@@ -375,7 +375,7 @@ namespace ExcelMacroAdd
                 case "About_Button":
                     await Task.Run(() =>
                     {
-                        var about = new AboutBox1();
+                        var about = new AboutBox1(locationDataBase);
                         about.ShowDialog();
                         Thread.Sleep(5000);
                     });
@@ -388,10 +388,10 @@ namespace ExcelMacroAdd
             }
         }
 
-        public string GetLabelText(Office.IRibbonControl control)
-        {
-            return locationDataBase ? Properties.Resources.Global : Properties.Resources.Local;         
-        }
+        //public string GetLabelText(Office.IRibbonControl control)
+        //{
+        //    return locationDataBase ? Properties.Resources.Global : Properties.Resources.Local;         
+        //}
 
         #endregion
 

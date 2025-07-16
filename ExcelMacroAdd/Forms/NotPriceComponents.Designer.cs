@@ -125,7 +125,7 @@ namespace ExcelMacroAdd.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(779, 576);
+            this.ClientSize = new System.Drawing.Size(795, 615);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnUpdateRecord);
             this.Controls.Add(this.label1);
@@ -134,10 +134,9 @@ namespace ExcelMacroAdd.Forms
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.btnAddRecord);
             this.Controls.Add(this.btnWritingToSheet);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(795, 615);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(795, 615);
             this.Name = "NotPriceComponents";
             this.Text = "NotPriceComponents";
             this.TopMost = true;
