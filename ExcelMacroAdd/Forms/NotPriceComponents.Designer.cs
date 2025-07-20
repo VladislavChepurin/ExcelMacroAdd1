@@ -32,57 +32,47 @@ namespace ExcelMacroAdd.Forms
         {
             this.btnWritingToSheet = new System.Windows.Forms.Button();
             this.btnAddRecord = new System.Windows.Forms.Button();
-            this.dataGridView = new ExcelMacroAdd.Forms.CustomUI.CustomDataGridView();
             this.searchTextBox = new System.Windows.Forms.TextBox();
             this.btnDeleteRecord = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btnUpdateRecord = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            this.dataGridView = new ExcelMacroAdd.Forms.CustomUI.CustomDataGridView();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // btnWritingToSheet
             // 
-            this.btnWritingToSheet.Location = new System.Drawing.Point(695, 515);
+            this.btnWritingToSheet.Location = new System.Drawing.Point(773, 520);
             this.btnWritingToSheet.Name = "btnWritingToSheet";
-            this.btnWritingToSheet.Size = new System.Drawing.Size(75, 23);
+            this.btnWritingToSheet.Size = new System.Drawing.Size(75, 25);
             this.btnWritingToSheet.TabIndex = 0;
             this.btnWritingToSheet.Text = "На лист";
             this.btnWritingToSheet.UseVisualStyleBackColor = true;
             // 
             // btnAddRecord
             // 
-            this.btnAddRecord.Location = new System.Drawing.Point(10, 515);
+            this.btnAddRecord.Location = new System.Drawing.Point(10, 520);
             this.btnAddRecord.Name = "btnAddRecord";
-            this.btnAddRecord.Size = new System.Drawing.Size(75, 23);
+            this.btnAddRecord.Size = new System.Drawing.Size(75, 25);
             this.btnAddRecord.TabIndex = 1;
             this.btnAddRecord.Text = "Добавить";
             this.btnAddRecord.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView
-            // 
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Location = new System.Drawing.Point(10, 56);
-            this.dataGridView.Margin = new System.Windows.Forms.Padding(5);
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView.Size = new System.Drawing.Size(760, 440);
-            this.dataGridView.TabIndex = 2;
             // 
             // searchTextBox
             // 
             this.searchTextBox.Location = new System.Drawing.Point(10, 28);
             this.searchTextBox.Name = "searchTextBox";
-            this.searchTextBox.Size = new System.Drawing.Size(759, 20);
+            this.searchTextBox.Size = new System.Drawing.Size(838, 20);
             this.searchTextBox.TabIndex = 3;
             // 
             // btnDeleteRecord
             // 
-            this.btnDeleteRecord.Location = new System.Drawing.Point(190, 515);
+            this.btnDeleteRecord.Location = new System.Drawing.Point(190, 520);
             this.btnDeleteRecord.Name = "btnDeleteRecord";
-            this.btnDeleteRecord.Size = new System.Drawing.Size(75, 23);
+            this.btnDeleteRecord.Size = new System.Drawing.Size(75, 25);
             this.btnDeleteRecord.TabIndex = 4;
             this.btnDeleteRecord.Text = "Удалить";
             this.btnDeleteRecord.UseVisualStyleBackColor = true;
@@ -98,9 +88,9 @@ namespace ExcelMacroAdd.Forms
             // 
             // btnUpdateRecord
             // 
-            this.btnUpdateRecord.Location = new System.Drawing.Point(100, 515);
+            this.btnUpdateRecord.Location = new System.Drawing.Point(100, 520);
             this.btnUpdateRecord.Name = "btnUpdateRecord";
-            this.btnUpdateRecord.Size = new System.Drawing.Size(75, 23);
+            this.btnUpdateRecord.Size = new System.Drawing.Size(75, 25);
             this.btnUpdateRecord.TabIndex = 6;
             this.btnUpdateRecord.Text = "Обновить";
             this.btnUpdateRecord.UseVisualStyleBackColor = true;
@@ -109,9 +99,9 @@ namespace ExcelMacroAdd.Forms
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 554);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 559);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(779, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(860, 22);
             this.statusStrip1.TabIndex = 7;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -121,11 +111,21 @@ namespace ExcelMacroAdd.Forms
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
+            // dataGridView
+            // 
+            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView.Location = new System.Drawing.Point(10, 56);
+            this.dataGridView.Margin = new System.Windows.Forms.Padding(5);
+            this.dataGridView.Name = "dataGridView";
+            this.dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataGridView.Size = new System.Drawing.Size(840, 450);
+            this.dataGridView.TabIndex = 2;
+            // 
             // NotPriceComponents
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(795, 615);
+            this.ClientSize = new System.Drawing.Size(860, 581);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnUpdateRecord);
             this.Controls.Add(this.label1);
@@ -141,9 +141,9 @@ namespace ExcelMacroAdd.Forms
             this.Text = "NotPriceComponents";
             this.TopMost = true;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.NotPriceComponents_FormClosed);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

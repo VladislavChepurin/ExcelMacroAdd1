@@ -206,53 +206,50 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 return;
             }
 
-            try
-            {
-                var activeCell = Worksheet.Application.ActiveCell;
-                int currentRow = activeCell.Row;
-                var selectedRecord = SelectedRecord;
+            var activeCell = Worksheet.Application.ActiveCell;
+            int currentRow = activeCell.Row;
 
-                WriteToSheet(currentRow, selectedRecord, activeCell);
+            try
+            {              
+                var selectedRecord = SelectedRecord;
+                WriteToSheet(currentRow, selectedRecord);               
             }
             catch (Exception ex)
             {
                 MessageError($"Ошибка при записи в лист: {ex.Message}", "Ошибка записи");
                 Logger.LogException(ex);
             }
-        }
-
-        private void WriteToSheet(int currentRow, NotPriceComponent record, Range activeCell)
-        {
-            try
-            {
-                Worksheet.Cells[currentRow, ArticleColumn] = record.Article;
-                Worksheet.Cells[currentRow, DescriptionColumn] = record.Description;
-                Worksheet.Cells[currentRow, MultiplicityColumn] = record.MultiplicityDisplayName;
-                Worksheet.Cells[currentRow, ProductVendorColumn] = record.VendorDisplayName;
-
-                Worksheet.Cells[currentRow, DiscountColumn] = record.Discount;
-                Worksheet.Cells[currentRow, DiscountColumn].NumberFormat = "0";
-
-                // Записываем и форматируем цену
-                Range priceCell = Worksheet.Cells[currentRow, PriceColumn];
-                priceCell.Value2 = record.Price ?? 0.0; // Если null, используем 0
-                priceCell.NumberFormat = "#,##0.00";
-
-                Range totalPriceCell = Worksheet.Cells[currentRow, TotalPriceColumn];
-                totalPriceCell.Formula = $"=G{currentRow}*(100-F{currentRow})/100";
-                totalPriceCell.NumberFormat = "#,##0.00";
-
-                Range coastCell = Worksheet.Cells[currentRow, CoastColumn];
-                coastCell.Formula = $"=H{currentRow}*C{currentRow}";
-                coastCell.NumberFormat = "#,##0.00";
-
-                Worksheet.Cells[currentRow, DateColumn].NumberFormat = "ДД.ММ.ГГ ч:мм";
-                Worksheet.Cells[currentRow, DateColumn] = DateTime.Now;
-            }
             finally
             {
                 ReleaseComObjects(activeCell);
             }
+        }
+
+        private void WriteToSheet(int currentRow, NotPriceComponent record)
+        {
+            Worksheet.Cells[currentRow, ArticleColumn] = record.Article;
+            Worksheet.Cells[currentRow, DescriptionColumn] = record.Description;
+            Worksheet.Cells[currentRow, MultiplicityColumn] = record.MultiplicityDisplayName;
+            Worksheet.Cells[currentRow, ProductVendorColumn] = record.VendorDisplayName;
+
+            Worksheet.Cells[currentRow, DiscountColumn] = record.Discount;
+            Worksheet.Cells[currentRow, DiscountColumn].NumberFormat = "0";
+
+            // Записываем и форматируем цену
+            Range priceCell = Worksheet.Cells[currentRow, PriceColumn];
+            priceCell.Value2 = record.Price;
+            priceCell.NumberFormat = "#,##0.00";
+
+            Range totalPriceCell = Worksheet.Cells[currentRow, TotalPriceColumn];
+            totalPriceCell.Formula = $"=G{currentRow}*(100-F{currentRow})/100";
+            totalPriceCell.NumberFormat = "#,##0.00";
+
+            Range coastCell = Worksheet.Cells[currentRow, CoastColumn];
+            coastCell.Formula = $"=H{currentRow}*C{currentRow}";
+            coastCell.NumberFormat = "#,##0.00";
+
+            Worksheet.Cells[currentRow, DateColumn].NumberFormat = "ДД.ММ.ГГ ч:мм";
+            Worksheet.Cells[currentRow, DateColumn] = DateTime.Now;
         }
 
         private void SetCellValueWithFormat(Range cell, object value, string format)
@@ -276,11 +273,10 @@ namespace ExcelMacroAdd.Forms.ViewModels
 
         public async void BtnAddRecord()
         {
+            var activeCell = Worksheet.Application.ActiveCell;
+            int currentRow = activeCell.Row;
             try
-            {
-                var activeCell = Worksheet.Application.ActiveCell;
-                int currentRow = activeCell.Row;
-
+            {              
                 string article = GetCellValueAsString(Worksheet.Cells[currentRow, ArticleColumn]);
 
                 if (string.IsNullOrWhiteSpace(article))
@@ -299,7 +295,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 string description = GetCellValueAsString(Worksheet.Cells[currentRow, DescriptionColumn]);
                 string productVendorName = GetCellValueAsString(Worksheet.Cells[currentRow, ProductVendorColumn]);
                 string multiplicityName = GetCellValueAsString(Worksheet.Cells[currentRow, MultiplicityColumn]);
-                double price = GetCellValueAsDouble(Worksheet.Cells[currentRow, PriceColumn]);
+                decimal price = GetCellValueAsDecimal(Worksheet.Cells[currentRow, PriceColumn]);
 
                 if (string.IsNullOrEmpty(article) || string.IsNullOrEmpty(description) || string.IsNullOrEmpty(productVendorName))
                 {
@@ -314,10 +310,14 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 MessageError($"Ошибка при добавлении записи: {ex.Message}", "Ошибка добавления");
                 Logger.LogException(ex);
             }
+            finally
+            {
+                ReleaseComObjects(activeCell);
+            }
         }
 
         private async Task ProcessAddRecord(string article, string description, string productVendorName,
-                                          string multiplicityName, double price, int discount)
+                                          string multiplicityName, decimal price, int discount)
         {
             var productVendorEntity = await _accessData.AccessNotPriceComponent.GetProductVendorEntityByName(productVendorName)
                 .ConfigureAwait(false);
@@ -333,13 +333,14 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 .ConfigureAwait(false) ?? new Multiplicity() { Id = 1 };
 
             var entity = new NotPriceComponent
-            {
+            {         
                 Article = article,
                 Description = description,
                 MultiplicityId = multiplicityEntity.Id,
                 ProductVendorId = productVendorEntity.Id,
-                Price = (float)price,
-                Discount = discount
+                Price = price,
+                Discount = discount,
+                DataRecord = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")
             };
 
             await _accessData.AccessNotPriceComponent.AddValueDb(entity).ConfigureAwait(false);
@@ -405,9 +406,11 @@ namespace ExcelMacroAdd.Forms.ViewModels
 
         public async void BtnUpdateRecord()
         {
+            var activeCell = Worksheet.Application.ActiveCell;
+            int currentRow = activeCell.Row;
+
             try
-            {
-                int currentRow = Cell.Row;
+            {                
                 string article = GetCellValueAsString(Worksheet.Cells[currentRow, ArticleColumn]);
 
                 if (string.IsNullOrWhiteSpace(article))
@@ -432,13 +435,17 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 MessageError($"Ошибка при обновлении: {ex.Message}", "Ошибка БД");
                 Logger.LogException(ex);
             }
+            finally
+            {
+                ReleaseComObjects(activeCell);            
+            }
         }
 
         private async Task ProcessUpdateRecord(int currentRow, NotPriceComponent existingRecord)
         {
             string description = GetCellValueAsString(Worksheet.Cells[currentRow, DescriptionColumn]);
             string productVendorName = GetCellValueAsString(Worksheet.Cells[currentRow, ProductVendorColumn]);
-            double price = GetCellValueAsDouble(Worksheet.Cells[currentRow, PriceColumn]);
+            decimal price = GetCellValueAsDecimal(Worksheet.Cells[currentRow, PriceColumn]);
             int discount = GetCellValueAsInt(Worksheet.Cells[currentRow, DiscountColumn]);
 
             if (string.IsNullOrWhiteSpace(description) || string.IsNullOrWhiteSpace(productVendorName))
@@ -448,8 +455,9 @@ namespace ExcelMacroAdd.Forms.ViewModels
             }
 
             existingRecord.Description = description;
-            existingRecord.Price = (float)price;
+            existingRecord.Price = price;
             existingRecord.Discount = discount;
+            existingRecord.DataRecord = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
 
             var productVendorEntity = await _accessData.AccessNotPriceComponent.GetProductVendorEntityByName(productVendorName)
                 .ConfigureAwait(false);
@@ -470,7 +478,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
 
         private string GetCellValueAsString(Range cell) => Convert.ToString(cell.Value2);
         private int GetCellValueAsInt(Range cell) => int.TryParse(GetCellValueAsString(cell), out int result) ? result : 0;
-        private double GetCellValueAsDouble(Range cell) => Convert.ToDouble(cell.Value2);
+        private decimal GetCellValueAsDecimal(Range cell) => Convert.ToDecimal(cell.Value2);
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)

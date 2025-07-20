@@ -148,7 +148,7 @@ namespace ExcelMacroAdd.Forms
             {
                 DataPropertyName = "Description",
                 HeaderText = "Описание",
-                Width = 380
+                Width = 390
             });
 
             dataGridView.Columns.Add(new DataGridViewTextBoxColumn
@@ -187,6 +187,14 @@ namespace ExcelMacroAdd.Forms
             discountColumn.DefaultCellStyle.Format = "N0";
             dataGridView.Columns.Add(discountColumn);
 
+
+            dataGridView.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "DataRecordDisplayName", // Используем вычисляемое свойство
+                HeaderText = "Дата",
+                Width = 70
+            });
+
             dataGridView.SelectionMode =
                 DataGridViewSelectionMode.FullRowSelect;
             dataGridView.MultiSelect = false;
@@ -205,6 +213,5 @@ namespace ExcelMacroAdd.Forms
                 _mutexAcquired = false;
             }
         }
-
     }
 }
