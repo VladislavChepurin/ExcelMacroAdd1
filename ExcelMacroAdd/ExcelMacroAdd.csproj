@@ -37,7 +37,7 @@
     <PublishUrl>publication\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>2.7.0.0</ApplicationVersion>
+    <ApplicationVersion>2.7.2.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>false</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -606,10 +606,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ExcelMacroAdd_3_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>5329CAE94A3ADD060F59FB9F51353BA7BE07CA0E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>E57B77295A4105B785FBCCEE176C30FA5E74EB4B</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

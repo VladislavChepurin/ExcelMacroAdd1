@@ -141,21 +141,21 @@ namespace ExcelMacroAdd.Forms
             {
                 DataPropertyName = "Article",
                 HeaderText = "Артикул",
-                Width = 80
+                Width = 110
             });
             // Колонка "Описание"
             dataGridView.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Description",
                 HeaderText = "Описание",
-                Width = 390
+                Width = 440
             });
 
             dataGridView.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "MultiplicityDisplayName", // Используем вычисляемое свойство
-                HeaderText = "Кратность",
-                Width = 70
+                HeaderText = "Кратн.",
+                Width = 60
             });
 
             // Колонка "Вендор" с обработкой null
@@ -163,7 +163,7 @@ namespace ExcelMacroAdd.Forms
             {
                 DataPropertyName = "VendorDisplayName", // Используем вычисляемое свойство
                 HeaderText = "Вендор",
-                Width = 75
+                Width = 70
             });
 
             // Колонка "Цена" с форматированием
@@ -171,7 +171,7 @@ namespace ExcelMacroAdd.Forms
             {
                 DataPropertyName = "Price",
                 HeaderText = "Цена",
-                Width = 75
+                Width = 70
             };
             priceColumn.DefaultCellStyle.Format = "N2";
             priceColumn.DefaultCellStyle.NullValue = "0.00";
@@ -182,7 +182,7 @@ namespace ExcelMacroAdd.Forms
             {
                 DataPropertyName = "Discount",
                 HeaderText = "Скидка",
-                Width = 60
+                Width = 55
             };
             discountColumn.DefaultCellStyle.Format = "N0";
             dataGridView.Columns.Add(discountColumn);
@@ -192,7 +192,7 @@ namespace ExcelMacroAdd.Forms
             {
                 DataPropertyName = "DataRecordDisplayName", // Используем вычисляемое свойство
                 HeaderText = "Дата",
-                Width = 70
+                Width = 66
             });
 
             dataGridView.SelectionMode =

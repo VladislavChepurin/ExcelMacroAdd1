@@ -444,6 +444,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
         private async Task ProcessUpdateRecord(int currentRow, NotPriceComponent existingRecord)
         {
             string description = GetCellValueAsString(Worksheet.Cells[currentRow, DescriptionColumn]);
+            string multiplicityName = GetCellValueAsString(Worksheet.Cells[currentRow, MultiplicityColumn]);
             string productVendorName = GetCellValueAsString(Worksheet.Cells[currentRow, ProductVendorColumn]);
             decimal price = GetCellValueAsDecimal(Worksheet.Cells[currentRow, PriceColumn]);
             int discount = GetCellValueAsInt(Worksheet.Cells[currentRow, DiscountColumn]);
@@ -455,7 +456,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             }
 
             existingRecord.Description = description;
-            existingRecord.Price = price;
+            existingRecord.Price = price;                   
             existingRecord.Discount = discount;
             existingRecord.DataRecord = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
 
@@ -469,7 +470,12 @@ namespace ExcelMacroAdd.Forms.ViewModels
                     new ProductVendor { VendorName = productVendorName }).ConfigureAwait(false);
             }
 
+            var multiplicityEntity = await _accessData.AccessNotPriceComponent.GetMultiplicityEntityByName(multiplicityName)
+                .ConfigureAwait(false) ?? new Multiplicity() { Id = 1 };
+
             existingRecord.ProductVendorId = productVendorEntity.Id;
+            existingRecord.MultiplicityId = multiplicityEntity.Id;
+
             await _accessData.AccessNotPriceComponent.UpdateRecord(existingRecord).ConfigureAwait(false);
             Start();
 
