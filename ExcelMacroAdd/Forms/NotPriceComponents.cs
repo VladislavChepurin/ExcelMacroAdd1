@@ -3,7 +3,10 @@ using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Forms.ViewModels;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -135,27 +138,33 @@ namespace ExcelMacroAdd.Forms
             dataGridView.AutoGenerateColumns = false;
             dataGridView.Columns.Clear();
 
+            // Добавляем обработчик клика по заголовку
+            dataGridView.ColumnHeaderMouseClick += DataGridView_ColumnHeaderMouseClick;
+
             // Настраиваем колонки для привязки данных
             // Колонка "Артикул"
             dataGridView.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Article",
                 HeaderText = "Артикул",
-                Width = 110
+                Width = 110,
+                SortMode = DataGridViewColumnSortMode.Programmatic // Разрешаем сортировку
             });
             // Колонка "Описание"
             dataGridView.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Description",
                 HeaderText = "Описание",
-                Width = 440
+                Width = 440,
+                SortMode = DataGridViewColumnSortMode.NotSortable
             });
 
             dataGridView.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "MultiplicityDisplayName", // Используем вычисляемое свойство
                 HeaderText = "Кратн.",
-                Width = 60
+                Width = 60,
+                SortMode = DataGridViewColumnSortMode.NotSortable
             });
 
             // Колонка "Вендор" с обработкой null
@@ -163,7 +172,8 @@ namespace ExcelMacroAdd.Forms
             {
                 DataPropertyName = "VendorDisplayName", // Используем вычисляемое свойство
                 HeaderText = "Вендор",
-                Width = 70
+                Width = 70,
+                SortMode = DataGridViewColumnSortMode.Programmatic // Разрешаем сортировку
             });
 
             // Колонка "Цена" с форматированием
@@ -171,7 +181,8 @@ namespace ExcelMacroAdd.Forms
             {
                 DataPropertyName = "Price",
                 HeaderText = "Цена",
-                Width = 70
+                Width = 70,
+                SortMode = DataGridViewColumnSortMode.NotSortable
             };
             priceColumn.DefaultCellStyle.Format = "N2";
             priceColumn.DefaultCellStyle.NullValue = "0.00";
@@ -182,7 +193,8 @@ namespace ExcelMacroAdd.Forms
             {
                 DataPropertyName = "Discount",
                 HeaderText = "Скидка",
-                Width = 55
+                Width = 55,
+                SortMode = DataGridViewColumnSortMode.NotSortable
             };
             discountColumn.DefaultCellStyle.Format = "N0";
             dataGridView.Columns.Add(discountColumn);
@@ -192,7 +204,8 @@ namespace ExcelMacroAdd.Forms
             {
                 DataPropertyName = "DataRecordDisplayName", // Используем вычисляемое свойство
                 HeaderText = "Дата",
-                Width = 66
+                Width = 66,
+                SortMode = DataGridViewColumnSortMode.NotSortable
             });
 
             dataGridView.SelectionMode =
@@ -203,6 +216,75 @@ namespace ExcelMacroAdd.Forms
             dataGridView.ReadOnly = true;
 
             dataGridView.BackgroundColor = Color.White;                                     
+        }
+
+        private void DataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var column = dataGridView.Columns[e.ColumnIndex];
+
+            // Сортируем только разрешенные колонки
+            if (column.DataPropertyName == "Article" || column.Name == "VendorDisplayName")
+            {
+                // Определяем направление сортировки
+                ListSortDirection direction;
+                if (column.SortMode == DataGridViewColumnSortMode.Programmatic &&
+      (column.Name == "Article" || column.Name == "VendorDisplayName"))
+                {
+                    direction = ListSortDirection.Descending;
+                    column.HeaderCell.SortGlyphDirection = SortOrder.Descending;
+                }
+                else
+                {
+                    direction = ListSortDirection.Ascending;
+
+                    try { 
+                        column.HeaderCell.SortGlyphDirection = SortOrder.Ascending;
+                    }
+                    catch (Exception ex)
+                    {
+                    Debug.WriteLine("!!!!!!!!!!!!!!");
+                    Debug.WriteLine(ex);
+                    Debug.WriteLine("!!!!!!!!!!!!!!");
+                }
+            }
+                // Сбрасываем значки сортировки у других колонок
+                //foreach (DataGridViewColumn col in dataGridView.Columns)
+                //{
+                //    if (col != column)
+                //    {
+                //        col.HeaderCell.SortGlyphDirection = SortOrder.None;
+                //    }
+                //}
+
+                // Выполняем сортировку
+                SortData(column.DataPropertyName, direction);
+            }
+        }
+
+        private void SortData(string propertyName, ListSortDirection direction)
+        {
+            if (notPriceComponentsViewModel.FilteredList is BindingList<NotPriceComponent> list)
+            {
+                // Создаем временный список для сортировки
+                var sortedList = new List<NotPriceComponent>(list);
+
+                // Сортируем в зависимости от направления
+                if (direction == ListSortDirection.Ascending)
+                {
+                    sortedList = propertyName == "Article"
+                        ? sortedList.OrderBy(x => x.Article).ToList()
+                        : sortedList.OrderBy(x => x.VendorDisplayName).ToList();
+                }
+                else
+                {
+                    sortedList = propertyName == "Article"
+                        ? sortedList.OrderByDescending(x => x.Article).ToList()
+                        : sortedList.OrderByDescending(x => x.VendorDisplayName).ToList();
+                }
+
+                // Обновляем FilteredList
+                notPriceComponentsViewModel.FilteredList = new BindingList<NotPriceComponent>(sortedList);
+            }
         }
 
         private void NotPriceComponents_FormClosed(object sender, FormClosedEventArgs e)
