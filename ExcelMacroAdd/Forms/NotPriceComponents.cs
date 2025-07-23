@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -20,7 +19,8 @@ namespace ExcelMacroAdd.Forms
     {
         private readonly NotPriceComponentsViewModel notPriceComponentsViewModel;
         static readonly Mutex Mutex = new Mutex(false, "MutexNotPriceComponents_SingleInstance");
-        private bool _mutexAcquired = false;  
+        private bool _mutexAcquired = false;
+        private ListSortDirection _currentSortDirection = ListSortDirection.Ascending;
 
         public NotPriceComponents(INotPriceComponent accessData, IFormSettings formSettings)
         {
@@ -72,7 +72,6 @@ namespace ExcelMacroAdd.Forms
 
         private void InitializeDataBindings()
         {
-
             // Настройка привязки данных
             dataGridView.DataSource = notPriceComponentsViewModel.FilteredList;
 
@@ -89,7 +88,6 @@ namespace ExcelMacroAdd.Forms
                     }));
                 }
             };
-
 
             notPriceComponentsViewModel.PropertyChanged += (s, e) =>
             {
@@ -112,7 +110,6 @@ namespace ExcelMacroAdd.Forms
             }
         }
 
-
         private void SearchTextBox_TextChanged(object sender, EventArgs e)
         {
             // Обновляем SearchTerm во ViewModel
@@ -120,8 +117,8 @@ namespace ExcelMacroAdd.Forms
         }
 
         private void SetupDataGridView()
-        {             
-
+        {
+            //dataGridView.EnableHeadersVisualStyles = false;
             dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dataGridView.ColumnHeadersDefaultCellStyle.Font =
@@ -208,56 +205,41 @@ namespace ExcelMacroAdd.Forms
                 SortMode = DataGridViewColumnSortMode.NotSortable
             });
 
-            dataGridView.SelectionMode =
-                DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.MultiSelect = false;
-
-            dataGridView.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+           
             dataGridView.ReadOnly = true;
-
             dataGridView.BackgroundColor = Color.White;                                     
         }
 
         private void DataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             var column = dataGridView.Columns[e.ColumnIndex];
-
+       
             // Сортируем только разрешенные колонки
-            if (column.DataPropertyName == "Article" || column.Name == "VendorDisplayName")
-            {
-                // Определяем направление сортировки
-                ListSortDirection direction;
-                if (column.SortMode == DataGridViewColumnSortMode.Programmatic &&
-      (column.Name == "Article" || column.Name == "VendorDisplayName"))
+            if (column.DataPropertyName == "Article" || column.DataPropertyName == "VendorDisplayName")
+            {                
+                if (_currentSortDirection == ListSortDirection.Ascending)
                 {
-                    direction = ListSortDirection.Descending;
+                    _currentSortDirection = ListSortDirection.Descending;
                     column.HeaderCell.SortGlyphDirection = SortOrder.Descending;
                 }
                 else
                 {
-                    direction = ListSortDirection.Ascending;
-
-                    try { 
-                        column.HeaderCell.SortGlyphDirection = SortOrder.Ascending;
-                    }
-                    catch (Exception ex)
-                    {
-                    Debug.WriteLine("!!!!!!!!!!!!!!");
-                    Debug.WriteLine(ex);
-                    Debug.WriteLine("!!!!!!!!!!!!!!");
+                    _currentSortDirection = ListSortDirection.Ascending;
+                    column.HeaderCell.SortGlyphDirection = SortOrder.Ascending;
                 }
-            }
-                // Сбрасываем значки сортировки у других колонок
-                //foreach (DataGridViewColumn col in dataGridView.Columns)
-                //{
-                //    if (col != column)
-                //    {
-                //        col.HeaderCell.SortGlyphDirection = SortOrder.None;
-                //    }
-                //}
 
+                // Сбрасываем значки сортировки у других колонок
+                foreach (DataGridViewColumn col in dataGridView.Columns)
+                {
+                    if (col != column)
+                    {
+                        col.HeaderCell.SortGlyphDirection = SortOrder.None;
+                    }
+                }
                 // Выполняем сортировку
-                SortData(column.DataPropertyName, direction);
+                SortData(column.DataPropertyName, _currentSortDirection);
             }
         }
 

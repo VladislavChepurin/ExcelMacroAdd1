@@ -13,6 +13,18 @@ namespace ExcelMacroAdd.Forms.CustomUI
             VerticalScrollBar.VisibleChanged += new EventHandler(VerticalScrollBar_VisibleChanged);
         }
 
+        //protected override void OnColumnHeaderMouseClick(DataGridViewCellMouseEventArgs e)
+        //{
+        //    base.OnColumnHeaderMouseClick(e);
+
+        //    // Перерисовываем заголовок после клика
+        //    if (e.ColumnIndex >= 0 && e.ColumnIndex < Columns.Count)
+        //    {
+        //        Rectangle headerRect = GetCellDisplayRectangle(e.ColumnIndex, -1, true);
+        //        Invalidate(headerRect);
+        //    }
+        //}
+
         void VerticalScrollBar_VisibleChanged(object sender, EventArgs e)
         {
             if (!VerticalScrollBar.Visible)
