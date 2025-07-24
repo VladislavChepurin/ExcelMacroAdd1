@@ -313,6 +313,7 @@
     <Compile Include="Forms\CustomUI\CustomDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\CustomUI\CustomDataGridViewHeaderCell.cs" />
     <Compile Include="Forms\NotPriceComponents.cs">
       <SubType>Form</SubType>
     </Compile>

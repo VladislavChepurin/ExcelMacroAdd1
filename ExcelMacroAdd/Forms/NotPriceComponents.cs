@@ -1,5 +1,6 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
+using ExcelMacroAdd.Forms.CustomUI;
 using ExcelMacroAdd.Forms.ViewModels;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using System;
@@ -21,6 +22,7 @@ namespace ExcelMacroAdd.Forms
         static readonly Mutex Mutex = new Mutex(false, "MutexNotPriceComponents_SingleInstance");
         private bool _mutexAcquired = false;
         private ListSortDirection _currentSortDirection = ListSortDirection.Ascending;
+        private string _currentSortProperty = "Article";
 
         public NotPriceComponents(INotPriceComponent accessData, IFormSettings formSettings)
         {
@@ -86,7 +88,7 @@ namespace ExcelMacroAdd.Forms
                         // Обновляем DataSource на FilteredList
                         dataGridView.DataSource = notPriceComponentsViewModel.FilteredList;
                     }));
-                }
+                }              
             };
 
             notPriceComponentsViewModel.PropertyChanged += (s, e) =>
@@ -140,13 +142,16 @@ namespace ExcelMacroAdd.Forms
 
             // Настраиваем колонки для привязки данных
             // Колонка "Артикул"
-            dataGridView.Columns.Add(new DataGridViewTextBoxColumn
+            var articleColumn = new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Article",
                 HeaderText = "Артикул",
                 Width = 110,
-                SortMode = DataGridViewColumnSortMode.Programmatic // Разрешаем сортировку
-            });
+                SortMode = DataGridViewColumnSortMode.Programmatic
+            };
+            articleColumn.HeaderCell = new CustomDataGridViewHeaderCell("Артикул");
+            dataGridView.Columns.Add(articleColumn);
+
             // Колонка "Описание"
             dataGridView.Columns.Add(new DataGridViewTextBoxColumn
             {
@@ -165,13 +170,15 @@ namespace ExcelMacroAdd.Forms
             });
 
             // Колонка "Вендор" с обработкой null
-            dataGridView.Columns.Add(new DataGridViewTextBoxColumn
+            var vendorColumn = new DataGridViewTextBoxColumn
             {
-                DataPropertyName = "VendorDisplayName", // Используем вычисляемое свойство
+                DataPropertyName = "VendorDisplayName",
                 HeaderText = "Вендор",
                 Width = 70,
-                SortMode = DataGridViewColumnSortMode.Programmatic // Разрешаем сортировку
-            });
+                SortMode = DataGridViewColumnSortMode.Programmatic
+            };
+            vendorColumn.HeaderCell = new CustomDataGridViewHeaderCell("Вендор");
+            dataGridView.Columns.Add(vendorColumn);
 
             // Колонка "Цена" с форматированием
             var priceColumn = new DataGridViewTextBoxColumn
@@ -215,31 +222,45 @@ namespace ExcelMacroAdd.Forms
         private void DataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             var column = dataGridView.Columns[e.ColumnIndex];
-       
-            // Сортируем только разрешенные колонки
+
             if (column.DataPropertyName == "Article" || column.DataPropertyName == "VendorDisplayName")
-            {                
-                if (_currentSortDirection == ListSortDirection.Ascending)
+            {
+                // Определяем новое направление сортировки
+                ListSortDirection newDirection;
+
+                if (column.DataPropertyName == _currentSortProperty)
                 {
-                    _currentSortDirection = ListSortDirection.Descending;
-                    column.HeaderCell.SortGlyphDirection = SortOrder.Descending;
+                    newDirection = _currentSortDirection == ListSortDirection.Ascending
+                        ? ListSortDirection.Descending
+                        : ListSortDirection.Ascending;
                 }
                 else
                 {
-                    _currentSortDirection = ListSortDirection.Ascending;
-                    column.HeaderCell.SortGlyphDirection = SortOrder.Ascending;
+                    _currentSortProperty = column.DataPropertyName;
+                    newDirection = ListSortDirection.Ascending;
                 }
 
-                // Сбрасываем значки сортировки у других колонок
+                _currentSortDirection = newDirection;
+
+                // Сбрасываем значки у всех колонок
                 foreach (DataGridViewColumn col in dataGridView.Columns)
                 {
-                    if (col != column)
+                    if (col.HeaderCell is CustomDataGridViewHeaderCell headerCell)
                     {
-                        col.HeaderCell.SortGlyphDirection = SortOrder.None;
+                        headerCell.SortGlyphDirection = SortOrder.None;
                     }
                 }
+
+                // Устанавливаем значок для текущей колонки
+                if (column.HeaderCell is CustomDataGridViewHeaderCell currentHeader)
+                {
+                    currentHeader.SortGlyphDirection = newDirection == ListSortDirection.Ascending
+                        ? SortOrder.Ascending
+                        : SortOrder.Descending;
+                }
+
                 // Выполняем сортировку
-                SortData(column.DataPropertyName, _currentSortDirection);
+                SortData(column.DataPropertyName, newDirection);
             }
         }
 
