@@ -332,8 +332,8 @@ namespace ExcelMacroAdd
                     if (accessData != null)
                         await Task.Run(() =>
                         {
-                            var termoCalculation = new NotPriceComponents(accessData, formSettings);
-                            termoCalculation.ShowDialog();
+                            var notPriceComponents = new NotPriceComponents(accessData, formSettings);
+                            notPriceComponents.ShowDialog();
                         });
 
                     break;

@@ -27,6 +27,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
         private const int TotalPriceColumn = 8;
         private const int CoastColumn = 9;
         private const int DateColumn = 10;
+        private const int LinkColumn = 11;
         private const int MaxDisplayItems = 1000;
         private const int FilterDelayMs = 300;
 
@@ -37,8 +38,9 @@ namespace ExcelMacroAdd.Forms.ViewModels
         private string _searchTerm;
         private CancellationTokenSource _filterTokenSource;
         private bool _isLoading;
-
         private string _countStatusList;
+        private string _linkToTheWebsite = string.Empty;
+
         public string CountStatusList
         {
             get => _countStatusList;
@@ -47,7 +49,34 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 _countStatusList = value;
                 OnPropertyChanged(nameof(CountStatusList));
             }
-        }                       
+        }
+
+        public string LinkToTheWebsite
+        {
+            get => _linkToTheWebsite;
+            set
+            {
+                _linkToTheWebsite = value;
+                OnPropertyChanged(nameof(LinkToTheWebsite));
+                OnPropertyChanged(nameof(DisplayLink));
+            }
+        }
+
+        public string DisplayLink
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(LinkToTheWebsite))
+                    return String.Empty;
+
+                if (LinkToTheWebsite.Length > 60)
+                {
+                    return LinkToTheWebsite.Substring(0, 57) + "...";
+                }
+
+                return LinkToTheWebsite;
+            }
+        }
 
         public BindingList<NotPriceComponent> RecordList
         {
@@ -85,6 +114,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 {
                     _selectedRecord = value;
                     OnPropertyChanged(nameof(SelectedRecord));
+                    LinkToTheWebsite = _selectedRecord?.Link ?? string.Empty;
                 }
             }
         }
@@ -112,6 +142,32 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 {
                     _isLoading = value;
                     OnPropertyChanged(nameof(IsLoading));
+                }
+            }
+        }
+
+        public void OpenLink()
+        {
+            if (!string.IsNullOrWhiteSpace(LinkToTheWebsite))
+            {
+                try
+                {
+                    string url = LinkToTheWebsite;
+                if (!url.StartsWith("http://") && !url.StartsWith("https://"))
+                {
+                    url = "http://" + url;
+                }
+                
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
+                }
+                catch (Exception ex)
+                {
+                    // Обработка ошибок
+                    CountStatusList = $"Ошибка открытия ссылки: {ex.Message}";
                 }
             }
         }
@@ -296,6 +352,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 string productVendorName = GetCellValueAsString(Worksheet.Cells[currentRow, ProductVendorColumn]);
                 string multiplicityName = GetCellValueAsString(Worksheet.Cells[currentRow, MultiplicityColumn]);
                 decimal price = GetCellValueAsDecimal(Worksheet.Cells[currentRow, PriceColumn]);
+                string link = GetCellValueAsString(Worksheet.Cells[currentRow, LinkColumn]);
 
                 if (string.IsNullOrEmpty(article) || string.IsNullOrEmpty(description) || string.IsNullOrEmpty(productVendorName))
                 {
@@ -303,7 +360,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                     return;
                 }
 
-                await ProcessAddRecord(article, description, productVendorName, multiplicityName, price, discount);
+                await ProcessAddRecord(article, description, productVendorName, multiplicityName, price, discount, link);
             }
             catch (Exception ex)
             {
@@ -317,7 +374,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
         }
 
         private async Task ProcessAddRecord(string article, string description, string productVendorName,
-                                          string multiplicityName, decimal price, int discount)
+                                          string multiplicityName, decimal price, int discount, string link)
         {
             var productVendorEntity = await _accessData.AccessNotPriceComponent.GetProductVendorEntityByName(productVendorName)
                 .ConfigureAwait(false);
@@ -340,7 +397,8 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 ProductVendorId = productVendorEntity.Id,
                 Price = price,
                 Discount = discount,
-                DataRecord = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")
+                DataRecord = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"),
+                Link = link
             };
 
             await _accessData.AccessNotPriceComponent.AddValueDb(entity).ConfigureAwait(false);
@@ -448,6 +506,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             string productVendorName = GetCellValueAsString(Worksheet.Cells[currentRow, ProductVendorColumn]);
             decimal price = GetCellValueAsDecimal(Worksheet.Cells[currentRow, PriceColumn]);
             int discount = GetCellValueAsInt(Worksheet.Cells[currentRow, DiscountColumn]);
+            string link = GetCellValueAsString(Worksheet.Cells[currentRow, LinkColumn]);
 
             if (string.IsNullOrWhiteSpace(description) || string.IsNullOrWhiteSpace(productVendorName))
             {
@@ -459,6 +518,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             existingRecord.Price = price;                   
             existingRecord.Discount = discount;
             existingRecord.DataRecord = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
+            existingRecord.Link = link;
 
             var productVendorEntity = await _accessData.AccessNotPriceComponent.GetProductVendorEntityByName(productVendorName)
                 .ConfigureAwait(false);

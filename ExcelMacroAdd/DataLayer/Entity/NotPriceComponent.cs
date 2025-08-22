@@ -32,6 +32,8 @@ namespace ExcelMacroAdd.DataLayer.Entity
 
         public string DataRecord { get; set; }
 
+        public string Link { get; set; }
+
         // Вычисляемое свойство для безопасного отображения вендора
         [NotMapped] // Не добавлять в базу данных
         public string VendorDisplayName => ProductVendor?.VendorName ?? "Нет вендора";

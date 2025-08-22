@@ -39,6 +39,7 @@ namespace ExcelMacroAdd.Forms
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.dataGridView = new ExcelMacroAdd.Forms.CustomUI.CustomDataGridView();
+            this.linkToTheWebsite = new System.Windows.Forms.LinkLabel();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
@@ -121,11 +122,22 @@ namespace ExcelMacroAdd.Forms
             this.dataGridView.Size = new System.Drawing.Size(891, 450);
             this.dataGridView.TabIndex = 2;
             // 
+            // linkToTheWebsite
+            // 
+            this.linkToTheWebsite.AutoSize = true;
+            this.linkToTheWebsite.Location = new System.Drawing.Point(112, 526);
+            this.linkToTheWebsite.Name = "linkToTheWebsite";
+            this.linkToTheWebsite.Size = new System.Drawing.Size(55, 13);
+            this.linkToTheWebsite.TabIndex = 8;
+            this.linkToTheWebsite.TabStop = true;
+            this.linkToTheWebsite.Text = "linkLabel1";
+            // 
             // NotPriceComponents
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(911, 581);
+            this.Controls.Add(this.linkToTheWebsite);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnUpdateRecord);
             this.Controls.Add(this.label1);
@@ -160,5 +172,6 @@ namespace ExcelMacroAdd.Forms
         private CustomDataGridView dataGridView;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.LinkLabel linkToTheWebsite;
     }
 }

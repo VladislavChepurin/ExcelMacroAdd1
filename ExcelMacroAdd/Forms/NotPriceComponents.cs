@@ -57,6 +57,7 @@ namespace ExcelMacroAdd.Forms
             btnUpdateRecord.Click += (s, e) => notPriceComponentsViewModel.BtnUpdateRecord();
             searchTextBox.TextChanged += SearchTextBox_TextChanged;
             dataGridView.SelectionChanged += DataGridView_SelectionChanged;
+            linkToTheWebsite.Click += (s, e) => notPriceComponentsViewModel.OpenLink();
         }
 
         private void DataGridView_SelectionChanged(object sender, EventArgs e)
@@ -77,6 +78,13 @@ namespace ExcelMacroAdd.Forms
             // Настройка привязки данных
             dataGridView.DataSource = notPriceComponentsViewModel.FilteredList;
 
+            // Привязка для ссылки
+            linkToTheWebsite.DataBindings.Add("Text",
+                notPriceComponentsViewModel,
+                nameof(NotPriceComponentsViewModel.DisplayLink),
+                false,
+                DataSourceUpdateMode.OnPropertyChanged);
+
             // Подписка на обновления коллекции
             notPriceComponentsViewModel.PropertyChanged += (s, e) =>
             {
@@ -88,16 +96,13 @@ namespace ExcelMacroAdd.Forms
                         // Обновляем DataSource на FilteredList
                         dataGridView.DataSource = notPriceComponentsViewModel.FilteredList;
                     }));
-                }              
-            };
+                }
 
-            notPriceComponentsViewModel.PropertyChanged += (s, e) =>
-            {
                 if (e.PropertyName == nameof(NotPriceComponentsViewModel.CountStatusList))
                 {
                     UpdateStatus(notPriceComponentsViewModel.CountStatusList);
-                }
-            };
+                }             
+            };                   
         }
 
         private void UpdateStatus(string text)
