@@ -518,7 +518,8 @@ namespace ExcelMacroAdd.Forms.ViewModels
             existingRecord.Price = price;                   
             existingRecord.Discount = discount;
             existingRecord.DataRecord = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
-            existingRecord.Link = link;
+            if (!string.IsNullOrWhiteSpace(link))
+                existingRecord.Link = link;
 
             var productVendorEntity = await _accessData.AccessNotPriceComponent.GetProductVendorEntityByName(productVendorName)
                 .ConfigureAwait(false);
