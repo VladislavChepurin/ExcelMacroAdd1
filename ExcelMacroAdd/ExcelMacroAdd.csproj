@@ -349,7 +349,9 @@
     <Compile Include="Forms\ViewModels\NotPriceComponentsViewModel.cs" />
     <Compile Include="Forms\ViewModels\TermoCalculationViewModel.cs" />
     <Compile Include="Functions\CombiningCells.cs" />
+    <Compile Include="Functions\ESKDSpecification.cs" />
     <Compile Include="Functions\InternetSearch.cs" />
+    <Compile Include="Functions\SPDSSpecification.cs" />
     <Compile Include="Models\AdditionalDevices.cs" />
     <Compile Include="Models\Interface\IUserSwitch.cs" />
     <Compile Include="Models\Interface\IUserCircuitBreaker.cs" />

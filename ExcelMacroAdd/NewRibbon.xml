@@ -19,7 +19,9 @@
 					<button id ="CorrectFont_Button" size="large" imageMso="HappyFace" label="Шрифт" onAction="OnActionCallbackDecoration"/>
 					<button id ="CalculationMarkup_Button" size="large" imageMso="ListAddToDefaultView" label="Расчет" onAction="OnActionCallbackDecoration"/>
 					<button id ="EditCalculation_Button" size="large" image="EditCalculation" label="Причесать расчет" onAction="OnActionCallbackDecoration"/>
-					<button id ="CombiningCells_Button" size="large" imageMso="GroupListSummaryNew" label="Объединить ячейки" onAction="OnActionCallbackDecoration"/>					
+					<button id ="CombiningCells_Button" size="normal" imageMso="GroupListSummaryNew" label="Объединить ячейки" onAction="OnActionCallbackDecoration"/>
+					<button id ="ESKD_Button" size="normal" imageMso="GroupListSummaryNew" label="ЕСКД спецификация" onAction="OnActionCallbackDecoration"/>
+					<button id ="SPDS_Button" size="normal" imageMso="GroupListSummaryNew" label="СПДС спецификация" onAction="OnActionCallbackDecoration"/>
 				</group>
 
 				<group id="Search" label="Поиск">

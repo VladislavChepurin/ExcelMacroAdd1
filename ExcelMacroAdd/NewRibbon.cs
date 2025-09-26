@@ -211,6 +211,19 @@ namespace ExcelMacroAdd
                     var combiningCells = new CombiningCells();
                     combiningCells.Start();
                     break;
+
+                // Объединение ячеек
+                case "ESKD_Button":
+                    var ESKDSpecification = new ESKDSpecification();
+                    ESKDSpecification.Start();
+                    break;
+
+                // Объединение ячеек
+                case "SPDS_Button":
+                    var SPDSSpecification = new SPDSSpecification();
+                    SPDSSpecification.Start();
+                    break;
+
             }
         }
 
@@ -270,8 +283,7 @@ namespace ExcelMacroAdd
                     break;
 
                 //Вставка формулы Dek
-                case "Dek_Button":
-                    //writeExcel = new WriteExcel(dataInXml, "Dekraft");
+                case "Dek_Button":                    
                     writeExcel = new WriteExcel(dataInXml, "DEKraft");
                     writeExcel.Start();
                     break;
