@@ -352,7 +352,13 @@ namespace ExcelMacroAdd
                         existingPane.DockPosition = Office.MsoCTPDockPosition.msoCTPDockPositionRight;
                     }
                     existingPane.Visible = true;
+                
+                    break;
 
+                //Таблица типов
+                case "AutoCadAdd":
+                    var autoCadCalled = new AutoCadCalled();
+                    autoCadCalled.Start();
                     break;
             }
         }

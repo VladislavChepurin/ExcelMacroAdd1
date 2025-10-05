@@ -348,6 +348,7 @@
     <Compile Include="Forms\ViewModels\FillingOutPassportViewModel.cs" />
     <Compile Include="Forms\ViewModels\NotPriceComponentsViewModel.cs" />
     <Compile Include="Forms\ViewModels\TermoCalculationViewModel.cs" />
+    <Compile Include="Functions\AutoCadCalled.cs" />
     <Compile Include="Functions\CombiningCells.cs" />
     <Compile Include="Functions\InternetSearch.cs" />
     <Compile Include="Models\AdditionalDevices.cs" />

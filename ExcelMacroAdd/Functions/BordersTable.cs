@@ -16,14 +16,12 @@ namespace ExcelMacroAdd.Functions
             {
                 Application.ScreenUpdating = false;
 
-                var excelCells = Application.Selection as Range;
-
-                if (excelCells == null)
+                if (!(Application.Selection is Range excelCells))
                 {
-                    MessageInformation("Выделите диапазон ячеек.", "Внимание!");                   
+                    MessageInformation("Выделите диапазон ячеек.", "Внимание!");
                     return;
-                } 
-                
+                }
+
                 excelCells.Borders.LineStyle = XlLineStyle.xlContinuous;  // Добавлено оформление границ  
             }
             catch (COMException ex)

@@ -1,0 +1,17 @@
+﻿<Project>
+	<PropertyGroup>
+		<!-- Автоматическое определение пути к AutoCAD -->
+		<AutoCADPath Condition="Exists('C:\Program Files\Autodesk\AutoCAD 2026')">C:\Program Files\Autodesk\AutoCAD 2025</AutoCADPath>
+		<AutoCADPath Condition="Exists('C:\Program Files\Autodesk\AutoCAD 2025')">C:\Program Files\Autodesk\AutoCAD 2025</AutoCADPath>
+		<AutoCADPath Condition="Exists('C:\Program Files\Autodesk\AutoCAD 2024')">C:\Program Files\Autodesk\AutoCAD 2024</AutoCADPath>
+		<AutoCADPath Condition="Exists('C:\Program Files\Autodesk\AutoCAD 2023')">C:\Program Files\Autodesk\AutoCAD 2023</AutoCADPath>
+		<AutoCADPath Condition="Exists('C:\Program Files\Autodesk\AutoCAD 2022')">C:\Program Files\Autodesk\AutoCAD 2022</AutoCADPath>
+		<AutoCADPath Condition="Exists('C:\Program Files\Autodesk\AutoCAD 2021')">C:\Program Files\Autodesk\AutoCAD 2021</AutoCADPath>
+
+		<!-- Резервный путь через переменную окружения -->
+		<AutoCADPath Condition="'$(AutoCADPath)' == ''">$(ACAD_LOCATION)</AutoCADPath>
+
+		<!-- Если путь не найден, покажем ошибку при сборке -->
+		<AutoCADPath Condition="'$(AutoCADPath)' == ''">C:\Program Files\Autodesk\AutoCAD 2026</AutoCADPath>
+	</PropertyGroup>
+</Project>

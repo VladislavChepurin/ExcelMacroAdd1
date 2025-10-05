@@ -41,7 +41,8 @@
 					<button id ="TermoCalculation_Button" size="large" imageMso="EditPermissions" label="Расчет обогрева" onAction="OnActionCallbackCalculation"/>
 					<button id ="NotPriceComponent_Button" size="large" imageMso="PageProperties" label="Не тарифные позиции" onAction="OnActionCallbackCalculation"/>
 					<separator id ="separator2"/>					
-					<button id ="TypeNky_Button" size="large" image="TypeNky"  label="Типы шкафов" onAction="OnActionCallbackCalculation"/>					
+					<button id ="TypeNky_Button" size="large" image="TypeNky"  label="Типы шкафов" onAction="OnActionCallbackCalculation"/>
+					<button id ="AutoCadAdd" size="large" image="TypeNky"  label="AutoCad" onAction="OnActionCallbackCalculation"/>
 				</group>
 
 				<group id="Other">
