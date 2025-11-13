@@ -2,7 +2,7 @@
   "profiles": {
     "AutoCadLancher": {
       "commandName": "Project",
-      "commandLineArgs": "-s \"input.dwg\" -b \"1\" \"2\" \"3\""
+      "commandLineArgs": "-s \"input.dwg\" -b \"1\" \"2\" \"3\" \"45\""
     }
   }
 }

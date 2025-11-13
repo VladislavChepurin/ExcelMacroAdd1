@@ -163,7 +163,7 @@ namespace AutoCadLancher
                         catch (System.Exception ex)
                         {
                             Console.WriteLine($"❌ Все методы создания документа не сработали: {ex.Message}");
-                            return null;
+                            return null!;
                         }
                     }
                 }
@@ -282,7 +282,7 @@ namespace AutoCadLancher
 
                     Console.WriteLine($"📋 Нестандартных блоков найдено: {availableBlocks.Count}");
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine($"⚠ Не удалось прочитать список блоков: {ex.Message}");
                 }
@@ -317,11 +317,21 @@ namespace AutoCadLancher
                             try
                             {
                                 Console.WriteLine($"🔄 Копируем блок '{blockName}'...");
-                                targetDoc.Import(blockName, sourceDoc.Name, false);
-                                copiedCount++;
-                                Console.WriteLine($"✅ Блок '{blockName}' успешно скопирован");
+
+                                // Пробуем разные варианты импорта блока
+                                bool importSuccess = TryCopyBlock(sourceDoc, targetDoc, blockName);
+
+                                if (importSuccess)
+                                {
+                                    copiedCount++;
+                                    Console.WriteLine($"✅ Блок '{blockName}' успешно скопирован");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"❌ Не удалось скопировать блок '{blockName}'");
+                                }
                             }
-                            catch (System.Exception importEx)
+                            catch (Exception importEx)
                             {
                                 Console.WriteLine($"❌ Ошибка при копировании блока '{blockName}': {importEx.Message}");
                             }
@@ -331,7 +341,7 @@ namespace AutoCadLancher
                             copiedCount++; // Считаем что блок уже существует
                         }
                     }
-                    catch (System.Exception blockEx)
+                    catch (Exception blockEx)
                     {
                         Console.WriteLine($"⚠ Ошибка при обработке блока '{blockName}': {blockEx.Message}");
                     }
@@ -347,28 +357,75 @@ namespace AutoCadLancher
                     {
                         Console.WriteLine($"⚠ Следующие блоки не найдены: {string.Join(", ", notFoundBlocks)}");
                     }
-
-                    // Покажем первые 10 доступных блоков для справки
-                    if (availableBlocks.Count > 0)
-                    {
-                        Console.WriteLine($"💡 Доступные блоки в чертеже (первые 10):");
-                        foreach (string block in availableBlocks.Take(10))
-                        {
-                            Console.WriteLine($"   - {block}");
-                        }
-                        if (availableBlocks.Count > 10)
-                        {
-                            Console.WriteLine($"   ... и еще {availableBlocks.Count - 10} блоков");
-                        }
-                    }
                 }
 
                 return copiedCount;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"❌ Ошибка при копировании блоков: {ex.Message}");
                 return copiedCount;
+            }
+        }
+
+        private bool TryCopyBlock(dynamic sourceDoc, dynamic targetDoc, string blockName)
+        {
+            try
+            {
+                Console.WriteLine($"    Копируем блок '{blockName}'...");
+
+                // Пробуем разные способы копирования блоков
+
+                //// Способ 1: Вставка с указанием файла-источника
+                //try
+                //{
+                //    dynamic modelSpace = targetDoc.ModelSpace;
+                //    modelSpace.InsertBlock(
+                //        new double[] { 100, 100, 0 },
+                //        $"{blockName}={sourceDoc.FullName}",
+                //        1.0, 1.0, 1.0, 0.0
+                //    );
+                //    Console.WriteLine($"    Способ 1: Блок вставлен с указанием файла");
+                //    return true;
+                //}
+                //catch (Exception ex1)
+                //{
+                //    Console.WriteLine($"    Способ 1 не сработал: {ex1.Message}");
+                //}
+
+                // Способ 2: Команда INSERT
+                try
+                {
+                    string command = $"_-INSERT {blockName}={sourceDoc.FullName} 200,200 1 1 0 ";
+                    targetDoc.SendCommand(command);
+                    Console.WriteLine($"    Способ 2: Блок скопирован через команду");
+                    return true;
+                }
+                catch (Exception ex2)
+                {
+                    Console.WriteLine($"    Способ 2 не сработал: {ex2.Message}");
+                }
+
+                //// Способ 3: Простая вставка (AutoCAD может найти блок автоматически)
+                //try
+                //{
+                //    dynamic modelSpace = targetDoc.ModelSpace;
+                //    modelSpace.InsertBlock(new double[] { 300, 300, 0 }, blockName, 1.0, 1.0, 1.0, 0.0);
+                //    Console.WriteLine($"    Способ 3: Блок вставлен без указания файла");
+                //    return true;
+                //}
+                //catch (Exception ex3)
+                //{
+                //    Console.WriteLine($"    Способ 3 не сработал: {ex3.Message}");
+                //}
+
+                Console.WriteLine($"    Все способы копирования блока '{blockName}' не сработали");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"    Общая ошибка копирования блока: {ex.Message}");
+                return false;
             }
         }
 

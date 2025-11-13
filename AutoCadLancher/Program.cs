@@ -23,7 +23,7 @@ namespace AutoCADBlockCopyConsole
                 // Парсим аргументы
                 string? sourceDrawing = null;
                 string? outputDrawing = null;
-                List<string> blockNames = new List<string>();
+                List<string> blockNames = [];
 
                 for (int i = 0; i < args.Length; i++)
                 {
