@@ -51,7 +51,7 @@ namespace ExcelMacroAdd.Forms
             this.btnWritingToSheet.Size = new System.Drawing.Size(75, 25);
             this.btnWritingToSheet.TabIndex = 0;
             this.btnWritingToSheet.Text = "На лист";
-            this.btnWritingToSheet.UseVisualStyleBackColor = true;
+            this.btnWritingToSheet.UseVisualStyleBackColor = true;           
             // 
             // btnAddRecord
             // 

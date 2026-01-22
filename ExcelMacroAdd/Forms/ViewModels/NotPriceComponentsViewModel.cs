@@ -268,7 +268,8 @@ namespace ExcelMacroAdd.Forms.ViewModels
             try
             {              
                 var selectedRecord = SelectedRecord;
-                WriteToSheet(currentRow, selectedRecord);               
+                WriteToSheet(currentRow, selectedRecord);
+                ActivateNextRow(currentRow);
             }
             catch (Exception ex)
             {
@@ -306,6 +307,12 @@ namespace ExcelMacroAdd.Forms.ViewModels
 
             Worksheet.Cells[currentRow, DateColumn].NumberFormat = "ДД.ММ.ГГ ч:мм";
             Worksheet.Cells[currentRow, DateColumn] = DateTime.Now;
+        }
+
+        private void ActivateNextRow(int currentRow)
+        {
+            int nextRow = ++currentRow;
+            Worksheet.Cells[nextRow, 1].Select();
         }
 
         private void SetCellValueWithFormat(Range cell, object value, string format)

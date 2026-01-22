@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace ExcelMacroAdd.Forms.ViewModels
@@ -134,34 +135,77 @@ namespace ExcelMacroAdd.Forms.ViewModels
                     try
                     {
                         string filename;
-
+                        string fileSHA1;
+                        
                         switch (Worksheet.Cells[currentRow, MountingTypeColumn].Value2.ToString())
                         {
                             case "навесное":
-                                filename = Path.Combine(_pPath, _resources.TemplateWall);
+                                filename = _resources.TemplateWall;
+                                fileSHA1 = _resources.TemplateWallSHA1;
                                 break;
 
                             case "встраиваемое":
-                                filename = Path.Combine(_pPath, _resources.TemplateWall);
+                                filename = _resources.TemplateWall;
+                                fileSHA1 = _resources.TemplateWall;
                                 break;
 
                             case "напольное":
-                                filename = Path.Combine(_pPath, _resources.TemplateFloor);
+                                filename = _resources.TemplateFloor;
+                                fileSHA1 = _resources.TemplateFloorSHA1;
                                 break;
 
                             case "навесное для IT оборудования":
-                                filename = Path.Combine(_pPath, _resources.TemplateWallIt);
+                                filename = _resources.TemplateWallIt;
+                                fileSHA1 = _resources.TemplateWallItSHA1;
                                 break;
 
                             case "напольное для IT оборудования":
-                                filename = Path.Combine(_pPath, _resources.TemplateFloorIt);
+                                filename = _resources.TemplateFloorIt;
+                                fileSHA1 = _resources.TemplateFloorItSHA1;
                                 break;
 
                             default:
-                                filename = Path.Combine(_pPath, _resources.TemplateFloor);
+                                filename = _resources.TemplateFloor;
+                                fileSHA1 = _resources.TemplateFloorSHA1;
                                 break;
                         }
-                        numberProject = Worksheet.Cells[currentRow, NumberProjectColumn].Value2.ToString().Replace('/', '_');
+
+                        string fileFullPath = Path.Combine(_pPath, filename);                    
+
+                        if (_resources.CheckSHA1)
+                        {                         
+                            if (TemplateFileSHA1(fileFullPath) != fileSHA1)
+                            {
+                                DialogResult dialogResult = MessageBox.Show($"Ошибка в контрольной сумме файла {filename}. Нажмите ДА если хотите автоматически восстановить файл.", "Ошибка шаблона", MessageBoxButtons.YesNo);
+                                if (dialogResult == DialogResult.Yes)
+                                {
+                                    string backupFile = String.Concat(fileFullPath, ".bak");
+
+                                    // Проверяем существование файлов
+                                    if (!File.Exists(backupFile))
+                                    {
+                                        MessageError($"Резервная копия {backupFile} не найдена!", "Ошибка файла");
+                                        break;                                        
+                                    }
+
+                                    // Если оригинальный файл существует, заменяем его
+                                    if (File.Exists(fileFullPath))
+                                    {
+                                        File.Replace(backupFile, fileFullPath, fileFullPath + ".old", true);
+                                        Console.WriteLine("Файл успешно восстановлен из резервной копии!");
+                                    }
+                                    else
+                                    {
+                                        // Если оригинального файла нет, просто копируем backup
+                                        File.Copy(backupFile, fileFullPath);
+                                        Console.WriteLine("Файл восстановлен из резервной копии!");
+                                    }
+                                }
+                                break;
+                            }
+                        }
+
+                        numberProject = Worksheet.Cells[currentRow, NumberProjectColumn].Value2.ToString().Replace('/', '_').Trim();
                         model = Worksheet.Cells[currentRow, ModelColumn].Value2.ToString();
                         titleLVSwitchgear = Worksheet.Cells[currentRow, TitleLVSwitchgearColumn].Value2.ToString();
                         paste = FuncReplace(titleLVSwitchgear ?? string.Empty); // ссылка на метод замены
@@ -182,7 +226,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                         mountingType = Worksheet.Cells[currentRow, MountingTypeColumn].Value2.ToString();
 
                         //Открываем Word                   
-                        document = applicationWord.Documents.Open(filename, _confirmConversions, _readOnly, _addToRecentFiles, _passwordDocument, _passwordTemplate,
+                        document = applicationWord.Documents.Open(fileFullPath, _confirmConversions, _readOnly, _addToRecentFiles, _passwordDocument, _passwordTemplate,
                             _revert, _writePasswordDocument, _writePasswordTemplate, _format, _encoding, _oVisible, _openAndRepair, _documentDirection,
                             _noEncodingDialog, _xmlTransform);
                         applicationWord.Visible = false;
@@ -325,6 +369,32 @@ namespace ExcelMacroAdd.Forms.ViewModels
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext()); // Гарантирует выполнение в UI потоке
         }
+
+        private static string TemplateFileSHA1(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("Path cannot be null or empty", nameof(path));
+
+            if (!File.Exists(path))
+                throw new FileNotFoundException($"File not found: {path}", path);
+
+            try
+            {
+                using (var stream = File.OpenRead(path))
+                {
+                    using (var sha1 = System.Security.Cryptography.SHA1.Create())
+                    {
+                        byte[] hash = sha1.ComputeHash(stream);
+                        return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to compute SHA1 for file: {path}", ex);
+            }
+        }
+
 
         private void progressBarUI(int step)
         {

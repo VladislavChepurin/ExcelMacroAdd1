@@ -303,5 +303,6 @@ namespace ExcelMacroAdd.Forms
                 _mutexAcquired = false;
             }
         }
+              
     }
 }
