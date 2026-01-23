@@ -273,28 +273,36 @@ namespace ExcelMacroAdd.Forms.ViewModels
                         };
 
                         //Путь к папке Рабочего стола                                     
-                        string folderName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Паспорта " + numberProject);
-                        DirectoryInfo drInfo = new DirectoryInfo(folderName);
-                        // Проверяем есть ли папка, если нет создаем
-                        if (!drInfo.Exists)
-                        {
-                            drInfo.Create();                          
-                        }
+                        string mainFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Паспорта " + numberProject);
+                        string folderWithoutStamp = Path.Combine(mainFolder, "Без печати");
+                        string folderWithStamp = Path.Combine(mainFolder, "С печатью");
 
-                        document.SaveAs($@"{folderName}\Паспорт {serialNumber.Replace("/", "_")}.docx");
+                        Directory.CreateDirectory(folderWithoutStamp);
+                        Directory.CreateDirectory(folderWithStamp);
+                                                
+                        // Сохраняем документ без печати
+                        string filePathWithoutStamp = Path.Combine(folderWithoutStamp, $"Паспорт {serialNumber.Replace("/", "_")}.docx");
+                        document.SaveAs(filePathWithoutStamp);
+
+                        // Добавляем изображения в документ для версии с печатью
+                        AddStampToDocument(document);
+
+                        // Сохраняем документ с печатью
+                        string filePathWithStamp = Path.Combine(folderWithStamp, $"Паспорт {serialNumber.Replace("/", "_")}.docx");
+                        document.SaveAs(filePathWithStamp);
 
                         int amountSheet = document.ComputeStatistics(WdStatistic.wdStatisticPages, false);                                              
 
                         if (verifyIsNotFind.All(item => item))
                         {
                             // Вызов местного логгера                       
-                            ThisWriteLog(folderName, $"{DateTime.Now} | Паспорт {serialNumber} сформирован успешно." +
+                            ThisWriteLog(mainFolder, $"{DateTime.Now} | Паспорт {serialNumber} сформирован успешно." +
                                 $" В паспорте {amountSheet} листов");
                         }
                         else
                         {
                             // Вызов местного логгера                       
-                            ThisWriteLog(folderName, $"{DateTime.Now} | Паспорт {serialNumber} сформирован, но не произошла вставка одного или нескольких значений." +
+                            ThisWriteLog(mainFolder, $"{DateTime.Now} | Паспорт {serialNumber} сформирован, но не произошла вставка одного или нескольких значений." +
                                 $"  В паспорте {amountSheet} листов");
                         }                                                                     
                     }
@@ -368,6 +376,85 @@ namespace ExcelMacroAdd.Forms.ViewModels
                         Logger.LogException(t.Exception);
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext()); // Гарантирует выполнение в UI потоке
+        }
+
+        /// <summary>
+        /// Добавляет печать и подпись в документ Word как плавающие объекты поверх текста
+        /// </summary>
+        /// <param name="document">Документ Word</param>
+        private void AddStampToDocument(Word.Document document)
+        {
+            try
+            {
+                string stampPath = Path.Combine(_pPath, "stamp.png");
+                string signaturePath = Path.Combine(_pPath, "signature.png");
+
+                // 1. Добавляем печать через закладку
+                AddImageAtBookmark(document, "STAMP", stampPath, 150, 140, 55);
+
+                // 2. Добавляем подпись через закладку  
+                AddImageAtBookmark(document, "SIGNATURE", signaturePath, 219, 45, 13);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(new Exception("Ошибка при добавлении печати и подписи", ex));
+            }
+        }
+
+        /// <summary>
+        /// Добавляет плавающее изображение в документ Word
+        /// </summary>
+        private void AddImageAtBookmark(Word.Document document, string bookmarkName,
+                                string imagePath, float width, float height, float correctRangeTop)
+        {
+            try
+            {
+                if (!File.Exists(imagePath))
+                {
+                    Logger.LogException(new Exception($"Файл изображения не найден: {imagePath}"));
+                    return;
+                }
+
+                if (document.Bookmarks.Exists(bookmarkName))
+                {
+                    Word.Bookmark bookmark = document.Bookmarks[bookmarkName];
+                    Word.Range bookmarkRange = bookmark.Range;
+
+                    // Сохраняем позицию закладки
+                    int start = bookmarkRange.Start;
+
+                    // Вставляем изображение как встроенный объект
+                    Word.InlineShape inlineShape = bookmarkRange.InlineShapes.AddPicture(
+                        FileName: imagePath,
+                        LinkToFile: false,
+                        SaveWithDocument: true);
+
+                    // Настраиваем размер
+                    inlineShape.Width = width;
+                    inlineShape.Height = height;
+
+                    // Преобразуем в плавающую фигуру (Shape)
+                    Word.Shape shape = inlineShape.ConvertToShape();
+
+                    // Настраиваем обтекание
+                    shape.WrapFormat.Type = Word.WdWrapType.wdWrapFront;
+                    shape.Line.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
+                                       
+                    // Центрируем по вертикали - смещаем вверх на половину высоты
+                    shape.Top = shape.Top - correctRangeTop;
+
+                    // Возвращаем курсор на место
+                    bookmarkRange.SetRange(start, start);                                   
+                }
+                else
+                {
+                    Logger.LogException(new Exception($"Закладка {bookmarkName} не найдена в документе"));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(new Exception($"Ошибка при добавлении изображения в закладку {bookmarkName}", ex));
+            }
         }
 
         private static string TemplateFileSHA1(string path)
