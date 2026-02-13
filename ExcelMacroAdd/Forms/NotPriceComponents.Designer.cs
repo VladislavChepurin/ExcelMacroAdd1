@@ -38,24 +38,24 @@ namespace ExcelMacroAdd.Forms
             this.btnUpdateRecord = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.dataGridView = new ExcelMacroAdd.Forms.CustomUI.CustomDataGridView();
             this.linkToTheWebsite = new System.Windows.Forms.LinkLabel();
+            this.dataGridView = new ExcelMacroAdd.Forms.CustomUI.CustomDataGridView();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // btnWritingToSheet
             // 
-            this.btnWritingToSheet.Location = new System.Drawing.Point(10, 520);
+            this.btnWritingToSheet.Location = new System.Drawing.Point(10, 550);
             this.btnWritingToSheet.Name = "btnWritingToSheet";
             this.btnWritingToSheet.Size = new System.Drawing.Size(75, 25);
             this.btnWritingToSheet.TabIndex = 0;
             this.btnWritingToSheet.Text = "На лист";
-            this.btnWritingToSheet.UseVisualStyleBackColor = true;           
+            this.btnWritingToSheet.UseVisualStyleBackColor = true;
             // 
             // btnAddRecord
             // 
-            this.btnAddRecord.Location = new System.Drawing.Point(626, 520);
+            this.btnAddRecord.Location = new System.Drawing.Point(646, 550);
             this.btnAddRecord.Name = "btnAddRecord";
             this.btnAddRecord.Size = new System.Drawing.Size(75, 25);
             this.btnAddRecord.TabIndex = 1;
@@ -66,12 +66,12 @@ namespace ExcelMacroAdd.Forms
             // 
             this.searchTextBox.Location = new System.Drawing.Point(10, 28);
             this.searchTextBox.Name = "searchTextBox";
-            this.searchTextBox.Size = new System.Drawing.Size(889, 20);
+            this.searchTextBox.Size = new System.Drawing.Size(909, 20);
             this.searchTextBox.TabIndex = 3;
             // 
             // btnDeleteRecord
             // 
-            this.btnDeleteRecord.Location = new System.Drawing.Point(826, 520);
+            this.btnDeleteRecord.Location = new System.Drawing.Point(846, 550);
             this.btnDeleteRecord.Name = "btnDeleteRecord";
             this.btnDeleteRecord.Size = new System.Drawing.Size(75, 25);
             this.btnDeleteRecord.TabIndex = 4;
@@ -89,7 +89,7 @@ namespace ExcelMacroAdd.Forms
             // 
             // btnUpdateRecord
             // 
-            this.btnUpdateRecord.Location = new System.Drawing.Point(726, 520);
+            this.btnUpdateRecord.Location = new System.Drawing.Point(746, 550);
             this.btnUpdateRecord.Name = "btnUpdateRecord";
             this.btnUpdateRecord.Size = new System.Drawing.Size(75, 25);
             this.btnUpdateRecord.TabIndex = 6;
@@ -100,9 +100,9 @@ namespace ExcelMacroAdd.Forms
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 559);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 589);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(911, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(931, 22);
             this.statusStrip1.TabIndex = 7;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -112,6 +112,16 @@ namespace ExcelMacroAdd.Forms
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
+            // linkToTheWebsite
+            // 
+            this.linkToTheWebsite.AutoSize = true;
+            this.linkToTheWebsite.Location = new System.Drawing.Point(112, 556);
+            this.linkToTheWebsite.Name = "linkToTheWebsite";
+            this.linkToTheWebsite.Size = new System.Drawing.Size(55, 13);
+            this.linkToTheWebsite.TabIndex = 8;
+            this.linkToTheWebsite.TabStop = true;
+            this.linkToTheWebsite.Text = "linkLabel1";
+            // 
             // dataGridView
             // 
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -119,24 +129,14 @@ namespace ExcelMacroAdd.Forms
             this.dataGridView.Margin = new System.Windows.Forms.Padding(5);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView.Size = new System.Drawing.Size(891, 450);
+            this.dataGridView.Size = new System.Drawing.Size(911, 480);
             this.dataGridView.TabIndex = 2;
-            // 
-            // linkToTheWebsite
-            // 
-            this.linkToTheWebsite.AutoSize = true;
-            this.linkToTheWebsite.Location = new System.Drawing.Point(112, 526);
-            this.linkToTheWebsite.Name = "linkToTheWebsite";
-            this.linkToTheWebsite.Size = new System.Drawing.Size(55, 13);
-            this.linkToTheWebsite.TabIndex = 8;
-            this.linkToTheWebsite.TabStop = true;
-            this.linkToTheWebsite.Text = "linkLabel1";
             // 
             // NotPriceComponents
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(911, 581);
+            this.ClientSize = new System.Drawing.Size(931, 611);
             this.Controls.Add(this.linkToTheWebsite);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnUpdateRecord);
@@ -148,7 +148,9 @@ namespace ExcelMacroAdd.Forms
             this.Controls.Add(this.btnWritingToSheet);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(947, 650);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(947, 650);
             this.Name = "NotPriceComponents";
             this.Text = "NotPriceComponents";
             this.TopMost = true;

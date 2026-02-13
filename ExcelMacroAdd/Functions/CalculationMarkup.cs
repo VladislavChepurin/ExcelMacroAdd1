@@ -1,6 +1,7 @@
 ﻿using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using Microsoft.Office.Interop.Excel;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace ExcelMacroAdd.Functions
@@ -40,16 +41,19 @@ namespace ExcelMacroAdd.Functions
                 // Заголовки столбцов
                 var headers = new List<(string Cell, string Value)>
                 {
-                    ("A1", "Наименование проекта"),
-                    ("A2", "Производитель коммутационной аппаратуры"),
-                    ("A3", "№п/п"),
-                    ("B3", "Наименование щита"),
-                    ("C3", "Номер схемы"),
-                    ("D3", "Кол-во"),
-                    ("E3", "Цена"),
-                    ("F3", "Стоимость"),
-                    ("G3", "Тип шкафа"),
-                    ("H3", "Примечания")
+                    ("B2", "Наименование проекта"),
+                    ("B3", "Производитель коммутационной аппаратуры"),
+                    ("B4", "Приннцип расчета"),
+                    ("B5", "Дополнительная информация"),
+                    ("A7", "№"),
+                    ("B7", "Наименование"),
+                    ("C7", "Шифр рабочей документации"),
+                    ("E7", "Кол-во"),
+                    ("F7", "Цена"),
+                    ("G7", "Стоимость"),
+                    ("H7", "Примечание"),
+                    ("I7", "Тип шкафа"),
+                    ("J7", "Коментарии")
                 };
 
                 foreach (var header in headers)
@@ -58,10 +62,10 @@ namespace ExcelMacroAdd.Functions
                 }
 
                 // Заливка ячеек
-                var coloredCells = new Dictionary<string, XlRgbColor>
+                var coloredCells = new Dictionary<string, int>
                 {
-                    ["B1"] = XlRgbColor.rgbYellow,
-                    ["B2"] = XlRgbColor.rgbGreen
+                    ["B2:B6"] = ColorTranslator.ToOle(Color.FromArgb(221, 235, 247)),
+                    ["A7:E27"] = ColorTranslator.ToOle(Color.FromArgb(221, 235, 247))
                 };
 
                 foreach (var cell in coloredCells)
@@ -72,11 +76,15 @@ namespace ExcelMacroAdd.Functions
                 // Ширина столбцов
                 var columnWidths = new Dictionary<string, double>
                 {
-                    ["A:A"] = 22,
-                    ["B:B"] = 50,
-                    ["C:C"] = 40,
-                    ["D:G"] = 10,
-                    ["H:H"] = 45
+                    ["A:A"] = 2.86,
+                    ["B:C"] = 28.57,
+                    ["D:D"] = 33.57,                    
+                    ["E:E"] = 6.57,
+                    ["F:F"] = 14.86,
+                    ["G:G"] = 9.71,
+                    ["H:H"] = 33.57,
+                    ["I:I"] = 11.71,
+                    ["J:J"] = 37.57
                 };
 
                 foreach (var width in columnWidths)
@@ -85,17 +93,17 @@ namespace ExcelMacroAdd.Functions
                 }
 
                 // Формулы и нумерация
-                const int startRow = 4;
-                const int endRow = 23;
+                const int startRow = 8;
+                const int endRow = 27;
 
                 for (int row = startRow; row <= endRow; row++)
                 {
-                    Worksheet.Range[$"F{row}"].Formula = $"=D{row}*E{row}";
-                    Worksheet.Range[$"A{row}"].Value2 = (row - 3).ToString();
+                    Worksheet.Range[$"G{row}"].Formula = $"=F{row}*E{row}";
+                    Worksheet.Range[$"A{row}"].Value2 = (row - 7).ToString();
                 }                              
 
                 // Форматирование
-                var fontRange = Worksheet.Range[$"A1:H{endRow}"];
+                var fontRange = Worksheet.Range[$"A1:J{endRow}"];
                 fontRange.Font.Name = correctFontResources.NameFont;
                 fontRange.Font.Size = correctFontResources.SizeFont;
                 fontRange.Borders.LineStyle = XlLineStyle.xlContinuous;  // Добавлено оформление границ

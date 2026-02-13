@@ -10,7 +10,11 @@ namespace ExcelMacroAdd.DataLayer.Entity
         private decimal? _price;
 
         public int Id { get; set; }
+
+        public int? IsValid { get; set; }
+
         public string Article { get; set; }
+
         public string Description { get; set; }
 
         // Внешний ключ
@@ -32,7 +36,7 @@ namespace ExcelMacroAdd.DataLayer.Entity
 
         public string DataRecord { get; set; }
 
-        public string Link { get; set; }
+        public string Link { get; set; }          
 
         // Вычисляемое свойство для безопасного отображения вендора
         [NotMapped] // Не добавлять в базу данных

@@ -24,12 +24,20 @@ namespace ExcelMacroAdd.Forms
         private ListSortDirection _currentSortDirection = ListSortDirection.Ascending;
         private string _currentSortProperty = "Article";
 
+        enum status
+        {
+            check,
+            discontinued,
+            question
+        }
+
         public NotPriceComponents(INotPriceComponent accessData, IFormSettings formSettings)
         {
-            notPriceComponentsViewModel = new NotPriceComponentsViewModel(accessData);
+            notPriceComponentsViewModel = new NotPriceComponentsViewModel(accessData);            
             InitializeComponent();
             InitializeDataBindings();
             SetupDataGridView();
+            SetupContextMenu();
 
             this.Load += async (s, e) =>
             {
@@ -146,6 +154,19 @@ namespace ExcelMacroAdd.Forms
             dataGridView.ColumnHeaderMouseClick += DataGridView_ColumnHeaderMouseClick;
 
             // Настраиваем колонки для привязки данных
+            
+            var isValidColumn = new DataGridViewImageColumn
+            {
+                HeaderText = "",
+                Width = 20,
+                SortMode = DataGridViewColumnSortMode.NotSortable,
+                ImageLayout = DataGridViewImageCellLayout.Zoom
+            };
+            dataGridView.Columns.Add(isValidColumn);
+
+            // ДОБАВЛЯЕМ ОБРАБОТЧИК ЗДЕСЬ
+            dataGridView.DataBindingComplete += DataGridView_DataBindingComplete;
+
             // Колонка "Артикул"
             var articleColumn = new DataGridViewTextBoxColumn
             {
@@ -222,6 +243,152 @@ namespace ExcelMacroAdd.Forms
            
             dataGridView.ReadOnly = true;
             dataGridView.BackgroundColor = Color.White;                                     
+        }
+
+        private void DataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGridView.Rows)
+            {
+                if (row.DataBoundItem is NotPriceComponent component)
+                {
+                    var cell = row.Cells[0]; // колонка со статусом
+                    if (component.IsValid == 0)
+                        cell.Value = Properties.Resources.check;
+                    else if (component.IsValid == 1)
+                        cell.Value = Properties.Resources.delete;
+                    else if (component.IsValid == 2)
+                        cell.Value = Properties.Resources.question;
+                    else
+                        cell.Value = Properties.Resources.noneImage;
+                }
+            }
+        }
+                
+        private void SetupContextMenu()
+        {
+            // Создаем контекстное меню
+            ContextMenuStrip contextMenu = new ContextMenuStrip();
+
+            // Добавляем пункты меню            
+            contextMenu.Items.Add("На лист", null, (s, e) => notPriceComponentsViewModel.BtnWritingToSheet());
+
+            contextMenu.Items.Add("Копировать артикул", null, (s, e) =>
+            {
+                Task.Run(() =>
+                {
+                    // Создаем STA поток для работы с буфером обмена
+                    var thread = new Thread(() =>
+                    {
+                        CopySelectedArticle();
+                    });
+                    thread.SetApartmentState(ApartmentState.STA);
+                    thread.Start();
+                    thread.Join();
+                });
+            });
+            contextMenu.Items.Add("Копировать описание", null, (s, e) =>
+            {
+                Task.Run(() =>
+                {
+                    // Создаем STA поток для работы с буфером обмена
+                    var thread = new Thread(() =>
+                    {
+                        CopySelectedDescription();
+                    });
+                    thread.SetApartmentState(ApartmentState.STA);
+                    thread.Start();
+                    thread.Join();
+                });
+            });
+            contextMenu.Items.Add("Удалить запись", null, (s, e) => 
+            notPriceComponentsViewModel.BtnDeleteRecord());
+            contextMenu.Items.Add(new ToolStripSeparator());
+            contextMenu.Items.Add("Проверено", null, async (s, e) =>
+            {
+                await notPriceComponentsViewModel.SetRecordState(status.check);
+            });
+            contextMenu.Items.Add("Снято с производства", null, async (s, e) =>
+            {
+                await notPriceComponentsViewModel.SetRecordState(status.discontinued);
+            });
+            contextMenu.Items.Add("Под сомнением", null, async (s, e) =>
+            {
+                await notPriceComponentsViewModel.SetRecordState(status.question);
+            });
+            contextMenu.Items.Add("Сбросить поле", null, async (s, e) =>
+            {
+                await notPriceComponentsViewModel.SetRecordState();
+            });
+
+            // Привязываем меню к DataGridView (ОБЯЗАТЕЛЬНО ДО MouseDown)
+            dataGridView.ContextMenuStrip = contextMenu;
+
+            // Обработчик MouseDown для выделения строки правой кнопкой
+            dataGridView.MouseDown += (s, e) =>
+            {
+                if (e.Button == MouseButtons.Right)
+                {
+                    var hitTest = dataGridView.HitTest(e.X, e.Y);
+                    if (hitTest.RowIndex >= 0)
+                    {
+                        // Устанавливаем CurrentCell, чтобы сработал SelectionChanged
+                        if (hitTest.ColumnIndex >= 0)
+                        {
+                            dataGridView.CurrentCell = dataGridView.Rows[hitTest.RowIndex].Cells[hitTest.ColumnIndex];
+                        }
+
+                        // Выделяем строку
+                        dataGridView.ClearSelection();
+                        dataGridView.Rows[hitTest.RowIndex].Selected = true;
+
+                        // Дополнительно: явно вызываем обработчик, если нужно
+                        // DataGridView_SelectionChanged(null, null);
+                    }
+                }
+            };
+
+            // Обработчик открытия меню
+            contextMenu.Opening += (s, e) =>
+            {
+                // Получаем позицию курсора относительно DataGridView
+                Point mousePosition = dataGridView.PointToClient(Cursor.Position);
+                var hitTest = dataGridView.HitTest(mousePosition.X, mousePosition.Y);
+
+                // Проверяем все условия для открытия меню
+                if (hitTest.RowIndex >= 0 && dataGridView.SelectedRows.Count > 0)
+                {
+                    e.Cancel = false; // Разрешаем открытие
+                }
+                else
+                {
+                    e.Cancel = true;  // Запрещаем открытие
+                }
+            };
+        }
+        
+        private void CopySelectedArticle()
+        {
+            if (dataGridView.SelectedRows.Count > 0)
+            {
+                if (dataGridView.SelectedRows[0].DataBoundItem is NotPriceComponent component && !string.IsNullOrEmpty(component.Article))
+                {
+                    Clipboard.SetText(component.Article);
+                    MessageBox.Show($"Артикул '{component.Article}' скопирован",
+                        "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+        private void CopySelectedDescription()
+        {
+            if (dataGridView.SelectedRows.Count > 0)
+            {
+                if (dataGridView.SelectedRows[0].DataBoundItem is NotPriceComponent component && !string.IsNullOrEmpty(component.Description))
+                {
+                    Clipboard.SetText(component.Description);
+                    MessageBox.Show($"Описание '{component.Description}' скопировано",
+                        "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
 
         private void DataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -303,6 +470,5 @@ namespace ExcelMacroAdd.Forms
                 _mutexAcquired = false;
             }
         }
-              
     }
 }

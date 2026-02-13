@@ -351,7 +351,7 @@ namespace ExcelMacroAdd
                         existingPane.Width = 400;
                         existingPane.DockPosition = Office.MsoCTPDockPosition.msoCTPDockPositionRight;
                     }
-                    existingPane.Visible = true;
+                    existingPane.Visible = !existingPane.Visible;
 
                     break;
             }

@@ -1,5 +1,6 @@
 ﻿using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
 
 
@@ -76,7 +77,9 @@ namespace ExcelMacroAdd.Functions
             fontRange.Font.Size = correctFontResources.SizeFont;
 
             var bordersRange = Worksheet.Range["A1", "J11"];
-            bordersRange.Borders.LineStyle = XlLineStyle.xlContinuous;  // Добавлено оформление границ        
+            bordersRange.Borders.LineStyle = XlLineStyle.xlContinuous;  // Добавлено оформление границ
+
+            Worksheet.Range["A2", Type.Missing].Select();   //Фокус на ячейку А2  
         }
     }
 }

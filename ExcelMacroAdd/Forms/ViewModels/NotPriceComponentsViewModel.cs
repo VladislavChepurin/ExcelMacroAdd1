@@ -18,6 +18,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
     public class NotPriceComponentsViewModel : AbstractFunctions, INotifyPropertyChanged
     {
         private const int ArticleColumn = 1;
+        private const int IsDiscontinued = 2;
         private const int DescriptionColumn = 2;
         private const int QuantityColumn = 3;
         private const int MultiplicityColumn = 4;
@@ -40,6 +41,8 @@ namespace ExcelMacroAdd.Forms.ViewModels
         private bool _isLoading;
         private string _countStatusList;
         private string _linkToTheWebsite = string.Empty;
+
+        private SynchronizationContext _uiContext;
 
         public string CountStatusList
         {
@@ -177,6 +180,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             _accessData = accessData ?? throw new ArgumentNullException(nameof(accessData));
             _filterTokenSource = new CancellationTokenSource();
             FilteredList = new BindingList<NotPriceComponent>();
+            _uiContext = SynchronizationContext.Current ?? new WindowsFormsSynchronizationContext();
         }
 
         public override async void Start()
@@ -423,7 +427,86 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes;
         }
+             
+        // Общий метод для обновления записи
+        private void UpdateRecordInLists(NotPriceComponent updatedRecord)
+        {
+            _uiContext.Post(_ =>
+            {
+                // Обновляем в RecordList
+                var recordItem = RecordList.FirstOrDefault(r => r.Id == updatedRecord.Id);
+                if (recordItem != null)
+                {
+                    var index = RecordList.IndexOf(recordItem);
+                    RecordList[index] = updatedRecord;
+                }
 
+                // Обновляем в FilteredList
+                var filteredItem = FilteredList.FirstOrDefault(r => r.Id == updatedRecord.Id);
+                if (filteredItem != null)
+                {
+                    var index = FilteredList.IndexOf(filteredItem);
+                    FilteredList[index] = updatedRecord;
+                }
+
+                CountStatusList = $"Всего доступно {RecordList.Count} записей, выбрано {FilteredList.Count} записей";
+            }, null);
+        }
+
+        // Общий метод для удаления записи
+        private void RemoveRecordFromLists(int recordId)
+        {
+            _uiContext.Post(_ =>
+            {
+                // Удаляем из RecordList
+                var recordToRemove = RecordList.FirstOrDefault(r => r.Id == recordId);
+                if (recordToRemove != null)
+                    RecordList.Remove(recordToRemove);
+
+                // Удаляем из FilteredList
+                var filterToRemove = FilteredList.FirstOrDefault(r => r.Id == recordId);
+                if (filterToRemove != null)
+                    FilteredList.Remove(filterToRemove);
+
+                if (SelectedRecord?.Id == recordId)
+                    SelectedRecord = null;
+
+                CountStatusList = $"Всего доступно {RecordList.Count} записей, выбрано {FilteredList.Count} записей";
+            }, null);
+        }
+
+        public async Task SetRecordState(Enum status)
+        {
+            await SetRecordState(Convert.ToInt32(status));
+        }
+
+        public async Task SetRecordState()
+        {
+            await SetRecordState((int?)null);
+        }
+          
+        public async Task SetRecordState(int? status)
+        {
+            var selectedRecord = SelectedRecord;
+            if (selectedRecord == null) return;
+            var article = selectedRecord.Article;
+
+            var existingRecord = await _accessData.AccessNotPriceComponent.GetRecordByArticle(article)
+                   .ConfigureAwait(false);
+            if (existingRecord == null)
+            {
+                MessageError($"Запись с артикулом {article} не найдена", "Ошибка обновления");
+                return;
+            }
+
+            existingRecord.IsValid = status;
+            await _accessData.AccessNotPriceComponent.UpdateRecord(existingRecord).ConfigureAwait(false);
+
+            // Используем общий метод обновления
+            UpdateRecordInLists(existingRecord);
+        }
+
+        // Обновленный BtnDeleteRecord
         public async void BtnDeleteRecord()
         {
             if (SelectedRecord == null)
@@ -433,7 +516,6 @@ namespace ExcelMacroAdd.Forms.ViewModels
             }
 
             var selectedRecord = SelectedRecord;
-
             if (!ConfirmDelete(selectedRecord.Article)) return;
 
             try
@@ -443,8 +525,8 @@ namespace ExcelMacroAdd.Forms.ViewModels
 
                 if (success)
                 {
-                    RecordList.Remove(selectedRecord);
-                    SelectedRecord = null;
+                    // Используем общий метод удаления
+                    RemoveRecordFromLists(selectedRecord.Id);
                     MessageInformation($"Запись с артикулом '{selectedRecord.Article}' удалена", "Удаление завершено");
                 }
                 else
@@ -545,10 +627,12 @@ namespace ExcelMacroAdd.Forms.ViewModels
             existingRecord.MultiplicityId = multiplicityEntity.Id;
 
             await _accessData.AccessNotPriceComponent.UpdateRecord(existingRecord).ConfigureAwait(false);
-            Start();
+            //Обнавление измеенной записи
+            UpdateRecordInLists(existingRecord);
 
             MessageInformation($"Запись успешно обновлена\nАртикул: {existingRecord.Article}", "Обновление завершено");
         }
+
 
         private string GetCellValueAsString(Range cell) => Convert.ToString(cell.Value2);
         private int GetCellValueAsInt(Range cell) => int.TryParse(GetCellValueAsString(cell), out int result) ? result : 0;
