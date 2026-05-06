@@ -49,7 +49,7 @@ namespace ExcelMacroAdd.Functions
                     string sMass = Convert.ToString(Worksheet.Cells[currentRow, MassColumn].Value2);
                     string sEnclosureHeight = Convert.ToString(Worksheet.Cells[currentRow, EnclosureHeightColumn].Value2);
                     string sEnclosureWidth = Convert.ToString(Worksheet.Cells[currentRow, EnclosureWidthColumn].Value2);
-                    string sEnclosureDepth = Convert.ToString(Worksheet.Cells[currentRow, EnclosureDepthColumn].Value2);                   
+                    string sEnclosureDepth = Convert.ToString(Worksheet.Cells[currentRow, EnclosureDepthColumn].Value2);
                     string sCabinetMaterial = Convert.ToString(Worksheet.Cells[currentRow, CabinetMaterialTypeColumn].Value2);
                     string sMountingType = Convert.ToString(Worksheet.Cells[currentRow, MountingTypeColumn].Value2);
 
@@ -73,7 +73,7 @@ namespace ExcelMacroAdd.Functions
                     journalNku.MaterialBoxId = materialEntity.Id;
                     journalNku.ExecutionBoxId = executionEntity.Id;
 
-                    accessData.AccessJournalNku.WriteUpdateDb(journalNku);
+                    await accessData.AccessJournalNku.WriteUpdateDb(journalNku);
 
                     MessageInformation($"Запись успешно изменена! \nПоздравляем! \nАртикул = {sCabinetArticle}",
                                 "Запись успешна!");

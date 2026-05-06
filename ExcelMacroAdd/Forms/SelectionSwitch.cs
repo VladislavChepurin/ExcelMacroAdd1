@@ -516,14 +516,17 @@ namespace ExcelMacroAdd.Forms
 
         private void CreateFillInSwitch()
         {
-            int offsetRow = 0;
-            foreach (var item in userVariables)
+            using (var scope = new ExcelPerformanceScope(Globals.ThisAddIn.GetApplication()))
             {
-                if (item == null) continue;
-                if (CheckBoxArraySwitch()[item.number].Checked)
+                int offsetRow = 0;
+                foreach (var item in userVariables)
                 {
-                    var writeExcel = new WriteExcel(dataInXml, item.vendor, item.article, offsetRow++, item.quantity);
-                    writeExcel.Start();
+                    if (item == null) continue;
+                    if (CheckBoxArraySwitch()[item.number].Checked)
+                    {
+                        var writeExcel = new WriteExcel(dataInXml, item.vendor, item.article, offsetRow++, item.quantity);
+                        writeExcel.Start();
+                    }
                 }
             }
         }

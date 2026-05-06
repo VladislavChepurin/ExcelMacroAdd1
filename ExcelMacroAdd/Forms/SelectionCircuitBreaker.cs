@@ -601,16 +601,21 @@ namespace ExcelMacroAdd.Forms
 
         private void CreateFillInCircutBreakAsync()
         {
-            int offsetRow = default;
-            foreach (var item in userVariables)
+            // Внешний scope: отключает ScreenUpdating/Calculation/Events ОДИН РАЗ
+            using (var scope = new ExcelPerformanceScope(Globals.ThisAddIn.GetApplication()))
             {
-                if (item == null) continue;
-                if (CheckBoxArrayCircuitBreak()[item.number].Checked)
+                int offsetRow = default;
+                foreach (var item in userVariables)
                 {
-                    var writeExcel = new WriteExcel(dataInXml, item.vendor, item.article, offsetRow++, item.quantity);
-                    writeExcel.Start();
+                    if (item == null) continue;
+                    if (CheckBoxArrayCircuitBreak()[item.number].Checked)
+                    {
+                        var writeExcel = new WriteExcel(dataInXml, item.vendor, item.article, offsetRow++, item.quantity);
+                        writeExcel.Start(); // Внутренний scope — вложенный, не трогает настройки
+                    }
                 }
             }
+            // Dispose внешнего scope: восстановит настройки + Calculate (если лист новый)
         }
 
         private PictureBox[] PictureBoxesCircuitBreak() =>

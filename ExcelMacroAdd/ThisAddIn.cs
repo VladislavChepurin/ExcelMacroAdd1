@@ -5,9 +5,12 @@ namespace ExcelMacroAdd
 {
     public sealed partial class ThisAddIn
     {
+        private NewRibbon _ribbon;
+
         protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
-            return new NewRibbon();
+            _ribbon = new NewRibbon();
+            return _ribbon;
         }
 
 
@@ -18,6 +21,8 @@ namespace ExcelMacroAdd
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
+            // Освобождаем DbContext, MemoryCache и другие ресурсы аддина
+            _ribbon?.Dispose();
         }
 
         public Excel.Worksheet GetActiveWorksheet()
@@ -54,6 +59,4 @@ namespace ExcelMacroAdd
 
         #endregion
     }
-
-
 }

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 namespace ExcelMacroAdd.Functions
 {
     public abstract class AbstractFunctions
-    {       
+    {
         internal const int NumberProjectColumn = 1;
         internal const int TitleProjectColumn = 2;
         internal const int NumberItemColumn = 3;
@@ -29,11 +29,26 @@ namespace ExcelMacroAdd.Functions
         internal const int EarthingSystemColumn = 29;
         internal const int CabinetMaterialTypeColumn = 30;
         internal const int MountingTypeColumn = 31;
-     
+
+        /// <summary>
+        /// COM-объекты Excel получаются как свойства, а не как поля-инициализаторы.
+        /// 
+        /// Раньше Worksheet, Cell, WorkBook захватывались в момент создания объекта (new CorrectDb(...)).
+        /// Если между созданием и вызовом Start() пользователь переключал лист или менял выделение —
+        /// код работал с устаревшими ссылками.
+        /// 
+        /// Для ViewModels (NotPriceComponentsViewModel, FillingOutPassportViewModel и др.) это
+        /// особенно критично: VM создаётся при открытии формы и живёт, пока форма открыта.
+        /// Worksheet/Cell должны отражать актуальное состояние на момент каждого действия.
+        ///
+        /// Application — единственный стабильный объект, он не меняется за сессию.
+        /// Worksheet, Cell, WorkBook — каждый раз берутся актуальные.
+        /// </summary>
         protected readonly Microsoft.Office.Interop.Excel.Application Application = Globals.ThisAddIn.GetApplication();
-        protected readonly Worksheet Worksheet = Globals.ThisAddIn.GetActiveWorksheet();
-        protected readonly Range Cell = Globals.ThisAddIn.GetActiveCell();
-        protected readonly Workbook WorkBook = Globals.ThisAddIn.GetActiveWorkBook();
+        protected Worksheet Worksheet => Globals.ThisAddIn.GetActiveWorksheet();
+        protected Range Cell => Globals.ThisAddIn.GetActiveCell();
+        protected Workbook WorkBook => Globals.ThisAddIn.GetActiveWorkBook();
+
         public abstract void Start();
 
         protected internal void MessageInformation(string textMessage, string textAttribute)

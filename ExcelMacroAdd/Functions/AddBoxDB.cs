@@ -23,7 +23,7 @@ namespace ExcelMacroAdd.Functions
         {
             if (Application.ActiveWorkbook?.Name != resources.NameFileJournal) // Проверка по имени книги
             {
-                MessageWarning(Properties.Resources.NotJornal, Properties.Resources.NameWorkbook);              
+                MessageWarning(Properties.Resources.NotJornal, Properties.Resources.NameWorkbook);
                 return;
             }
 
@@ -81,7 +81,7 @@ namespace ExcelMacroAdd.Functions
                         ExecutionBoxId = executionEntity.Id
                     };
 
-                    accessData.AccessJournalNku.AddValueDb(journal);
+                    await accessData.AccessJournalNku.AddValueDb(journal);
 
                     MessageInformation($"Успешно записано в базу данных. Теперь доступна новая запись.\n Поздравляем! \nАртикул = {sCabinetArticle}",
                                "Запись успешна!");

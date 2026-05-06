@@ -16,7 +16,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using AppContext = ExcelMacroAdd.DataLayer.Entity.AppContext;
 using Office = Microsoft.Office.Core;
 
@@ -25,7 +24,7 @@ using Office = Microsoft.Office.Core;
 namespace ExcelMacroAdd
 {
     [ComVisible(true)]
-    public class NewRibbon : Office.IRibbonExtensibility
+    public class NewRibbon : Office.IRibbonExtensibility, IDisposable
     {
         private Office.IRibbonUI ribbon;
         private readonly string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/appSettings.json");
@@ -37,8 +36,9 @@ namespace ExcelMacroAdd
         private readonly AccessData accessData;
         private readonly bool locationDataBase = default;
         private readonly IMemoryCache memoryCache;
-        private readonly IValidateLicenseKey validateLicenseKey;      
-        
+        private readonly IValidateLicenseKey validateLicenseKey;
+        private bool _disposed;
+
         public NewRibbon()
         {
             AppSettingsDeserialize app = new AppSettingsDeserialize(jsonFilePath);
@@ -48,14 +48,14 @@ namespace ExcelMacroAdd
             formSettings = settings.FormSettings;
             typeNkySettings = settings.TypeNkySettings;
             var cacheOptions = new MemoryCacheOptions
-            {             
+            {
                 ExpirationScanFrequency = TimeSpan.FromMinutes(30)
             };
-            memoryCache = new MemoryCache(cacheOptions);           
+            memoryCache = new MemoryCache(cacheOptions);
 
             string path;
 
-            if  (settings.GlobalDateBaseLocationEnable && File.Exists(settings.GlobalDateBaseLocation + "BdMain.sqlite") )
+            if (settings.GlobalDateBaseLocationEnable && File.Exists(settings.GlobalDateBaseLocation + "BdMain.sqlite"))
             {
                 path = settings.GlobalDateBaseLocation;
                 locationDataBase = true;
@@ -241,55 +241,43 @@ namespace ExcelMacroAdd
                 return;
             }
 #endif
-            WriteExcel writeExcel;
-
             switch (control.Id)
             {
                 //Вставка формулы Iek
                 case "Iek_Button":
-                    writeExcel = new WriteExcel(dataInXml, "IEK");
-                    writeExcel.Start();
+                    RunWriteExcel("IEK");
                     break;
 
                 //Вставка формулы Ekf
-                case "Ekf_Button":                  
-                    writeExcel = new WriteExcel(dataInXml, "EKF");
-                    writeExcel.Start();
+                case "Ekf_Button":
+                    RunWriteExcel("EKF");
                     break;
 
                 //Вставка формулы Dkc
-                case "Dkc_Button":                  
-                    writeExcel = new WriteExcel(dataInXml, "DKC");
-                    writeExcel.Start();
+                case "Dkc_Button":
+                    RunWriteExcel("DKC");
                     break;
 
                 //Вставка формулы Keaz
-                case "Keaz_Button":                   
-                    writeExcel = new WriteExcel(dataInXml, "KEAZ");
-                    writeExcel.Start();
+                case "Keaz_Button":
+                    RunWriteExcel("KEAZ");
                     break;
 
                 //Вставка формулы Dek
                 case "Dek_Button":
-                    //writeExcel = new WriteExcel(dataInXml, "Dekraft");
-                    writeExcel = new WriteExcel(dataInXml, "DEKraft");
-                    writeExcel.Start();
+                    RunWriteExcel("DEKraft");
                     break;
 
                 //Вставка формулы Chint
                 case "Chint_Button":
-                    writeExcel = new WriteExcel(dataInXml, "Chint");
-                    writeExcel.Start();
+                    RunWriteExcel("Chint");
                     break;
 
                 //Модульные аппараты
                 case "SelectionModularDevices_Button":
-                    if (accessData != null) {
-                        await Task.Run(() =>
-                        {
-                            var selectionModularDevices = new SelectionModularDevices(dataInXml, accessData, formSettings);
-                            selectionModularDevices.ShowDialog();
-                        });     
+                    if (accessData != null)
+                    {
+                        await ShowFormOnStaThread(() => new SelectionModularDevices(dataInXml, accessData, formSettings));
                     }
 
                     break;
@@ -297,44 +285,28 @@ namespace ExcelMacroAdd
                 //Трансформаторы тока
                 case "SelectionTransformer_Button":
                     if (accessData != null)
-                        await Task.Run(() =>
-                        {
-                            var selectionTransformer = new SelectionTransformer(dataInXml, accessData, formSettings);
-                            selectionTransformer.ShowDialog();
-                        });
+                        await ShowFormOnStaThread(() => new SelectionTransformer(dataInXml, accessData, formSettings));
                     break;
 
                 //Рубильники TwinBlock
                 case "SelectionTwinBlock_Button":
                     if (accessData != null)
-                        await Task.Run(() =>
-                        {
-                            var selectionTwinBlock = new SelectionTwinBlock(dataInXml, accessData, formSettings);
-                            selectionTwinBlock.ShowDialog();
-                        });
+                        await ShowFormOnStaThread(() => new SelectionTwinBlock(dataInXml, accessData, formSettings));
 
                     break;
 
                 //Расчет обогрева
                 case "TermoCalculation_Button":
                     if (accessData != null)
-                        await Task.Run(() =>
-                        {
-                            var termoCalculation = new TermoCalculation(accessData, formSettings);
-                            termoCalculation.ShowDialog();
-                        });
+                        await ShowFormOnStaThread(() => new TermoCalculation(accessData, formSettings));
 
                     break;
 
 
-                //Расчет обогрева
+                //Не тарифные позиции
                 case "NotPriceComponent_Button":
                     if (accessData != null)
-                        await Task.Run(() =>
-                        {
-                            var notPriceComponents = new NotPriceComponents(accessData, formSettings);
-                            notPriceComponents.ShowDialog();
-                        });
+                        await ShowFormOnStaThread(() => new NotPriceComponents(accessData, formSettings));
 
                     break;
 
@@ -357,28 +329,36 @@ namespace ExcelMacroAdd
             }
         }
 
+        /// <summary>
+        /// Обёртка для вставки формул ВПР через кнопки Ribbon.
+        /// Внешний ExcelPerformanceScope гарантирует:
+        ///   - ScreenUpdating, Calculation, Events отключены на время вставки
+        ///   - Calculate() вызывается ОДИН раз в конце
+        ///   - Если лист уже пересчитывался в этой сессии — Calculate() пропускается
+        /// При повторных нажатиях кнопок ВПР на том же листе
+        /// формулы вставляются мгновенно без пересчёта.
+        /// </summary>
+        private void RunWriteExcel(string vendor)
+        {
+            using (var scope = new ExcelPerformanceScope(Globals.ThisAddIn.GetApplication()))
+            {
+                var writeExcel = new WriteExcel(dataInXml, vendor);
+                writeExcel.Start();
+            }
+        }
+
         public async Task OnActionCallbackOther(Office.IRibbonControl control)
         {
             switch (control.Id)
             {
-                //Окно о программе
+                //Окно настроек
                 case "Settings_Button":
-                    await Task.Run(() =>
-                    {
-                        Settings fs = new Settings(dataInXml);
-                        fs.ShowDialog();
-                        Thread.Sleep(5000);
-                    });
+                    await ShowFormOnStaThread(() => new Settings(dataInXml));
                     break;
 
                 //Окно о программе
                 case "About_Button":
-                    await Task.Run(() =>
-                    {
-                        var about = new AboutBox1(locationDataBase);
-                        about.ShowDialog();
-                        Thread.Sleep(5000);
-                    });
+                    await ShowFormOnStaThread(() => new AboutBox1(locationDataBase));
                     break;
 
                 //Открыть папку
@@ -396,6 +376,62 @@ namespace ExcelMacroAdd
         #endregion
 
         #region Вспомогательные методы
+
+        /// <summary>
+        /// Освобождает ресурсы аддина: DbContext (через AccessData) и MemoryCache.
+        /// Вызывается из ThisAddIn.Shutdown при выгрузке аддина.
+        /// </summary>
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                accessData?.Dispose();
+                (memoryCache as IDisposable)?.Dispose();
+                _disposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Создаёт отдельный STA-поток с message pump для показа WinForms-диалога.
+        /// 
+        /// Почему нельзя Task.Run:
+        ///   Task.Run использует потоки из ThreadPool, которые работают в MTA-режиме.
+        ///   WinForms требует STA-поток для корректной работы message loop, 
+        ///   ComboBox, DataGridView, Clipboard и других контролов.
+        ///   Без STA возможны зависания, мерцание, крэши при Drag&Drop и буфере обмена.
+        ///
+        /// Как работает:
+        ///   1. Создаём Thread с ApartmentState.STA
+        ///   2. Внутри потока вызываем Application.Run(form) — это запускает полноценный message loop
+        ///   3. TaskCompletionSource позволяет await-ить завершение потока из вызывающего кода
+        ///   4. Форма корректно Dispose-ится при закрытии
+        /// </summary>
+        private static Task ShowFormOnStaThread<T>(Func<T> formFactory) where T : System.Windows.Forms.Form
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    using (var form = formFactory())
+                    {
+                        System.Windows.Forms.Application.Run(form);
+                    }
+                    tcs.TrySetResult(true);
+                }
+                catch (Exception ex)
+                {
+                    tcs.TrySetException(ex);
+                }
+            });
+
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.IsBackground = true;
+            thread.Start();
+
+            return tcs.Task;
+        }
 
         private static string GetResourceText(string resourceName)
         {

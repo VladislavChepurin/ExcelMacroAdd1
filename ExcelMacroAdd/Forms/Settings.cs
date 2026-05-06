@@ -1,4 +1,5 @@
-﻿using ExcelMacroAdd.Services.Interfaces;
+﻿using ExcelMacroAdd.Functions;
+using ExcelMacroAdd.Services.Interfaces;
 using ExcelMacroAdd.UserVariables;
 using Microsoft.Office.Interop.Excel;
 using System;
@@ -23,6 +24,12 @@ namespace ExcelMacroAdd.Forms
             SchneiderLine,
             ChintLine
         }
+
+        // Маппинг enum → имя вендора в XML
+        private static readonly string[] VendorNames =
+        {
+            "IEK", "EKF", "DKC", "KEAZ", "DEKraft", "TDM", "ABB", "Schneider", "Chint"
+        };
 
         private readonly IDataInXml dataInXml;
         internal Settings(IDataInXml dataInXml)
@@ -300,198 +307,114 @@ namespace ExcelMacroAdd.Forms
         }
 
         /// <summary>
-        /// Write IEK settings to xml
+        /// Общий метод записи настроек вендора в XML.
+        /// После записи сбрасывает кэш пересчитанных листов,
+        /// чтобы следующая вставка формул выполнила полный пересчёт
+        /// (формулы ссылаются на прайс, который мог измениться).
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button2_Click(object sender, EventArgs e)
+        private void WriteVendorSettings(RowsToArray vendorLine)
         {
-            int line = (int)RowsToArray.IekLine;
+            int line = (int)vendorLine;
+            string vendorName = VendorNames[line];
 
             TextBox[,] textBoxes = ReturnTextBoxArray();
             Label[] labels = ReturnLabelArray();
 
             DateTime localDate = DateTime.Now;
-            dataInXml.WriteXml("IEK", textBoxes[line, 0].Text ?? String.Empty,
-                                            textBoxes[line, 1].Text ?? String.Empty,
-                                            textBoxes[line, 2].Text ?? String.Empty,
-                                            textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString(new CultureInfo("ru-RU")));
+            dataInXml.WriteXml(vendorName,
+                textBoxes[line, 0].Text ?? String.Empty,
+                textBoxes[line, 1].Text ?? String.Empty,
+                textBoxes[line, 2].Text ?? String.Empty,
+                textBoxes[line, 3].Text ?? String.Empty,
+                localDate.ToString(new CultureInfo("ru-RU")));
             labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
+
+            // Формулы ВПР изменились → кэш пересчёта больше не валиден.
+            // Следующий ExcelPerformanceScope выполнит полный Calculate().
+            ExcelPerformanceScope.InvalidateCache();
+        }
+
+        #region Write buttons — сохранение настроек вендоров в XML
+
+        /// <summary>
+        /// Write IEK settings to xml
+        /// </summary>
+        private void button2_Click(object sender, EventArgs e)
+        {
+            WriteVendorSettings(RowsToArray.IekLine);
         }
 
         /// <summary>
         /// Write EKF settings to xml
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button4_Click(object sender, EventArgs e)
         {
-            int line = (int)RowsToArray.EkfLine;
-
-            TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = ReturnLabelArray();
-
-            DateTime localDate = DateTime.Now;
-            dataInXml.WriteXml("EKF", textBoxes[line, 0].Text ?? String.Empty,
-                                            textBoxes[line, 1].Text ?? String.Empty,
-                                            textBoxes[line, 2].Text ?? String.Empty,
-                                            textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString(new CultureInfo("ru-RU")));
-            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
+            WriteVendorSettings(RowsToArray.EkfLine);
         }
 
         /// <summary>
         /// Write DKC settings to xml
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button6_Click(object sender, EventArgs e)
         {
-            int line = (int)RowsToArray.DkcLine;
-
-            TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = ReturnLabelArray();
-
-            DateTime localDate = DateTime.Now;
-            dataInXml.WriteXml("DKC", textBoxes[line, 0].Text ?? String.Empty,
-                                            textBoxes[line, 1].Text ?? String.Empty,
-                                            textBoxes[line, 2].Text ?? String.Empty,
-                                            textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString(new CultureInfo("ru-RU")));
-            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
+            WriteVendorSettings(RowsToArray.DkcLine);
         }
 
         /// <summary>
         /// Write KEAZ settings to xml
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button8_Click(object sender, EventArgs e)
         {
-            int line = (int)RowsToArray.KeazLine;
-
-            TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = ReturnLabelArray();
-
-            DateTime localDate = DateTime.Now;
-            dataInXml.WriteXml("KEAZ", textBoxes[line, 0].Text ?? String.Empty,
-                                            textBoxes[line, 1].Text ?? String.Empty,
-                                            textBoxes[line, 2].Text ?? String.Empty,
-                                            textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString(new CultureInfo("ru-RU")));
-            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
+            WriteVendorSettings(RowsToArray.KeazLine);
         }
 
         /// <summary>
         /// Write DEKraft settings to xml
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button10_Click(object sender, EventArgs e)
         {
-            int line = (int)RowsToArray.DekraftLine;
-
-            TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = ReturnLabelArray();
-
-            DateTime localDate = DateTime.Now;
-            dataInXml.WriteXml("DEKraft", textBoxes[line, 0].Text ?? String.Empty,
-                                            textBoxes[line, 1].Text ?? String.Empty,
-                                            textBoxes[line, 2].Text ?? String.Empty,
-                                            textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString(new CultureInfo("ru-RU")));
-            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
+            WriteVendorSettings(RowsToArray.DekraftLine);
         }
 
         /// <summary>
         /// Write TDM settings to xml
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button12_Click(object sender, EventArgs e)
         {
-            int line = (int)RowsToArray.TdmLine;
-
-            TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = ReturnLabelArray();
-
-            DateTime localDate = DateTime.Now;
-            dataInXml.WriteXml("TDM", textBoxes[line, 0].Text ?? String.Empty,
-                                            textBoxes[line, 1].Text ?? String.Empty,
-                                            textBoxes[line, 2].Text ?? String.Empty,
-                                            textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString(new CultureInfo("ru-RU")));
-            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
+            WriteVendorSettings(RowsToArray.TdmLine);
         }
 
         /// <summary>
         /// Write ABB settings to xml
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button14_Click(object sender, EventArgs e)
         {
-            int line = (int)RowsToArray.AbbLine;
-
-            TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = ReturnLabelArray();
-
-            DateTime localDate = DateTime.Now;
-            dataInXml.WriteXml("ABB", textBoxes[line, 0].Text ?? String.Empty,
-                                            textBoxes[line, 1].Text ?? String.Empty,
-                                            textBoxes[line, 2].Text ?? String.Empty,
-                                            textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString(new CultureInfo("ru-RU")));
-            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
+            WriteVendorSettings(RowsToArray.AbbLine);
         }
 
         /// <summary>
         /// Write Schneider settings to xml
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button16_Click(object sender, EventArgs e)
         {
-            int line = (int)RowsToArray.SchneiderLine;
-
-            TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = ReturnLabelArray();
-
-            DateTime localDate = DateTime.Now;
-            dataInXml.WriteXml("Schneider", textBoxes[line, 0].Text ?? String.Empty,
-                                            textBoxes[line, 1].Text ?? String.Empty,
-                                            textBoxes[line, 2].Text ?? String.Empty,
-                                            textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString(new CultureInfo("ru-RU")));
-            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
+            WriteVendorSettings(RowsToArray.SchneiderLine);
         }
+
         /// <summary>
         /// Write Chint settings to xml
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button18_Click(object sender, EventArgs e)
         {
-            int line = (int)RowsToArray.ChintLine;
-
-            TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = ReturnLabelArray();
-
-            DateTime localDate = DateTime.Now;
-            dataInXml.WriteXml("Chint", textBoxes[line, 0].Text ?? String.Empty,
-                                            textBoxes[line, 1].Text ?? String.Empty,
-                                            textBoxes[line, 2].Text ?? String.Empty,
-                                            textBoxes[line, 3].Text ?? String.Empty,
-                                            localDate.ToString(new CultureInfo("ru-RU")));
-            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
+            WriteVendorSettings(RowsToArray.ChintLine);
         }
+
+        #endregion
+
+        #region Read buttons — считывание формул с листа Excel
 
         /// <summary>
         /// Read IEK formula in ExcelSheets
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             ReadExcelFunc((int)RowsToArray.IekLine);
@@ -499,8 +422,6 @@ namespace ExcelMacroAdd.Forms
         /// <summary>
         /// Read EKF formula in ExcelSheets
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button3_Click(object sender, EventArgs e)
         {
             ReadExcelFunc((int)RowsToArray.EkfLine);
@@ -508,8 +429,6 @@ namespace ExcelMacroAdd.Forms
         /// <summary>
         /// Read DKC formula in ExcelSheets
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button5_Click(object sender, EventArgs e)
         {
             ReadExcelFunc((int)RowsToArray.DkcLine);
@@ -517,8 +436,6 @@ namespace ExcelMacroAdd.Forms
         /// <summary>
         /// Read KEAZ formula in ExcelSheets
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button7_Click(object sender, EventArgs e)
         {
             ReadExcelFunc((int)RowsToArray.KeazLine);
@@ -526,8 +443,6 @@ namespace ExcelMacroAdd.Forms
         /// <summary>
         /// Read DEKraft formula in ExcelSheets
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button9_Click(object sender, EventArgs e)
         {
             ReadExcelFunc((int)RowsToArray.DekraftLine);
@@ -535,8 +450,6 @@ namespace ExcelMacroAdd.Forms
         /// <summary>
         /// Read TDM formula in ExcelSheets
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button11_Click(object sender, EventArgs e)
         {
             ReadExcelFunc((int)RowsToArray.TdmLine);
@@ -544,8 +457,6 @@ namespace ExcelMacroAdd.Forms
         /// <summary>
         /// Read ABB formula in ExcelSheets
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button13_Click(object sender, EventArgs e)
         {
             ReadExcelFunc((int)RowsToArray.AbbLine);
@@ -553,8 +464,6 @@ namespace ExcelMacroAdd.Forms
         /// <summary>
         /// Read Schneider formula in ExcelSheets
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button15_Click(object sender, EventArgs e)
         {
             ReadExcelFunc((int)RowsToArray.SchneiderLine);
@@ -562,11 +471,11 @@ namespace ExcelMacroAdd.Forms
         /// <summary>
         /// Read Chint formula in ExcelSheets
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void button17_Click(object sender, EventArgs e)
         {
             ReadExcelFunc((int)RowsToArray.ChintLine);
         }
+
+        #endregion
     }
 }

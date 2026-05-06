@@ -115,27 +115,30 @@ namespace ExcelMacroAdd.Forms
 
         private void btnGoSheet_Click(object sender, EventArgs e)
         {
-            int offsetRow = 0;
-            var data = accessData.AccessTwinBlock.GetDataInTableDb(comboBoxCurrent.SelectedItem.ToString(), checkBoxReverse.Checked);
+            using (var scope = new ExcelPerformanceScope(Globals.ThisAddIn.GetApplication()))
+            {
+                int offsetRow = 0;
+                var data = accessData.AccessTwinBlock.GetDataInTableDb(
+                    comboBoxCurrent.SelectedItem.ToString(), checkBoxReverse.Checked);
 
-            var writeExcel = new WriteExcel(dataInXml, "EKF", data.Item1, offsetRow);
-            writeExcel.Start();
+                var writeExcel = new WriteExcel(dataInXml, "EKF", data.Item1, offsetRow);
+                writeExcel.Start();
 
-
-            var itemsToProcess = new List<(string ItemValue, CheckBox CheckBox)>
-            {      
+                var itemsToProcess = new List<(string ItemValue, CheckBox CheckBox)>
+            {
                 (data.Item2, checkBoxDirectMountingHandle),
                 (data.Item3, checkBoxHandleOnDoor),
                 (data.Item4, checkBoxHandleRod),
                 (data.Item5, checkBoxAdditionalPole)
             };
 
-            foreach (var item in itemsToProcess)
-            {
-                if (item.CheckBox.Checked && !string.IsNullOrEmpty(item.ItemValue))
+                foreach (var item in itemsToProcess)
                 {
-                    writeExcel = new WriteExcel(dataInXml, "EKF", item.ItemValue, ++offsetRow);
-                    writeExcel.Start();
+                    if (item.CheckBox.Checked && !string.IsNullOrEmpty(item.ItemValue))
+                    {
+                        writeExcel = new WriteExcel(dataInXml, "EKF", item.ItemValue, ++offsetRow);
+                        writeExcel.Start();
+                    }
                 }
             }
         }

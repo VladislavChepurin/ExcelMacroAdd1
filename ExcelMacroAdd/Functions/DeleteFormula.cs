@@ -9,11 +9,11 @@ namespace ExcelMacroAdd.Functions
     {
         public override void Start()
         {
+            Range cell = Cell;
             try
             {
-                Cell.Value2 = Cell.Value2;                      //Удаляем формулы
+                cell.Value2 = cell.Value2;                      //Удаляем формулы
                 Worksheet.Range["A1", Type.Missing].Select();   //Фокус на ячейку А1   
-                Marshal.ReleaseComObject(Cell);
             }
             catch (Exception ex)
             {
@@ -23,9 +23,9 @@ namespace ExcelMacroAdd.Functions
             }
             finally
             {
-                if (Cell != null)
+                if (cell != null)
                 {
-                    Marshal.ReleaseComObject(Cell);
+                    Marshal.ReleaseComObject(cell);
                 }
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
@@ -33,4 +33,3 @@ namespace ExcelMacroAdd.Functions
         }
     }
 }
-

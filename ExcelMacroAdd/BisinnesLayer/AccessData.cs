@@ -1,10 +1,11 @@
 ﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
+using System;
 using AppContext = ExcelMacroAdd.DataLayer.Entity.AppContext;
 
 namespace ExcelMacroAdd.BisinnesLayer
 {
-    public class AccessData : ISelectionSwitchData, ISelectionCircuitBreakerData, IJournalData, ISelectionTransformerData, ISelectionTwinBlockData, ITermoCalcData, IAdditionalModularDevicesData, INotPriceComponent
+    public class AccessData : ISelectionSwitchData, ISelectionCircuitBreakerData, IJournalData, ISelectionTransformerData, ISelectionTwinBlockData, ITermoCalcData, IAdditionalModularDevicesData, INotPriceComponent, IDisposable
     {
         public AccessCircuitBreaker AccessCircuitBreaker { get; set; }
         public AccessSwitch AccessSwitch { get; set; }
@@ -15,8 +16,13 @@ namespace ExcelMacroAdd.BisinnesLayer
         public AccessTermoCalc AccessTermoCalc { get; set; }
         public AccessNotPriceComponent AccessNotPriceComponent { get; set; }
 
+        private readonly AppContext _context;
+        private bool _disposed;
+
         public AccessData(AppContext context, IMemoryCache memoryCache)
         {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+
             AccessCircuitBreaker = new AccessCircuitBreaker(context, memoryCache);
             AccessSwitch = new AccessSwitch(context, memoryCache);
             AccessAdditionalModularDevices = new AccessAdditionalModularDevices(context);
@@ -25,6 +31,15 @@ namespace ExcelMacroAdd.BisinnesLayer
             AccessTwinBlock = new AccessTwinBlock(context);
             AccessTermoCalc = new AccessTermoCalc(context);
             AccessNotPriceComponent = new AccessNotPriceComponent(context, memoryCache);
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                _context?.Dispose();
+                _disposed = true;
+            }
         }
     }
 }
