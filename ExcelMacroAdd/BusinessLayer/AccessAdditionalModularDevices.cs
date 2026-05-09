@@ -2,7 +2,7 @@
 using ExcelMacroAdd.Models;
 using System.Linq;
 
-namespace ExcelMacroAdd.BisinnesLayer
+namespace ExcelMacroAdd.BusinessLayer
 {
     public class AccessAdditionalModularDevices
     {

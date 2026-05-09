@@ -1,4 +1,4 @@
-﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
+﻿using ExcelMacroAdd.BusinessLayer.Interfaces;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.Services.Interfaces;
@@ -78,8 +78,11 @@ namespace ExcelMacroAdd.Forms
         private void WriteToExcel(string vendor, string article)
         {
             if (string.IsNullOrEmpty(article)) return;
-            var writeExcel = new WriteExcel(dataInXml, vendor, article);
-            writeExcel.Start();
+            using (var scope = new ExcelPerformanceScope(Globals.ThisAddIn.GetApplication()))
+            {
+                var writeExcel = new WriteExcel(dataInXml, vendor, article);
+                writeExcel.Start();
+            }
         }
 
         protected override void OnPaint(PaintEventArgs e)

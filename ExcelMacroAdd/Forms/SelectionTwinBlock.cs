@@ -1,4 +1,4 @@
-﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
+﻿using ExcelMacroAdd.BusinessLayer.Interfaces;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.Services.Interfaces;

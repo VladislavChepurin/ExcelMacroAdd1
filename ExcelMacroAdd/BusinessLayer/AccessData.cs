@@ -1,9 +1,9 @@
-﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
+﻿using ExcelMacroAdd.BusinessLayer.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using AppContext = ExcelMacroAdd.DataLayer.Entity.AppContext;
 
-namespace ExcelMacroAdd.BisinnesLayer
+namespace ExcelMacroAdd.BusinessLayer
 {
     public class AccessData : ISelectionSwitchData, ISelectionCircuitBreakerData, IJournalData, ISelectionTransformerData, ISelectionTwinBlockData, ITermoCalcData, IAdditionalModularDevicesData, INotPriceComponent, IDisposable
     {

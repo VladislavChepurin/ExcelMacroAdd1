@@ -1,4 +1,4 @@
-﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
+﻿using ExcelMacroAdd.BusinessLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Forms.CustomUI;
 using ExcelMacroAdd.Forms.ViewModels;
@@ -41,7 +41,7 @@ namespace ExcelMacroAdd.Forms
 
             this.Load += async (s, e) =>
             {
-                await Task.Run(() => notPriceComponentsViewModel.Start());
+                await notPriceComponentsViewModel.StartAsync();
             };
 
             try

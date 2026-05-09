@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 
-namespace ExcelMacroAdd.BisinnesLayer
+namespace ExcelMacroAdd.BusinessLayer
 {
     public class AccessNotPriceComponent
     {

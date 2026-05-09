@@ -1,7 +1,8 @@
-﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
+﻿using ExcelMacroAdd.BusinessLayer.Interfaces;
 using ExcelMacroAdd.Functions;
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace ExcelMacroAdd.Forms.ViewModels
 {
@@ -168,7 +169,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             //IsVisibleLabel = true;
         }
 
-        public async override void Start()
+        public async override Task StartAsync()
         {
             TextBoxMinTemp = minimumTemperature.ToString();
             TextBoxTargetTemp = targetTemperature.ToString();

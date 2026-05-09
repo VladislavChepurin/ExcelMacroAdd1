@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppContext = ExcelMacroAdd.DataLayer.Entity.AppContext;
 
-namespace ExcelMacroAdd.BisinnesLayer
+namespace ExcelMacroAdd.BusinessLayer
 {
     public class AccessJournalNku
     {

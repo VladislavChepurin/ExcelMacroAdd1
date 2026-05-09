@@ -255,23 +255,23 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="BisinnesLayer\AccessAdditionalModularDevices.cs" />
-    <Compile Include="BisinnesLayer\AccessCircuitBreaker.cs" />
-    <Compile Include="BisinnesLayer\AccessData.cs" />
-    <Compile Include="BisinnesLayer\AccessJournalNku.cs" />
-    <Compile Include="BisinnesLayer\AccessNotPriceComponent.cs" />
-    <Compile Include="BisinnesLayer\AccessSwitch.cs" />
-    <Compile Include="BisinnesLayer\AccessTermoCalc.cs" />
-    <Compile Include="BisinnesLayer\AccessTransformer.cs" />
-    <Compile Include="BisinnesLayer\AccessTwinBlock.cs" />
-    <Compile Include="BisinnesLayer\Interfaces\IAdditionalModularDevicesData.cs" />
-    <Compile Include="BisinnesLayer\Interfaces\INotPriceComponent.cs" />
-    <Compile Include="BisinnesLayer\Interfaces\ISelectionSwitchData.cs" />
-    <Compile Include="BisinnesLayer\Interfaces\ISelectionTwinBlockData.cs" />
-    <Compile Include="BisinnesLayer\Interfaces\ISelectionTransformerData.cs" />
-    <Compile Include="BisinnesLayer\Interfaces\IJournalData.cs" />
-    <Compile Include="BisinnesLayer\Interfaces\ISelectionCircuitBreakerData.cs" />
-    <Compile Include="BisinnesLayer\Interfaces\ITermoCalcData.cs" />
+    <Compile Include="BusinessLayer\AccessAdditionalModularDevices.cs" />
+    <Compile Include="BusinessLayer\AccessCircuitBreaker.cs" />
+    <Compile Include="BusinessLayer\AccessData.cs" />
+    <Compile Include="BusinessLayer\AccessJournalNku.cs" />
+    <Compile Include="BusinessLayer\AccessNotPriceComponent.cs" />
+    <Compile Include="BusinessLayer\AccessSwitch.cs" />
+    <Compile Include="BusinessLayer\AccessTermoCalc.cs" />
+    <Compile Include="BusinessLayer\AccessTransformer.cs" />
+    <Compile Include="BusinessLayer\AccessTwinBlock.cs" />
+    <Compile Include="BusinessLayer\Interfaces\IAdditionalModularDevicesData.cs" />
+    <Compile Include="BusinessLayer\Interfaces\INotPriceComponent.cs" />
+    <Compile Include="BusinessLayer\Interfaces\ISelectionSwitchData.cs" />
+    <Compile Include="BusinessLayer\Interfaces\ISelectionTwinBlockData.cs" />
+    <Compile Include="BusinessLayer\Interfaces\ISelectionTransformerData.cs" />
+    <Compile Include="BusinessLayer\Interfaces\IJournalData.cs" />
+    <Compile Include="BusinessLayer\Interfaces\ISelectionCircuitBreakerData.cs" />
+    <Compile Include="BusinessLayer\Interfaces\ITermoCalcData.cs" />
     <Compile Include="DataLayer\Entity\AdditionalPole.cs" />
     <Compile Include="DataLayer\Entity\AuxiliaryContact.cs" />
     <Compile Include="DataLayer\Entity\ExecutionBox.cs" />

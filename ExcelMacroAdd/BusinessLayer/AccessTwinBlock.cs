@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using AppContext = ExcelMacroAdd.DataLayer.Entity.AppContext;
 
-namespace ExcelMacroAdd.BisinnesLayer
+namespace ExcelMacroAdd.BusinessLayer
 {
     public class AccessTwinBlock
     {

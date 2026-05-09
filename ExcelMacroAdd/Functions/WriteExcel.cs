@@ -46,35 +46,35 @@ namespace ExcelMacroAdd.Functions
 
         public override void Start()
         {
-            using (var scope = new ExcelPerformanceScope(Application))
+            if (ExcelPerformanceScope.CurrentNestingLevel == 0)
+                throw new InvalidOperationException(
+                    "WriteExcel.Start() must be called inside ExcelPerformanceScope");
+            try
             {
-                try
-                {
-                    if (Worksheet == null || Cell == null)
-                        throw new InvalidOperationException("Не инициализирован объект Excel.");
+                if (Worksheet == null || Cell == null)
+                    throw new InvalidOperationException("Не инициализирован объект Excel.");
 
-                    var vendors = _dataInXml.ReadFileXml();
-                    var vendorData = _dataInXml.ReadElementXml(_vendor, vendors)
-                        ?? throw new ArgumentException($"Вендор {_vendor} не найден.");
+                var vendors = _dataInXml.ReadFileXml();
+                var vendorData = _dataInXml.ReadElementXml(_vendor, vendors)
+                    ?? throw new ArgumentException($"Вендор {_vendor} не найден.");
 
-                    if (_countRows <= 1)
-                    {
-                        WriteSingleRow(_startRow, vendorData);
-                    }
-                    else
-                    {
-                        WriteBatchRows(vendorData);
-                    }
-                }
-                catch (Exception ex)
+                if (_countRows <= 1)
                 {
-                    Logger.LogException(ex);
+                    WriteSingleRow(_startRow, vendorData);
                 }
-                finally
+                else
                 {
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
+                    WriteBatchRows(vendorData);
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            finally
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
         }
 

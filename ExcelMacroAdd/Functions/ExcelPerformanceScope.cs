@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace ExcelMacroAdd.Functions
@@ -33,17 +34,21 @@ namespace ExcelMacroAdd.Functions
         private readonly XlCalculation _originalCalculation;
         private readonly bool _originalEnableEvents;
         private bool _disposed;
+        private static readonly object _bookChangeLock = new object();
 
         // ===============================================================
         // Статический кэш: какие листы уже пересчитывались в этой сессии.
         // Ключ = "BookName|SheetName", чтобы различать листы разных книг.
         // ===============================================================
-        private static readonly HashSet<string> _calculatedSheets = new HashSet<string>();
-        private static string _lastWorkbookFullName;
+        private static readonly ConcurrentDictionary<string, byte> _calculatedSheets
+            = new ConcurrentDictionary<string, byte>();
+        private static volatile string _lastWorkbookFullName;
 
         // Счётчик вложенности — позволяет определить, кто "внешний"
         [ThreadStatic]
         private static int _nestingLevel;
+
+        public static int CurrentNestingLevel => _nestingLevel;
 
         public ExcelPerformanceScope(Application app)
         {
@@ -76,7 +81,7 @@ namespace ExcelMacroAdd.Functions
             get
             {
                 string key = GetCurrentSheetKey();
-                return key != null && _calculatedSheets.Contains(key);
+                return key != null && _calculatedSheets.ContainsKey(key);
             }
         }
 
@@ -102,7 +107,7 @@ namespace ExcelMacroAdd.Functions
         {
             string key = GetCurrentSheetKey();
             if (key != null)
-                _calculatedSheets.Add(key);
+                _calculatedSheets.TryAdd(key, 0);
         }
 
         /// <summary>
@@ -168,13 +173,16 @@ namespace ExcelMacroAdd.Functions
                 if (wb == null) return;
 
                 string currentBook = wb.FullName;
-                if (_lastWorkbookFullName != currentBook)
+                lock (_bookChangeLock)
                 {
-                    _calculatedSheets.Clear();
-                    _lastWorkbookFullName = currentBook;
+                    if (_lastWorkbookFullName != currentBook)
+                    {
+                        _calculatedSheets.Clear();
+                        _lastWorkbookFullName = currentBook;
+                    }
                 }
             }
-            catch { /* Игнорируем */ }
+            catch { }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
+﻿using ExcelMacroAdd.BusinessLayer.Interfaces;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Models;
 using ExcelMacroAdd.Services;
@@ -246,8 +246,11 @@ namespace ExcelMacroAdd.Forms.ViewModels
         private void WriteDeviceData(string article, int rowOffset)
         {
             if (string.IsNullOrEmpty(article)) return;
-            var writeExcel = new WriteExcel(_dataInXml, _addDevicesAgregate.vendor, article, rowOffset);
-            writeExcel.Start();
+            using (var scope = new ExcelPerformanceScope(Globals.ThisAddIn.GetApplication()))
+            {
+                var writeExcel = new WriteExcel(_dataInXml, _addDevicesAgregate.vendor, article, rowOffset);
+                writeExcel.Start();
+            }
         }
 
 

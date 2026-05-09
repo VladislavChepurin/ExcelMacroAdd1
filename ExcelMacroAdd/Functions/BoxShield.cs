@@ -1,10 +1,11 @@
-using ExcelMacroAdd.BisinnesLayer.Interfaces;
+using ExcelMacroAdd.BusinessLayer.Interfaces;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelMacroAdd.Functions
@@ -22,7 +23,7 @@ namespace ExcelMacroAdd.Functions
             this.resources = resources;
         }
 
-        public override async void Start()
+        public override async Task StartAsync()
         {
             if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
             {

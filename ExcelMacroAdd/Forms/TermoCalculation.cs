@@ -1,4 +1,4 @@
-﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
+﻿using ExcelMacroAdd.BusinessLayer.Interfaces;
 using ExcelMacroAdd.Forms.ViewModels;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using System;
@@ -36,7 +36,7 @@ namespace ExcelMacroAdd.Forms
             }
 
             TopMost = formSettings.FormTopMost;
-            this.Load += (s, e) => termoCalculationViewModel.Start();            
+            this.Load += async (s, e) => await termoCalculationViewModel.StartAsync();            
             textBoxHeight.KeyPress += NumericTextBox_KeyPress;
             textBoxWidth.KeyPress += NumericTextBox_KeyPress;
             textBoxDepth.KeyPress += NumericTextBox_KeyPress;

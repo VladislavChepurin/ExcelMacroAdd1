@@ -1,4 +1,4 @@
-﻿using ExcelMacroAdd.BisinnesLayer.Interfaces;
+﻿using ExcelMacroAdd.BusinessLayer.Interfaces;
 using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Services;
@@ -183,7 +183,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             _uiContext = SynchronizationContext.Current ?? new WindowsFormsSynchronizationContext();
         }
 
-        public override async void Start()
+        public override async Task StartAsync()
         {
             try
             {
@@ -413,7 +413,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             };
 
             await _accessData.AccessNotPriceComponent.AddValueDb(entity).ConfigureAwait(false);
-            Start();
+            await StartAsync();
 
             MessageInformation($"Успешно записано в базу данных!\nАртикул: {article}\nВендор: {productVendorName}",
                 "Запись успешна!");

@@ -2,7 +2,7 @@
 using ExcelMacroAdd.UserVariables;
 using System.Linq;
 
-namespace ExcelMacroAdd.BisinnesLayer
+namespace ExcelMacroAdd.BusinessLayer
 {
     public class AccessTransformer
     {

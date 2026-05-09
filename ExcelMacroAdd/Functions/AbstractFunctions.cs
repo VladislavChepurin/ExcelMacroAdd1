@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.Excel;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExcelMacroAdd.Functions
@@ -49,7 +50,8 @@ namespace ExcelMacroAdd.Functions
         protected Range Cell => Globals.ThisAddIn.GetActiveCell();
         protected Workbook WorkBook => Globals.ThisAddIn.GetActiveWorkBook();
 
-        public abstract void Start();
+        public virtual void Start() { }
+        public virtual Task StartAsync() => Task.CompletedTask;
 
         protected internal void MessageInformation(string textMessage, string textAttribute)
         {
