@@ -1,43 +1,98 @@
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
+using System;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Windows.Forms;
+using LicenseKeyGeneratorApp.Licensing;
 
 namespace LicenseKeyGeneratorApp
 {
     public partial class LicenceForm : Form
     {
-        // ��������� ���� (������ ��������� � ���������� �����)
-        private static readonly byte[] SecretKey = Encoding.UTF8.GetBytes("MySuperSecretKey@12345");
-
         public LicenceForm()
-        {    
+        {
             InitializeComponent();
-            numericUpDownYear.Minimum = 2025;
-            numericUpDownYear.Maximum = 2035;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnGenerate_Click(object sender, EventArgs e)
         {
-            int currentYear = (int)numericUpDownYear.Value;
-            string rawData = $"{textBoxUserName.Text.ToLower()}|{currentYear}";
-
-            using (var hmac = new HMACSHA256(SecretKey))
+            // Валидация полей
+            if (string.IsNullOrWhiteSpace(txtProduct.Text))
             {
-                byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-                string base64Key = Convert.ToBase64String(hash);
+                MessageBox.Show("Укажите название продукта", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-                // �������� ����������� ������� ��� URL-������������
-                string safeKey = base64Key.Replace('+', '-').Replace('/', '_');
+            if (string.IsNullOrWhiteSpace(txtOwner.Text))
+            {
+                MessageBox.Show("Укажите владельца лицензии", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-                // ����������� ���� � �����������
-                textBoxKey.Text = FormatKey(safeKey[..24]); // ����� ������ 24 �������
+            if (string.IsNullOrWhiteSpace(txtOrganization.Text))
+            {
+                MessageBox.Show("Укажите организацию", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (dtpValidFrom.Value.Date > dtpValidTo.Value.Date)
+            {
+                MessageBox.Show("Дата начала не может быть позже даты окончания", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                // 1. Собираем LicenseInfo
+                var license = new LicenseInfo
+                {
+                    Product = txtProduct.Text.Trim(),
+                    LicenseOwner = txtOwner.Text.Trim(),
+                    Organization = txtOrganization.Text.Trim(),
+                    ValidFrom = dtpValidFrom.Value.Date,
+                    ValidTo = dtpValidTo.Value.Date
+                };
+
+                // 2. Формируем подписываемую строку
+                string signableString = license.GetSignableString();
+
+                // 3. Подписываем приватным ключом
+                license.Signature = LicenseSignatureService.SignData(signableString);
+
+                // 4. Показываем подписываемую строку для контроля
+                txtSignableString.Text = signableString;
+                txtSignature.Text = license.Signature;
+
+                // 5. Сохраняем в файл
+                using (var dialog = new SaveFileDialog())
+                {
+                    dialog.FileName = "license.json";
+                    dialog.Filter = "JSON файлы (*.json)|*.json|Все файлы (*.*)|*.*";
+                    dialog.DefaultExt = "json";
+
+                    if (dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        var options = new JsonSerializerOptions
+                        {
+                            WriteIndented = true,
+                            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                        };
+
+                        string json = JsonSerializer.Serialize(license, options);
+                        File.WriteAllText(dialog.FileName, json);
+
+                        MessageBox.Show(
+                            $"Лицензия сохранена:\n{dialog.FileName}\n\nДействует с {license.ValidFrom:dd.MM.yyyy} по {license.ValidTo:dd.MM.yyyy}",
+                            "Готово",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка генерации лицензии:\n{ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private static string FormatKey(string key)
-        {
-            // ��������� ���� �� ������ �� 6 ��������
-            return Regex.Replace(key, "(.{6})", "$1-").TrimEnd('-');
-        }   
     }
 }

@@ -19,7 +19,7 @@ namespace ExcelMacroAdd.Properties {
     // с помощью такого средства, как ResGen или Visual Studio.
     // Чтобы добавить или удалить член, измените файл .ResX и снова запустите ResGen
     // с параметром /str или перестройте свой проект VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -208,7 +208,7 @@ namespace ExcelMacroAdd.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Данная копия программного обеспечения не лицензированна. Просим обратиться к автору программы для получения ключа приложения. Ключи привязываются к имени пользователя и текущему году. Срок действия ключа 1 (один) год..
+        ///   Ищет локализованную строку, похожую на Данная копия программного обеспечения не лицензированна. Просим обратиться к автору программы для получения ключа приложения..
         /// </summary>
         internal static string LicenseText {
             get {

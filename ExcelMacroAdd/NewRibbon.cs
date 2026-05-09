@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using AppContext = ExcelMacroAdd.DataLayer.Entity.AppContext;
 using Office = Microsoft.Office.Core;
 
@@ -38,6 +39,11 @@ namespace ExcelMacroAdd
         private readonly IMemoryCache memoryCache;
         private readonly IValidateLicenseKey validateLicenseKey;
         private bool _disposed;
+        private volatile bool _notPriceComponentsOpen = false;
+        private volatile bool _termoCalculationOpen = false;
+        private volatile bool _selectionTransformer = false;
+        private volatile bool _selectionTwinBlock = false;
+        private volatile bool _selectionModularDevices = false;
 
         public NewRibbon()
         {
@@ -67,7 +73,7 @@ namespace ExcelMacroAdd
 
             var context = new AppContext(path);
             accessData = new AccessData(context, memoryCache);
-            validateLicenseKey = new ValidateLicenseKey(settings.LineseKey);
+            validateLicenseKey = new ValidateLicenseKey();
 
             //Создание внедряемых зависимостей
             dataInXml = new DataInXmlProxy(new DataInXml());
@@ -106,16 +112,16 @@ namespace ExcelMacroAdd
             return (Image)Properties.Resources.ResourceManager.GetObject(ImageName);
         }
 
-        public async Task OnActionCallbackBase(Office.IRibbonControl control)
+        public void OnActionCallbackBase(Office.IRibbonControl control)
         {
-#if !DEBUG
+//#if !DEBUG
             if (!validateLicenseKey.ValidateKey())
             {
 
                 MessageBox.Show(Properties.Resources.LicenseText, "Внимание");
                 return;
             }
-#endif
+//#endif
             switch (control.Id)
             {
                 //Заполнение паспортов
@@ -141,7 +147,7 @@ namespace ExcelMacroAdd
                     if (accessData != null)
                     {
                         var boxShield = new BoxShield(accessData, resources);
-                        await boxShield.StartAsync();
+                        boxShield.Start();
                     }
                     break;
 
@@ -150,7 +156,7 @@ namespace ExcelMacroAdd
                     if (accessData != null)
                     {
                         var addBoxDb = new AddBoxDb(accessData, resources);
-                        await addBoxDb.StartAsync();
+                        addBoxDb.Start();
                     }
                     break;
 
@@ -159,7 +165,7 @@ namespace ExcelMacroAdd
                     if (accessData != null)
                     {
                         var correctDb = new CorrectDb(accessData, resources);
-                        await correctDb.StartAsync();
+                        correctDb.Start();
                     }
                     break;
             }
@@ -167,13 +173,13 @@ namespace ExcelMacroAdd
 
         public void OnActionCallbackDecoration(Office.IRibbonControl control)
         {
-#if !DEBUG
+//#if !DEBUG
             if (!validateLicenseKey.ValidateKey())
             {
                 MessageBox.Show(Properties.Resources.LicenseText, "Внимание");
                 return;
             }
-#endif
+//#endif
             switch (control.Id)
             {
                 //Разметка листов
@@ -234,13 +240,13 @@ namespace ExcelMacroAdd
 
         public async Task OnActionCallbackCalculation(Office.IRibbonControl control)
         {
-#if !DEBUG
+//#if !DEBUG
             if (!validateLicenseKey.ValidateKey())
             {
                 MessageBox.Show(Properties.Resources.LicenseText, "Внимание");
                 return;
             }
-#endif
+//#endif
             switch (control.Id)
             {
                 //Вставка формулы Iek
@@ -275,39 +281,104 @@ namespace ExcelMacroAdd
 
                 //Модульные аппараты
                 case "SelectionModularDevices_Button":
-                    if (accessData != null)
+                    if (accessData == null) break;
+                    if (_selectionModularDevices)
+                    {
+                        MessageBox.Show("Окно уже открыто", "Информация",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
+                    }
+                    _selectionModularDevices = true;
+                    try
                     {
                         await ShowFormOnStaThread(() => new SelectionModularDevices(dataInXml, accessData, formSettings));
                     }
-
+                    finally
+                    {
+                        _selectionModularDevices = false;
+                    }
                     break;
 
                 //Трансформаторы тока
                 case "SelectionTransformer_Button":
-                    if (accessData != null)
+                    if (accessData == null) break;
+                    if (_selectionTransformer)
+                    {
+                        MessageBox.Show("Окно уже открыто", "Информация",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
+                    }
+                    _selectionTransformer = true;
+                    try
+                    {
                         await ShowFormOnStaThread(() => new SelectionTransformer(dataInXml, accessData, formSettings));
+                    }
+                    finally
+                    {
+                        _selectionTransformer = false;
+                    }
                     break;
 
                 //Рубильники TwinBlock
                 case "SelectionTwinBlock_Button":
-                    if (accessData != null)
-                        await ShowFormOnStaThread(() => new SelectionTwinBlock(dataInXml, accessData, formSettings));
+                    if (accessData == null) break;
+                    if (_selectionTwinBlock)
+                    {
+                        MessageBox.Show("Окно уже открыто", "Информация",
+                          MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
+                    }
 
+                    _selectionTwinBlock = true;
+                    try
+                    {
+                        await ShowFormOnStaThread(() => new SelectionTwinBlock(dataInXml, accessData, formSettings));
+                    }
+                    finally
+                    {
+                        _selectionTwinBlock = false;
+                    }
                     break;
 
                 //Расчет обогрева
                 case "TermoCalculation_Button":
-                    if (accessData != null)
+                    if (accessData == null) break;
+                    if (_termoCalculationOpen)
+                    {
+                        MessageBox.Show("Окно уже открыто", "Информация",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
+                    }
+                    _termoCalculationOpen = true;
+                    try
+                    {
                         await ShowFormOnStaThread(() => new TermoCalculation(accessData, formSettings));
-
+                    }
+                    finally
+                    {
+                        _termoCalculationOpen = false;
+                    }
                     break;
 
 
                 //Не тарифные позиции
                 case "NotPriceComponent_Button":
-                    if (accessData != null)
+                    if (accessData == null) break;
+                    if (_notPriceComponentsOpen)
+                    {
+                        MessageBox.Show("Окно уже открыто", "Информация",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
+                    }
+                    _notPriceComponentsOpen = true;
+                    try
+                    {
                         await ShowFormOnStaThread(() => new NotPriceComponents(accessData, formSettings));
-
+                    }
+                    finally
+                    {
+                        _notPriceComponentsOpen = false;
+                    }
                     break;
 
                 //Таблица типов

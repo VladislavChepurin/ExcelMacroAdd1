@@ -13,38 +13,16 @@ namespace ExcelMacroAdd.Forms
         private readonly IDataInXml dataInXml;
         private readonly AccessData accessData;
         private readonly IFormSettings formSettings;
-        static readonly Mutex Mutex = new Mutex(false, "MutexSelectionModularDevices_SingleInstance");
-        private bool _mutexAcquired = false;
            
         public SelectionModularDevices(IDataInXml dataInXml, AccessData accessData, IFormSettings formSettings)
         {
-            InitializeComponent();
-            try
-            {
-                _mutexAcquired = Mutex.WaitOne(TimeSpan.FromSeconds(1), false);
-                if (!_mutexAcquired)
-                {
-                    Close();
-                }
-            }
-            catch (AbandonedMutexException)
-            {
-                _mutexAcquired = true; // Мьютекс был оставлен, но теперь принадлежит текущему потоку
-            }
+            InitializeComponent();           
             this.dataInXml = dataInXml;
             this.accessData = accessData;
             this.formSettings = formSettings;
             TopMost  = formSettings.FormTopMost;           
         }
-
-        private void SelectionModularDevices_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (_mutexAcquired)
-            {
-                Mutex.ReleaseMutex();
-                _mutexAcquired = false;
-            }
-        }
+               
         private void ShowChildForm(Form childForm)
         {
             childForm.FormClosed += (s, e) => Show();

@@ -157,7 +157,6 @@
             this.Name = "SelectionTwinBlock";
             this.ShowIcon = false;
             this.Text = "Рубильники TwinBlock";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SelectionTwinBlock_FormClosed);
             this.Load += new System.EventHandler(this.SelectionTwinBlock_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);

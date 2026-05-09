@@ -12,29 +12,14 @@ namespace ExcelMacroAdd.Forms
 {
     public partial class TermoCalculation : Form
     {
-        private readonly TermoCalculationViewModel termoCalculationViewModel;
-        static readonly Mutex Mutex = new Mutex(false, "MutexTermoCalculation_SingleInstance");
-        private bool _mutexAcquired = false;
+        private readonly TermoCalculationViewModel termoCalculationViewModel;        
                
         public TermoCalculation(ITermoCalcData accessData, IFormSettings formSettings)
         {
             termoCalculationViewModel = new TermoCalculationViewModel(accessData);
 
             InitializeComponent();
-            InitializeDataBindings();
-            try
-            {
-                _mutexAcquired = Mutex.WaitOne(TimeSpan.FromSeconds(1), false);
-                if (!_mutexAcquired)
-                {
-                    Close();
-                }
-            }
-            catch (AbandonedMutexException)
-            {
-                _mutexAcquired = true; // Мьютекс был оставлен, но теперь принадлежит текущему потоку
-            }
-
+            InitializeDataBindings();    
             TopMost = formSettings.FormTopMost;
             this.Load += async (s, e) => await termoCalculationViewModel.StartAsync();            
             textBoxHeight.KeyPress += NumericTextBox_KeyPress;
@@ -180,15 +165,6 @@ namespace ExcelMacroAdd.Forms
             };
 
             radioButton.DataBindings.Add(binding);
-        }
-
-        private void TermoCalculation_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (_mutexAcquired)
-            {
-                Mutex.ReleaseMutex();
-                _mutexAcquired = false;
-            }
         }                              
     }
 }

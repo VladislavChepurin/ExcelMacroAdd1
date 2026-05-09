@@ -154,7 +154,6 @@ namespace ExcelMacroAdd.Forms
             this.Name = "NotPriceComponents";
             this.Text = "NotPriceComponents";
             this.TopMost = true;
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.NotPriceComponents_FormClosed);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();

@@ -1,5 +1,6 @@
-﻿using ExcelMacroAdd.Serializable.Entity.Interfaces;
+using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using Microsoft.Office.Interop.Excel;
+using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelMacroAdd.Functions
@@ -15,17 +16,70 @@ namespace ExcelMacroAdd.Functions
 
         public override void Start()
         {
-            foreach (Worksheet sheet in WorkBook.Sheets)
+            Workbook workbook = null;
+            Sheets sheets = null;
+
+            try
             {
-                // Пропускаем лист по индексу 1 и скрытые листы
-                if (sheet.Index == 1 || sheet.Visible != Excel.XlSheetVisibility.xlSheetVisible)
-                    continue;              
-                sheet.Range["A1", "i500"].Cells.Font.Name = correctFontResources.NameFont;
-                sheet.Range["A1", "i500"].Cells.Font.Size = correctFontResources.SizeFont;
-                sheet.Cells[1, 4].EntireColumn.Insert(XlInsertShiftDirection.xlShiftToRight, XlInsertFormatOrigin.xlFormatFromRightOrBelow);
-                sheet.Cells[1, 4].Value2 = "Кратность";
-                sheet.Cells[1, 4].EntireColumn.ColumnWidth = 10;
-            }        
+                workbook = WorkBook;
+                sheets = workbook.Sheets;
+                int sheetCount = sheets.Count;
+
+                for (int index = 1; index <= sheetCount; index++)
+                {
+                    Worksheet sheet = null;
+                    Range formattingRange = null;
+                    Range formattingCells = null;
+                    Font formattingFont = null;
+                    Range insertCell = null;
+                    Range insertedColumn = null;
+
+                    try
+                    {
+                        sheet = (Worksheet)sheets[index];
+
+                        // Пропускаем лист по индексу 1 и скрытые листы
+                        if (sheet.Index == 1 || sheet.Visible != Excel.XlSheetVisibility.xlSheetVisible)
+                        {
+                            continue;
+                        }
+
+                        formattingRange = sheet.Range["A1", "I500"];
+                        formattingCells = formattingRange.Cells;
+                        formattingFont = formattingCells.Font;
+                        formattingFont.Name = correctFontResources.NameFont;
+                        formattingFont.Size = correctFontResources.SizeFont;
+
+                        insertCell = (Range)sheet.Cells[1, 4];
+                        insertedColumn = insertCell.EntireColumn;
+                        insertedColumn.Insert(XlInsertShiftDirection.xlShiftToRight, XlInsertFormatOrigin.xlFormatFromRightOrBelow);
+                        insertCell.Value2 = "Кратность";
+                        insertedColumn.ColumnWidth = 10;
+                    }
+                    finally
+                    {
+                        ReleaseComObject(insertedColumn);
+                        ReleaseComObject(insertCell);
+                        ReleaseComObject(formattingFont);
+                        ReleaseComObject(formattingCells);
+                        ReleaseComObject(formattingRange);
+                        ReleaseComObject(sheet);
+                    }
+                }
+            }
+            finally
+            {
+                ReleaseComObject(sheets);
+                ReleaseComObject(workbook);
+            }
+        }
+
+        private static void ReleaseComObject(object comObject)
+        {
+            if (comObject != null && Marshal.IsComObject(comObject))
+            {
+                Marshal.ReleaseComObject(comObject);
+            }
         }
     }
 }

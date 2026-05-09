@@ -77,7 +77,6 @@
             this.MinimumSize = new System.Drawing.Size(238, 258);
             this.Name = "SelectionModularDevices";
             this.Text = "Выбор модульных аппаратов";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SelectionModularDevices_FormClosed);
             this.Load += new System.EventHandler(this.SelectionModularDevices_Load);
             this.ResumeLayout(false);
 

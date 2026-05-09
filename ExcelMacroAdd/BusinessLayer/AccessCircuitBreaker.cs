@@ -67,44 +67,31 @@ namespace ExcelMacroAdd.BusinessLayer
             memoryCache.TryGetValue(keyCache, out IUserCircuitBreaker userCircuitBreaker);
             if (userCircuitBreaker == null)
             {
-                var group = context.CircuitBreakers
+                // Один запрос к БД — забираем только нужные поля
+                var items = context.CircuitBreakers
                     .AsNoTracking()
-                    .Where(p => p.ProductVendor.VendorName == vendor && p.ProductSeries.SeriesName == series)
-                    .Select(p => p.ProductGroup.GroupName)
-                    .FirstOrDefault();
+                    .Where(p => p.ProductVendor.VendorName == vendor
+                             && p.ProductSeries.SeriesName == series)
+                    .Select(p => new
+                    {
+                        Group = p.ProductGroup.GroupName,
+                        p.Current,
+                        p.Kurve,
+                        p.MaxCurrent,
+                        p.QuantityPole
+                    })
+                    .ToList();
 
-                var current = context.CircuitBreakers
-                    .AsNoTracking()
-                    .Where(p => p.ProductVendor.VendorName == vendor && p.ProductSeries.SeriesName == series)
-                    .Select(p => p.Current)
-                    .OrderBy(p => p)
-                    .ToHashSet()
-                    .ToArray();
-
-                var kurve = context.CircuitBreakers
-                    .AsNoTracking()
-                    .Where(p => p.ProductVendor.VendorName == vendor && p.ProductSeries.SeriesName == series)
-                    .Select(p => p.Kurve)
-                    .ToHashSet()
-                    .ToArray();
-
-                var maxCurrent = context.CircuitBreakers
-                    .AsNoTracking()
-                    .Where(p => p.ProductVendor.VendorName == vendor && p.ProductSeries.SeriesName == series)
-                    .Select(p => p.MaxCurrent)
-                    .ToHashSet()
-                    .ToArray();
-
-                var qantityPole = context.CircuitBreakers
-                    .AsNoTracking()
-                    .Where(p => p.ProductVendor.VendorName == vendor && p.ProductSeries.SeriesName == series)
-                    .Select(p => p.QuantityPole)
-                    .ToHashSet()
-                    .ToArray();
+                var group = items.Select(p => p.Group).FirstOrDefault();
+                var current = items.Select(p => p.Current).OrderBy(p => p).ToHashSet().ToArray();
+                var kurve = items.Select(p => p.Kurve).ToHashSet().ToArray();
+                var maxCurrent = items.Select(p => p.MaxCurrent).ToHashSet().ToArray();
+                var qantityPole = items.Select(p => p.QuantityPole).ToHashSet().ToArray();
 
                 userCircuitBreaker = new UserCircuitBreaker(group, current, kurve, maxCurrent, qantityPole);
                 if (userCircuitBreaker.current != null)
-                    memoryCache.Set(keyCache, userCircuitBreaker, new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
+                    memoryCache.Set(keyCache, userCircuitBreaker,
+                        new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
             }
             return userCircuitBreaker;
         }

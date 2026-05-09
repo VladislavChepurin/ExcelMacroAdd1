@@ -1,4 +1,4 @@
-﻿using ExcelMacroAdd.Services;
+using ExcelMacroAdd.Services;
 using ExcelMacroAdd.Services.Interfaces;
 using Microsoft.Office.Interop.Excel;
 using System;
@@ -30,29 +30,62 @@ namespace ExcelMacroAdd.Functions
         {
             _dataInXml = dataInXml ?? throw new ArgumentNullException(nameof(dataInXml));
             _vendor = vendor ?? throw new ArgumentNullException(nameof(vendor));
-            _startRow = Cell.Row;
-            _countRows = Cell.Rows.Count;
+
+            Range activeCell = null;
+            Range selectedRows = null;
+
+            try
+            {
+                activeCell = Cell;
+                selectedRows = activeCell.Rows;
+                _startRow = activeCell.Row;
+                _countRows = selectedRows.Count;
+            }
+            finally
+            {
+                ReleaseComObject(selectedRows);
+                ReleaseComObject(activeCell);
+            }
         }
 
         public WriteExcel(IDataInXml dataInXml, string vendor, string article, int startOffset = 0, int amount = 0)
         {
             _dataInXml = dataInXml ?? throw new ArgumentNullException(nameof(dataInXml));
             _vendor = vendor ?? throw new ArgumentNullException(nameof(vendor));
-            _startRow = Cell.Row + startOffset;
-            _countRows = 1;
             _article = article;
             _amount = amount;
+            _countRows = 1;
+
+            Range activeCell = null;
+
+            try
+            {
+                activeCell = Cell;
+                _startRow = activeCell.Row + startOffset;
+            }
+            finally
+            {
+                ReleaseComObject(activeCell);
+            }
         }
 
         public override void Start()
         {
             if (ExcelPerformanceScope.CurrentNestingLevel == 0)
+            {
                 throw new InvalidOperationException(
                     "WriteExcel.Start() must be called inside ExcelPerformanceScope");
+            }
+
+            Worksheet worksheet = null;
+
             try
             {
-                if (Worksheet == null || Cell == null)
+                worksheet = Worksheet;
+                if (worksheet == null)
+                {
                     throw new InvalidOperationException("Не инициализирован объект Excel.");
+                }
 
                 var vendors = _dataInXml.ReadFileXml();
                 var vendorData = _dataInXml.ReadElementXml(_vendor, vendors)
@@ -60,11 +93,11 @@ namespace ExcelMacroAdd.Functions
 
                 if (_countRows <= 1)
                 {
-                    WriteSingleRow(_startRow, vendorData);
+                    WriteSingleRow(worksheet, _startRow, vendorData);
                 }
                 else
                 {
-                    WriteBatchRows(vendorData);
+                    WriteBatchRows(worksheet, vendorData);
                 }
             }
             catch (Exception ex)
@@ -73,8 +106,7 @@ namespace ExcelMacroAdd.Functions
             }
             finally
             {
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
+                ReleaseComObject(worksheet);
             }
         }
 
@@ -82,32 +114,37 @@ namespace ExcelMacroAdd.Functions
         /// Запись одной строки.
         /// Порядок: сначала все лёгкие значения, формулы ВПР — в самом конце.
         /// </summary>
-        private void WriteSingleRow(int row, UserVariables.Vendor vendorData)
+        private void WriteSingleRow(Worksheet worksheet, int row, UserVariables.Vendor vendorData)
         {
             // 1) Лёгкие значения — мгновенно
             if (_article != null)
-                Worksheet.Cells[row, ArticleColumn] = _article;
-            if (_amount != 0)
-                Worksheet.Cells[row, QuantityColumn] = _amount;
+            {
+                SetCellValue(worksheet, row, ArticleColumn, _article);
+            }
 
-            Worksheet.Cells[row, VendorColumn] = _vendor;
-            Worksheet.Cells[row, DiscountColumn] = vendorData.Discount;
-            Worksheet.Cells[row, DateColumn].NumberFormat = "ДД.ММ.ГГ ч:мм";
-            Worksheet.Cells[row, DateColumn] = DateTime.Now;
+            if (_amount != 0)
+            {
+                SetCellValue(worksheet, row, QuantityColumn, _amount);
+            }
+
+            SetCellValue(worksheet, row, VendorColumn, _vendor);
+            SetCellValue(worksheet, row, DiscountColumn, vendorData.Discount);
+            SetCellNumberFormat(worksheet, row, DateColumn, "ДД.ММ.ГГ ч:мм");
+            SetCellValue(worksheet, row, DateColumn, DateTime.Now);
 
             // 2) Простые формулы (не ВПР) — быстрые
-            Worksheet.Cells[row, TotalPriceColumn].Formula = $"=G{row}*(100-F{row})/100";
-            Worksheet.Cells[row, CoastColumn].Formula = $"=H{row}*C{row}";
+            SetCellFormula(worksheet, row, TotalPriceColumn, $"=G{row}*(100-F{row})/100");
+            SetCellFormula(worksheet, row, CoastColumn, $"=H{row}*C{row}");
 
             // 3) Формулы ВПР — тяжёлые, в конце
-            Worksheet.Cells[row, DescriptionColumn].FormulaLocal = string.Format(vendorData.Formula_1, row);
-            Worksheet.Cells[row, MultiplicityColumn].FormulaLocal = string.Format(vendorData.Formula_2, row);
-            Worksheet.Cells[row, PriceColumn].FormulaLocal = string.Format(vendorData.Formula_3, row);
+            SetCellFormulaLocal(worksheet, row, DescriptionColumn, string.Format(vendorData.Formula_1, row));
+            SetCellFormulaLocal(worksheet, row, MultiplicityColumn, string.Format(vendorData.Formula_2, row));
+            SetCellFormulaLocal(worksheet, row, PriceColumn, string.Format(vendorData.Formula_3, row));
         }
 
         /// <summary>
         /// Пакетная запись нескольких строк.
-        /// 
+        ///
         /// Стратегия «текст → формула»:
         ///   Шаг 1: Записываем ВПР-формулы как ТЕКСТ (NumberFormat = "@")
         ///          — Excel не парсит формулу, не трогает прайс, это мгновенно
@@ -120,9 +157,8 @@ namespace ExcelMacroAdd.Functions
         ///   как Value2 текстовой строки — без парсинга.
         ///   Конвертация в конце — одна операция на весь столбец.
         /// </summary>
-        private void WriteBatchRows(UserVariables.Vendor vendorData)
+        private void WriteBatchRows(Worksheet worksheet, UserVariables.Vendor vendorData)
         {
-            int endRow = _startRow + _countRows - 1;
             var dateNow = DateTime.Now;
 
             // === Обычные значения — массивами ===
@@ -137,13 +173,20 @@ namespace ExcelMacroAdd.Functions
                 dateValues[i, 0] = dateNow;
             }
 
-            SetRangeValue(VendorColumn, vendorValues);
-            SetRangeValue(DiscountColumn, discountValues);
+            SetRangeValue(worksheet, VendorColumn, vendorValues);
+            SetRangeValue(worksheet, DiscountColumn, discountValues);
 
-            Range dateRange = GetColumnRange(DateColumn);
-            dateRange.NumberFormat = "ДД.ММ.ГГ ч:мм";
-            dateRange.Value2 = dateValues;
-            Marshal.ReleaseComObject(dateRange);
+            Range dateRange = null;
+            try
+            {
+                dateRange = GetColumnRange(worksheet, DateColumn);
+                dateRange.NumberFormat = "ДД.ММ.ГГ ч:мм";
+                dateRange.Value2 = dateValues;
+            }
+            finally
+            {
+                ReleaseComObject(dateRange);
+            }
 
             // === Простые формулы (не ВПР) ===
             var totalPriceFormulas = new object[_countRows, 1];
@@ -156,8 +199,8 @@ namespace ExcelMacroAdd.Functions
                 coastFormulas[i, 0] = $"=H{row}*C{row}";
             }
 
-            SetRangeFormula(TotalPriceColumn, totalPriceFormulas);
-            SetRangeFormula(CoastColumn, coastFormulas);
+            SetRangeFormula(worksheet, TotalPriceColumn, totalPriceFormulas);
+            SetRangeFormula(worksheet, CoastColumn, coastFormulas);
 
             // === Формулы ВПР — двухфазная вставка ===
             var formula1Text = new object[_countRows, 1];
@@ -173,27 +216,35 @@ namespace ExcelMacroAdd.Functions
             }
 
             // Фаза 1: пишем как текст (мгновенно)
-            WriteAsText(DescriptionColumn, formula1Text);
-            WriteAsText(MultiplicityColumn, formula2Text);
-            WriteAsText(PriceColumn, formula3Text);
+            WriteAsText(worksheet, DescriptionColumn, formula1Text);
+            WriteAsText(worksheet, MultiplicityColumn, formula2Text);
+            WriteAsText(worksheet, PriceColumn, formula3Text);
 
             // Фаза 2: конвертируем текст → формулы (одна операция на столбец)
-            ActivateFormulas(DescriptionColumn);
-            ActivateFormulas(MultiplicityColumn);
-            ActivateFormulas(PriceColumn);
+            ActivateFormulas(worksheet, DescriptionColumn);
+            ActivateFormulas(worksheet, MultiplicityColumn);
+            ActivateFormulas(worksheet, PriceColumn);
         }
 
         /// <summary>
-        /// Записывает строки-формулы как текст. 
+        /// Записывает строки-формулы как текст.
         /// NumberFormat = "@" заставляет Excel трактовать "=ВПР(...)" как литерал.
         /// Value2 со строками в текстовом формате — мгновенная операция.
         /// </summary>
-        private void WriteAsText(int column, object[,] formulaTexts)
+        private void WriteAsText(Worksheet worksheet, int column, object[,] formulaTexts)
         {
-            Range range = GetColumnRange(column);
-            range.NumberFormat = "@";
-            range.Value2 = formulaTexts;
-            Marshal.ReleaseComObject(range);
+            Range range = null;
+
+            try
+            {
+                range = GetColumnRange(worksheet, column);
+                range.NumberFormat = "@";
+                range.Value2 = formulaTexts;
+            }
+            finally
+            {
+                ReleaseComObject(range);
+            }
         }
 
         /// <summary>
@@ -201,11 +252,13 @@ namespace ExcelMacroAdd.Functions
         /// Снимает текстовый формат, читает значения и записывает обратно
         /// как FormulaLocal — одна COM-операция на весь диапазон.
         /// </summary>
-        private void ActivateFormulas(int column)
+        private void ActivateFormulas(Worksheet worksheet, int column)
         {
-            Range range = GetColumnRange(column);
+            Range range = null;
+
             try
             {
+                range = GetColumnRange(worksheet, column);
                 range.NumberFormat = "General";
 
                 if (_countRows == 1)
@@ -227,32 +280,127 @@ namespace ExcelMacroAdd.Functions
             }
             finally
             {
-                Marshal.ReleaseComObject(range);
+                ReleaseComObject(range);
             }
         }
 
         // === Вспомогательные методы ===
 
-        private Range GetColumnRange(int column)
+        private Range GetColumnRange(Worksheet worksheet, int column)
         {
-            int endRow = _startRow + _countRows - 1;
-            return Worksheet.Range[
-                Worksheet.Cells[_startRow, column],
-                Worksheet.Cells[endRow, column]];
+            Range startCell = null;
+            Range endCell = null;
+
+            try
+            {
+                int endRow = _startRow + _countRows - 1;
+                startCell = (Range)worksheet.Cells[_startRow, column];
+                endCell = (Range)worksheet.Cells[endRow, column];
+                return worksheet.Range[startCell, endCell];
+            }
+            finally
+            {
+                ReleaseComObject(endCell);
+                ReleaseComObject(startCell);
+            }
         }
 
-        private void SetRangeValue(int column, object[,] values)
+        private void SetRangeValue(Worksheet worksheet, int column, object[,] values)
         {
-            Range range = GetColumnRange(column);
-            range.Value2 = values;
-            Marshal.ReleaseComObject(range);
+            Range range = null;
+
+            try
+            {
+                range = GetColumnRange(worksheet, column);
+                range.Value2 = values;
+            }
+            finally
+            {
+                ReleaseComObject(range);
+            }
         }
 
-        private void SetRangeFormula(int column, object[,] formulas)
+        private void SetRangeFormula(Worksheet worksheet, int column, object[,] formulas)
         {
-            Range range = GetColumnRange(column);
-            range.Formula = formulas;
-            Marshal.ReleaseComObject(range);
+            Range range = null;
+
+            try
+            {
+                range = GetColumnRange(worksheet, column);
+                range.Formula = formulas;
+            }
+            finally
+            {
+                ReleaseComObject(range);
+            }
+        }
+
+        private static void SetCellValue(Worksheet worksheet, int row, int column, object value)
+        {
+            Range cell = null;
+
+            try
+            {
+                cell = (Range)worksheet.Cells[row, column];
+                cell.Value2 = value;
+            }
+            finally
+            {
+                ReleaseComObject(cell);
+            }
+        }
+
+        private static void SetCellFormula(Worksheet worksheet, int row, int column, string formula)
+        {
+            Range cell = null;
+
+            try
+            {
+                cell = (Range)worksheet.Cells[row, column];
+                cell.Formula = formula;
+            }
+            finally
+            {
+                ReleaseComObject(cell);
+            }
+        }
+
+        private static void SetCellFormulaLocal(Worksheet worksheet, int row, int column, string formula)
+        {
+            Range cell = null;
+
+            try
+            {
+                cell = (Range)worksheet.Cells[row, column];
+                cell.FormulaLocal = formula;
+            }
+            finally
+            {
+                ReleaseComObject(cell);
+            }
+        }
+
+        private static void SetCellNumberFormat(Worksheet worksheet, int row, int column, string numberFormat)
+        {
+            Range cell = null;
+
+            try
+            {
+                cell = (Range)worksheet.Cells[row, column];
+                cell.NumberFormat = numberFormat;
+            }
+            finally
+            {
+                ReleaseComObject(cell);
+            }
+        }
+
+        private static void ReleaseComObject(object comObject)
+        {
+            if (comObject != null && Marshal.IsComObject(comObject))
+            {
+                Marshal.ReleaseComObject(comObject);
+            }
         }
     }
 }

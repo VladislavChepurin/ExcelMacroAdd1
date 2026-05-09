@@ -64,30 +64,26 @@ namespace ExcelMacroAdd.BusinessLayer
             memoryCache.TryGetValue(keyCache, out IUserSwitch userSwitch);
             if (userSwitch == null)
             {
-                var group = context.Switches
+                var items = context.Switches
                     .AsNoTracking()
-                    .Where(p => p.ProductVendor.VendorName == vendor && p.ProductSeries.SeriesName == series)
-                    .Select(p => p.ProductGroup.GroupName)
-                    .FirstOrDefault();
+                    .Where(p => p.ProductVendor.VendorName == vendor
+                             && p.ProductSeries.SeriesName == series)
+                    .Select(p => new
+                    {
+                        Group = p.ProductGroup.GroupName,
+                        p.Current,
+                        p.QuantityPole
+                    })
+                    .ToList();
 
-                var current = context.Switches
-                    .AsNoTracking()
-                    .Where(p => p.ProductVendor.VendorName == vendor && p.ProductSeries.SeriesName == series)
-                    .Select(p => p.Current)
-                    .OrderBy(p => p)
-                    .ToHashSet()
-                    .ToArray();
-
-                var qantityPole = context.Switches
-                    .AsNoTracking()
-                    .Where(p => p.ProductVendor.VendorName == vendor && p.ProductSeries.SeriesName == series)
-                    .Select(p => p.QuantityPole)
-                    .ToHashSet()
-                    .ToArray();
+                var group = items.Select(p => p.Group).FirstOrDefault();
+                var current = items.Select(p => p.Current).OrderBy(p => p).ToHashSet().ToArray();
+                var qantityPole = items.Select(p => p.QuantityPole).ToHashSet().ToArray();
 
                 userSwitch = new UserSwitch(group, current, qantityPole);
                 if (userSwitch.current != null)
-                    memoryCache.Set(keyCache, userSwitch, new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
+                    memoryCache.Set(keyCache, userSwitch,
+                        new MemoryCacheEntryOptions().SetAbsoluteExpiration(System.TimeSpan.FromMinutes(5)));
             }
             return userSwitch;
         }

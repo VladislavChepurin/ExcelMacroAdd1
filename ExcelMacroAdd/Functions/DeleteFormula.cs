@@ -9,11 +9,17 @@ namespace ExcelMacroAdd.Functions
     {
         public override void Start()
         {
-            Range cell = Cell;
+            Worksheet worksheet = null;
+            Range cell = null;
+            Range focusRange = null;
+
             try
             {
+                worksheet = Worksheet;
+                cell = Cell;
                 cell.Value2 = cell.Value2;                      //Удаляем формулы
-                Worksheet.Range["A1", Type.Missing].Select();   //Фокус на ячейку А1   
+                focusRange = worksheet.Range["A1", Type.Missing];
+                focusRange.Select();   //Фокус на ячейку А1
             }
             catch (Exception ex)
             {
@@ -23,12 +29,17 @@ namespace ExcelMacroAdd.Functions
             }
             finally
             {
-                if (cell != null)
-                {
-                    Marshal.ReleaseComObject(cell);
-                }
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
+                ReleaseComObject(focusRange);
+                ReleaseComObject(cell);
+                ReleaseComObject(worksheet);
+            }
+        }
+
+        private static void ReleaseComObject(object comObject)
+        {
+            if (comObject != null && Marshal.IsComObject(comObject))
+            {
+                Marshal.ReleaseComObject(comObject);
             }
         }
     }

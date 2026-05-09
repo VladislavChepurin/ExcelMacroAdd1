@@ -6,13 +6,6 @@ namespace ExcelMacroAdd.Serializable.Entity
     {
         public int Number { get; set; }
         public string Description { get; set; }
-        public float BuildTime { get; set; }
-
-        public TypeNkySettings(int number, string description, float buildTime)
-        {
-            Number = number;
-            Description = description;
-            BuildTime = buildTime;
-        }
+        public float BuildTime { get; set; }      
     }
 }

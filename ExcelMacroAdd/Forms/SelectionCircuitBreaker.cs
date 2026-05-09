@@ -1,4 +1,4 @@
-﻿using ExcelMacroAdd.BusinessLayer.Interfaces;
+using ExcelMacroAdd.BusinessLayer.Interfaces;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Models;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
@@ -23,568 +23,400 @@ namespace ExcelMacroAdd.Forms
             SixthLineArray
         }
 
+        private sealed class CircuitBreakerRowControls
+        {
+            public CircuitBreakerRowControls(
+                CheckBox checkBox,
+                TextBox quantityTextBox,
+                ComboBox vendorComboBox,
+                ComboBox seriesComboBox,
+                ComboBox currentComboBox,
+                ComboBox curveComboBox,
+                ComboBox maxCurrentComboBox,
+                ComboBox polesComboBox,
+                PictureBox statusPictureBox,
+                Label groupLabel)
+            {
+                CheckBox = checkBox;
+                QuantityTextBox = quantityTextBox;
+                VendorComboBox = vendorComboBox;
+                SeriesComboBox = seriesComboBox;
+                CurrentComboBox = currentComboBox;
+                CurveComboBox = curveComboBox;
+                MaxCurrentComboBox = maxCurrentComboBox;
+                PolesComboBox = polesComboBox;
+                StatusPictureBox = statusPictureBox;
+                GroupLabel = groupLabel;
+            }
+
+            public CheckBox CheckBox { get; }
+
+            public TextBox QuantityTextBox { get; }
+
+            public ComboBox VendorComboBox { get; }
+
+            public ComboBox SeriesComboBox { get; }
+
+            public ComboBox CurrentComboBox { get; }
+
+            public ComboBox CurveComboBox { get; }
+
+            public ComboBox MaxCurrentComboBox { get; }
+
+            public ComboBox PolesComboBox { get; }
+
+            public PictureBox StatusPictureBox { get; }
+
+            public Label GroupLabel { get; }
+        }
+
         private readonly IDataInXml dataInXml;
         private readonly ISelectionCircuitBreakerData accessData;
-        private UserVariable[] userVariables = new UserVariable[6];        
+        private readonly CircuitBreakerRowControls[] circuitBreakerRows;
+        private UserVariable[] userVariables = new UserVariable[6];
 
         private void SelectionCircuitBreaker_FormClosed(object sender, FormClosedEventArgs e)
         {
             SelectionModularDevices main = this.Owner as SelectionModularDevices;
             main?.Show();
         }
-  
+
         public SelectionCircuitBreaker(IDataInXml dataInXml, ISelectionCircuitBreakerData accessData, IFormSettings formSettings)
         {
             TopMost = formSettings.FormTopMost;
             this.dataInXml = dataInXml;
             this.accessData = accessData;
             InitializeComponent();
+            circuitBreakerRows = CreateRows();
         }
 
         private void SelectionCircuitBreaker_Load(object sender, EventArgs e)
         {
-            //Массивы параметров модульных автоматов     
             var loadVendor = accessData.AccessCircuitBreaker.GetAllUniqueVendors();
-            ComboBox[] comboBoxItVendor = { comboBox1, comboBox7, comboBox13, comboBox19, comboBox25, comboBox31 };
 
-            for (int i = 0; i < 6; i++)
+            foreach (var row in circuitBreakerRows)
             {
-                //    //Добавление данных по вендорам
-                comboBoxItVendor[i].Items.AddRange(loadVendor);
-                comboBoxItVendor[i].SelectedIndex = 1;
+                row.VendorComboBox.Items.AddRange(loadVendor);
+                row.VendorComboBox.SelectedIndex = 1;
             }
         }
 
         #region CheckLine1
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e) =>
-          CheckDataCircuitBreakAsync((int)ContainerAvt.FirstLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FirstLineArray);
 
         private void textBox1_TextChanged(object sender, EventArgs e) =>
-          CheckDataCircuitBreakAsync((int)ContainerAvt.FirstLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FirstLineArray);
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FirstLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FirstLineArray);
 
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FirstLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FirstLineArray);
 
         private void comboBox5_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FirstLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FirstLineArray);
 
         private void comboBox6_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FirstLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FirstLineArray);
 
         #endregion
 
         #region CheckLine2
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e) =>
-             CheckDataCircuitBreakAsync((int)ContainerAvt.SecondLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.SecondLineArray);
 
         private void textBox2_TextChanged(object sender, EventArgs e) =>
-             CheckDataCircuitBreakAsync((int)ContainerAvt.SecondLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.SecondLineArray);
 
         private void comboBox9_SelectedIndexChanged(object sender, EventArgs e) =>
-             CheckDataCircuitBreakAsync((int)ContainerAvt.SecondLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.SecondLineArray);
 
         private void comboBox10_SelectedIndexChanged(object sender, EventArgs e) =>
-             CheckDataCircuitBreakAsync((int)ContainerAvt.SecondLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.SecondLineArray);
 
         private void comboBox11_SelectedIndexChanged(object sender, EventArgs e) =>
-             CheckDataCircuitBreakAsync((int)ContainerAvt.SecondLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.SecondLineArray);
 
         private void comboBox12_SelectedIndexChanged(object sender, EventArgs e) =>
-             CheckDataCircuitBreakAsync((int)ContainerAvt.SecondLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.SecondLineArray);
 
         #endregion
 
         #region CheckLine3
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.ThirdLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.ThirdLineArray);
 
         private void textBox3_TextChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.ThirdLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.ThirdLineArray);
 
         private void comboBox15_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.ThirdLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.ThirdLineArray);
 
         private void comboBox16_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.ThirdLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.ThirdLineArray);
 
         private void comboBox17_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.ThirdLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.ThirdLineArray);
 
         private void comboBox18_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.ThirdLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.ThirdLineArray);
 
         #endregion
 
         #region CheckLine4
 
         private void checkBox4_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FourthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FourthLineArray);
 
         private void textBox4_TextChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FourthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FourthLineArray);
 
         private void comboBox21_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FourthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FourthLineArray);
 
         private void comboBox22_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FourthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FourthLineArray);
 
         private void comboBox23_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FourthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FourthLineArray);
 
         private void comboBox24_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FourthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FourthLineArray);
 
         #endregion
 
         #region CheckLine5
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FifthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FifthLineArray);
 
         private void textBox5_TextChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FifthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FifthLineArray);
 
         private void comboBox27_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FifthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FifthLineArray);
 
         private void comboBox28_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FifthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FifthLineArray);
 
         private void comboBox29_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FifthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FifthLineArray);
 
         private void comboBox30_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.FifthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.FifthLineArray);
 
         #endregion
 
         #region CheckLine6
 
         private void checkBox6_CheckedChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.SixthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.SixthLineArray);
 
         private void textBox6_TextChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.SixthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.SixthLineArray);
 
         private void comboBox33_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.SixthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.SixthLineArray);
 
         private void comboBox34_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.SixthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.SixthLineArray);
 
         private void comboBox35_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.SixthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.SixthLineArray);
 
         private void comboBox36_SelectedIndexChanged(object sender, EventArgs e) =>
-            CheckDataCircuitBreakAsync((int)ContainerAvt.SixthLineArray);
+            HandleRowSelectionChanged((int)ContainerAvt.SixthLineArray);
 
         #endregion
 
         #region ComboboxSeries
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string vendor = comboBox1.Text;
-            var loadSeries = accessData.AccessCircuitBreaker.GetAllUniqueSeries(vendor);
-            comboBox2.Items.Clear();
-            comboBox2.Items.AddRange(loadSeries);
-            comboBox2.SelectedIndex = 0;
-        }
 
-        private void comboBox7_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string vendor = comboBox7.Text;
-            var loadSeries = accessData.AccessCircuitBreaker.GetAllUniqueSeries(vendor);
-            comboBox8.Items.Clear();
-            comboBox8.Items.AddRange(loadSeries);
-            comboBox8.SelectedIndex = 0;
-        }
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) =>
+            HandleVendorChanged((int)ContainerAvt.FirstLineArray);
 
-        private void comboBox13_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string vendor = comboBox13.Text;
-            var loadSeries = accessData.AccessCircuitBreaker.GetAllUniqueSeries(vendor);
-            comboBox14.Items.Clear();
-            comboBox14.Items.AddRange(loadSeries);
-            comboBox14.SelectedIndex = 0;
-        }
+        private void comboBox7_SelectedIndexChanged(object sender, EventArgs e) =>
+            HandleVendorChanged((int)ContainerAvt.SecondLineArray);
 
-        private void comboBox19_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string vendor = comboBox19.Text;
-            var loadSeries = accessData.AccessCircuitBreaker.GetAllUniqueSeries(vendor);
-            comboBox20.Items.Clear();
-            comboBox20.Items.AddRange(loadSeries);
-            comboBox20.SelectedIndex = 0;
-        }
+        private void comboBox13_SelectedIndexChanged(object sender, EventArgs e) =>
+            HandleVendorChanged((int)ContainerAvt.ThirdLineArray);
 
-        private void comboBox25_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string vendor = comboBox25.Text;
-            var loadSeries = accessData.AccessCircuitBreaker.GetAllUniqueSeries(vendor);
-            comboBox26.Items.Clear();
-            comboBox26.Items.AddRange(loadSeries);
-            comboBox26.SelectedIndex = 0;
-        }
+        private void comboBox19_SelectedIndexChanged(object sender, EventArgs e) =>
+            HandleVendorChanged((int)ContainerAvt.FourthLineArray);
 
-        private void comboBox31_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string vendor = comboBox31.Text;
-            var loadSeries = accessData.AccessCircuitBreaker.GetAllUniqueSeries(vendor);
-            comboBox32.Items.Clear();
-            comboBox32.Items.AddRange(loadSeries);
-            comboBox32.SelectedIndex = 0;
-        }
+        private void comboBox25_SelectedIndexChanged(object sender, EventArgs e) =>
+            HandleVendorChanged((int)ContainerAvt.FifthLineArray);
+
+        private void comboBox31_SelectedIndexChanged(object sender, EventArgs e) =>
+            HandleVendorChanged((int)ContainerAvt.SixthLineArray);
+
         #endregion
 
-        //Загружаем в Combobox группу, ток, кривую, ток отключения и кол-во полюсов
         #region setAllDataCombobox
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string vendor = comboBox1.Text;
-            string series = comboBox2.Text;
-            var data = accessData.AccessCircuitBreaker.GetDataCircutBreaker(vendor, series);
-            string group = data.group;
-            if (group != null)
-            {
-                label1.Visible = true;
-                label1.Text = group;
-            }
-            else
-            {
-                label1.Visible = false;
-            }
 
-            comboBox3.Items.Clear();
-            comboBox3.Items.AddRange(data.current.Select(i => i.ToString()).ToArray());
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) =>
+            HandleSeriesChanged((int)ContainerAvt.FirstLineArray);
 
-            //Костыль
-            if (data.current.Count() > 5)
-            {
-                comboBox3.SelectedIndex = 5;
-            }
-            else
-            {
-                comboBox3.SelectedIndex = 0;
-            }
+        private void comboBox8_SelectedIndexChanged(object sender, EventArgs e) =>
+            HandleSeriesChanged((int)ContainerAvt.SecondLineArray);
 
-            comboBox4.Items.Clear();
-            comboBox4.Items.AddRange(data.kurve);
-            comboBox4.SelectedIndex = 0;
+        private void comboBox14_SelectedIndexChanged(object sender, EventArgs e) =>
+            HandleSeriesChanged((int)ContainerAvt.ThirdLineArray);
 
-            comboBox5.Items.Clear();
-            comboBox5.Items.AddRange(data.maxCurrent);
-            comboBox5.SelectedIndex = 0;
+        private void comboBox20_SelectedIndexChanged(object sender, EventArgs e) =>
+            HandleSeriesChanged((int)ContainerAvt.FourthLineArray);
 
-            comboBox6.Items.Clear();
-            comboBox6.Items.AddRange(data.quantityPole);
-            comboBox6.SelectedIndex = 0;
-        }
+        private void comboBox26_SelectedIndexChanged(object sender, EventArgs e) =>
+            HandleSeriesChanged((int)ContainerAvt.FifthLineArray);
 
-        private void comboBox8_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string vendor = comboBox7.Text;
-            string series = comboBox8.Text;
-            var data = accessData.AccessCircuitBreaker.GetDataCircutBreaker(vendor, series);
-            string group = data.group;
-            if (group != null)
-            {
-                label2.Visible = true;
-                label2.Text = group;
-            }
-            else
-            {
-                label2.Visible = false;
-            }
+        private void comboBox32_SelectedIndexChanged(object sender, EventArgs e) =>
+            HandleSeriesChanged((int)ContainerAvt.SixthLineArray);
 
-            comboBox9.Items.Clear();
-            comboBox9.Items.AddRange(data.current.Select(i => i.ToString()).ToArray());
-
-            //Костыль
-            if (data.current.Count() > 5)
-            {
-                comboBox9.SelectedIndex = 5;
-            }
-            else
-            {
-                comboBox9.SelectedIndex = 0;
-            }
-
-            comboBox10.Items.Clear();
-            comboBox10.Items.AddRange(data.kurve);
-            comboBox10.SelectedIndex = 0;
-
-            comboBox11.Items.Clear();
-            comboBox11.Items.AddRange(data.maxCurrent);
-            comboBox11.SelectedIndex = 0;
-
-            comboBox12.Items.Clear();
-            comboBox12.Items.AddRange(data.quantityPole);
-            comboBox12.SelectedIndex = 0;
-        }
-
-        private void comboBox14_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string vendor = comboBox13.Text;
-            string series = comboBox14.Text;
-            var data = accessData.AccessCircuitBreaker.GetDataCircutBreaker(vendor, series);
-            string group = data.group;
-            if (group != null)
-            {
-                label3.Visible = true;
-                label3.Text = group;
-            }
-            else
-            {
-                label3.Visible = false;
-            }
-
-            comboBox15.Items.Clear();
-            comboBox15.Items.AddRange(data.current.Select(i => i.ToString()).ToArray());
-
-            //Костыль
-            if (data.current.Count() > 5)
-            {
-                comboBox15.SelectedIndex = 5;
-            }
-            else
-            {
-                comboBox15.SelectedIndex = 0;
-            }
-
-            comboBox16.Items.Clear();
-            comboBox16.Items.AddRange(data.kurve);
-            comboBox16.SelectedIndex = 0;
-
-            comboBox17.Items.Clear();
-            comboBox17.Items.AddRange(data.maxCurrent);
-            comboBox17.SelectedIndex = 0;
-
-            comboBox18.Items.Clear();
-            comboBox18.Items.AddRange(data.quantityPole);
-            comboBox18.SelectedIndex = 0;
-        }
-
-        private void comboBox20_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string vendor = comboBox19.Text;
-            string series = comboBox20.Text;
-            var data = accessData.AccessCircuitBreaker.GetDataCircutBreaker(vendor, series);
-            string group = data.group;
-            if (group != null)
-            {
-                label4.Visible = true;
-                label4.Text = group;
-            }
-            else
-            {
-                label4.Visible = false;
-            }
-
-            comboBox21.Items.Clear();
-            comboBox21.Items.AddRange(data.current.Select(i => i.ToString()).ToArray());
-
-            //Костыль
-            if (data.current.Count() > 5)
-            {
-                comboBox21.SelectedIndex = 5;
-            }
-            else
-            {
-                comboBox21.SelectedIndex = 0;
-            }
-
-            comboBox22.Items.Clear();
-            comboBox22.Items.AddRange(data.kurve);
-            comboBox22.SelectedIndex = 0;
-
-            comboBox23.Items.Clear();
-            comboBox23.Items.AddRange(data.maxCurrent);
-            comboBox23.SelectedIndex = 0;
-
-            comboBox24.Items.Clear();
-            comboBox24.Items.AddRange(data.quantityPole);
-            comboBox24.SelectedIndex = 0;
-        }
-
-        private void comboBox26_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string vendor = comboBox25.Text;
-            string series = comboBox26.Text;
-            var data = accessData.AccessCircuitBreaker.GetDataCircutBreaker(vendor, series);
-            string group = data.group;
-            if (group != null)
-            {
-                label5.Visible = true;
-                label5.Text = group;
-            }
-            else
-            {
-                label5.Visible = false;
-            }
-
-            comboBox27.Items.Clear();
-            comboBox27.Items.AddRange(data.current.Select(i => i.ToString()).ToArray());
-
-            //Костыль
-            if (data.current.Count() > 5)
-            {
-                comboBox27.SelectedIndex = 5;
-            }
-            else
-            {
-                comboBox27.SelectedIndex = 0;
-            }
-
-            comboBox28.Items.Clear();
-            comboBox28.Items.AddRange(data.kurve);
-            comboBox28.SelectedIndex = 0;
-
-            comboBox29.Items.Clear();
-            comboBox29.Items.AddRange(data.maxCurrent);
-            comboBox29.SelectedIndex = 0;
-
-            comboBox30.Items.Clear();
-            comboBox30.Items.AddRange(data.quantityPole);
-            comboBox30.SelectedIndex = 0;
-        }
-
-        private void comboBox32_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string vendor = comboBox31.Text;
-            string series = comboBox32.Text;
-            var data = accessData.AccessCircuitBreaker.GetDataCircutBreaker(vendor, series);
-            string group = data.group;
-            if (group != null)
-            {
-                label6.Visible = true;
-                label6.Text = group;
-            }
-            else
-            {
-                label6.Visible = false;
-            }
-
-            comboBox33.Items.Clear();
-            comboBox33.Items.AddRange(data.current.Select(i => i.ToString()).ToArray());
-
-            //Костыль
-            if (data.current.Count() > 5)
-            {
-                comboBox33.SelectedIndex = 5;
-            }
-            else
-            {
-                comboBox33.SelectedIndex = 0;
-            }
-
-            comboBox34.Items.Clear();
-            comboBox34.Items.AddRange(data.kurve);
-            comboBox34.SelectedIndex = 0;
-
-            comboBox35.Items.Clear();
-            comboBox35.Items.AddRange(data.maxCurrent);
-            comboBox35.SelectedIndex = 0;
-
-            comboBox36.Items.Clear();
-            comboBox36.Items.AddRange(data.quantityPole);
-            comboBox36.SelectedIndex = 0;
-        }
         #endregion
 
         #region KeyPress
-        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-                e.Handled = true;
-        }
 
-        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-                e.Handled = true;
-        }
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e) =>
+            HandleQuantityKeyPress(e);
 
-        private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-                e.Handled = true;
-        }
+        private void textBox2_KeyPress(object sender, KeyPressEventArgs e) =>
+            HandleQuantityKeyPress(e);
 
-        private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-                e.Handled = true;
-        }
+        private void textBox3_KeyPress(object sender, KeyPressEventArgs e) =>
+            HandleQuantityKeyPress(e);
 
-        private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-                e.Handled = true;
-        }
+        private void textBox4_KeyPress(object sender, KeyPressEventArgs e) =>
+            HandleQuantityKeyPress(e);
 
-        private void textBox6_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-                e.Handled = true;
-        }
+        private void textBox5_KeyPress(object sender, KeyPressEventArgs e) =>
+            HandleQuantityKeyPress(e);
+
+        private void textBox6_KeyPress(object sender, KeyPressEventArgs e) =>
+            HandleQuantityKeyPress(e);
 
         #endregion
 
+        private void HandleRowSelectionChanged(int rowIndex)
+        {
+            CheckDataCircuitBreakAsync(rowIndex);
+        }
+
+        private void HandleVendorChanged(int rowIndex)
+        {
+            var row = circuitBreakerRows[rowIndex];
+            string vendor = row.VendorComboBox.Text;
+            var loadSeries = accessData.AccessCircuitBreaker.GetAllUniqueSeries(vendor);
+
+            row.SeriesComboBox.Items.Clear();
+            row.SeriesComboBox.Items.AddRange(loadSeries);
+            row.SeriesComboBox.SelectedIndex = 0;
+        }
+
+        private void HandleSeriesChanged(int rowIndex)
+        {
+            var row = circuitBreakerRows[rowIndex];
+            string vendor = row.VendorComboBox.Text;
+            string series = row.SeriesComboBox.Text;
+            var data = accessData.AccessCircuitBreaker.GetDataCircutBreaker(vendor, series);
+
+            SetGroupLabel(row.GroupLabel, data.group);
+
+            row.CurrentComboBox.Items.Clear();
+            row.CurrentComboBox.Items.AddRange(data.current.Select(i => i.ToString()).ToArray());
+            row.CurrentComboBox.SelectedIndex = data.current.Count() > 5 ? 5 : 0;
+
+            row.CurveComboBox.Items.Clear();
+            row.CurveComboBox.Items.AddRange(data.kurve);
+            row.CurveComboBox.SelectedIndex = 0;
+
+            row.MaxCurrentComboBox.Items.Clear();
+            row.MaxCurrentComboBox.Items.AddRange(data.maxCurrent);
+            row.MaxCurrentComboBox.SelectedIndex = 0;
+
+            row.PolesComboBox.Items.Clear();
+            row.PolesComboBox.Items.AddRange(data.quantityPole);
+            row.PolesComboBox.SelectedIndex = 0;
+        }
+
+        private static void SetGroupLabel(Label label, string group)
+        {
+            if (group != null)
+            {
+                label.Visible = true;
+                label.Text = group;
+                return;
+            }
+
+            label.Visible = false;
+        }
+
+        private static void HandleQuantityKeyPress(KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+            if (!char.IsDigit(number) && number != 8)
+            {
+                e.Handled = true;
+            }
+        }
+
         private async void CheckDataCircuitBreakAsync(int rowsCheck)
         {
+            var row = circuitBreakerRows[rowsCheck];
 
-            PictureBox[] pictures = PictureBoxesCircuitBreak();
-            CheckBox[] checks = CheckBoxArrayCircuitBreak();
-
-            //Если стоит галочка в CheckBox, то условие истина
-            if (!checks[rowsCheck].Checked)
+            if (!row.CheckBox.Checked)
             {
                 return;
             }
 
-            var vendor = ComboBoxesArrayVendor()[rowsCheck].SelectedItem.ToString();
-            var series = ComboBoxesArraySeries()[rowsCheck].SelectedItem.ToString();
-            int.TryParse(ComboBoxesArrayCurrent()[rowsCheck].SelectedItem.ToString(), out int current);
-            var kurve = ComboBoxesArrayCurve()[rowsCheck].SelectedItem.ToString();
-            var maxCurrent = ComboBoxesArrayMaxCurrent()[rowsCheck].SelectedItem.ToString();
-            var polus = ComboBoxesArrayPolus()[rowsCheck].SelectedItem.ToString();
-            int.TryParse(TextBoxesArrayCircuitBreak()[rowsCheck].Text, out int quantity);
+            var vendor = row.VendorComboBox.SelectedItem.ToString();
+            var series = row.SeriesComboBox.SelectedItem.ToString();
+            int.TryParse(row.CurrentComboBox.SelectedItem.ToString(), out int current);
+            var curve = row.CurveComboBox.SelectedItem.ToString();
+            var maxCurrent = row.MaxCurrentComboBox.SelectedItem.ToString();
+            var poles = row.PolesComboBox.SelectedItem.ToString();
+            int.TryParse(row.QuantityTextBox.Text, out int quantity);
 
             try
             {
-                var modules = await accessData.AccessCircuitBreaker.GetEntityCircuitBreaker(vendor, series, current, kurve, maxCurrent, polus);
+                var modules = await accessData.AccessCircuitBreaker.GetEntityCircuitBreaker(
+                    vendor,
+                    series,
+                    current,
+                    curve,
+                    maxCurrent,
+                    poles);
 
                 if (modules != null)
                 {
-                    UserVariable userVariable = new UserVariable { article = modules.ArticleNumber, vendor = vendor, quantity = quantity, number = rowsCheck };
+                    UserVariable userVariable = new UserVariable
+                    {
+                        article = modules.ArticleNumber,
+                        vendor = vendor,
+                        quantity = quantity,
+                        number = rowsCheck
+                    };
+
                     userVariables[rowsCheck] = userVariable;
-                    pictures[rowsCheck].BackColor = Color.Green;
+                    row.StatusPictureBox.BackColor = Color.Green;
                     return;
                 }
+
                 userVariables[rowsCheck] = null;
-                pictures[rowsCheck].BackColor = Color.IndianRed;
+                row.StatusPictureBox.BackColor = Color.IndianRed;
             }
             catch (DataException)
             {
-                MessageError("Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",
+                MessageError(
+                    "Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",
                     "Ошибка базы данных");
             }
             catch (Exception e)
             {
-                MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {e.Message}",
+                MessageError(
+                    $"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {e.Message}",
                     "Ошибка базы данных");
             }
         }
@@ -601,54 +433,40 @@ namespace ExcelMacroAdd.Forms
 
         private void CreateFillInCircutBreakAsync()
         {
-            // Внешний scope: отключает ScreenUpdating/Calculation/Events ОДИН РАЗ
             using (var scope = new ExcelPerformanceScope(Globals.ThisAddIn.GetApplication()))
             {
                 int offsetRow = default;
                 foreach (var item in userVariables)
                 {
-                    if (item == null) continue;
-                    if (CheckBoxArrayCircuitBreak()[item.number].Checked)
+                    if (item == null)
+                    {
+                        continue;
+                    }
+
+                    if (circuitBreakerRows[item.number].CheckBox.Checked)
                     {
                         var writeExcel = new WriteExcel(dataInXml, item.vendor, item.article, offsetRow++, item.quantity);
-                        writeExcel.Start(); // Внутренний scope — вложенный, не трогает настройки
+                        writeExcel.Start();
                     }
                 }
             }
-            // Dispose внешнего scope: восстановит настройки + Calculate (если лист новый)
         }
 
-        private PictureBox[] PictureBoxesCircuitBreak() =>
-            new PictureBox[] { pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6 };
-
-        private TextBox[] TextBoxesArrayCircuitBreak() =>
-            new TextBox[] { textBox1, textBox2, textBox3, textBox4, textBox5, textBox6 };
-
-        private CheckBox[] CheckBoxArrayCircuitBreak() =>
-            new CheckBox[] { checkBox1, checkBox2, checkBox3, checkBox4, checkBox5, checkBox6 };
-
-        private ComboBox[] ComboBoxesArrayVendor() =>
-             new ComboBox[] { comboBox1, comboBox7, comboBox13, comboBox19, comboBox25, comboBox31 };
-
-        private ComboBox[] ComboBoxesArraySeries() =>
-             new ComboBox[] { comboBox2, comboBox8, comboBox14, comboBox20, comboBox26, comboBox32 };
-
-        private ComboBox[] ComboBoxesArrayCurrent() =>
-            new ComboBox[] { comboBox3, comboBox9, comboBox15, comboBox21, comboBox27, comboBox33 };
-
-        private ComboBox[] ComboBoxesArrayCurve() =>
-            new ComboBox[] { comboBox4, comboBox10, comboBox16, comboBox22, comboBox28, comboBox34 };
-
-        private ComboBox[] ComboBoxesArrayMaxCurrent() =>
-           new ComboBox[] { comboBox5, comboBox11, comboBox17, comboBox23, comboBox29, comboBox35 };
-
-        private ComboBox[] ComboBoxesArrayPolus() =>
-            new ComboBox[] { comboBox6, comboBox12, comboBox18, comboBox24, comboBox30, comboBox36 };
-
+        private CircuitBreakerRowControls[] CreateRows() =>
+            new CircuitBreakerRowControls[]
+            {
+                new CircuitBreakerRowControls(checkBox1, textBox1, comboBox1, comboBox2, comboBox3, comboBox4, comboBox5, comboBox6, pictureBox1, label1),
+                new CircuitBreakerRowControls(checkBox2, textBox2, comboBox7, comboBox8, comboBox9, comboBox10, comboBox11, comboBox12, pictureBox2, label2),
+                new CircuitBreakerRowControls(checkBox3, textBox3, comboBox13, comboBox14, comboBox15, comboBox16, comboBox17, comboBox18, pictureBox3, label3),
+                new CircuitBreakerRowControls(checkBox4, textBox4, comboBox19, comboBox20, comboBox21, comboBox22, comboBox23, comboBox24, pictureBox4, label4),
+                new CircuitBreakerRowControls(checkBox5, textBox5, comboBox25, comboBox26, comboBox27, comboBox28, comboBox29, comboBox30, pictureBox5, label5),
+                new CircuitBreakerRowControls(checkBox6, textBox6, comboBox31, comboBox32, comboBox33, comboBox34, comboBox35, comboBox36, pictureBox6, label6)
+            };
 
         private static void MessageError(string textMessage, string textAttribute)
         {
-            MessageBox.Show(textMessage,
+            MessageBox.Show(
+                textMessage,
                 textAttribute,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error,
@@ -656,63 +474,27 @@ namespace ExcelMacroAdd.Forms
                 MessageBoxOptions.DefaultDesktopOnly);
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void pictureBox1_Click(object sender, EventArgs e) =>
+            CopyVendorAndSeriesDown((int)ContainerAvt.FirstLineArray);
+
+        private void pictureBox2_Click(object sender, EventArgs e) =>
+            CopyVendorAndSeriesDown((int)ContainerAvt.SecondLineArray);
+
+        private void pictureBox3_Click(object sender, EventArgs e) =>
+            CopyVendorAndSeriesDown((int)ContainerAvt.ThirdLineArray);
+
+        private void pictureBox4_Click(object sender, EventArgs e) =>
+            CopyVendorAndSeriesDown((int)ContainerAvt.FourthLineArray);
+
+        private void pictureBox5_Click(object sender, EventArgs e) =>
+            CopyVendorAndSeriesDown((int)ContainerAvt.FifthLineArray);
+
+        private void CopyVendorAndSeriesDown(int sourceRowIndex)
         {
-            var comboBoxesArrayVendor = ComboBoxesArrayVendor();
-            var comboBoxesArraySeries = ComboBoxesArraySeries();
-
-            for (int i = 1; i < 6; i++)
+            for (int i = sourceRowIndex + 1; i < circuitBreakerRows.Length; i++)
             {
-                comboBoxesArrayVendor[i].SelectedIndex = comboBoxesArrayVendor[0].SelectedIndex;
-                comboBoxesArraySeries[i].SelectedIndex = comboBoxesArraySeries[0].SelectedIndex;
-            }
-        }
-
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-            var comboBoxesArrayVendor = ComboBoxesArrayVendor();
-            var comboBoxesArraySeries = ComboBoxesArraySeries();
-
-            for (int i = 2; i < 6; i++)
-            {
-                comboBoxesArrayVendor[i].SelectedIndex = comboBoxesArrayVendor[1].SelectedIndex;
-                comboBoxesArraySeries[i].SelectedIndex = comboBoxesArraySeries[1].SelectedIndex;
-            }
-        }
-
-        private void pictureBox3_Click(object sender, EventArgs e)
-        {
-            var comboBoxesArrayVendor = ComboBoxesArrayVendor();
-            var comboBoxesArraySeries = ComboBoxesArraySeries();
-
-            for (int i = 3; i < 6; i++)
-            {
-                comboBoxesArrayVendor[i].SelectedIndex = comboBoxesArrayVendor[2].SelectedIndex;
-                comboBoxesArraySeries[i].SelectedIndex = comboBoxesArraySeries[2].SelectedIndex;
-            }
-        }
-
-        private void pictureBox4_Click(object sender, EventArgs e)
-        {
-            var comboBoxesArrayVendor = ComboBoxesArrayVendor();
-            var comboBoxesArraySeries = ComboBoxesArraySeries();
-
-            for (int i = 4; i < 6; i++)
-            {
-                comboBoxesArrayVendor[i].SelectedIndex = comboBoxesArrayVendor[3].SelectedIndex;
-                comboBoxesArraySeries[i].SelectedIndex = comboBoxesArraySeries[3].SelectedIndex;
-            }
-        }
-
-        private void pictureBox5_Click(object sender, EventArgs e)
-        {
-            var comboBoxesArrayVendor = ComboBoxesArrayVendor();
-            var comboBoxesArraySeries = ComboBoxesArraySeries();
-
-            for (int i = 5; i < 6; i++)
-            {
-                comboBoxesArrayVendor[i].SelectedIndex = comboBoxesArrayVendor[4].SelectedIndex;
-                comboBoxesArraySeries[i].SelectedIndex = comboBoxesArraySeries[4].SelectedIndex;
+                circuitBreakerRows[i].VendorComboBox.SelectedIndex = circuitBreakerRows[sourceRowIndex].VendorComboBox.SelectedIndex;
+                circuitBreakerRows[i].SeriesComboBox.SelectedIndex = circuitBreakerRows[sourceRowIndex].SeriesComboBox.SelectedIndex;
             }
         }
     }

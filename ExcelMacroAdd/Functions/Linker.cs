@@ -2,6 +2,7 @@
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 
 namespace ExcelMacroAdd.Functions
@@ -17,69 +18,134 @@ namespace ExcelMacroAdd.Functions
 
         public override void Start()
         {
-            //Создаем коллекцию
-            List<int> list = new List<int>();
-            // В коллекцию помещаем парсированые имена листов
-            foreach (Worksheet sheet in WorkBook.Sheets)
-            {
-                int.TryParse(sheet.Name, out int result);
-                list.Add(result);
-            }
-            //Проверяем на налиечие этих номеров в коллекции, если есть, то имя вкладке не присваиваем                 
-            if (!list.Contains(Worksheet.Index - 1))
-            {
-                //имя вкладки в зависимости от индекса
-                Worksheet.Name = (Worksheet.Index - 1).ToString();
-            }
+            Workbook workbook = null;
+            Worksheet worksheet = null;
+            Sheets sheets = null;
+            Range headersRange = null;
+            Range columnWidthRange = null;
+            Range formattingRange = null;
+            Range formattingCells = null;
+            Font formattingFont = null;
+            Range fontRange = null;
+            Font fontRangeFont = null;
+            Range bordersRange = null;
+            Borders borders = null;
+            Range focusRange = null;
 
-            // Заголовки столбцов
-            var headers = new List<(string Cell, string Value)>
+            try
+            {
+                workbook = WorkBook;
+                worksheet = Worksheet;
+
+                //Создаем коллекцию
+                List<int> list = new List<int>();
+
+                // В коллекцию помещаем парсированые имена листов
+                sheets = workbook.Sheets;
+                int sheetCount = sheets.Count;
+                for (int index = 1; index <= sheetCount; index++)
                 {
-                    ("A1", "Артикул"),
-                    ("B1", "Описание"),
-                    ("C1", "Кол-во"),
-                    ("D1", "Кратность"),
-                    ("E1", "Пр-ль"),
-                    ("F1", "Скидка"),
-                    ("G1", "Цена"),
-                    ("H1", "Цена со скидкой"),
-                    ("I1", "Стоимость"),
-                    ("J1", "Дата и время")
+                    Worksheet sheet = null;
+                    try
+                    {
+                        sheet = (Worksheet)sheets[index];
+                        int.TryParse(sheet.Name, out int result);
+                        list.Add(result);
+                    }
+                    finally
+                    {
+                        ReleaseComObject(sheet);
+                    }
+                }
+
+                int worksheetIndex = worksheet.Index;
+                //Проверяем на налиечие этих номеров в коллекции, если есть, то имя вкладке не присваиваем
+                if (!list.Contains(worksheetIndex - 1))
+                {
+                    //имя вкладки в зависимости от индекса
+                    worksheet.Name = (worksheetIndex - 1).ToString();
+                }
+
+                // Заголовки столбцов
+                headersRange = worksheet.Range["A1", "J1"];
+                headersRange.Value2 = new object[,]
+                {
+                    {
+                        "Артикул",
+                        "Описание",
+                        "Кол-во",
+                        "Кратность",
+                        "Пр-ль",
+                        "Скидка",
+                        "Цена",
+                        "Цена со скидкой",
+                        "Стоимость",
+                        "Дата и время"
+                    }
                 };
 
-            foreach (var header in headers)
-            {
-                Worksheet.Range[header.Cell].Value2 = header.Value;
+                // Ширина столбцов
+                var columnWidths = new Dictionary<string, double>
+                {
+                    ["A:A"] = 21,
+                    ["B:B"] = 80,
+                    ["C:C"] = 10,
+                    ["D:I"] = 13,
+                    ["J:J"] = 0
+                };
+
+                foreach (var width in columnWidths)
+                {
+                    columnWidthRange = worksheet.Range[width.Key];
+                    columnWidthRange.ColumnWidth = width.Value;
+                    ReleaseComObject(columnWidthRange);
+                    columnWidthRange = null;
+                }
+
+                //размечаем границы и правим шрифты
+                formattingRange = worksheet.Range["A1", "J500"];
+                formattingCells = formattingRange.Cells;
+                formattingFont = formattingCells.Font;
+                formattingFont.Name = correctFontResources.NameFont;
+                formattingFont.Size = correctFontResources.SizeFont;
+
+                // Форматирование
+                fontRange = worksheet.Range["A1", "J100"];
+                fontRangeFont = fontRange.Font;
+                fontRangeFont.Name = correctFontResources.NameFont;
+                fontRangeFont.Size = correctFontResources.SizeFont;
+
+                bordersRange = worksheet.Range["A1", "J11"];
+                borders = bordersRange.Borders;
+                borders.LineStyle = XlLineStyle.xlContinuous;  // Добавлено оформление границ
+
+                focusRange = worksheet.Range["A2", Type.Missing];
+                focusRange.Select();   //Фокус на ячейку А2
             }
-
-            // Ширина столбцов
-            var columnWidths = new Dictionary<string, double>
+            finally
             {
-                ["A:A"] = 21,
-                ["B:B"] = 80,
-                ["C:C"] = 10,
-                ["D:I"] = 13,
-                ["J:J"] = 0
-            };
+                ReleaseComObject(focusRange);
+                ReleaseComObject(borders);
+                ReleaseComObject(bordersRange);
+                ReleaseComObject(fontRangeFont);
+                ReleaseComObject(fontRange);
+                ReleaseComObject(formattingFont);
+                ReleaseComObject(formattingCells);
+                ReleaseComObject(formattingRange);
+                ReleaseComObject(columnWidthRange);
+                ReleaseComObject(headersRange);
+                ReleaseComObject(sheets);
+                ReleaseComObject(worksheet);
+                ReleaseComObject(workbook);
+            }
+        }
 
-            foreach (var width in columnWidths)
+        private static void ReleaseComObject(object comObject)
+        {
+            if (comObject != null && Marshal.IsComObject(comObject))
             {
-                Worksheet.Range[width.Key].ColumnWidth = width.Value;
-            }         
-
-            //размечаем границы и правим шрифты
-            Worksheet.Range["A1", "J500"].Cells.Font.Name = correctFontResources.NameFont;
-            Worksheet.Range["A1", "J500"].Cells.Font.Size = correctFontResources.SizeFont;
-
-            // Форматирование
-            var fontRange = Worksheet.Range["A1", "J100"];  
-            fontRange.Font.Name = correctFontResources.NameFont;
-            fontRange.Font.Size = correctFontResources.SizeFont;
-
-            var bordersRange = Worksheet.Range["A1", "J11"];
-            bordersRange.Borders.LineStyle = XlLineStyle.xlContinuous;  // Добавлено оформление границ
-
-            Worksheet.Range["A2", Type.Missing].Select();   //Фокус на ячейку А2  
+                Marshal.ReleaseComObject(comObject);
+            }
         }
     }
 }

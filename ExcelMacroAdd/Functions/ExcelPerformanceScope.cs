@@ -1,7 +1,7 @@
-﻿using Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace ExcelMacroAdd.Functions
 {
@@ -91,13 +91,22 @@ namespace ExcelMacroAdd.Functions
         /// </summary>
         public void ForceCalculateCurrentSheet()
         {
+            Worksheet sheet = null;
+
             try
             {
-                var sheet = _app.ActiveSheet as Worksheet;
+                sheet = _app.ActiveSheet as Worksheet;
                 sheet?.Calculate();
                 MarkCurrentSheetCalculated();
             }
-            catch { /* Игнорируем ошибки пересчёта */ }
+            catch
+            {
+                // Игнорируем ошибки пересчёта
+            }
+            finally
+            {
+                ReleaseComObject(sheet);
+            }
         }
 
         /// <summary>
@@ -107,7 +116,9 @@ namespace ExcelMacroAdd.Functions
         {
             string key = GetCurrentSheetKey();
             if (key != null)
+            {
                 _calculatedSheets.TryAdd(key, 0);
+            }
         }
 
         /// <summary>
@@ -120,9 +131,12 @@ namespace ExcelMacroAdd.Functions
 
         public void Dispose()
         {
-            if (_disposed) return;
-            _disposed = true;
+            if (_disposed)
+            {
+                return;
+            }
 
+            _disposed = true;
             _nestingLevel--;
 
             // Восстанавливаем настройки только на внешнем уровне
@@ -135,7 +149,14 @@ namespace ExcelMacroAdd.Functions
                 {
                     if (!IsCurrentSheetAlreadyCalculated)
                     {
-                        try { _app.Calculate(); } catch { }
+                        try
+                        {
+                            _app.Calculate();
+                        }
+                        catch
+                        {
+                        }
+
                         MarkCurrentSheetCalculated();
                     }
                 }
@@ -152,27 +173,44 @@ namespace ExcelMacroAdd.Functions
 
         private string GetCurrentSheetKey()
         {
+            Workbook workbook = null;
+            Worksheet worksheet = null;
+
             try
             {
-                var wb = _app.ActiveWorkbook;
-                var ws = _app.ActiveSheet as Worksheet;
-                if (wb == null || ws == null) return null;
-                return $"{wb.FullName}|{ws.Name}";
+                workbook = _app.ActiveWorkbook;
+                worksheet = _app.ActiveSheet as Worksheet;
+                if (workbook == null || worksheet == null)
+                {
+                    return null;
+                }
+
+                return $"{workbook.FullName}|{worksheet.Name}";
             }
             catch
             {
                 return null;
             }
+            finally
+            {
+                ReleaseComObject(worksheet);
+                ReleaseComObject(workbook);
+            }
         }
 
         private void InvalidateCacheIfBookChanged()
         {
+            Workbook workbook = null;
+
             try
             {
-                var wb = _app.ActiveWorkbook;
-                if (wb == null) return;
+                workbook = _app.ActiveWorkbook;
+                if (workbook == null)
+                {
+                    return;
+                }
 
-                string currentBook = wb.FullName;
+                string currentBook = workbook.FullName;
                 lock (_bookChangeLock)
                 {
                     if (_lastWorkbookFullName != currentBook)
@@ -182,7 +220,21 @@ namespace ExcelMacroAdd.Functions
                     }
                 }
             }
-            catch { }
+            catch
+            {
+            }
+            finally
+            {
+                ReleaseComObject(workbook);
+            }
+        }
+
+        private static void ReleaseComObject(object comObject)
+        {
+            if (comObject != null && Marshal.IsComObject(comObject))
+            {
+                Marshal.ReleaseComObject(comObject);
+            }
         }
     }
 }

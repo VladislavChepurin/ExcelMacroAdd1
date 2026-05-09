@@ -224,23 +224,23 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 }
                 else
                 {
-                    result = RecordList
-                        .AsParallel()
-                        .WithCancellation(token)
-                        .Where(item =>
-                            item != null &&
-                            (!string.IsNullOrEmpty(item.Article) &&
-                             item.Article.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0) ||
-                            (!string.IsNullOrEmpty(item.Description) &&
-                             item.Description.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0) ||
-                            (!string.IsNullOrEmpty(item.VendorDisplayName) &&
-                             item.VendorDisplayName.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0))
-                        .AsEnumerable(); // Преобразуем обратно в IEnumerable
+                    var filtered = RecordList
+                    .AsParallel()
+                    .WithCancellation(token)
+                    .Where(item =>
+                    item != null &&
+                    (                                    // ← fix 1: скобка
+                        (!string.IsNullOrEmpty(item.Article) &&
+                         item.Article.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                        (!string.IsNullOrEmpty(item.Description) &&
+                         item.Description.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                        (!string.IsNullOrEmpty(item.VendorDisplayName) &&
+                         item.VendorDisplayName.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
+                    ))                                   // ← fix 1: скобка
+                    .Take(MaxDisplayItems)                   // ← fix 2: Take сразу, без Count
+                    .ToList();                               // ← fix 3: материализация один раз
 
-                    if (result.Count() > MaxDisplayItems)
-                    {
-                        result = result.Take(MaxDisplayItems);
-                    }
+                    result = filtered;
                 }
 
                 FilteredList = new BindingList<NotPriceComponent>(result.ToList());

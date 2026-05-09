@@ -25,26 +25,32 @@ namespace ExcelMacroAdd.Functions
 
         public override async Task StartAsync()
         {
-            if (Application.ActiveWorkbook.Name != resources.NameFileJournal) // Проверка по имени книги
-            {
-                MessageWarning(Properties.Resources.NotJornal, Properties.Resources.NameWorkbook);
-                return;
-            }
-
-            var firstRow = Cell.Row; // Вычисляем верхний элемент
-            var countRow = Cell.Rows.Count; // Вычисляем кол-во выделенных строк
-            var endRow = firstRow + countRow - 1;
-
+            Excel.Workbook workbook = null;
+            Excel.Worksheet worksheet = null;
+            Excel.Range selection = null;
+            Excel.Range selectedRows = null;
             Excel.Range articleRange = null;
             Excel.Range enclosureRange = null;
             Excel.Range typeRange = null;
 
             try
             {
-                articleRange = Worksheet.Range[
-                    Worksheet.Cells[firstRow, CabinetArticleColumn],
-                    Worksheet.Cells[endRow, CabinetArticleColumn]];
+                workbook = WorkBook;
+                if (workbook?.Name != resources.NameFileJournal) // Проверка по имени книги
+                {
+                    MessageWarning(Properties.Resources.NotJornal, Properties.Resources.NameWorkbook);
+                    return;
+                }
 
+                worksheet = Worksheet;
+                selection = Cell;
+                selectedRows = selection.Rows;
+
+                int firstRow = selection.Row; // Вычисляем верхний элемент
+                int countRow = selectedRows.Count; // Вычисляем кол-во выделенных строк
+                int endRow = firstRow + countRow - 1;
+
+                articleRange = GetRange(worksheet, firstRow, CabinetArticleColumn, endRow, CabinetArticleColumn);
                 var articleValues = ConvertRangeToMatrix(articleRange.Value2, countRow, 1);
                 var articleKeysByRow = new string[countRow];
                 var articlesToLoad = new List<string>(countRow);
@@ -68,12 +74,8 @@ namespace ExcelMacroAdd.Functions
 
                 var journalsByArticle = await accessData.AccessJournalNku.GetEntityJournalBatch(articlesToLoad);
 
-                enclosureRange = Worksheet.Range[
-                    Worksheet.Cells[firstRow, IPRatingColumn],
-                    Worksheet.Cells[endRow, EnclosureDepthColumn]];
-                typeRange = Worksheet.Range[
-                    Worksheet.Cells[firstRow, CabinetMaterialTypeColumn],
-                    Worksheet.Cells[endRow, MountingTypeColumn]];
+                enclosureRange = GetRange(worksheet, firstRow, IPRatingColumn, endRow, EnclosureDepthColumn);
+                typeRange = GetRange(worksheet, firstRow, CabinetMaterialTypeColumn, endRow, MountingTypeColumn);
 
                 var enclosureValues = ConvertRangeToMatrix(
                     enclosureRange.Value2,
@@ -117,7 +119,7 @@ namespace ExcelMacroAdd.Functions
                     typeRange.Value2 = typeValues;
                 }
 
-                HighlightMissingRows(missingRows);
+                HighlightMissingRows(worksheet, missingRows);
             }
             catch (DataException ex)
             {
@@ -136,10 +138,14 @@ namespace ExcelMacroAdd.Functions
                 ReleaseComObject(typeRange);
                 ReleaseComObject(enclosureRange);
                 ReleaseComObject(articleRange);
+                ReleaseComObject(selectedRows);
+                ReleaseComObject(selection);
+                ReleaseComObject(worksheet);
+                ReleaseComObject(workbook);
             }
         }
 
-        private void HighlightMissingRows(IReadOnlyList<int> missingRows)
+        private void HighlightMissingRows(Excel.Worksheet worksheet, IReadOnlyList<int> missingRows)
         {
             if (missingRows.Count == 0)
             {
@@ -157,9 +163,7 @@ namespace ExcelMacroAdd.Functions
                     Excel.Range highlightRange = null;
                     try
                     {
-                        highlightRange = Worksheet.Range[
-                            Worksheet.Cells[segmentStart, MissingHighlightColumn],
-                            Worksheet.Cells[previousRow, MissingHighlightColumn]];
+                        highlightRange = GetRange(worksheet, segmentStart, MissingHighlightColumn, previousRow, MissingHighlightColumn);
                         highlightRange.Interior.Color = Excel.XlRgbColor.rgbPaleGoldenrod;
                     }
                     finally
@@ -208,9 +212,27 @@ namespace ExcelMacroAdd.Functions
                 : article.Trim().ToLowerInvariant();
         }
 
+        private static Excel.Range GetRange(Excel.Worksheet worksheet, int startRow, int startColumn, int endRow, int endColumn)
+        {
+            Excel.Range startCell = null;
+            Excel.Range endCell = null;
+
+            try
+            {
+                startCell = (Excel.Range)worksheet.Cells[startRow, startColumn];
+                endCell = (Excel.Range)worksheet.Cells[endRow, endColumn];
+                return worksheet.Range[startCell, endCell];
+            }
+            finally
+            {
+                ReleaseComObject(endCell);
+                ReleaseComObject(startCell);
+            }
+        }
+
         private static void ReleaseComObject(object comObject)
         {
-            if (comObject != null)
+            if (comObject != null && Marshal.IsComObject(comObject))
             {
                 Marshal.ReleaseComObject(comObject);
             }

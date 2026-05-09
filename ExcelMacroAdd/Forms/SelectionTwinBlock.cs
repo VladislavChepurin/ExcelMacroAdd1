@@ -15,34 +15,11 @@ namespace ExcelMacroAdd.Forms
     {
         private const byte StartSwitchCurrent = 5;
         private readonly IDataInXml dataInXml;
-        private readonly ISelectionTwinBlockData accessData;
-        static readonly Mutex Mutex = new Mutex(false, "MutexSelectionTwinBlock_SingleInstance");
-        private bool _mutexAcquired = false;
-
-        private void SelectionTwinBlock_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (_mutexAcquired)
-            {
-                Mutex.ReleaseMutex();
-                _mutexAcquired = false;
-            }
-        }           
+        private readonly ISelectionTwinBlockData accessData;             
 
         public SelectionTwinBlock(IDataInXml dataInXml, ISelectionTwinBlockData accessData, IFormSettings formSettings)
         {
             InitializeComponent();
-            try
-            {
-                _mutexAcquired = Mutex.WaitOne(TimeSpan.FromSeconds(1), false);
-                if (!_mutexAcquired)
-                {
-                    Close();
-                }
-            }
-            catch (AbandonedMutexException)
-            {
-                _mutexAcquired = true; // Мьютекс был оставлен, но теперь принадлежит текущему потоку
-            }
             TopMost = formSettings.FormTopMost;
             this.dataInXml = dataInXml;
             this.accessData = accessData;  

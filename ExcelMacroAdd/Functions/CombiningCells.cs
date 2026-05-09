@@ -10,34 +10,47 @@ namespace ExcelMacroAdd.Functions
     {
         public override void Start()
         {
-            // Получаем значение ячейки как двумерный массив
-            var cellValue = Cell.Value;
-            if (cellValue is Object[,] array2D)
+            Range selectedRange = null;
+            Range activeCell = null;
+
+            try
             {
-                // Создаем список для элементов с обработкой null
-                var elements = new List<string>(array2D.Length);
+                selectedRange = Cell;
+                var cellValue = selectedRange.Value;
 
-                // Обрабатываем все элементы массива
-                foreach (var item in array2D)
+                if (cellValue is Object[,] array2D)
                 {
-                    if (item is null) continue;
-                    elements.Add(item.ToString());
-                }
+                    // Создаем список для элементов с обработкой null
+                    var elements = new List<string>(array2D.Length);
 
-                // Получаем исходный диапазон ячейки
-                var targetRange = Worksheet.Range[Cell.Address];
+                    // Обрабатываем все элементы массива
+                    foreach (var item in array2D)
+                    {
+                        if (item is null) continue;
+                        elements.Add(item.ToString());
+                    }
 
-                try
-                {
                     // Очищаем и обновляем значение
-                    targetRange.ClearContents();
-                    Application.ActiveCell.Value2 = string.Join(";\n", elements);
+                    selectedRange.ClearContents();
+                    activeCell = Application.ActiveCell as Range;
+                    if (activeCell != null)
+                    {
+                        activeCell.Value2 = string.Join(";\n", elements);
+                    }
                 }
-                finally
-                {
-                    // Освобождаем COM-объекты
-                    Marshal.ReleaseComObject(targetRange);
-                }
+            }
+            finally
+            {
+                ReleaseComObject(activeCell);
+                ReleaseComObject(selectedRange);
+            }
+        }
+
+        private static void ReleaseComObject(object comObject)
+        {
+            if (comObject != null && Marshal.IsComObject(comObject))
+            {
+                Marshal.ReleaseComObject(comObject);
             }
         }
     }

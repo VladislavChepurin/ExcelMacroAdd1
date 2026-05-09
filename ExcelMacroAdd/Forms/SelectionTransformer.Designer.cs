@@ -501,7 +501,6 @@
             this.MinimumSize = new System.Drawing.Size(665, 348);
             this.Name = "SelectionTransformer";
             this.Text = "Трансфоматоры тока";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SelectionTransformer_FormClosed);
             this.Load += new System.EventHandler(this.SelectionTransformer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();

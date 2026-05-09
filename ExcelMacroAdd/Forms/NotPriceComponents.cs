@@ -18,9 +18,7 @@ namespace ExcelMacroAdd.Forms
 {
     public partial class NotPriceComponents : Form
     {
-        private readonly NotPriceComponentsViewModel notPriceComponentsViewModel;
-        static readonly Mutex Mutex = new Mutex(false, "MutexNotPriceComponents_SingleInstance");
-        private bool _mutexAcquired = false;
+        private readonly NotPriceComponentsViewModel notPriceComponentsViewModel;    
         private ListSortDirection _currentSortDirection = ListSortDirection.Ascending;
         private string _currentSortProperty = "Article";
 
@@ -43,19 +41,6 @@ namespace ExcelMacroAdd.Forms
             {
                 await notPriceComponentsViewModel.StartAsync();
             };
-
-            try
-            {
-                _mutexAcquired = Mutex.WaitOne(TimeSpan.FromSeconds(1), false);
-                if (!_mutexAcquired)
-                {
-                    Close();
-                }
-            }
-            catch (AbandonedMutexException)
-            {
-                _mutexAcquired = true; // Мьютекс был оставлен, но теперь принадлежит текущему потоку
-            }
 
             TopMost = formSettings.FormTopMost;
 
@@ -460,15 +445,6 @@ namespace ExcelMacroAdd.Forms
                 // Обновляем FilteredList
                 notPriceComponentsViewModel.FilteredList = new BindingList<NotPriceComponent>(sortedList);
             }
-        }
-
-        private void NotPriceComponents_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (_mutexAcquired)
-            {
-                Mutex.ReleaseMutex();
-                _mutexAcquired = false;
-            }
-        }
+        }       
     }
 }

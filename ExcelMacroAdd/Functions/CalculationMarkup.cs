@@ -18,105 +18,204 @@ namespace ExcelMacroAdd.Functions
 
         public override void Start()
         {
-            //Проверяем наличие данных в таблице, A1:H9
-            bool allCellsAreNull = true;
+            Worksheet worksheet = null;
+            Range validationRange = null;
+            Range projectHeadersRange = null;
+            Range tableHeadersRange = null;
+            Range coloredRange = null;
+            Interior coloredInterior = null;
+            Range columnWidthRange = null;
+            Range formulaRange = null;
+            Range numberRange = null;
+            Range formattingRange = null;
+            Microsoft.Office.Interop.Excel.Font formattingFont = null;
+            Borders formattingBorders = null;
+            Range formattingRows = null;
 
-            // Loop through columns 1-9 and rows 1-8
-            for (int col = 1; col <= 9 && allCellsAreNull; col++)
+            try
             {
-                for (int row = 1; row <= 8 && allCellsAreNull; row++)
+                worksheet = Worksheet;
+
+                //Проверяем наличие данных в таблице, A1:H9
+                validationRange = worksheet.Range["A1", "H9"];
+                bool allCellsAreNull = AreAllCellsNull(validationRange.Value2);
+
+                //Проверяем результат переменной
+                if (allCellsAreNull)
                 {
-                    if (Worksheet.Cells[col, row].Value2 != null)
+                    projectHeadersRange = worksheet.Range["B2", "B5"];
+                    projectHeadersRange.Value2 = new object[,]
                     {
-                        allCellsAreNull = false;
-                        // Exit both loops immediately when first non-null cell is found
-                        break;
+                        { "Наименование проекта" },
+                        { "Производитель коммутационной аппаратуры" },
+                        { "Приннцип расчета" },
+                        { "Дополнительная информация" }
+                    };
+
+                    tableHeadersRange = worksheet.Range["A7", "J7"];
+                    tableHeadersRange.Value2 = new object[,]
+                    {
+                        {
+                            "№",
+                            "Наименование",
+                            "Шифр рабочей документации",
+                            null,
+                            "Кол-во",
+                            "Цена",
+                            "Стоимость",
+                            "Примечание",
+                            "Тип шкафа",
+                            "Коментарии"
+                        }
+                    };
+
+                    // Заливка ячеек
+                    var coloredCells = new Dictionary<string, int>
+                    {
+                        ["B2:B6"] = ColorTranslator.ToOle(Color.FromArgb(221, 235, 247)),
+                        ["A7:E27"] = ColorTranslator.ToOle(Color.FromArgb(221, 235, 247))
+                    };
+
+                    foreach (var cell in coloredCells)
+                    {
+                        coloredRange = worksheet.Range[cell.Key];
+                        coloredInterior = coloredRange.Interior;
+                        coloredInterior.Color = cell.Value;
+
+                        ReleaseComObject(coloredInterior);
+                        coloredInterior = null;
+
+                        ReleaseComObject(coloredRange);
+                        coloredRange = null;
+                    }
+
+                    // Ширина столбцов
+                    var columnWidths = new Dictionary<string, double>
+                    {
+                        ["A:A"] = 2.86,
+                        ["B:C"] = 28.57,
+                        ["D:D"] = 33.57,
+                        ["E:E"] = 6.57,
+                        ["F:F"] = 14.86,
+                        ["G:G"] = 9.71,
+                        ["H:H"] = 33.57,
+                        ["I:I"] = 11.71,
+                        ["J:J"] = 37.57
+                    };
+
+                    foreach (var width in columnWidths)
+                    {
+                        columnWidthRange = worksheet.Range[width.Key];
+                        columnWidthRange.ColumnWidth = width.Value;
+
+                        ReleaseComObject(columnWidthRange);
+                        columnWidthRange = null;
+                    }
+
+                    // Формулы и нумерация
+                    const int startRow = 8;
+                    const int endRow = 27;
+
+                    formulaRange = worksheet.Range[$"G{startRow}", $"G{endRow}"];
+                    formulaRange.Formula = BuildFormulaValues(startRow, endRow);
+
+                    numberRange = worksheet.Range[$"A{startRow}", $"A{endRow}"];
+                    numberRange.Value2 = BuildNumberValues(startRow, endRow);
+
+                    // Форматирование
+                    formattingRange = worksheet.Range["A1", $"J{endRow}"];
+                    formattingFont = formattingRange.Font;
+                    formattingFont.Name = correctFontResources.NameFont;
+                    formattingFont.Size = correctFontResources.SizeFont;
+
+                    formattingBorders = formattingRange.Borders;
+                    formattingBorders.LineStyle = XlLineStyle.xlContinuous;  // Добавлено оформление границ
+
+                    formattingRows = formattingRange.Rows;
+                    formattingRows.AutoFit();
+                    formattingRange.WrapText = true;
+                }
+                else
+                {
+                    MessageWarning("Внимание! На листе есть данные",
+                        "Ошибка разметки");
+                }
+            }
+            finally
+            {
+                ReleaseComObject(formattingRows);
+                ReleaseComObject(formattingBorders);
+                ReleaseComObject(formattingFont);
+                ReleaseComObject(formattingRange);
+                ReleaseComObject(numberRange);
+                ReleaseComObject(formulaRange);
+                ReleaseComObject(columnWidthRange);
+                ReleaseComObject(coloredInterior);
+                ReleaseComObject(coloredRange);
+                ReleaseComObject(tableHeadersRange);
+                ReleaseComObject(projectHeadersRange);
+                ReleaseComObject(validationRange);
+                ReleaseComObject(worksheet);
+            }
+        }
+
+        private static bool AreAllCellsNull(object rangeValues)
+        {
+            if (rangeValues == null)
+            {
+                return true;
+            }
+
+            if (rangeValues is object[,] cellValues)
+            {
+                for (int row = cellValues.GetLowerBound(0); row <= cellValues.GetUpperBound(0); row++)
+                {
+                    for (int column = cellValues.GetLowerBound(1); column <= cellValues.GetUpperBound(1); column++)
+                    {
+                        if (cellValues[row, column] != null)
+                        {
+                            return false;
+                        }
                     }
                 }
+
+                return true;
             }
 
-            //Проверяем результат переменной
-            if (allCellsAreNull)
+            return false;
+        }
+
+        private static object[,] BuildFormulaValues(int startRow, int endRow)
+        {
+            int rowCount = endRow - startRow + 1;
+            var formulas = new object[rowCount, 1];
+
+            for (int row = startRow; row <= endRow; row++)
             {
-                // Заголовки столбцов
-                var headers = new List<(string Cell, string Value)>
-                {
-                    ("B2", "Наименование проекта"),
-                    ("B3", "Производитель коммутационной аппаратуры"),
-                    ("B4", "Приннцип расчета"),
-                    ("B5", "Дополнительная информация"),
-                    ("A7", "№"),
-                    ("B7", "Наименование"),
-                    ("C7", "Шифр рабочей документации"),
-                    ("E7", "Кол-во"),
-                    ("F7", "Цена"),
-                    ("G7", "Стоимость"),
-                    ("H7", "Примечание"),
-                    ("I7", "Тип шкафа"),
-                    ("J7", "Коментарии")
-                };
-
-                foreach (var header in headers)
-                {
-                    Worksheet.Range[header.Cell].Value2 = header.Value;
-                }
-
-                // Заливка ячеек
-                var coloredCells = new Dictionary<string, int>
-                {
-                    ["B2:B6"] = ColorTranslator.ToOle(Color.FromArgb(221, 235, 247)),
-                    ["A7:E27"] = ColorTranslator.ToOle(Color.FromArgb(221, 235, 247))
-                };
-
-                foreach (var cell in coloredCells)
-                {
-                    Worksheet.Range[cell.Key].Interior.Color = cell.Value;
-                }
-
-                // Ширина столбцов
-                var columnWidths = new Dictionary<string, double>
-                {
-                    ["A:A"] = 2.86,
-                    ["B:C"] = 28.57,
-                    ["D:D"] = 33.57,                    
-                    ["E:E"] = 6.57,
-                    ["F:F"] = 14.86,
-                    ["G:G"] = 9.71,
-                    ["H:H"] = 33.57,
-                    ["I:I"] = 11.71,
-                    ["J:J"] = 37.57
-                };
-
-                foreach (var width in columnWidths)
-                {
-                    Worksheet.Range[width.Key].ColumnWidth = width.Value;
-                }
-
-                // Формулы и нумерация
-                const int startRow = 8;
-                const int endRow = 27;
-
-                for (int row = startRow; row <= endRow; row++)
-                {
-                    Worksheet.Range[$"G{row}"].Formula = $"=F{row}*E{row}";
-                    Worksheet.Range[$"A{row}"].Value2 = (row - 7).ToString();
-                }                              
-
-                // Форматирование
-                var fontRange = Worksheet.Range[$"A1:J{endRow}"];
-                fontRange.Font.Name = correctFontResources.NameFont;
-                fontRange.Font.Size = correctFontResources.SizeFont;
-                fontRange.Borders.LineStyle = XlLineStyle.xlContinuous;  // Добавлено оформление границ
-                fontRange.Rows.AutoFit();
-                fontRange.WrapText = true;
-
-                // Оптимизация производительности
-                Marshal.ReleaseComObject(fontRange);
+                formulas[row - startRow, 0] = $"=F{row}*E{row}";
             }
-            else
+
+            return formulas;
+        }
+
+        private static object[,] BuildNumberValues(int startRow, int endRow)
+        {
+            int rowCount = endRow - startRow + 1;
+            var values = new object[rowCount, 1];
+
+            for (int row = startRow; row <= endRow; row++)
             {
-                MessageWarning("Внимание! На листе есть данные",
-                    "Ошибка разметки");
+                values[row - startRow, 0] = (row - 7).ToString();
+            }
+
+            return values;
+        }
+
+        private static void ReleaseComObject(object comObject)
+        {
+            if (comObject != null && Marshal.IsComObject(comObject))
+            {
+                Marshal.ReleaseComObject(comObject);
             }
         }
     }

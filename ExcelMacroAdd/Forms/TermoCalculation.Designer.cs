@@ -577,7 +577,6 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Расчет обогрева шкафа";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TermoCalculation_FormClosed);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -591,7 +590,6 @@
             this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

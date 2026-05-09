@@ -1,9 +1,10 @@
-﻿using ExcelMacroAdd.Functions;
+using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Services.Interfaces;
 using ExcelMacroAdd.UserVariables;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Label = System.Windows.Forms.Label;
 using TextBox = System.Windows.Forms.TextBox;
@@ -12,7 +13,7 @@ namespace ExcelMacroAdd.Forms
 {
     internal partial class Settings : Form
     {
-        enum RowsToArray
+        private enum RowsToArray
         {
             IekLine,
             EkfLine,
@@ -25,228 +26,117 @@ namespace ExcelMacroAdd.Forms
             ChintLine
         }
 
-        // Маппинг enum → имя вендора в XML
-        private static readonly string[] VendorNames =
+        private sealed class VendorSettingsRow
         {
-            "IEK", "EKF", "DKC", "KEAZ", "DEKraft", "TDM", "ABB", "Schneider", "Chint"
-        };
+            public VendorSettingsRow(
+                string vendorName,
+                TextBox formula1TextBox,
+                TextBox formula2TextBox,
+                TextBox formula3TextBox,
+                TextBox discountTextBox,
+                Label dateLabel)
+            {
+                VendorName = vendorName;
+                Formula1TextBox = formula1TextBox;
+                Formula2TextBox = formula2TextBox;
+                Formula3TextBox = formula3TextBox;
+                DiscountTextBox = discountTextBox;
+                DateLabel = dateLabel;
+            }
+
+            public string VendorName { get; }
+
+            private TextBox Formula1TextBox { get; }
+            private TextBox Formula2TextBox { get; }
+            private TextBox Formula3TextBox { get; }
+            private TextBox DiscountTextBox { get; }
+            private Label DateLabel { get; }
+
+            public string Formula1
+            {
+                get => Formula1TextBox.Text ?? string.Empty;
+                set => Formula1TextBox.Text = value ?? string.Empty;
+            }
+
+            public string Formula2
+            {
+                get => Formula2TextBox.Text ?? string.Empty;
+                set => Formula2TextBox.Text = value ?? string.Empty;
+            }
+
+            public string Formula3
+            {
+                get => Formula3TextBox.Text ?? string.Empty;
+                set => Formula3TextBox.Text = value ?? string.Empty;
+            }
+
+            public string Discount
+            {
+                get => DiscountTextBox.Text ?? string.Empty;
+                set => DiscountTextBox.Text = value ?? string.Empty;
+            }
+
+            public string Date
+            {
+                get => DateLabel.Text ?? string.Empty;
+                set => DateLabel.Text = value ?? string.Empty;
+            }
+
+            public void Apply(Vendor vendor)
+            {
+                Formula1 = vendor.Formula_1;
+                Formula2 = vendor.Formula_2;
+                Formula3 = vendor.Formula_3;
+                Discount = vendor.Discount.ToString();
+                Date = vendor.Date;
+            }
+        }
+
+        private static readonly CultureInfo RussianCulture = CultureInfo.GetCultureInfo("ru-RU");
 
         private readonly IDataInXml dataInXml;
+        private readonly VendorSettingsRow[] vendorRows;
+
         internal Settings(IDataInXml dataInXml)
         {
             InitializeComponent();
             this.dataInXml = dataInXml;
+            vendorRows = CreateVendorRows();
         }
 
         #region KeyPress
 
-        private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
+        private void textBox4_KeyPress(object sender, KeyPressEventArgs e) => HandleDiscountKeyPress(e);
 
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
-                e.Handled = true;
-            }
-        }
+        private void textBox8_KeyPress(object sender, KeyPressEventArgs e) => HandleDiscountKeyPress(e);
 
-        private void textBox8_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
+        private void textBox12_KeyPress(object sender, KeyPressEventArgs e) => HandleDiscountKeyPress(e);
 
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
-                e.Handled = true;
-            }
-        }
+        private void textBox16_KeyPress(object sender, KeyPressEventArgs e) => HandleDiscountKeyPress(e);
 
-        private void textBox12_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
+        private void textBox20_KeyPress(object sender, KeyPressEventArgs e) => HandleDiscountKeyPress(e);
 
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
-                e.Handled = true;
-            }
-        }
+        private void textBox24_KeyPress(object sender, KeyPressEventArgs e) => HandleDiscountKeyPress(e);
 
-        private void textBox16_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
+        private void textBox28_KeyPress(object sender, KeyPressEventArgs e) => HandleDiscountKeyPress(e);
 
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
-                e.Handled = true;
-            }
-        }
+        private void textBox32_KeyPress(object sender, KeyPressEventArgs e) => HandleDiscountKeyPress(e);
 
-        private void textBox20_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void textBox24_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void textBox28_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void textBox32_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void textBox36_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-            {
-                e.Handled = true;
-            }
-        }
+        private void textBox36_KeyPress(object sender, KeyPressEventArgs e) => HandleDiscountKeyPress(e);
 
         #endregion
 
-        private Label[] ReturnLabelArray()
-        {
-            Label[] labels = new Label[] { label33, label34, label35, label36, label37, label38, label39, label40, label41 };
-            return labels;
-        }
-
-        private TextBox[,] ReturnTextBoxArray()
-        {
-            TextBox[,] textBoxes =
-            {
-                {
-                    textBox1, textBox2, textBox3, textBox4      //IEK
-                },
-                {
-                    textBox5, textBox6, textBox7, textBox8      //EKF
-                },
-                {
-                    textBox9, textBox10, textBox11, textBox12   //DKC
-                },
-                {
-                    textBox13, textBox14, textBox15, textBox16  //KEAZ
-                },
-                {
-                    textBox17, textBox18, textBox19, textBox20  //DEKraft
-                },
-                {
-                   textBox21, textBox22, textBox23, textBox24   //TDM
-                },
-                {
-                   textBox25, textBox26, textBox27, textBox28   //ABB
-                },
-                {
-                   textBox29, textBox30, textBox31, textBox32   //Schneider
-                },
-                {
-                   textBox33, textBox34, textBox35, textBox36  //Chint
-                }
-
-            };
-            return textBoxes;
-        }
         private void Settings_Load(object sender, EventArgs e)
         {
             try
-            { // Загружаем в форму файл Settings.xml
+            {
+                // Загружаем в форму файл Settings.xml
                 foreach (Vendor vendor in dataInXml.ReadFileXml())
                 {
-                    switch (vendor.VendorAttribute)
-                    {
-                        case "IEK":
-                            textBox1.Text = vendor.Formula_1;
-                            textBox2.Text = vendor.Formula_2;
-                            textBox3.Text = vendor.Formula_3;
-                            textBox4.Text = vendor.Discount.ToString();
-                            label33.Text = vendor.Date;
-                            break;
-                        case "EKF":
-                            textBox5.Text = vendor.Formula_1;
-                            textBox6.Text = vendor.Formula_2;
-                            textBox7.Text = vendor.Formula_3;
-                            textBox8.Text = vendor.Discount.ToString();
-                            label34.Text = vendor.Date;
-                            break;
-                        case "DKC":
-                            textBox9.Text = vendor.Formula_1;
-                            textBox10.Text = vendor.Formula_2;
-                            textBox11.Text = vendor.Formula_3;
-                            textBox12.Text = vendor.Discount.ToString();
-                            label35.Text = vendor.Date;
-                            break;
-                        case "KEAZ":
-                            textBox13.Text = vendor.Formula_1;
-                            textBox14.Text = vendor.Formula_2;
-                            textBox15.Text = vendor.Formula_3;
-                            textBox16.Text = vendor.Discount.ToString();
-                            label36.Text = vendor.Date;
-                            break;
-                        case "DEKraft":
-                            textBox17.Text = vendor.Formula_1;
-                            textBox18.Text = vendor.Formula_2;
-                            textBox19.Text = vendor.Formula_3;
-                            textBox20.Text = vendor.Discount.ToString();
-                            label37.Text = vendor.Date;
-                            break;
-                        case "TDM":
-                            textBox21.Text = vendor.Formula_1;
-                            textBox22.Text = vendor.Formula_2;
-                            textBox23.Text = vendor.Formula_3;
-                            textBox24.Text = vendor.Discount.ToString();
-                            label38.Text = vendor.Date;
-                            break;
-                        case "ABB":
-                            textBox25.Text = vendor.Formula_1;
-                            textBox26.Text = vendor.Formula_2;
-                            textBox27.Text = vendor.Formula_3;
-                            textBox28.Text = vendor.Discount.ToString();
-                            label39.Text = vendor.Date;
-                            break;
-                        case "Schneider":
-                            textBox29.Text = vendor.Formula_1;
-                            textBox30.Text = vendor.Formula_2;
-                            textBox31.Text = vendor.Formula_3;
-                            textBox32.Text = vendor.Discount.ToString();
-                            label40.Text = vendor.Date;
-                            break;
-                        case "Chint":
-                            textBox33.Text = vendor.Formula_1;
-                            textBox34.Text = vendor.Formula_2;
-                            textBox35.Text = vendor.Formula_3;
-                            textBox36.Text = vendor.Discount.ToString();
-                            label41.Text = vendor.Date;
-                            break;
-                        default:
-                            throw new NullReferenceException("Не коректное значение в классе Form3");
-                    }
+                    VendorSettingsRow vendorRow = FindVendorRow(vendor.VendorAttribute)
+                        ?? throw new NullReferenceException("Не коректное значение в классе Form3");
+
+                    vendorRow.Apply(vendor);
                 }
             }
             catch (NullReferenceException)
@@ -260,38 +150,64 @@ namespace ExcelMacroAdd.Forms
                 MessageBoxOptions.DefaultDesktopOnly);
             }
         }
-        private void ReadExcelFunc(int rowsArray)
+
+        private void ReadExcelFunc(RowsToArray vendorLine)
         {
-            Worksheet worksheet = Globals.ThisAddIn.GetActiveWorksheet();
-            Range cell = Globals.ThisAddIn.GetActiveCell();
+            Worksheet worksheet = null;
+            Range activeCell = null;
+            Range formula1Cell = null;
+            Range formula2Cell = null;
+            Range salesCell = null;
+            Range formula3Cell = null;
 
-            TextBox[,] textBoxes = ReturnTextBoxArray();
+            try
+            {
+                worksheet = Globals.ThisAddIn.GetActiveWorksheet();
+                activeCell = Globals.ThisAddIn.GetActiveCell();
 
-            int currentRow = cell.Row;
+                VendorSettingsRow vendorRow = GetVendorRow(vendorLine);
+                int currentRow = activeCell.Row;
 
-            // Read Cells "B_" if value not empty then continue our work
-            string formula1 = worksheet.Cells[currentRow, 2]?.FormulaLocal;
-            if (formula1 != String.Empty)
-            {
-                textBoxes[rowsArray, 0].Text = VprFormulaReplace(formula1, currentRow);
+                // Read Cells "B_" if value not empty then continue our work
+                formula1Cell = (Range)worksheet.Cells[currentRow, 2];
+                string formula1 = formula1Cell.FormulaLocal as string;
+                if (!string.IsNullOrEmpty(formula1))
+                {
+                    vendorRow.Formula1 = VprFormulaReplace(formula1, currentRow);
+                }
+
+                // Read Cells "D_" if value not empty then continue our work
+                formula2Cell = (Range)worksheet.Cells[currentRow, 4];
+                string formula2 = formula2Cell.FormulaLocal as string;
+                if (!string.IsNullOrEmpty(formula2))
+                {
+                    vendorRow.Formula2 = VprFormulaReplace(formula2, currentRow);
+                }
+
+                // Read Cells "F_"
+                salesCell = (Range)worksheet.Cells[currentRow, 6];
+                object sales = salesCell.Value2;
+                if (sales is double)
+                {
+                    vendorRow.Discount = sales.ToString();
+                }
+
+                // Read Cells "G_" if value not empty then continue our work
+                formula3Cell = (Range)worksheet.Cells[currentRow, 7];
+                string formula3 = formula3Cell.FormulaLocal as string;
+                if (!string.IsNullOrEmpty(formula3))
+                {
+                    vendorRow.Formula3 = VprFormulaReplace(formula3, currentRow);
+                }
             }
-            // Read Cells "D_" if value not empty then continue our work
-            string formula2 = worksheet.Cells[currentRow, 4]?.FormulaLocal;
-            if (formula2 != String.Empty)
+            finally
             {
-                textBoxes[rowsArray, 1].Text = VprFormulaReplace(formula2, currentRow);
-            }
-            // Read Cells "F_"
-            var sales = worksheet.Cells[currentRow, 6]?.Value2;
-            if (sales is double)
-            {
-                textBoxes[rowsArray, 3].Text = sales.ToString();
-            }
-            // Read Cells "G_" if value not empty then continue our work
-            string formula3 = worksheet.Cells[currentRow, 7]?.FormulaLocal;
-            if (formula3 != String.Empty)
-            {
-                textBoxes[rowsArray, 2].Text = VprFormulaReplace(formula3, currentRow);
+                ReleaseComObject(formula3Cell);
+                ReleaseComObject(salesCell);
+                ReleaseComObject(formula2Cell);
+                ReleaseComObject(formula1Cell);
+                ReleaseComObject(activeCell);
+                ReleaseComObject(worksheet);
             }
         }
 
@@ -314,24 +230,74 @@ namespace ExcelMacroAdd.Forms
         /// </summary>
         private void WriteVendorSettings(RowsToArray vendorLine)
         {
-            int line = (int)vendorLine;
-            string vendorName = VendorNames[line];
+            VendorSettingsRow vendorRow = GetVendorRow(vendorLine);
+            string localDateText = DateTime.Now.ToString(RussianCulture);
 
-            TextBox[,] textBoxes = ReturnTextBoxArray();
-            Label[] labels = ReturnLabelArray();
+            dataInXml.WriteXml(
+                vendorRow.VendorName,
+                vendorRow.Formula1,
+                vendorRow.Formula2,
+                vendorRow.Formula3,
+                vendorRow.Discount,
+                localDateText);
 
-            DateTime localDate = DateTime.Now;
-            dataInXml.WriteXml(vendorName,
-                textBoxes[line, 0].Text ?? String.Empty,
-                textBoxes[line, 1].Text ?? String.Empty,
-                textBoxes[line, 2].Text ?? String.Empty,
-                textBoxes[line, 3].Text ?? String.Empty,
-                localDate.ToString(new CultureInfo("ru-RU")));
-            labels[line].Text = localDate.ToString(new CultureInfo("ru-RU"));
+            vendorRow.Date = localDateText;
 
             // Формулы ВПР изменились → кэш пересчёта больше не валиден.
             // Следующий ExcelPerformanceScope выполнит полный Calculate().
             ExcelPerformanceScope.InvalidateCache();
+        }
+
+        private static void HandleDiscountKeyPress(KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+
+            if (!char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
+            {
+                e.Handled = true;
+            }
+        }
+
+        private VendorSettingsRow[] CreateVendorRows()
+        {
+            return new[]
+            {
+                new VendorSettingsRow("IEK", textBox1, textBox2, textBox3, textBox4, label33),
+                new VendorSettingsRow("EKF", textBox5, textBox6, textBox7, textBox8, label34),
+                new VendorSettingsRow("DKC", textBox9, textBox10, textBox11, textBox12, label35),
+                new VendorSettingsRow("KEAZ", textBox13, textBox14, textBox15, textBox16, label36),
+                new VendorSettingsRow("DEKraft", textBox17, textBox18, textBox19, textBox20, label37),
+                new VendorSettingsRow("TDM", textBox21, textBox22, textBox23, textBox24, label38),
+                new VendorSettingsRow("ABB", textBox25, textBox26, textBox27, textBox28, label39),
+                new VendorSettingsRow("Schneider", textBox29, textBox30, textBox31, textBox32, label40),
+                new VendorSettingsRow("Chint", textBox33, textBox34, textBox35, textBox36, label41)
+            };
+        }
+
+        private VendorSettingsRow GetVendorRow(RowsToArray vendorLine)
+        {
+            return vendorRows[(int)vendorLine];
+        }
+
+        private VendorSettingsRow FindVendorRow(string vendorName)
+        {
+            foreach (VendorSettingsRow vendorRow in vendorRows)
+            {
+                if (string.Equals(vendorRow.VendorName, vendorName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return vendorRow;
+                }
+            }
+
+            return null;
+        }
+
+        private static void ReleaseComObject(object comObject)
+        {
+            if (comObject != null && Marshal.IsComObject(comObject))
+            {
+                Marshal.ReleaseComObject(comObject);
+            }
         }
 
         #region Write buttons — сохранение настроек вендоров в XML
@@ -339,74 +305,47 @@ namespace ExcelMacroAdd.Forms
         /// <summary>
         /// Write IEK settings to xml
         /// </summary>
-        private void button2_Click(object sender, EventArgs e)
-        {
-            WriteVendorSettings(RowsToArray.IekLine);
-        }
+        private void button2_Click(object sender, EventArgs e) => WriteVendorSettings(RowsToArray.IekLine);
 
         /// <summary>
         /// Write EKF settings to xml
         /// </summary>
-        private void button4_Click(object sender, EventArgs e)
-        {
-            WriteVendorSettings(RowsToArray.EkfLine);
-        }
+        private void button4_Click(object sender, EventArgs e) => WriteVendorSettings(RowsToArray.EkfLine);
 
         /// <summary>
         /// Write DKC settings to xml
         /// </summary>
-        private void button6_Click(object sender, EventArgs e)
-        {
-            WriteVendorSettings(RowsToArray.DkcLine);
-        }
+        private void button6_Click(object sender, EventArgs e) => WriteVendorSettings(RowsToArray.DkcLine);
 
         /// <summary>
         /// Write KEAZ settings to xml
         /// </summary>
-        private void button8_Click(object sender, EventArgs e)
-        {
-            WriteVendorSettings(RowsToArray.KeazLine);
-        }
+        private void button8_Click(object sender, EventArgs e) => WriteVendorSettings(RowsToArray.KeazLine);
 
         /// <summary>
         /// Write DEKraft settings to xml
         /// </summary>
-        private void button10_Click(object sender, EventArgs e)
-        {
-            WriteVendorSettings(RowsToArray.DekraftLine);
-        }
+        private void button10_Click(object sender, EventArgs e) => WriteVendorSettings(RowsToArray.DekraftLine);
 
         /// <summary>
         /// Write TDM settings to xml
         /// </summary>
-        private void button12_Click(object sender, EventArgs e)
-        {
-            WriteVendorSettings(RowsToArray.TdmLine);
-        }
+        private void button12_Click(object sender, EventArgs e) => WriteVendorSettings(RowsToArray.TdmLine);
 
         /// <summary>
         /// Write ABB settings to xml
         /// </summary>
-        private void button14_Click(object sender, EventArgs e)
-        {
-            WriteVendorSettings(RowsToArray.AbbLine);
-        }
+        private void button14_Click(object sender, EventArgs e) => WriteVendorSettings(RowsToArray.AbbLine);
 
         /// <summary>
         /// Write Schneider settings to xml
         /// </summary>
-        private void button16_Click(object sender, EventArgs e)
-        {
-            WriteVendorSettings(RowsToArray.SchneiderLine);
-        }
+        private void button16_Click(object sender, EventArgs e) => WriteVendorSettings(RowsToArray.SchneiderLine);
 
         /// <summary>
         /// Write Chint settings to xml
         /// </summary>
-        private void button18_Click(object sender, EventArgs e)
-        {
-            WriteVendorSettings(RowsToArray.ChintLine);
-        }
+        private void button18_Click(object sender, EventArgs e) => WriteVendorSettings(RowsToArray.ChintLine);
 
         #endregion
 
@@ -415,66 +354,47 @@ namespace ExcelMacroAdd.Forms
         /// <summary>
         /// Read IEK formula in ExcelSheets
         /// </summary>
-        private void button1_Click(object sender, EventArgs e)
-        {
-            ReadExcelFunc((int)RowsToArray.IekLine);
-        }
+        private void button1_Click(object sender, EventArgs e) => ReadExcelFunc(RowsToArray.IekLine);
+
         /// <summary>
         /// Read EKF formula in ExcelSheets
         /// </summary>
-        private void button3_Click(object sender, EventArgs e)
-        {
-            ReadExcelFunc((int)RowsToArray.EkfLine);
-        }
+        private void button3_Click(object sender, EventArgs e) => ReadExcelFunc(RowsToArray.EkfLine);
+
         /// <summary>
         /// Read DKC formula in ExcelSheets
         /// </summary>
-        private void button5_Click(object sender, EventArgs e)
-        {
-            ReadExcelFunc((int)RowsToArray.DkcLine);
-        }
+        private void button5_Click(object sender, EventArgs e) => ReadExcelFunc(RowsToArray.DkcLine);
+
         /// <summary>
         /// Read KEAZ formula in ExcelSheets
         /// </summary>
-        private void button7_Click(object sender, EventArgs e)
-        {
-            ReadExcelFunc((int)RowsToArray.KeazLine);
-        }
+        private void button7_Click(object sender, EventArgs e) => ReadExcelFunc(RowsToArray.KeazLine);
+
         /// <summary>
         /// Read DEKraft formula in ExcelSheets
         /// </summary>
-        private void button9_Click(object sender, EventArgs e)
-        {
-            ReadExcelFunc((int)RowsToArray.DekraftLine);
-        }
+        private void button9_Click(object sender, EventArgs e) => ReadExcelFunc(RowsToArray.DekraftLine);
+
         /// <summary>
         /// Read TDM formula in ExcelSheets
         /// </summary>
-        private void button11_Click(object sender, EventArgs e)
-        {
-            ReadExcelFunc((int)RowsToArray.TdmLine);
-        }
+        private void button11_Click(object sender, EventArgs e) => ReadExcelFunc(RowsToArray.TdmLine);
+
         /// <summary>
         /// Read ABB formula in ExcelSheets
         /// </summary>
-        private void button13_Click(object sender, EventArgs e)
-        {
-            ReadExcelFunc((int)RowsToArray.AbbLine);
-        }
+        private void button13_Click(object sender, EventArgs e) => ReadExcelFunc(RowsToArray.AbbLine);
+
         /// <summary>
         /// Read Schneider formula in ExcelSheets
         /// </summary>
-        private void button15_Click(object sender, EventArgs e)
-        {
-            ReadExcelFunc((int)RowsToArray.SchneiderLine);
-        }
+        private void button15_Click(object sender, EventArgs e) => ReadExcelFunc(RowsToArray.SchneiderLine);
+
         /// <summary>
         /// Read Chint formula in ExcelSheets
         /// </summary>
-        private void button17_Click(object sender, EventArgs e)
-        {
-            ReadExcelFunc((int)RowsToArray.ChintLine);
-        }
+        private void button17_Click(object sender, EventArgs e) => ReadExcelFunc(RowsToArray.ChintLine);
 
         #endregion
     }

@@ -13,32 +13,52 @@ namespace ExcelMacroAdd.Functions
             // Отключаем обновление интерфейса для повышения производительности
             Application.ScreenUpdating = false;
 
-            // Инициализируем переменную для коллекции листов
+            Excel.Workbook workbook = null;
             Excel.Sheets sheets = null;
+            Excel.Worksheet activeSheet = null;
+            Excel.Range focusRange = null;
 
             try
             {
-                sheets = WorkBook.Worksheets;
+                workbook = WorkBook;
+                sheets = workbook.Worksheets;
+                int sheetCount = sheets.Count;
 
-                foreach (Excel.Worksheet sheet in sheets)
+                for (int index = 1; index <= sheetCount; index++)
                 {
-                    // Пропускаем лист по индексу 1 и скрытые листы
-                    if (sheet.Index == 1 || sheet.Visible != Excel.XlSheetVisibility.xlSheetVisible)
-                        continue;
+                    Excel.Worksheet sheet = null;
+                    Excel.Range targetRange = null;
 
-                    // Получаем диапазон без активации листа
-                    Excel.Range targetRange = sheet.Range["A2:G500"];
+                    try
+                    {
+                        sheet = (Excel.Worksheet)sheets[index];
+                        // Пропускаем лист по индексу 1 и скрытые листы
+                        if (sheet.Index == 1 || sheet.Visible != Excel.XlSheetVisibility.xlSheetVisible)
+                        {
+                            continue;
+                        }
 
-                    // Заменяем формулы на статические значения
-                    object[,] values = (object[,])targetRange.Value2;
-                    targetRange.Value2 = values;
+                        // Получаем диапазон без активации листа
+                        targetRange = sheet.Range["A2:G500"];
 
-                    // Явное освобождение ресурсов диапазона
-                    Marshal.ReleaseComObject(targetRange);
+                        // Заменяем формулы на статические значения
+                        object values = targetRange.Value2;
+                        targetRange.Value2 = values;
+                    }
+                    finally
+                    {
+                        ReleaseComObject(targetRange);
+                        ReleaseComObject(sheet);
+                    }
                 }
 
                 // Возвращаем фокус на A1 активного листа (опционально)
-                ((Excel.Worksheet)Application.ActiveSheet)?.Range["A1"].Select();
+                activeSheet = Application.ActiveSheet as Excel.Worksheet;
+                if (activeSheet != null)
+                {
+                    focusRange = activeSheet.Range["A1"];
+                    focusRange.Select();
+                }
             }
             catch (Exception ex)
             {
@@ -51,13 +71,18 @@ namespace ExcelMacroAdd.Functions
                 // Восстанавливаем обновление экрана
                 Application.ScreenUpdating = true;
 
-                // Освобождаем COM-объекты
-                if (sheets != null)
-                {
-                    Marshal.ReleaseComObject(sheets);                    
-                }
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
+                ReleaseComObject(focusRange);
+                ReleaseComObject(activeSheet);
+                ReleaseComObject(sheets);
+                ReleaseComObject(workbook);
+            }
+        }
+
+        private static void ReleaseComObject(object comObject)
+        {
+            if (comObject != null && Marshal.IsComObject(comObject))
+            {
+                Marshal.ReleaseComObject(comObject);
             }
         }
     }

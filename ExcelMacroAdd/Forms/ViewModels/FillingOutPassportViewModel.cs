@@ -482,7 +482,6 @@ namespace ExcelMacroAdd.Forms.ViewModels
             }
         }
 
-
         private void progressBarUI(int step)
         {
             if (step == ProgressBarMaximum)
@@ -569,8 +568,11 @@ namespace ExcelMacroAdd.Forms.ViewModels
         {
             try
             {
-                if (buildData != null & double.TryParse(buildData.ToString(), out double dateValue))
-                    return DateTime.FromOADate(dateValue).ToString("D");
+                if (buildData != null)
+                {
+                    if (double.TryParse(buildData.ToString(), out double dateValue))
+                        return DateTime.FromOADate(dateValue).ToString("D");
+                }
             }
             catch (Exception ex)
             {

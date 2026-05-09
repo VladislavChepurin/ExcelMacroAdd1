@@ -12,19 +12,23 @@ namespace ExcelMacroAdd.Functions
 
         public override void Start()
         {
+            Range excelCells = null;
+            Borders borders = null;
+
             try
             {
                 Application.ScreenUpdating = false;
 
-                var excelCells = Application.Selection as Range;
+                excelCells = Application.Selection as Range;
 
                 if (excelCells == null)
                 {
                     MessageInformation("Выделите диапазон ячеек.", "Внимание!");                   
                     return;
                 } 
-                
-                excelCells.Borders.LineStyle = XlLineStyle.xlContinuous;  // Добавлено оформление границ  
+                 
+                borders = excelCells.Borders;
+                borders.LineStyle = XlLineStyle.xlContinuous;  // Добавлено оформление границ  
             }
             catch (COMException ex)
             {
@@ -37,7 +41,17 @@ namespace ExcelMacroAdd.Functions
             finally
             {
                 Application.ScreenUpdating = true;
+                ReleaseComObject(borders);
+                ReleaseComObject(excelCells);
             }
-        }       
+        }
+
+        private static void ReleaseComObject(object comObject)
+        {
+            if (comObject != null && Marshal.IsComObject(comObject))
+            {
+                Marshal.ReleaseComObject(comObject);
+            }
+        }
     }
 }
