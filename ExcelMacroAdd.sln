@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelMacroAdd", "ExcelMacroAdd\ExcelMacroAdd.csproj", "{C02824CF-DD45-4ACC-BE8A-ABF0DBE546F4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExelMacroAdd.Tests", "ExelMacroAdd.Tests\ExelMacroAdd.Tests.csproj", "{E3FCB2DE-9B8A-4E82-860F-87E3F7CA8F39}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LicenseKeyGeneratorApp", "LicenseKeyGeneratorApp\LicenseKeyGeneratorApp.csproj", "{975A584B-FC32-4220-B06D-E25AC4798A40}"
 EndProject
 Global
@@ -23,6 +25,14 @@ Global
 		{C02824CF-DD45-4ACC-BE8A-ABF0DBE546F4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C02824CF-DD45-4ACC-BE8A-ABF0DBE546F4}.Release|x64.ActiveCfg = Release|Any CPU
 		{C02824CF-DD45-4ACC-BE8A-ABF0DBE546F4}.Release|x64.Build.0 = Release|Any CPU
+		{E3FCB2DE-9B8A-4E82-860F-87E3F7CA8F39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3FCB2DE-9B8A-4E82-860F-87E3F7CA8F39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3FCB2DE-9B8A-4E82-860F-87E3F7CA8F39}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E3FCB2DE-9B8A-4E82-860F-87E3F7CA8F39}.Debug|x64.Build.0 = Debug|Any CPU
+		{E3FCB2DE-9B8A-4E82-860F-87E3F7CA8F39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3FCB2DE-9B8A-4E82-860F-87E3F7CA8F39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3FCB2DE-9B8A-4E82-860F-87E3F7CA8F39}.Release|x64.ActiveCfg = Release|Any CPU
+		{E3FCB2DE-9B8A-4E82-860F-87E3F7CA8F39}.Release|x64.Build.0 = Release|Any CPU
 		{975A584B-FC32-4220-B06D-E25AC4798A40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{975A584B-FC32-4220-B06D-E25AC4798A40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{975A584B-FC32-4220-B06D-E25AC4798A40}.Debug|x64.ActiveCfg = Debug|Any CPU
