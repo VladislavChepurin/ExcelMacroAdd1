@@ -18,7 +18,7 @@ namespace ExcelMacroAdd.Forms
 {
     public partial class NotPriceComponents : Form
     {
-        private readonly NotPriceComponentsViewModel notPriceComponentsViewModel;    
+        private readonly NotPriceComponentsViewModel notPriceComponentsViewModel;
         private ListSortDirection _currentSortDirection = ListSortDirection.Ascending;
         private string _currentSortProperty = "Article";
 
@@ -31,7 +31,7 @@ namespace ExcelMacroAdd.Forms
 
         public NotPriceComponents(INotPriceComponent accessData, IFormSettings formSettings)
         {
-            notPriceComponentsViewModel = new NotPriceComponentsViewModel(accessData);            
+            notPriceComponentsViewModel = new NotPriceComponentsViewModel(accessData);
             InitializeComponent();
             InitializeDataBindings();
             SetupDataGridView();
@@ -45,9 +45,9 @@ namespace ExcelMacroAdd.Forms
             TopMost = formSettings.FormTopMost;
 
             btnWritingToSheet.Click += (s, e) => notPriceComponentsViewModel.BtnWritingToSheet();
-            btnAddRecord.Click += (s, e) => notPriceComponentsViewModel.BtnAddRecord();
-            btnDeleteRecord.Click += (s, e) => notPriceComponentsViewModel.BtnDeleteRecord();
-            btnUpdateRecord.Click += (s, e) => notPriceComponentsViewModel.BtnUpdateRecord();
+            btnAddRecord.Click += async (s, e) => await notPriceComponentsViewModel.BtnAddRecord();
+            btnDeleteRecord.Click += async (s, e) => await notPriceComponentsViewModel.BtnDeleteRecord();
+            btnUpdateRecord.Click += async (s, e) => await notPriceComponentsViewModel.BtnUpdateRecord();
             searchTextBox.TextChanged += SearchTextBox_TextChanged;
             dataGridView.SelectionChanged += DataGridView_SelectionChanged;
             linkToTheWebsite.Click += (s, e) => notPriceComponentsViewModel.OpenLink();
@@ -94,8 +94,8 @@ namespace ExcelMacroAdd.Forms
                 if (e.PropertyName == nameof(NotPriceComponentsViewModel.CountStatusList))
                 {
                     UpdateStatus(notPriceComponentsViewModel.CountStatusList);
-                }             
-            };                   
+                }
+            };
         }
 
         private void UpdateStatus(string text)
@@ -130,7 +130,7 @@ namespace ExcelMacroAdd.Forms
                 DataGridViewHeaderBorderStyle.Single;
             dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
             dataGridView.GridColor = Color.Black;
-            dataGridView.RowHeadersVisible = false;                                 
+            dataGridView.RowHeadersVisible = false;
 
             dataGridView.AutoGenerateColumns = false;
             dataGridView.Columns.Clear();
@@ -139,7 +139,7 @@ namespace ExcelMacroAdd.Forms
             dataGridView.ColumnHeaderMouseClick += DataGridView_ColumnHeaderMouseClick;
 
             // Настраиваем колонки для привязки данных
-            
+
             var isValidColumn = new DataGridViewImageColumn
             {
                 HeaderText = "",
@@ -225,9 +225,9 @@ namespace ExcelMacroAdd.Forms
 
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.MultiSelect = false;
-           
+
             dataGridView.ReadOnly = true;
-            dataGridView.BackgroundColor = Color.White;                                     
+            dataGridView.BackgroundColor = Color.White;
         }
 
         private void DataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -248,7 +248,7 @@ namespace ExcelMacroAdd.Forms
                 }
             }
         }
-                
+
         private void SetupContextMenu()
         {
             // Создаем контекстное меню
@@ -285,8 +285,8 @@ namespace ExcelMacroAdd.Forms
                     thread.Join();
                 });
             });
-            contextMenu.Items.Add("Удалить запись", null, (s, e) => 
-            notPriceComponentsViewModel.BtnDeleteRecord());
+            contextMenu.Items.Add("Удалить запись", null, async (s, e) =>
+            await notPriceComponentsViewModel.BtnDeleteRecord());
             contextMenu.Items.Add(new ToolStripSeparator());
             contextMenu.Items.Add("Проверено", null, async (s, e) =>
             {
@@ -350,7 +350,7 @@ namespace ExcelMacroAdd.Forms
                 }
             };
         }
-        
+
         private void CopySelectedArticle()
         {
             if (dataGridView.SelectedRows.Count > 0)
@@ -445,6 +445,6 @@ namespace ExcelMacroAdd.Forms
                 // Обновляем FilteredList
                 notPriceComponentsViewModel.FilteredList = new BindingList<NotPriceComponent>(sortedList);
             }
-        }       
+        }
     }
 }

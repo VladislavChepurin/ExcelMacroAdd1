@@ -23,13 +23,13 @@ namespace ExcelMacroAdd.Functions
         internal const int EnclosureHeightColumn = 15;
         internal const int EnclosureWidthColumn = 16;
         internal const int EnclosureDepthColumn = 17;
-        internal const int ManufacturingDataColumn = 21;
-        internal const int SerialNumberColumn = 22;
-        internal const int CabinetArticleColumn = 27;
-        internal const int ApparatusMountingColumn = 28;
-        internal const int EarthingSystemColumn = 29;
-        internal const int CabinetMaterialTypeColumn = 30;
-        internal const int MountingTypeColumn = 31;
+        internal const int ManufacturingDataColumn = 18;
+        internal const int SerialNumberColumn = 19;
+        internal const int CabinetArticleColumn = 20;
+        internal const int ApparatusMountingColumn = 21;
+        internal const int EarthingSystemColumn = 22;
+        internal const int CabinetMaterialTypeColumn = 23;
+        internal const int MountingTypeColumn = 24;
 
         /// <summary>
         /// COM-объекты Excel получаются как свойства, а не как поля-инициализаторы.

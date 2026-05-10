@@ -16,6 +16,7 @@ namespace ExcelMacroAdd.BusinessLayer
         public string[] GetComboBox2Items(string current)
         {
             return context.Transformers
+                .AsNoTracking()
                 .Where(p => p.Current == current)
                 .Select(p => p.TransformerAttribute.Bus)
                 .ToHashSet()
@@ -25,6 +26,7 @@ namespace ExcelMacroAdd.BusinessLayer
         public string[] GetComboBox3Items(string current, string bus)
         {
             return context.Transformers
+                .AsNoTracking()
                 .Where(p => p.Current == current && p.TransformerAttribute.Bus == bus)
                 .Select(p => p.Accuracy)
                 .ToHashSet()
@@ -34,6 +36,7 @@ namespace ExcelMacroAdd.BusinessLayer
         public string[] GetComboBox4Items(string current, string bus, string accuracy)
         {
             return context.Transformers
+                .AsNoTracking()
                 .Where(p => p.Current == current && p.TransformerAttribute.Bus == bus && p.Accuracy == accuracy)
                 .Select(p => p.Power)
                 .ToHashSet()
@@ -43,6 +46,7 @@ namespace ExcelMacroAdd.BusinessLayer
         public StructTransformer GetArticle(string current, string bus, string accuracy, string power)
         {
             var trans = context.Transformers
+                .AsNoTracking()
                 .Where(t => t.Current == current
                             && t.TransformerAttribute.Bus == bus
                             && t.Accuracy == accuracy
@@ -55,6 +59,7 @@ namespace ExcelMacroAdd.BusinessLayer
         public byte[] GetBlobPictureDb(string current, string bus, string accuracy, string power)
         {
             return context.Transformers
+                 .AsNoTracking()
                 .Where(t => t.Current == current
                             && t.TransformerAttribute.Bus == bus
                             && t.Accuracy == accuracy

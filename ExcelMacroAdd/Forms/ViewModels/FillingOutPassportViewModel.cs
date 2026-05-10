@@ -19,7 +19,7 @@ using Word = Microsoft.Office.Interop.Word;
 namespace ExcelMacroAdd.Forms.ViewModels
 {
     internal class FillingOutPassportViewModel : AbstractFunctions, INotifyPropertyChanged
-    {       
+    {
         // Переменные иницализации                   
         private readonly object _confirmConversions = false;
         private readonly object _readOnly = false;
@@ -94,14 +94,14 @@ namespace ExcelMacroAdd.Forms.ViewModels
 
 
         public FillingOutPassportViewModel(IFillingOutThePassportSettings resources)
-        {                        
+        {
             // Сохраняем контекст синхронизации UI-потока
             _syncContext = SynchronizationContext.Current;
             this._resources = resources;
         }
 
         public override void Start()
-        {            
+        {
             if (Application.ActiveWorkbook.Name != _resources.NameFileJournal) // Проверка по имени книги
             {
                 MessageWarning(Properties.Resources.NotJornal, Properties.Resources.NameWorkbook);
@@ -113,7 +113,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             var countRow = Cell.Rows.Count; // Вычисляем кол-во выделенных строк
             var endRow = firstRow + countRow - 1;
             var currentRow = firstRow;
-        
+
 
             ProgressBarMinimum = 0;
             ProgressBarStep = 1;
@@ -122,58 +122,29 @@ namespace ExcelMacroAdd.Forms.ViewModels
             System.Threading.Tasks.Task.Run(() =>
             {
                 //Инициализируем параметры Word
-                Word.Application applicationWord = new Word.Application();              
+                Word.Application applicationWord = new Word.Application();
+                applicationWord.Visible = false;
                 // Переменная объект документа
                 Word.Document document = null;
-                string numberProject, serialNumber, model, titleLVSwitchgear, paste, designationOfLVSwitchgear, technicalSpecifications, voltage, current, iPRating, cabinetDimensions, secondWords, apparatusMounting, earthingSystem, cabinetMaterialType, mountingType;                      
+                string numberProject, serialNumber, model, titleLVSwitchgear, paste, designationOfLVSwitchgear, technicalSpecifications, voltage, current, iPRating, cabinetDimensions, secondWords, mass, apparatusMounting, earthingSystem, cabinetMaterialType, mountingType;
                 dynamic manufacturingData;
 
                 int step = 0;
                 // Цикл переборки строк
                 do
-                {                    
+                {
+                    Word.Selection selection = null;
+                    Find find = null;
                     try
                     {
-                        string filename;
-                        string fileSHA1;
-                        
-                        switch (Worksheet.Cells[currentRow, MountingTypeColumn].Value2.ToString())
-                        {
-                            case "навесное":
-                                filename = _resources.TemplateWall;
-                                fileSHA1 = _resources.TemplateWallSHA1;
-                                break;
+                        string filename = _resources.Template;
+                        string fileSHA1 = _resources.TemplateSHA1;
 
-                            case "встраиваемое":
-                                filename = _resources.TemplateWall;
-                                fileSHA1 = _resources.TemplateWall;
-                                break;
 
-                            case "напольное":
-                                filename = _resources.TemplateFloor;
-                                fileSHA1 = _resources.TemplateFloorSHA1;
-                                break;
-
-                            case "навесное для IT оборудования":
-                                filename = _resources.TemplateWallIt;
-                                fileSHA1 = _resources.TemplateWallItSHA1;
-                                break;
-
-                            case "напольное для IT оборудования":
-                                filename = _resources.TemplateFloorIt;
-                                fileSHA1 = _resources.TemplateFloorItSHA1;
-                                break;
-
-                            default:
-                                filename = _resources.TemplateFloor;
-                                fileSHA1 = _resources.TemplateFloorSHA1;
-                                break;
-                        }
-
-                        string fileFullPath = Path.Combine(_pPath, filename);                    
+                        string fileFullPath = Path.Combine(_pPath, filename);
 
                         if (_resources.CheckSHA1)
-                        {                         
+                        {
                             if (TemplateFileSHA1(fileFullPath) != fileSHA1)
                             {
                                 DialogResult dialogResult = MessageBox.Show($"Ошибка в контрольной сумме файла {filename}. Нажмите ДА если хотите автоматически восстановить файл.", "Ошибка шаблона", MessageBoxButtons.YesNo);
@@ -185,7 +156,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                                     if (!File.Exists(backupFile))
                                     {
                                         MessageError($"Резервная копия {backupFile} не найдена!", "Ошибка файла");
-                                        break;                                        
+                                        break;
                                     }
 
                                     // Если оригинальный файл существует, заменяем его
@@ -205,35 +176,36 @@ namespace ExcelMacroAdd.Forms.ViewModels
                             }
                         }
 
-                        numberProject = Worksheet.Cells[currentRow, NumberProjectColumn].Value2.ToString().Replace('/', '_').Trim();
-                        model = Worksheet.Cells[currentRow, ModelColumn].Value2.ToString();
-                        titleLVSwitchgear = Worksheet.Cells[currentRow, TitleLVSwitchgearColumn].Value2.ToString();
+                        numberProject = GetCellValue(currentRow, NumberProjectColumn).Replace('/', '_').Trim();
+                        model = GetCellValue(currentRow, ModelColumn);
+                        titleLVSwitchgear = GetCellValue(currentRow, TitleLVSwitchgearColumn);
                         paste = FuncReplace(titleLVSwitchgear ?? string.Empty); // ссылка на метод замены
-                        designationOfLVSwitchgear = Worksheet.Cells[currentRow, DesignationOfLVSwitchgearColumn].Value2.ToString();
-                        technicalSpecifications = Worksheet.Cells[currentRow, TechnicalSpecificationsColumn].Value2.ToString();
-                        voltage = Worksheet.Cells[currentRow, VoltageColumn].Value2.ToString();
-                        current = Worksheet.Cells[currentRow, CurrentColumn].Value2.ToString();
-                        iPRating = Worksheet.Cells[currentRow, IPRatingColumn].Value2.ToString();                        
-                        cabinetDimensions = Worksheet.Cells[currentRow, EnclosureHeightColumn].Value2.ToString() + "x"
-                                          + Worksheet.Cells[currentRow, EnclosureWidthColumn].Value2.ToString() + "x"
-                                          + Worksheet.Cells[currentRow, EnclosureDepthColumn].Value2.ToString();
+                        designationOfLVSwitchgear = GetCellValue(currentRow, DesignationOfLVSwitchgearColumn);
+                        technicalSpecifications = GetCellValue(currentRow, TechnicalSpecificationsColumn);
+                        voltage = GetCellValue(currentRow, VoltageColumn);
+                        current = GetCellValue(currentRow, CurrentColumn);
+                        iPRating = GetCellValue(currentRow, IPRatingColumn);
+                        cabinetDimensions = GetCellValue(currentRow, EnclosureHeightColumn) + "x"
+                                          + GetCellValue(currentRow, EnclosureWidthColumn) + "x"
+                                          + GetCellValue(currentRow, EnclosureDepthColumn);
                         secondWords = FuncReplace(designationOfLVSwitchgear ?? string.Empty); // ссылка на метод замены
-                        manufacturingData = Worksheet.Cells[currentRow, ManufacturingDataColumn].Value2;
-                        serialNumber = Worksheet.Cells[currentRow, SerialNumberColumn].Value2.ToString();
-                        apparatusMounting = Worksheet.Cells[currentRow, ApparatusMountingColumn].Value2.ToString();
-                        earthingSystem = Worksheet.Cells[currentRow, EarthingSystemColumn].Value2.ToString();
-                        cabinetMaterialType = Worksheet.Cells[currentRow, CabinetMaterialTypeColumn].Value2.ToString();
-                        mountingType = Worksheet.Cells[currentRow, MountingTypeColumn].Value2.ToString();
+                        mass = GetCellValueOrDefault(currentRow, MassColumn);
+                        manufacturingData = GetCellRawValue(currentRow, ManufacturingDataColumn);
+                        serialNumber = GetCellValue(currentRow, SerialNumberColumn);
+                        apparatusMounting = GetCellValue(currentRow, ApparatusMountingColumn);
+                        earthingSystem = GetCellValue(currentRow, EarthingSystemColumn);
+                        cabinetMaterialType = GetCellValue(currentRow, CabinetMaterialTypeColumn);
+                        mountingType = GetCellValue(currentRow, MountingTypeColumn);
 
                         //Открываем Word                   
                         document = applicationWord.Documents.Open(fileFullPath, _confirmConversions, _readOnly, _addToRecentFiles, _passwordDocument, _passwordTemplate,
                             _revert, _writePasswordDocument, _writePasswordTemplate, _format, _encoding, _oVisible, _openAndRepair, _documentDirection,
                             _noEncodingDialog, _xmlTransform);
-                        applicationWord.Visible = false;
                         //Инициализация метода Find
-                        Find find = applicationWord.Selection.Find;                
+                        selection = applicationWord.Selection;
+                        find = selection.Find;
 
-                        var verifyIsNotFind = new List<bool>(16)
+                        var verifyIsNotFind = new List<bool>(17)
                         {
                             // Замены ТУ
                             replacingTextLabels(find, "#ТУ", technicalSpecifications),
@@ -247,9 +219,8 @@ namespace ExcelMacroAdd.Forms.ViewModels
                             replacingTextLabels(find, "#Марка", model),
                             // Замены Номер
                             replacingTextLabels(find, "#Номер", serialNumber),
-                            // Замены Климат
-                            //verifyIsNotFind.Add(
-                            //replacingTextLabels(find, "#Климат", sClimate));
+                            // Замены Масса                         
+                            replacingTextLabels(find, "#Масса", mass),
                             // Замены Заземление
                             replacingTextLabels(find, "#Заземление", earthingSystem),
                             // Замены Название
@@ -279,7 +250,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
 
                         Directory.CreateDirectory(folderWithoutStamp);
                         Directory.CreateDirectory(folderWithStamp);
-                                                
+
                         // Сохраняем документ без печати
                         string filePathWithoutStamp = Path.Combine(folderWithoutStamp, $"Паспорт {serialNumber.Replace("/", "_")}.docx");
                         document.SaveAs(filePathWithoutStamp);
@@ -291,7 +262,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                         string filePathWithStamp = Path.Combine(folderWithStamp, $"Паспорт {serialNumber.Replace("/", "_")}.docx");
                         document.SaveAs(filePathWithStamp);
 
-                        int amountSheet = document.ComputeStatistics(WdStatistic.wdStatisticPages, false);                                              
+                        int amountSheet = document.ComputeStatistics(WdStatistic.wdStatisticPages, false);
 
                         if (verifyIsNotFind.All(item => item))
                         {
@@ -304,7 +275,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                             // Вызов местного логгера                       
                             ThisWriteLog(mainFolder, $"{DateTime.Now} | Паспорт {serialNumber} сформирован, но не произошла вставка одного или нескольких значений." +
                                 $"  В паспорте {amountSheet} листов");
-                        }                                                                     
+                        }
                     }
 
                     catch (COMException ex)
@@ -312,7 +283,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                         MessageError(
                             $@"Проверьте имя проекта внимательно,{Environment.NewLine} экстрасенсы говорят что есть ошибки в заполнеии столбцов.",
                             @"Ошибка надстройки");
-                        Logger.LogException(ex);                    
+                        Logger.LogException(ex);
                     }
 
                     catch (RuntimeBinderException ex)
@@ -320,7 +291,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                         MessageError(
                             $@"Проверьте заполнение всех столбцов паспорта {null},{Environment.NewLine} где-то нехватает данных.",
                             @"Ошибка надстройки");
-                        Logger.LogException(ex);                       
+                        Logger.LogException(ex);
                     }
 
                     catch (Exception ex)
@@ -328,27 +299,33 @@ namespace ExcelMacroAdd.Forms.ViewModels
                         MessageError(
                             $"Произошла неизветсная ошибка при заполнении паспорта",
                             @"Ошибка надстройки");
-                        Logger.LogException(ex);                      
+                        Logger.LogException(ex);
                     }
 
                     finally
                     {
+                        if (find != null)
+                            Marshal.ReleaseComObject(find);
+                        if (selection != null)
+                            Marshal.ReleaseComObject(selection);
+
                         if (document != null)
                         {
                             document.Close();
                             Marshal.ReleaseComObject(document);
+                            document = null;
                         }
 
                         // Работа с элементами UI
                         _syncContext.Post(_ =>
                         {
-                            progressBarUI(++step);                                  
-                            InfoLabelText = $@"Подождите пожайлуста, идет заполнение паспортов {step}/{countRow}.";
+                            progressBarUI(++step);
+                            InfoLabelText = $@"Подождите пожалуйста, идет заполнение паспортов {step}/{countRow}.";
 
                         }, null);
 
                         currentRow++;
-                    }                
+                    }
                 }
                 while (currentRow <= endRow);
 
@@ -360,20 +337,20 @@ namespace ExcelMacroAdd.Forms.ViewModels
 
                 //Сборка мусора (опционально, но рекомендуется)
                 GC.Collect();
-                GC.WaitForPendingFinalizers();              
+                GC.WaitForPendingFinalizers();
             })
                 .ContinueWith(t =>
                 {
                     // Этот код выполнится после завершения фоновой задачи
-                    if (t.IsCompleted)
-                    {
-                        InfoLabelText = "Паспота заполнены.Ты молодец";
-                        IsEnabledBtnClose = true;
-                    }
-                    else if (t.IsFaulted)
+                    if (t.IsFaulted)
                     {
                         // Обработка ошибок
                         Logger.LogException(t.Exception);
+                    }
+                    else if (t.Status == TaskStatus.RanToCompletion)
+                    {
+                        InfoLabelText = "Паспорта заполнены. Ты молодец";
+                        IsEnabledBtnClose = true;
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext()); // Гарантирует выполнение в UI потоке
         }
@@ -407,6 +384,15 @@ namespace ExcelMacroAdd.Forms.ViewModels
         private void AddImageAtBookmark(Word.Document document, string bookmarkName,
                                 string imagePath, float width, float height, float correctRangeTop)
         {
+            Word.Bookmarks bookmarks = null;
+            Word.Bookmark bookmark = null;
+            Word.Range bookmarkRange = null;
+            Word.InlineShapes inlineShapes = null;
+            Word.InlineShape inlineShape = null;
+            Word.Shape shape = null;
+            Word.WrapFormat wrapFormat = null;
+            Word.LineFormat lineFormat = null;
+
             try
             {
                 if (!File.Exists(imagePath))
@@ -415,16 +401,18 @@ namespace ExcelMacroAdd.Forms.ViewModels
                     return;
                 }
 
-                if (document.Bookmarks.Exists(bookmarkName))
+                bookmarks = document.Bookmarks;
+                if (bookmarks.Exists(bookmarkName))
                 {
-                    Word.Bookmark bookmark = document.Bookmarks[bookmarkName];
-                    Word.Range bookmarkRange = bookmark.Range;
+                    bookmark = bookmarks[bookmarkName];
+                    bookmarkRange = bookmark.Range;
 
                     // Сохраняем позицию закладки
                     int start = bookmarkRange.Start;
 
                     // Вставляем изображение как встроенный объект
-                    Word.InlineShape inlineShape = bookmarkRange.InlineShapes.AddPicture(
+                    inlineShapes = bookmarkRange.InlineShapes;
+                    inlineShape = inlineShapes.AddPicture(
                         FileName: imagePath,
                         LinkToFile: false,
                         SaveWithDocument: true);
@@ -434,17 +422,19 @@ namespace ExcelMacroAdd.Forms.ViewModels
                     inlineShape.Height = height;
 
                     // Преобразуем в плавающую фигуру (Shape)
-                    Word.Shape shape = inlineShape.ConvertToShape();
+                    shape = inlineShape.ConvertToShape();
 
                     // Настраиваем обтекание
-                    shape.WrapFormat.Type = Word.WdWrapType.wdWrapFront;
-                    shape.Line.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
-                                       
+                    wrapFormat = shape.WrapFormat;
+                    wrapFormat.Type = Word.WdWrapType.wdWrapFront;
+                    lineFormat = shape.Line;
+                    lineFormat.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
+
                     // Центрируем по вертикали - смещаем вверх на половину высоты
                     shape.Top = shape.Top - correctRangeTop;
 
                     // Возвращаем курсор на место
-                    bookmarkRange.SetRange(start, start);                                   
+                    bookmarkRange.SetRange(start, start);
                 }
                 else
                 {
@@ -454,6 +444,65 @@ namespace ExcelMacroAdd.Forms.ViewModels
             catch (Exception ex)
             {
                 Logger.LogException(new Exception($"Ошибка при добавлении изображения в закладку {bookmarkName}", ex));
+            }
+            finally
+            {
+                if (lineFormat != null) Marshal.ReleaseComObject(lineFormat);
+                if (wrapFormat != null) Marshal.ReleaseComObject(wrapFormat);
+                if (shape != null) Marshal.ReleaseComObject(shape);
+                if (inlineShape != null) Marshal.ReleaseComObject(inlineShape);
+                if (inlineShapes != null) Marshal.ReleaseComObject(inlineShapes);
+                if (bookmarkRange != null) Marshal.ReleaseComObject(bookmarkRange);
+                if (bookmark != null) Marshal.ReleaseComObject(bookmark);
+                if (bookmarks != null) Marshal.ReleaseComObject(bookmarks);
+            }
+        }
+
+        /// <summary>
+        /// Читает значение ячейки Excel и освобождает COM-объект Range
+        /// </summary>
+        private string GetCellValue(int row, int column)
+        {
+            Microsoft.Office.Interop.Excel.Range cell = Worksheet.Cells[row, column];
+            try
+            {
+                return cell.Value2.ToString();
+            }
+            finally
+            {
+                Marshal.ReleaseComObject(cell);
+            }
+        }
+
+        /// <summary>
+        /// Читает значение ячейки Excel, возвращает пустую строку при null, освобождает COM-объект Range
+        /// </summary>
+        private string GetCellValueOrDefault(int row, int column)
+        {
+            Microsoft.Office.Interop.Excel.Range cell = Worksheet.Cells[row, column];
+            try
+            {
+                return cell.Value2?.ToString() ?? String.Empty;
+            }
+            finally
+            {
+                Marshal.ReleaseComObject(cell);
+            }
+        }
+
+        /// <summary>
+        /// Читает сырое значение ячейки Excel (dynamic), освобождает COM-объект Range
+        /// </summary>
+        private dynamic GetCellRawValue(int row, int column)
+        {
+            Microsoft.Office.Interop.Excel.Range cell = Worksheet.Cells[row, column];
+            try
+            {
+                return cell.Value2;
+            }
+            finally
+            {
+                Marshal.ReleaseComObject(cell);
             }
         }
 
@@ -581,6 +630,27 @@ namespace ExcelMacroAdd.Forms.ViewModels
             return "«____» __________ 202_ г.";
         }
 
+        private static readonly Dictionary<string, string> _replaceMap = new Dictionary<string, string>()
+        {
+            { "Щиток", "Щитка"},
+            { "Щит", "Щита"},
+            { "Шкаф", "Шкафа"},
+            { "Устройство", "Устройства"},
+            { "устройство", "устройства"},
+            { "Корпус", "Корпуса"},
+            { "Ящик", "Ящика"},
+            { "Бокс", "Бокса"},
+            { "Панель", "Панели"},
+            { "распределительный", "распределительного"},
+            { "телекоммуникационный", "телекоммуникационного"},
+            { "Источник", "Источника"},
+            { "источник", "источника"},
+            { "Система", "Системы"},
+            { "система", "системы"},
+            { "Термошкаф", "Термошкафа" },
+            { "термошкаф", "термошкафа" }
+        };
+
         /// <summary>
         /// Функция склонения слов
         /// </summary>
@@ -590,32 +660,11 @@ namespace ExcelMacroAdd.Forms.ViewModels
         {
             string[] subs = mReplase.Split(' ');
 
-            var replace = new Dictionary<string, string>()
-            {
-                { "Щиток", "Щитка"},
-                { "Щит", "Щита"},
-                { "Шкаф", "Шкафа"},
-                { "Устройство", "Устройства"},
-                { "устройство", "устройства"},
-                { "Корпус", "Корпуса"},
-                { "Ящик", "Ящика"},
-                { "Бокс", "Бокса"},
-                { "Панель", "Панели"},
-                { "распределительный", "распределительного"},
-                { "телекоммуникационный", "телекоммуникационного"},
-                { "Источник", "Источника"},
-                { "источник", "источника"},
-                { "Система", "Системы"},
-                { "система", "системы"},
-                { "Термошкаф", "Термошкафа" },
-                { "термошкаф", "термошкафа" }
-            };
-
             for (int i = 0; i < subs.Length; i++)
             {
-                if (replace.ContainsKey(subs[i]))
+                if (_replaceMap.ContainsKey(subs[i]))
                 {
-                    subs[i] = replace[subs[i]];
+                    subs[i] = _replaceMap[subs[i]];
                 }
             }
             return String.Join(" ", subs);

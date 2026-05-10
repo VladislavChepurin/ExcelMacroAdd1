@@ -129,7 +129,7 @@ namespace ExcelMacroAdd.Functions
             }
             catch (Exception ex)
             {
-                MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {ex.Message}",
+                MessageError($"Произошла непредвиденная ошибка, пожалуйста сделайте скриншот ошибки, и передайте его разработчику.\n {ex.Message}",
                     "Ошибка базы данных");
                 Logger.LogException(ex);
             }

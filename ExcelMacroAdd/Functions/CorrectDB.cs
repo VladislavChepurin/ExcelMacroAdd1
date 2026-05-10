@@ -53,7 +53,7 @@ namespace ExcelMacroAdd.Functions
 
                 if (string.IsNullOrEmpty(sCabinetArticle))
                 {
-                    MessageWarning("Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n Артикул = ",
+                    MessageWarning("Одно из обязательных полей не заполнено. Пожалуйста заполните все поля и еще раз повторите запись. \n Артикул = ",
                         "Ошибка записи");
                     return;
                 }
@@ -76,15 +76,15 @@ namespace ExcelMacroAdd.Functions
 
                 if (string.IsNullOrEmpty(sEnclosureHeight) || string.IsNullOrEmpty(sEnclosureWidth) || string.IsNullOrEmpty(sEnclosureDepth) || string.IsNullOrEmpty(sCabinetMaterial) || string.IsNullOrEmpty(sMountingType))
                 {
-                    MessageWarning($"Одно из обязательных полей не заполнено. Пожайлуста запоните все поля и еще раз повторрите запись. \n Артикул = {sCabinetArticle}",
+                    MessageWarning($"Одно из обязательных полей не заполнено. Пожалуйста заполните все поля и еще раз повторите запись. \n Артикул = {sCabinetArticle}",
                         "Ошибка записи");
                     return;
                 }
 
                 var materialEntity = await accessData.AccessJournalNku.GetMaterialEntityByName(sCabinetMaterial)
-                    ?? throw new DataBaseNotFoundValueException($"Введенный материал шкафа \"{sCabinetMaterial}\" недопустим, пожайлуста используйте значение \"Пластик\" или \"Металл\"");
+                    ?? throw new DataBaseNotFoundValueException($"Введенный материал шкафа \"{sCabinetMaterial}\" недопустим, пожалуйста используйте значение \"Пластик\" или \"Металл\"");
                 var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sMountingType)
-                    ?? throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sMountingType}\" недопустимо, пожайлуста используйте значение \"напольное\", или \"навесное\", или \"встраиваемое\", или \"навесное для IT оборудования\", или \"напольное для IT оборудования\".");
+                    ?? throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sMountingType}\" недопустимо, пожалуйста используйте значение \"напольное\", или \"навесное\", или \"встраиваемое\", или \"навесное для IT оборудования\", или \"напольное для IT оборудования\".");
 
                 journalNku.Ip = sIPRating;
                 journalNku.Climate = sClimaticCategory == "-" ? null : sClimaticCategory;
@@ -103,7 +103,7 @@ namespace ExcelMacroAdd.Functions
             }
             catch (DataBaseNotFoundValueException ex)
             {
-                MessageError($"Произошла ошибка, скорее всего непавильно было указано одно из значений. {ex.Message}",
+                MessageError($"Произошла ошибка, скорее всего неправильно было указано одно из значений. {ex.Message}",
                     "Ошибка базы данных");
                 Logger.LogException(ex);
             }
@@ -115,7 +115,7 @@ namespace ExcelMacroAdd.Functions
             }
             catch (Exception ex)
             {
-                MessageError($"Произошла непредвиденная ошибка, пожайлуста сделайте скриншот ошибки, и передайте его разработчику.\n {ex.Message}",
+                MessageError($"Произошла непредвиденная ошибка, пожалуйста сделайте скриншот ошибки, и передайте его разработчику.\n {ex.Message}",
                     "Ошибка базы данных");
                 Logger.LogException(ex);
             }

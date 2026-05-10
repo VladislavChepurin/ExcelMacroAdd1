@@ -112,7 +112,7 @@ namespace ExcelMacroAdd
             return (Image)Properties.Resources.ResourceManager.GetObject(ImageName);
         }
 
-        public void OnActionCallbackBase(Office.IRibbonControl control)
+        public async Task OnActionCallbackBase(Office.IRibbonControl control)
         {
 //#if !DEBUG
             if (!validateLicenseKey.ValidateKey())
@@ -147,7 +147,7 @@ namespace ExcelMacroAdd
                     if (accessData != null)
                     {
                         var boxShield = new BoxShield(accessData, resources);
-                        boxShield.Start();
+                        await boxShield.StartAsync();
                     }
                     break;
 
@@ -156,7 +156,7 @@ namespace ExcelMacroAdd
                     if (accessData != null)
                     {
                         var addBoxDb = new AddBoxDb(accessData, resources);
-                        addBoxDb.Start();
+                        await addBoxDb.StartAsync();
                     }
                     break;
 
@@ -165,7 +165,7 @@ namespace ExcelMacroAdd
                     if (accessData != null)
                     {
                         var correctDb = new CorrectDb(accessData, resources);
-                        correctDb.Start();
+                        await correctDb.StartAsync();
                     }
                     break;
             }

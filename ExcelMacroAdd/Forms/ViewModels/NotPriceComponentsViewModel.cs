@@ -156,16 +156,16 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 try
                 {
                     string url = LinkToTheWebsite;
-                if (!url.StartsWith("http://") && !url.StartsWith("https://"))
-                {
-                    url = "http://" + url;
-                }
-                
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = url,
-                    UseShellExecute = true
-                });
+                    if (!url.StartsWith("http://") && !url.StartsWith("https://"))
+                    {
+                        url = "http://" + url;
+                    }
+
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = url,
+                        UseShellExecute = true
+                    });
                 }
                 catch (Exception ex)
                 {
@@ -266,11 +266,12 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 return;
             }
 
-            var activeCell = Worksheet.Application.ActiveCell;
-            int currentRow = activeCell.Row;
-
+            Range activeCell = null;
             try
-            {              
+            {
+                activeCell = Worksheet.Application.ActiveCell;
+                int currentRow = activeCell.Row;
+
                 var selectedRecord = SelectedRecord;
                 WriteToSheet(currentRow, selectedRecord);
                 ActivateNextRow(currentRow);
@@ -331,19 +332,19 @@ namespace ExcelMacroAdd.Forms.ViewModels
             {
                 if (obj != null && Marshal.IsComObject(obj))
                 {
-                    Marshal.FinalReleaseComObject(obj);
+                    Marshal.ReleaseComObject(obj);
                 }
             }
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
-        public async void BtnAddRecord()
+        public async Task BtnAddRecord()
         {
-            var activeCell = Worksheet.Application.ActiveCell;
-            int currentRow = activeCell.Row;
+            Range activeCell = null;
             try
-            {              
+            {
+                activeCell = Worksheet.Application.ActiveCell;
+                int currentRow = activeCell.Row;
+
                 string article = GetCellValueAsString(Worksheet.Cells[currentRow, ArticleColumn]);
 
                 if (string.IsNullOrWhiteSpace(article))
@@ -401,7 +402,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 .ConfigureAwait(false) ?? new Multiplicity() { Id = 1 };
 
             var entity = new NotPriceComponent
-            {         
+            {
                 Article = article,
                 Description = description,
                 MultiplicityId = multiplicityEntity.Id,
@@ -427,7 +428,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes;
         }
-             
+
         // Общий метод для обновления записи
         private void UpdateRecordInLists(NotPriceComponent updatedRecord)
         {
@@ -484,7 +485,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
         {
             await SetRecordState((int?)null);
         }
-          
+
         public async Task SetRecordState(int? status)
         {
             var selectedRecord = SelectedRecord;
@@ -507,7 +508,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
         }
 
         // Обновленный BtnDeleteRecord
-        public async void BtnDeleteRecord()
+        public async Task BtnDeleteRecord()
         {
             if (SelectedRecord == null)
             {
@@ -551,13 +552,14 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 MessageBoxDefaultButton.Button2) == DialogResult.Yes;
         }
 
-        public async void BtnUpdateRecord()
+        public async Task BtnUpdateRecord()
         {
-            var activeCell = Worksheet.Application.ActiveCell;
-            int currentRow = activeCell.Row;
-
+            Range activeCell = null;
             try
-            {                
+            {
+                activeCell = Worksheet.Application.ActiveCell;
+                int currentRow = activeCell.Row;
+
                 string article = GetCellValueAsString(Worksheet.Cells[currentRow, ArticleColumn]);
 
                 if (string.IsNullOrWhiteSpace(article))
@@ -584,7 +586,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             }
             finally
             {
-                ReleaseComObjects(activeCell);            
+                ReleaseComObjects(activeCell);
             }
         }
 
@@ -604,7 +606,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             }
 
             existingRecord.Description = description;
-            existingRecord.Price = price;                   
+            existingRecord.Price = price;
             existingRecord.Discount = discount;
             existingRecord.DataRecord = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
             if (!string.IsNullOrWhiteSpace(link))

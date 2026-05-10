@@ -15,15 +15,15 @@ namespace ExcelMacroAdd.Forms
     {
         private const byte StartSwitchCurrent = 5;
         private readonly IDataInXml dataInXml;
-        private readonly ISelectionTwinBlockData accessData;             
+        private readonly ISelectionTwinBlockData accessData;
 
         public SelectionTwinBlock(IDataInXml dataInXml, ISelectionTwinBlockData accessData, IFormSettings formSettings)
         {
             InitializeComponent();
             TopMost = formSettings.FormTopMost;
             this.dataInXml = dataInXml;
-            this.accessData = accessData;  
-            
+            this.accessData = accessData;
+
             comboBoxCurrent.SelectedIndexChanged += (s, e) => CheckingAvailableAccessories();
             checkBoxReverse.CheckedChanged += (s, e) => CheckingAvailableAccessories();
         }
@@ -36,9 +36,11 @@ namespace ExcelMacroAdd.Forms
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            Pen pen = new Pen(Color.FromArgb(40, 0, 0, 100));
-            e.Graphics.DrawLine(pen, 275, 70, 465, 70);
-        }        
+            using (var pen = new Pen(Color.FromArgb(40, 0, 0, 100)))
+            {
+                e.Graphics.DrawLine(pen, 275, 70, 465, 70);
+            }
+        }
 
         private void CheckingAvailableAccessories()
         {

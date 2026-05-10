@@ -27,13 +27,9 @@ namespace ExcelMacroAdd.BusinessLayer
                 .ToListAsync();
         }
 
-        public async Task<bool> IsThereIsDBRecord (string аrticle)
-        {   
-            if (await context.NotPriceComponents.FirstOrDefaultAsync(p => p.Article == аrticle) is null)
-            {
-                return false;
-            }
-            return true;
+        public async Task<bool> IsThereIsDBRecord (string article)
+        {
+            return await context.NotPriceComponents.AnyAsync(p => p.Article == article);
         }
 
         public async Task AddValueDb(NotPriceComponent entity)
