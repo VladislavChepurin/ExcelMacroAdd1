@@ -26,7 +26,7 @@ namespace ExcelMacroAdd.Services
         readonly string file = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/Settings.xml");
         public Vendor ReadElementXml(string vendor, Vendor[] dataXmlContinue)
         {
-            return dataXmlContinue.Single(p => p.VendorAttribute == vendor);
+            return dataXmlContinue.Single(p => IsSameVendor(p.VendorAttribute, vendor));
         }
 
         public Vendor[] ReadFileXml()
@@ -76,7 +76,9 @@ namespace ExcelMacroAdd.Services
         public void WriteXml(string vendor, params string[] data)
         {
             XDocument xdoc = XDocument.Load(file);
-            var index = xdoc.Element("MetaSettings")?.Elements("Vendor").FirstOrDefault(p => p.Attribute("vendor")?.Value == vendor);
+            var index = xdoc.Element("MetaSettings")?
+                .Elements("Vendor")
+                .FirstOrDefault(p => IsSameVendor(p.Attribute("vendor")?.Value, vendor));
             if (index != null)
             {
                 // Записываем первую формулу
@@ -120,6 +122,11 @@ namespace ExcelMacroAdd.Services
             {
                 xmlSerializer.Serialize(fs, vendor);
             }
+        }
+
+        private static bool IsSameVendor(string left, string right)
+        {
+            return string.Equals(left, right, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

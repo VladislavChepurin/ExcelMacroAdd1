@@ -17,7 +17,9 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using AppContext = ExcelMacroAdd.DataLayer.Entity.AppContext;
+using ExcelMacroAdd.BusinessLayer.Interfaces;
+using ExcelMacroAdd.DataLayer.Infrastructure;
+using ExcelMacroAdd.DataLayer.UnitOfWork;
 using Office = Microsoft.Office.Core;
 
 
@@ -27,6 +29,7 @@ namespace ExcelMacroAdd
     [ComVisible(true)]
     public class NewRibbon : Office.IRibbonExtensibility, IDisposable
     {
+        private static readonly TimeSpan GlobalDatabaseProbeTimeout = TimeSpan.FromSeconds(2);
         private Office.IRibbonUI ribbon;
         private readonly string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/appSettings.json");
         private readonly IDataInXml dataInXml;
@@ -34,7 +37,15 @@ namespace ExcelMacroAdd
         private readonly ICorrectFontResources correctFontResources;
         private readonly IFormSettings formSettings;
         private readonly ITypeNkySettings[] typeNkySettings;
-        private readonly AccessData accessData;
+        private readonly IAdditionalDevicesService additionalDevicesService;
+        private readonly ICircuitBreakerService circuitBreakerService;
+        private readonly IJournalNkuService journalNkuService;
+        private readonly IJournalNkuWriteService journalNkuWriteService;
+        private readonly INotPriceComponentsService notPriceComponentsService;
+        private readonly ISwitchService switchService;
+        private readonly ITransformerService transformerService;
+        private readonly ITwinBlockService twinBlockService;
+        private readonly IUnitOfWorkFactory unitOfWorkFactory;
         private readonly bool locationDataBase = default;
         private readonly IMemoryCache memoryCache;
         private readonly IValidateLicenseKey validateLicenseKey;
@@ -60,19 +71,26 @@ namespace ExcelMacroAdd
             memoryCache = new MemoryCache(cacheOptions);
 
             string path;
+            path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/");
 
-            if (settings.GlobalDateBaseLocationEnable && File.Exists(settings.GlobalDateBaseLocation + "BdMain.sqlite"))
+            if (settings.GlobalDateBaseLocationEnable &&
+                TryProbeGlobalDatabase(settings.GlobalDateBaseLocation, GlobalDatabaseProbeTimeout))
             {
                 path = settings.GlobalDateBaseLocation;
                 locationDataBase = true;
             }
-            else
-            {
-                path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/");
-            }
 
-            var context = new AppContext(path);
-            accessData = new AccessData(context, memoryCache);
+            var appContextFactory = new AppContextFactory(path);
+            unitOfWorkFactory = new UnitOfWorkFactory(appContextFactory);
+
+            additionalDevicesService = new AdditionalDevicesQueryService(unitOfWorkFactory);
+            circuitBreakerService = new CircuitBreakerQueryService(unitOfWorkFactory);
+            journalNkuService = new JournalNkuQueryService(unitOfWorkFactory, memoryCache);
+            journalNkuWriteService = new JournalNkuWriteService(unitOfWorkFactory, memoryCache);
+            notPriceComponentsService = new NotPriceComponentsService(unitOfWorkFactory);
+            switchService = new SwitchQueryService(unitOfWorkFactory);
+            transformerService = new TransformerQueryService(unitOfWorkFactory);
+            twinBlockService = new TwinBlockQueryService(unitOfWorkFactory);
             validateLicenseKey = new ValidateLicenseKey();
 
             //Создание внедряемых зависимостей
@@ -84,7 +102,10 @@ namespace ExcelMacroAdd
             {
                 if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/BdMacro.sqlite")))
                 {
-                    context.Switches.AsParallel().Select(x => x.Id).ToList();
+                    using (var warmupUnitOfWork = unitOfWorkFactory.Create())
+                    {
+                        warmupUnitOfWork.Context.Switches.Select(x => x.Id).FirstOrDefault();
+                    }
                 }
             }).Start();
 #endif
@@ -144,27 +165,27 @@ namespace ExcelMacroAdd
 
                 //Корпуса щитов
                 case "BoxShield_Button":
-                    if (accessData != null)
+                    if (journalNkuService != null)
                     {
-                        var boxShield = new BoxShield(accessData, resources);
+                        var boxShield = new BoxShield(journalNkuService, resources);
                         await boxShield.StartAsync();
                     }
                     break;
 
                 //Корпуса в базу
                 case "AddBoxDb_Button":
-                    if (accessData != null)
+                    if (journalNkuWriteService != null)
                     {
-                        var addBoxDb = new AddBoxDb(accessData, resources);
+                        var addBoxDb = new AddBoxDb(journalNkuWriteService, resources);
                         await addBoxDb.StartAsync();
                     }
                     break;
 
                 //Исправить запись в БД
                 case "CorrectDb_Button":
-                    if (accessData != null)
+                    if (journalNkuWriteService != null)
                     {
-                        var correctDb = new CorrectDb(accessData, resources);
+                        var correctDb = new CorrectDb(journalNkuWriteService, resources);
                         await correctDb.StartAsync();
                     }
                     break;
@@ -281,7 +302,7 @@ namespace ExcelMacroAdd
 
                 //Модульные аппараты
                 case "SelectionModularDevices_Button":
-                    if (accessData == null) break;
+                    if (circuitBreakerService == null || switchService == null || additionalDevicesService == null) break;
                     if (_selectionModularDevices)
                     {
                         MessageBox.Show("Окно уже открыто", "Информация",
@@ -291,7 +312,12 @@ namespace ExcelMacroAdd
                     _selectionModularDevices = true;
                     try
                     {
-                        await ShowFormOnStaThread(() => new SelectionModularDevices(dataInXml, accessData, formSettings));
+                        await ShowFormOnStaThread(() => new SelectionModularDevices(
+                            dataInXml,
+                            circuitBreakerService,
+                            switchService,
+                            additionalDevicesService,
+                            formSettings));
                     }
                     finally
                     {
@@ -301,7 +327,7 @@ namespace ExcelMacroAdd
 
                 //Трансформаторы тока
                 case "SelectionTransformer_Button":
-                    if (accessData == null) break;
+                    if (transformerService == null) break;
                     if (_selectionTransformer)
                     {
                         MessageBox.Show("Окно уже открыто", "Информация",
@@ -311,7 +337,7 @@ namespace ExcelMacroAdd
                     _selectionTransformer = true;
                     try
                     {
-                        await ShowFormOnStaThread(() => new SelectionTransformer(dataInXml, accessData, formSettings));
+                        await ShowFormOnStaThread(() => new SelectionTransformer(dataInXml, transformerService, formSettings));
                     }
                     finally
                     {
@@ -321,7 +347,7 @@ namespace ExcelMacroAdd
 
                 //Рубильники TwinBlock
                 case "SelectionTwinBlock_Button":
-                    if (accessData == null) break;
+                    if (twinBlockService == null) break;
                     if (_selectionTwinBlock)
                     {
                         MessageBox.Show("Окно уже открыто", "Информация",
@@ -332,7 +358,7 @@ namespace ExcelMacroAdd
                     _selectionTwinBlock = true;
                     try
                     {
-                        await ShowFormOnStaThread(() => new SelectionTwinBlock(dataInXml, accessData, formSettings));
+                        await ShowFormOnStaThread(() => new SelectionTwinBlock(dataInXml, twinBlockService, formSettings));
                     }
                     finally
                     {
@@ -342,7 +368,7 @@ namespace ExcelMacroAdd
 
                 //Расчет обогрева
                 case "TermoCalculation_Button":
-                    if (accessData == null) break;
+                    if (journalNkuService == null) break;
                     if (_termoCalculationOpen)
                     {
                         MessageBox.Show("Окно уже открыто", "Информация",
@@ -352,7 +378,7 @@ namespace ExcelMacroAdd
                     _termoCalculationOpen = true;
                     try
                     {
-                        await ShowFormOnStaThread(() => new TermoCalculation(accessData, formSettings));
+                        await ShowFormOnStaThread(() => new TermoCalculation(journalNkuService, formSettings));
                     }
                     finally
                     {
@@ -363,7 +389,7 @@ namespace ExcelMacroAdd
 
                 //Не тарифные позиции
                 case "NotPriceComponent_Button":
-                    if (accessData == null) break;
+                    if (notPriceComponentsService == null) break;
                     if (_notPriceComponentsOpen)
                     {
                         MessageBox.Show("Окно уже открыто", "Информация",
@@ -373,7 +399,7 @@ namespace ExcelMacroAdd
                     _notPriceComponentsOpen = true;
                     try
                     {
-                        await ShowFormOnStaThread(() => new NotPriceComponents(accessData, formSettings));
+                        await ShowFormOnStaThread(() => new NotPriceComponents(notPriceComponentsService, formSettings));
                     }
                     finally
                     {
@@ -449,14 +475,13 @@ namespace ExcelMacroAdd
         #region Вспомогательные методы
 
         /// <summary>
-        /// Освобождает ресурсы аддина: DbContext (через AccessData) и MemoryCache.
+        /// Освобождает ресурсы аддина.
         /// Вызывается из ThisAddIn.Shutdown при выгрузке аддина.
         /// </summary>
         public void Dispose()
         {
             if (!_disposed)
             {
-                accessData?.Dispose();
                 (memoryCache as IDisposable)?.Dispose();
                 _disposed = true;
             }
@@ -522,6 +547,24 @@ namespace ExcelMacroAdd
                 }
             }
             return null;
+        }
+
+        private static bool TryProbeGlobalDatabase(string globalDatabaseLocation, TimeSpan timeout)
+        {
+            if (string.IsNullOrWhiteSpace(globalDatabaseLocation))
+            {
+                return false;
+            }
+
+            string databasePath = Path.Combine(globalDatabaseLocation, "BdMain.sqlite");
+            var probeTask = Task.Run(() => File.Exists(databasePath));
+
+            if (!probeTask.Wait(timeout))
+            {
+                return false;
+            }
+
+            return probeTask.Status == TaskStatus.RanToCompletion && probeTask.Result;
         }
 
         #endregion

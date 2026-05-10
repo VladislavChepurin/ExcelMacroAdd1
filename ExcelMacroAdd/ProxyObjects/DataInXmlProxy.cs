@@ -1,8 +1,8 @@
 ﻿using ExcelMacroAdd.Services;
 using ExcelMacroAdd.Services.Interfaces;
 using ExcelMacroAdd.UserVariables;
+using System;
 using System.Collections.Concurrent;
-using System.Linq;
 
 //Rewiew OK 22.04.2025
 namespace ExcelMacroAdd.ProxyObjects
@@ -19,11 +19,13 @@ namespace ExcelMacroAdd.ProxyObjects
 
         public Vendor ReadElementXml(string vendor, Vendor[] dataXmlContinue)
         {
-            return _cache.GetOrAdd(vendor, key =>
+            if (vendor == null)
             {
-                var vendors = _dataInXml.ReadFileXml();
-                return vendors.Single(p => p.VendorAttribute == key);
-            });         
+                throw new ArgumentNullException(nameof(vendor));
+            }
+
+            string cacheKey = vendor.ToUpperInvariant();
+            return _cache.GetOrAdd(cacheKey, _ => _dataInXml.ReadElementXml(vendor, ReadFileXml()));
         }
 
         public Vendor[] ReadFileXml()

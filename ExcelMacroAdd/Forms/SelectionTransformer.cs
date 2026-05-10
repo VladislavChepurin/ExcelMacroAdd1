@@ -14,16 +14,16 @@ namespace ExcelMacroAdd.Forms
     {
         private const byte StartTransformerCurrent = 0; // Начальный ток трансформации
         private readonly IDataInXml dataInXml;
-        private readonly ISelectionTransformerData accessData;
+        private readonly ITransformerService transformerService;
         private readonly string[] _transformerRatios = {"5/5", "10/5", "15/5", "20/5", "25/5", "30/5", "40/5", "50/5", "60/5", "75/5", "80/5", "100/5", "120/5", "125/5", "150/5", "200/5", "250/5", "300/5",
                 "400/5", "500/5", "600/5", "750/5", "800/5", "1000/5", "1200/5", "1250/5", "1500/5", "1600/5", "2000/5", "2250/5", "2500/5", "3000/5", "4000/5", "5000/5" };
 
-        public SelectionTransformer(IDataInXml dataInXml, ISelectionTransformerData accessData, IFormSettings formSettings)
+        public SelectionTransformer(IDataInXml dataInXml, ITransformerService transformerService, IFormSettings formSettings)
         {
             InitializeComponent();
             TopMost = formSettings.FormTopMost;
             this.dataInXml = dataInXml;
-            this.accessData = accessData;
+            this.transformerService = transformerService;
         }
 
         private void SelectionTransformer_Load(object sender, EventArgs e)
@@ -97,7 +97,7 @@ namespace ExcelMacroAdd.Forms
             try
             {
                 cmbTransformerExecution.Items.Clear();
-                cmbTransformerExecution.Items.AddRange(accessData.AccessTransformer.GetComboBox2Items(cmbTransformerRatio.SelectedItem.ToString()));
+                cmbTransformerExecution.Items.AddRange(transformerService.GetComboBox2Items(cmbTransformerRatio.SelectedItem.ToString()));
                 cmbTransformerExecution.SelectedIndex = 0;
             }
             catch (NotSupportedException)
@@ -111,7 +111,7 @@ namespace ExcelMacroAdd.Forms
             try
             {
                 cmbTransformerAccuracy.Items.Clear();
-                cmbTransformerAccuracy.Items.AddRange(accessData.AccessTransformer.GetComboBox3Items(cmbTransformerRatio.SelectedItem.ToString(), cmbTransformerExecution.SelectedItem.ToString()));
+                cmbTransformerAccuracy.Items.AddRange(transformerService.GetComboBox3Items(cmbTransformerRatio.SelectedItem.ToString(), cmbTransformerExecution.SelectedItem.ToString()));
                 cmbTransformerAccuracy.SelectedIndex = 0;
             }
             catch (NotSupportedException)
@@ -125,7 +125,7 @@ namespace ExcelMacroAdd.Forms
             try
             {
                 cmbTransformerPower.Items.Clear();
-                cmbTransformerPower.Items.AddRange(accessData.AccessTransformer.GetComboBox4Items(cmbTransformerRatio.SelectedItem.ToString(), cmbTransformerExecution.SelectedItem.ToString(), cmbTransformerAccuracy.SelectedItem.ToString()));
+                cmbTransformerPower.Items.AddRange(transformerService.GetComboBox4Items(cmbTransformerRatio.SelectedItem.ToString(), cmbTransformerExecution.SelectedItem.ToString(), cmbTransformerAccuracy.SelectedItem.ToString()));
                 cmbTransformerPower.SelectedIndex = 0;
             }
             catch (NotSupportedException)
@@ -137,7 +137,7 @@ namespace ExcelMacroAdd.Forms
         private void cmbTransformerPower_SelectedIndexChanged(object sender, EventArgs e)
         {
             var transformerRow =
-              accessData.AccessTransformer.GetArticle(
+              transformerService.GetArticle(
                   cmbTransformerRatio.SelectedItem.ToString(),
                   cmbTransformerExecution.SelectedItem.ToString(),
                   cmbTransformerAccuracy.SelectedItem.ToString(),
@@ -221,7 +221,7 @@ namespace ExcelMacroAdd.Forms
                 lblDekTop.Text = transformerRow.DekTop;
             }
             //Обновление картинки из базы
-            pictureBox1.Image = ByteArrayToImage(accessData.AccessTransformer.GetBlobPictureDb(
+            pictureBox1.Image = ByteArrayToImage(transformerService.GetBlobPictureDb(
                 cmbTransformerRatio.SelectedItem.ToString(),
                 cmbTransformerExecution.SelectedItem.ToString(),
                 cmbTransformerAccuracy.SelectedItem.ToString(),

@@ -14,9 +14,9 @@ namespace ExcelMacroAdd.Forms
     {
         private readonly TermoCalculationViewModel termoCalculationViewModel;        
                
-        public TermoCalculation(ITermoCalcData accessData, IFormSettings formSettings)
+        public TermoCalculation(IJournalNkuService journalNkuService, IFormSettings formSettings)
         {
-            termoCalculationViewModel = new TermoCalculationViewModel(accessData);
+            termoCalculationViewModel = new TermoCalculationViewModel(journalNkuService);
 
             InitializeComponent();
             InitializeDataBindings();    

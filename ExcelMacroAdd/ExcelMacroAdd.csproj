@@ -255,23 +255,25 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="BusinessLayer\AccessAdditionalModularDevices.cs" />
-    <Compile Include="BusinessLayer\AccessCircuitBreaker.cs" />
-    <Compile Include="BusinessLayer\AccessData.cs" />
-    <Compile Include="BusinessLayer\AccessJournalNku.cs" />
-    <Compile Include="BusinessLayer\AccessNotPriceComponent.cs" />
-    <Compile Include="BusinessLayer\AccessSwitch.cs" />
-    <Compile Include="BusinessLayer\AccessTermoCalc.cs" />
-    <Compile Include="BusinessLayer\AccessTransformer.cs" />
-    <Compile Include="BusinessLayer\AccessTwinBlock.cs" />
-    <Compile Include="BusinessLayer\Interfaces\IAdditionalModularDevicesData.cs" />
-    <Compile Include="BusinessLayer\Interfaces\INotPriceComponent.cs" />
-    <Compile Include="BusinessLayer\Interfaces\ISelectionSwitchData.cs" />
-    <Compile Include="BusinessLayer\Interfaces\ISelectionTwinBlockData.cs" />
-    <Compile Include="BusinessLayer\Interfaces\ISelectionTransformerData.cs" />
-    <Compile Include="BusinessLayer\Interfaces\IJournalData.cs" />
-    <Compile Include="BusinessLayer\Interfaces\ISelectionCircuitBreakerData.cs" />
-    <Compile Include="BusinessLayer\Interfaces\ITermoCalcData.cs" />
+    <Compile Include="BusinessLayer\AdditionalDevicesQueryService.cs" />
+    <Compile Include="BusinessLayer\CircuitBreakerQueryService.cs" />
+    <Compile Include="BusinessLayer\JournalNkuQueryService.cs" />
+    <Compile Include="BusinessLayer\JournalNkuWriteService.cs" />
+    <Compile Include="BusinessLayer\NotPriceComponentsService.cs" />
+    <Compile Include="BusinessLayer\SwitchQueryService.cs" />
+    <Compile Include="BusinessLayer\TransformerQueryService.cs" />
+    <Compile Include="BusinessLayer\TwinBlockQueryService.cs" />
+    <Compile Include="BusinessLayer\Interfaces\IAdditionalDevicesService.cs" />
+    <Compile Include="BusinessLayer\Interfaces\ICircuitBreakerService.cs" />
+    <Compile Include="BusinessLayer\Interfaces\IJournalNkuService.cs" />
+    <Compile Include="BusinessLayer\Interfaces\IJournalNkuWriteService.cs" />
+    <Compile Include="BusinessLayer\Interfaces\INotPriceComponentsService.cs" />
+    <Compile Include="BusinessLayer\Interfaces\ISwitchService.cs" />
+    <Compile Include="BusinessLayer\Interfaces\ITwinBlockService.cs" />
+    <Compile Include="BusinessLayer\Interfaces\ITransformerService.cs" />
+    <Compile Include="BusinessLayer\Models\JournalNkuWriteRequest.cs" />
+    <Compile Include="BusinessLayer\Models\JournalNkuWriteResult.cs" />
+    <Compile Include="BusinessLayer\Models\NotPriceComponentSaveRequest.cs" />
     <Compile Include="DataLayer\Entity\AdditionalPole.cs" />
     <Compile Include="DataLayer\Entity\AuxiliaryContact.cs" />
     <Compile Include="DataLayer\Entity\ExecutionBox.cs" />
@@ -297,6 +299,8 @@
     <Compile Include="DataLayer\Entity\TwinBlockSwitch.cs" />
     <Compile Include="DataLayer\Entity\ProductVendor.cs" />
     <Compile Include="DataLayer\Entity\UndervoltageRelease.cs" />
+    <Compile Include="DataLayer\Infrastructure\AppContextFactory.cs" />
+    <Compile Include="DataLayer\Infrastructure\IAppContextFactory.cs" />
     <Compile Include="DataLayer\Interfaces\IBoxBase.cs" />
     <Compile Include="DataLayer\Interfaces\IExecutionBox.cs" />
     <Compile Include="DataLayer\Interfaces\IMaterialBox.cs" />
@@ -304,6 +308,10 @@
     <Compile Include="DataLayer\Interfaces\IMultiplicity.cs" />
     <Compile Include="DataLayer\Interfaces\IProductVendor.cs" />
     <Compile Include="DataLayer\Interfaces\ISwitch.cs" />
+    <Compile Include="DataLayer\UnitOfWork\EfUnitOfWork.cs" />
+    <Compile Include="DataLayer\UnitOfWork\IUnitOfWork.cs" />
+    <Compile Include="DataLayer\UnitOfWork\IUnitOfWorkFactory.cs" />
+    <Compile Include="DataLayer\UnitOfWork\UnitOfWorkFactory.cs" />
     <Compile Include="Forms\AdditionalDevicesForm.cs">
       <SubType>Form</SubType>
     </Compile>

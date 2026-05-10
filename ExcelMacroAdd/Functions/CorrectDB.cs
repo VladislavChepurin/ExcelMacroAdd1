@@ -1,5 +1,5 @@
 using ExcelMacroAdd.BusinessLayer.Interfaces;
-using ExcelMacroAdd.DataLayer.Entity;
+using ExcelMacroAdd.BusinessLayer.Models;
 using ExcelMacroAdd.Serializable.Entity.Interfaces;
 using ExcelMacroAdd.Services;
 using ExcelMacroAdd.UserException;
@@ -14,12 +14,12 @@ namespace ExcelMacroAdd.Functions
 {
     internal sealed class CorrectDb : AbstractFunctions
     {
-        private readonly IJournalData accessData;
+        private readonly IJournalNkuWriteService journalNkuWriteService;
         private readonly IFillingOutThePassportSettings resources;
 
-        public CorrectDb(IJournalData accessData, IFillingOutThePassportSettings resources)
+        public CorrectDb(IJournalNkuWriteService journalNkuWriteService, IFillingOutThePassportSettings resources)
         {
-            this.accessData = accessData;
+            this.journalNkuWriteService = journalNkuWriteService;
             this.resources = resources;
         }
 
@@ -32,14 +32,17 @@ namespace ExcelMacroAdd.Functions
             try
             {
                 workbook = WorkBook;
-                if (workbook?.Name != resources.NameFileJournal) // Проверка по имени книги
+                if (workbook?.Name != resources.NameFileJournal)
                 {
                     MessageWarning(Properties.Resources.NotJornal, Properties.Resources.NameWorkbook);
                     return;
                 }
 
-                DialogResult dialogResult = MessageBox.Show(@"Вы уверены, что хотите изменить запись в БД? Пожалуйста будте очень внимательны, изменения коснуться всех пользователей.",
-                                                            @"Контрольный вопрос", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show(
+                    @"Вы уверены, что хотите изменить запись в БД? Пожалуйста будьте очень внимательны, изменения коснуться всех пользователей.",
+                    @"Контрольный вопрос",
+                    MessageBoxButtons.YesNo);
+
                 if (dialogResult != DialogResult.Yes)
                 {
                     return;
@@ -48,74 +51,82 @@ namespace ExcelMacroAdd.Functions
                 worksheet = Worksheet;
                 selection = Cell;
 
-                int currentRow = selection.Row; // Вычисляем верхний элемент
-                string sCabinetArticle = ReadCellText(worksheet, currentRow, CabinetArticleColumn);
+                int currentRow = selection.Row;
+                string article = ReadCellText(worksheet, currentRow, CabinetArticleColumn);
 
-                if (string.IsNullOrEmpty(sCabinetArticle))
+                if (string.IsNullOrEmpty(article))
                 {
-                    MessageWarning("Одно из обязательных полей не заполнено. Пожалуйста заполните все поля и еще раз повторите запись. \n Артикул = ",
+                    MessageWarning(
+                        "Одно из обязательных полей не заполнено. Пожалуйста заполните все поля и еще раз повторите запись. \n Артикул = ",
                         "Ошибка записи");
                     return;
                 }
 
-                if (!(await accessData.AccessJournalNku.GetEntityJournal(sCabinetArticle.ToLower()) is BoxBase journalNku))
+                int.TryParse(ReadCellText(worksheet, currentRow, IPRatingColumn), out int ipRating);
+                string climaticCategory = ReadCellText(worksheet, currentRow, ClimaticCategoryColumn);
+                string mass = ReadCellText(worksheet, currentRow, MassColumn);
+                string enclosureHeight = ReadCellText(worksheet, currentRow, EnclosureHeightColumn);
+                string enclosureWidth = ReadCellText(worksheet, currentRow, EnclosureWidthColumn);
+                string enclosureDepth = ReadCellText(worksheet, currentRow, EnclosureDepthColumn);
+                string cabinetMaterial = ReadCellText(worksheet, currentRow, CabinetMaterialTypeColumn);
+                string mountingType = ReadCellText(worksheet, currentRow, MountingTypeColumn);
+
+                if (string.IsNullOrEmpty(enclosureHeight)
+                    || string.IsNullOrEmpty(enclosureWidth)
+                    || string.IsNullOrEmpty(enclosureDepth)
+                    || string.IsNullOrEmpty(cabinetMaterial)
+                    || string.IsNullOrEmpty(mountingType))
                 {
-                    MessageWarning($"В базе данных такого артикула нет.\n Необходимо сначала его занести. \nАртикул = {sCabinetArticle}",
+                    MessageWarning(
+                        $"Одно из обязательных полей не заполнено. Пожалуйста заполните все поля и еще раз повторите запись. \n Артикул = {article}",
+                        "Ошибка записи");
+                    return;
+                }
+
+                var request = new JournalNkuWriteRequest
+                {
+                    Ip = ipRating,
+                    Climate = climaticCategory,
+                    Weight = mass,
+                    Height = enclosureHeight,
+                    Width = enclosureWidth,
+                    Depth = enclosureDepth,
+                    Article = article,
+                    MaterialName = cabinetMaterial,
+                    ExecutionName = mountingType
+                };
+
+                var result = await journalNkuWriteService.UpdateBoxAsync(request);
+                if (result.Status == JournalNkuWriteStatus.NotFound)
+                {
+                    MessageWarning(
+                        $"В базе данных такого артикула нет.\n Необходимо сначала его занести. \nАртикул = {article}",
                         "Ошибка записи!");
                     return;
                 }
 
-                int.TryParse(ReadCellText(worksheet, currentRow, IPRatingColumn), out int sIPRating);
-                string sClimaticCategory = ReadCellText(worksheet, currentRow, ClimaticCategoryColumn);
-                string sMass = ReadCellText(worksheet, currentRow, MassColumn);
-                string sEnclosureHeight = ReadCellText(worksheet, currentRow, EnclosureHeightColumn);
-                string sEnclosureWidth = ReadCellText(worksheet, currentRow, EnclosureWidthColumn);
-                string sEnclosureDepth = ReadCellText(worksheet, currentRow, EnclosureDepthColumn);
-                string sCabinetMaterial = ReadCellText(worksheet, currentRow, CabinetMaterialTypeColumn);
-                string sMountingType = ReadCellText(worksheet, currentRow, MountingTypeColumn);
-
-                if (string.IsNullOrEmpty(sEnclosureHeight) || string.IsNullOrEmpty(sEnclosureWidth) || string.IsNullOrEmpty(sEnclosureDepth) || string.IsNullOrEmpty(sCabinetMaterial) || string.IsNullOrEmpty(sMountingType))
-                {
-                    MessageWarning($"Одно из обязательных полей не заполнено. Пожалуйста заполните все поля и еще раз повторите запись. \n Артикул = {sCabinetArticle}",
-                        "Ошибка записи");
-                    return;
-                }
-
-                var materialEntity = await accessData.AccessJournalNku.GetMaterialEntityByName(sCabinetMaterial)
-                    ?? throw new DataBaseNotFoundValueException($"Введенный материал шкафа \"{sCabinetMaterial}\" недопустим, пожалуйста используйте значение \"Пластик\" или \"Металл\"");
-                var executionEntity = await accessData.AccessJournalNku.GetExecutionEntityByName(sMountingType)
-                    ?? throw new DataBaseNotFoundValueException($"Введенное исполнение шкафа \"{sMountingType}\" недопустимо, пожалуйста используйте значение \"напольное\", или \"навесное\", или \"встраиваемое\", или \"навесное для IT оборудования\", или \"напольное для IT оборудования\".");
-
-                journalNku.Ip = sIPRating;
-                journalNku.Climate = sClimaticCategory == "-" ? null : sClimaticCategory;
-                journalNku.Weight = sMass == "-" ? null : sMass;
-                journalNku.Height = sEnclosureHeight;
-                journalNku.Width = sEnclosureWidth;
-                journalNku.Depth = sEnclosureDepth;
-                journalNku.Article = sCabinetArticle.ToLower();
-                journalNku.MaterialBoxId = materialEntity.Id;
-                journalNku.ExecutionBoxId = executionEntity.Id;
-
-                await accessData.AccessJournalNku.WriteUpdateDb(journalNku);
-
-                MessageInformation($"Запись успешно изменена! \nПоздравляем! \nАртикул = {sCabinetArticle}",
+                MessageInformation(
+                    $"Запись успешно изменена! \nПоздравляем! \nАртикул = {article}",
                     "Запись успешна!");
             }
             catch (DataBaseNotFoundValueException ex)
             {
-                MessageError($"Произошла ошибка, скорее всего неправильно было указано одно из значений. {ex.Message}",
+                MessageError(
+                    $"Произошла ошибка, скорее всего неправильно было указано одно из значений. {ex.Message}",
                     "Ошибка базы данных");
                 Logger.LogException(ex);
             }
             catch (DataException ex)
             {
-                MessageError("Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",
+                MessageError(
+                    "Не удалось подключиться к базе данных, просьба проверить наличие или доступность файла базы данных",
                     "Ошибка базы данных");
                 Logger.LogException(ex);
             }
             catch (Exception ex)
             {
-                MessageError($"Произошла непредвиденная ошибка, пожалуйста сделайте скриншот ошибки, и передайте его разработчику.\n {ex.Message}",
+                MessageError(
+                    $"Произошла непредвиденная ошибка, пожалуйста сделайте скриншот ошибки, и передайте его разработчику.\n {ex.Message}",
                     "Ошибка базы данных");
                 Logger.LogException(ex);
             }

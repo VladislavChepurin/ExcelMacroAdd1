@@ -29,9 +29,9 @@ namespace ExcelMacroAdd.Forms
             question
         }
 
-        public NotPriceComponents(INotPriceComponent accessData, IFormSettings formSettings)
+        public NotPriceComponents(INotPriceComponentsService notPriceComponentsService, IFormSettings formSettings)
         {
-            notPriceComponentsViewModel = new NotPriceComponentsViewModel(accessData);
+            notPriceComponentsViewModel = new NotPriceComponentsViewModel(notPriceComponentsService);
             InitializeComponent();
             InitializeDataBindings();
             SetupDataGridView();

@@ -15,11 +15,11 @@ namespace ExcelMacroAdd.Functions
         private const int MissingHighlightColumn = CabinetArticleColumn - 1;
 
         private readonly IFillingOutThePassportSettings resources;
-        private readonly IJournalData accessData;
+        private readonly IJournalNkuService journalNkuService;
 
-        public BoxShield(IJournalData accessData, IFillingOutThePassportSettings resources)
+        public BoxShield(IJournalNkuService journalNkuService, IFillingOutThePassportSettings resources)
         {
-            this.accessData = accessData;
+            this.journalNkuService = journalNkuService;
             this.resources = resources;
         }
 
@@ -72,7 +72,7 @@ namespace ExcelMacroAdd.Functions
                     return;
                 }
 
-                var journalsByArticle = await accessData.AccessJournalNku.GetEntityJournalBatch(articlesToLoad);
+                var journalsByArticle = await journalNkuService.GetEntityJournalBatch(articlesToLoad);
 
                 enclosureRange = GetRange(worksheet, firstRow, IPRatingColumn, endRow, EnclosureDepthColumn);
                 typeRange = GetRange(worksheet, firstRow, CabinetMaterialTypeColumn, endRow, MountingTypeColumn);

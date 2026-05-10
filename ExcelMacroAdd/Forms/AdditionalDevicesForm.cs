@@ -17,10 +17,10 @@ namespace ExcelMacroAdd.Forms
             main?.Show();
         }
 
-        public AdditionalDevicesForm(IDataInXml dataInXml, IAdditionalModularDevicesData accessData, IFormSettings formSettings)
+        public AdditionalDevicesForm(IDataInXml dataInXml, IAdditionalDevicesService additionalDevicesService, IFormSettings formSettings)
         {
             TopMost = formSettings.FormTopMost;
-            additionalDevicesViewModel = new AdditionalDevicesViewModel(dataInXml, accessData);
+            additionalDevicesViewModel = new AdditionalDevicesViewModel(dataInXml, additionalDevicesService);
             InitializeComponent();           
             InitializeDataBindings();
             

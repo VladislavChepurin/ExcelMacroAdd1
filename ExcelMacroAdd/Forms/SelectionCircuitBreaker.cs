@@ -71,7 +71,7 @@ namespace ExcelMacroAdd.Forms
         }
 
         private readonly IDataInXml dataInXml;
-        private readonly ISelectionCircuitBreakerData accessData;
+        private readonly ICircuitBreakerService circuitBreakerService;
         private readonly CircuitBreakerRowControls[] circuitBreakerRows;
         private UserVariable[] userVariables = new UserVariable[6];
 
@@ -81,18 +81,18 @@ namespace ExcelMacroAdd.Forms
             main?.Show();
         }
 
-        public SelectionCircuitBreaker(IDataInXml dataInXml, ISelectionCircuitBreakerData accessData, IFormSettings formSettings)
+        public SelectionCircuitBreaker(IDataInXml dataInXml, ICircuitBreakerService circuitBreakerService, IFormSettings formSettings)
         {
             TopMost = formSettings.FormTopMost;
             this.dataInXml = dataInXml;
-            this.accessData = accessData;
+            this.circuitBreakerService = circuitBreakerService;
             InitializeComponent();
             circuitBreakerRows = CreateRows();
         }
 
         private void SelectionCircuitBreaker_Load(object sender, EventArgs e)
         {
-            var loadVendor = accessData.AccessCircuitBreaker.GetAllUniqueVendors();
+            var loadVendor = circuitBreakerService.GetAllUniqueVendors();
 
             foreach (var row in circuitBreakerRows)
             {
@@ -308,7 +308,7 @@ namespace ExcelMacroAdd.Forms
         {
             var row = circuitBreakerRows[rowIndex];
             string vendor = row.VendorComboBox.Text;
-            var loadSeries = accessData.AccessCircuitBreaker.GetAllUniqueSeries(vendor);
+            var loadSeries = circuitBreakerService.GetAllUniqueSeries(vendor);
 
             row.SeriesComboBox.Items.Clear();
             row.SeriesComboBox.Items.AddRange(loadSeries);
@@ -320,7 +320,7 @@ namespace ExcelMacroAdd.Forms
             var row = circuitBreakerRows[rowIndex];
             string vendor = row.VendorComboBox.Text;
             string series = row.SeriesComboBox.Text;
-            var data = accessData.AccessCircuitBreaker.GetDataCircutBreaker(vendor, series);
+            var data = circuitBreakerService.GetDataCircutBreaker(vendor, series);
 
             SetGroupLabel(row.GroupLabel, data.group);
 
@@ -381,7 +381,7 @@ namespace ExcelMacroAdd.Forms
 
             try
             {
-                var modules = await accessData.AccessCircuitBreaker.GetEntityCircuitBreaker(
+                var modules = await circuitBreakerService.GetEntityCircuitBreaker(
                     vendor,
                     series,
                     current,

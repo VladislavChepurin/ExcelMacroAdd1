@@ -64,7 +64,7 @@ namespace ExcelMacroAdd.Forms
         }
 
         private readonly IDataInXml dataInXml;
-        private readonly ISelectionSwitchData accessData;
+        private readonly ISwitchService switchService;
         private readonly SwitchRowControls[] switchRows;
         private UserVariable[] userVariables = new UserVariable[6];
 
@@ -74,18 +74,18 @@ namespace ExcelMacroAdd.Forms
             main?.Show();
         }
 
-        public SelectionSwitch(IDataInXml dataInXml, ISelectionSwitchData accessData, IFormSettings formSettings)
+        public SelectionSwitch(IDataInXml dataInXml, ISwitchService switchService, IFormSettings formSettings)
         {
             TopMost = formSettings.FormTopMost;
             this.dataInXml = dataInXml;
-            this.accessData = accessData;
+            this.switchService = switchService;
             InitializeComponent();
             switchRows = CreateRows();
         }
 
         private void SelectionCircuitBreaker_Load(object sender, EventArgs e)
         {
-            var loadVendor = accessData.AccessSwitch.GetAllUniqueVendors();
+            var loadVendor = switchService.GetAllUniqueVendors();
 
             foreach (var row in switchRows)
             {
@@ -265,7 +265,7 @@ namespace ExcelMacroAdd.Forms
         {
             var row = switchRows[rowIndex];
             string vendor = row.VendorComboBox.Text;
-            var loadSeries = accessData.AccessSwitch.GetAllUniqueSeries(vendor);
+            var loadSeries = switchService.GetAllUniqueSeries(vendor);
 
             row.SeriesComboBox.Items.Clear();
             row.SeriesComboBox.Items.AddRange(loadSeries);
@@ -277,7 +277,7 @@ namespace ExcelMacroAdd.Forms
             var row = switchRows[rowIndex];
             string vendor = row.VendorComboBox.Text;
             string series = row.SeriesComboBox.Text;
-            var data = accessData.AccessSwitch.GetDataSwitch(vendor, series);
+            var data = switchService.GetDataSwitch(vendor, series);
 
             SetGroupLabel(row.GroupLabel, data.group);
 
@@ -328,7 +328,7 @@ namespace ExcelMacroAdd.Forms
 
             try
             {
-                var modules = await accessData.AccessSwitch.GetEntitySwitch(vendor, series, current, poles);
+                var modules = await switchService.GetEntitySwitch(vendor, series, current, poles);
 
                 if (modules != null)
                 {

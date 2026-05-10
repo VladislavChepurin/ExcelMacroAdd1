@@ -15,7 +15,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
     public class AdditionalDevicesViewModel: AbstractFunctions, INotifyPropertyChanged
     {
         private readonly IDataInXml _dataInXml;
-        private readonly IAdditionalModularDevicesData _accessData;
+        private readonly IAdditionalDevicesService _additionalDevicesService;
         private readonly int _currentRow;
         private readonly string _article;
         private readonly AdditionalDevices _circuitBreakerData;
@@ -155,18 +155,18 @@ namespace ExcelMacroAdd.Forms.ViewModels
             return values.All(v => string.IsNullOrEmpty(v));
         }
 
-        public AdditionalDevicesViewModel(IDataInXml dataInXml, IAdditionalModularDevicesData accessData)
+        public AdditionalDevicesViewModel(IDataInXml dataInXml, IAdditionalDevicesService additionalDevicesService)
         {
             this._dataInXml = dataInXml;
-            this._accessData = accessData;       
+            this._additionalDevicesService = additionalDevicesService;       
 
             _currentRow = Cell.Row;
 
             _article = Convert.ToString(Worksheet.Cells[_currentRow, 1].Value2);
             if (_article != null)
             {
-                _circuitBreakerData = accessData.AccessAdditionalModularDevices.GetEntityAdditionalCircuitBreaker(_article);
-                _switchData = accessData.AccessAdditionalModularDevices.GetEntityAdditionalSwitch(_article);
+                _circuitBreakerData = additionalDevicesService.GetEntityAdditionalCircuitBreaker(_article);
+                _switchData = additionalDevicesService.GetEntityAdditionalSwitch(_article);
                 _addDevicesAgregate = (_circuitBreakerData.vendor != null) ? _circuitBreakerData : _switchData;
             }
         }

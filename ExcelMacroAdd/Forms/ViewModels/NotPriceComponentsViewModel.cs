@@ -2,6 +2,7 @@
 using ExcelMacroAdd.DataLayer.Entity;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.Services;
+using ExcelMacroAdd.BusinessLayer.Models;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
         private const int MaxDisplayItems = 1000;
         private const int FilterDelayMs = 300;
 
-        private readonly INotPriceComponent _accessData;
+        private readonly INotPriceComponentsService _notPriceComponentsService;
         private BindingList<NotPriceComponent> _filteredList;
         private BindingList<NotPriceComponent> _recordList;
         private NotPriceComponent _selectedRecord;
@@ -175,9 +176,9 @@ namespace ExcelMacroAdd.Forms.ViewModels
             }
         }
 
-        public NotPriceComponentsViewModel(INotPriceComponent accessData)
+        public NotPriceComponentsViewModel(INotPriceComponentsService notPriceComponentsService)
         {
-            _accessData = accessData ?? throw new ArgumentNullException(nameof(accessData));
+            _notPriceComponentsService = notPriceComponentsService ?? throw new ArgumentNullException(nameof(notPriceComponentsService));
             _filterTokenSource = new CancellationTokenSource();
             FilteredList = new BindingList<NotPriceComponent>();
             _uiContext = SynchronizationContext.Current ?? new WindowsFormsSynchronizationContext();
@@ -188,7 +189,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             try
             {
                 IsLoading = true;
-                var records = await _accessData.AccessNotPriceComponent.GetAllRecord().ConfigureAwait(false);
+                var records = await _notPriceComponentsService.GetAllRecordsAsync().ConfigureAwait(false);
                 RecordList = new BindingList<NotPriceComponent>(records.ToList());
                 FilteredList = new BindingList<NotPriceComponent>(records.ToList());
                 CountStatusList = $"Всего доступно {RecordList.Count} записей, выбрано {FilteredList.Count} записей";
@@ -353,7 +354,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                     return;
                 }
 
-                if (await _accessData.AccessNotPriceComponent.IsThereIsDBRecord(article).ConfigureAwait(false))
+                if (await _notPriceComponentsService.RecordExistsAsync(article).ConfigureAwait(false))
                 {
                     MessageError($"Артикул {article} уже есть в базе данных", "Ошибка добавления");
                     return;
@@ -372,7 +373,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                     return;
                 }
 
-                await ProcessAddRecord(article, description, productVendorName, multiplicityName, price, discount, link);
+                await ProcessAddRecord(CreateSaveRequest(article, description, productVendorName, multiplicityName, price, discount, link));
             }
             catch (Exception ex)
             {
@@ -385,38 +386,19 @@ namespace ExcelMacroAdd.Forms.ViewModels
             }
         }
 
-        private async Task ProcessAddRecord(string article, string description, string productVendorName,
-                                          string multiplicityName, decimal price, int discount, string link)
+        private async Task ProcessAddRecord(NotPriceComponentSaveRequest request)
         {
-            var productVendorEntity = await _accessData.AccessNotPriceComponent.GetProductVendorEntityByName(productVendorName)
-                .ConfigureAwait(false);
-
-            if (productVendorEntity == null)
+            bool createVendorIfMissing = false;
+            if (!await _notPriceComponentsService.VendorExistsAsync(request.ProductVendorName).ConfigureAwait(false))
             {
-                if (!ConfirmAddNewVendor(productVendorName)) return;
-                productVendorEntity = await _accessData.AccessNotPriceComponent.AddProductVendor(
-                    new ProductVendor { VendorName = productVendorName }).ConfigureAwait(false);
+                if (!ConfirmAddNewVendor(request.ProductVendorName)) return;
+                createVendorIfMissing = true;
             }
 
-            var multiplicityEntity = await _accessData.AccessNotPriceComponent.GetMultiplicityEntityByName(multiplicityName)
-                .ConfigureAwait(false) ?? new Multiplicity() { Id = 1 };
-
-            var entity = new NotPriceComponent
-            {
-                Article = article,
-                Description = description,
-                MultiplicityId = multiplicityEntity.Id,
-                ProductVendorId = productVendorEntity.Id,
-                Price = price,
-                Discount = discount,
-                DataRecord = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"),
-                Link = link
-            };
-
-            await _accessData.AccessNotPriceComponent.AddValueDb(entity).ConfigureAwait(false);
+            await _notPriceComponentsService.AddRecordAsync(request, createVendorIfMissing).ConfigureAwait(false);
             await StartAsync();
 
-            MessageInformation($"Успешно записано в базу данных!\nАртикул: {article}\nВендор: {productVendorName}",
+            MessageInformation($"Успешно записано в базу данных!\nАртикул: {request.Article}\nВендор: {request.ProductVendorName}",
                 "Запись успешна!");
         }
 
@@ -492,19 +474,15 @@ namespace ExcelMacroAdd.Forms.ViewModels
             if (selectedRecord == null) return;
             var article = selectedRecord.Article;
 
-            var existingRecord = await _accessData.AccessNotPriceComponent.GetRecordByArticle(article)
+            var updatedRecord = await _notPriceComponentsService.SetRecordStateAsync(article, status)
                    .ConfigureAwait(false);
-            if (existingRecord == null)
+            if (updatedRecord == null)
             {
                 MessageError($"Запись с артикулом {article} не найдена", "Ошибка обновления");
                 return;
             }
 
-            existingRecord.IsValid = status;
-            await _accessData.AccessNotPriceComponent.UpdateRecord(existingRecord).ConfigureAwait(false);
-
-            // Используем общий метод обновления
-            UpdateRecordInLists(existingRecord);
+            UpdateRecordInLists(updatedRecord);
         }
 
         // Обновленный BtnDeleteRecord
@@ -521,7 +499,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
 
             try
             {
-                bool success = await _accessData.AccessNotPriceComponent.DeleteRecord(selectedRecord.Id)
+                bool success = await _notPriceComponentsService.DeleteRecordAsync(selectedRecord.Id)
                     .ConfigureAwait(false);
 
                 if (success)
@@ -568,16 +546,21 @@ namespace ExcelMacroAdd.Forms.ViewModels
                     return;
                 }
 
-                var existingRecord = await _accessData.AccessNotPriceComponent.GetRecordByArticle(article)
-                    .ConfigureAwait(false);
+                string description = GetCellValueAsString(Worksheet.Cells[currentRow, DescriptionColumn]);
+                string multiplicityName = GetCellValueAsString(Worksheet.Cells[currentRow, MultiplicityColumn]);
+                string productVendorName = GetCellValueAsString(Worksheet.Cells[currentRow, ProductVendorColumn]);
+                decimal price = GetCellValueAsDecimal(Worksheet.Cells[currentRow, PriceColumn]);
+                int discount = GetCellValueAsInt(Worksheet.Cells[currentRow, DiscountColumn]);
+                string link = GetCellValueAsString(Worksheet.Cells[currentRow, LinkColumn]);
 
-                if (existingRecord == null)
-                {
-                    MessageError($"Запись с артикулом {article} не найдена", "Ошибка обновления");
-                    return;
-                }
-
-                await ProcessUpdateRecord(currentRow, existingRecord);
+                await ProcessUpdateRecord(CreateSaveRequest(
+                    article,
+                    description,
+                    productVendorName,
+                    multiplicityName,
+                    price,
+                    discount,
+                    link));
             }
             catch (Exception ex)
             {
@@ -590,51 +573,53 @@ namespace ExcelMacroAdd.Forms.ViewModels
             }
         }
 
-        private async Task ProcessUpdateRecord(int currentRow, NotPriceComponent existingRecord)
+        private async Task ProcessUpdateRecord(NotPriceComponentSaveRequest request)
         {
-            string description = GetCellValueAsString(Worksheet.Cells[currentRow, DescriptionColumn]);
-            string multiplicityName = GetCellValueAsString(Worksheet.Cells[currentRow, MultiplicityColumn]);
-            string productVendorName = GetCellValueAsString(Worksheet.Cells[currentRow, ProductVendorColumn]);
-            decimal price = GetCellValueAsDecimal(Worksheet.Cells[currentRow, PriceColumn]);
-            int discount = GetCellValueAsInt(Worksheet.Cells[currentRow, DiscountColumn]);
-            string link = GetCellValueAsString(Worksheet.Cells[currentRow, LinkColumn]);
-
-            if (string.IsNullOrWhiteSpace(description) || string.IsNullOrWhiteSpace(productVendorName))
+            if (string.IsNullOrWhiteSpace(request.Description) || string.IsNullOrWhiteSpace(request.ProductVendorName))
             {
                 MessageWarning("Описание и вендор не могут быть пустыми", "Ошибка обновления");
                 return;
             }
 
-            existingRecord.Description = description;
-            existingRecord.Price = price;
-            existingRecord.Discount = discount;
-            existingRecord.DataRecord = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
-            if (!string.IsNullOrWhiteSpace(link))
-                existingRecord.Link = link;
-
-            var productVendorEntity = await _accessData.AccessNotPriceComponent.GetProductVendorEntityByName(productVendorName)
-                .ConfigureAwait(false);
-
-            if (productVendorEntity == null)
+            bool createVendorIfMissing = false;
+            if (!await _notPriceComponentsService.VendorExistsAsync(request.ProductVendorName).ConfigureAwait(false))
             {
-                if (!ConfirmAddNewVendor(productVendorName)) return;
-                productVendorEntity = await _accessData.AccessNotPriceComponent.AddProductVendor(
-                    new ProductVendor { VendorName = productVendorName }).ConfigureAwait(false);
+                if (!ConfirmAddNewVendor(request.ProductVendorName)) return;
+                createVendorIfMissing = true;
             }
 
-            var multiplicityEntity = await _accessData.AccessNotPriceComponent.GetMultiplicityEntityByName(multiplicityName)
-                .ConfigureAwait(false) ?? new Multiplicity() { Id = 1 };
+            var updatedRecord = await _notPriceComponentsService.UpdateRecordAsync(request, createVendorIfMissing).ConfigureAwait(false);
+            if (updatedRecord == null)
+            {
+                MessageError($"Запись с артикулом {request.Article} не найдена", "Ошибка обновления");
+                return;
+            }
 
-            existingRecord.ProductVendorId = productVendorEntity.Id;
-            existingRecord.MultiplicityId = multiplicityEntity.Id;
+            UpdateRecordInLists(updatedRecord);
 
-            await _accessData.AccessNotPriceComponent.UpdateRecord(existingRecord).ConfigureAwait(false);
-            //Обнавление измеенной записи
-            UpdateRecordInLists(existingRecord);
-
-            MessageInformation($"Запись успешно обновлена\nАртикул: {existingRecord.Article}", "Обновление завершено");
+            MessageInformation($"Запись успешно обновлена\nАртикул: {updatedRecord.Article}", "Обновление завершено");
         }
 
+        private static NotPriceComponentSaveRequest CreateSaveRequest(
+            string article,
+            string description,
+            string productVendorName,
+            string multiplicityName,
+            decimal price,
+            int discount,
+            string link)
+        {
+            return new NotPriceComponentSaveRequest
+            {
+                Article = article?.Trim(),
+                Description = description?.Trim(),
+                ProductVendorName = productVendorName?.Trim(),
+                MultiplicityName = multiplicityName?.Trim(),
+                Price = price,
+                Discount = discount,
+                Link = link?.Trim()
+            };
+        }
 
         private string GetCellValueAsString(Range cell) => Convert.ToString(cell.Value2);
         private int GetCellValueAsInt(Range cell) => int.TryParse(GetCellValueAsString(cell), out int result) ? result : 0;

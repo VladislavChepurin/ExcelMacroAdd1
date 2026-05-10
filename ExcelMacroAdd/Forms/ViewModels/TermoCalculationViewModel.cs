@@ -8,7 +8,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
 {
     public class TermoCalculationViewModel: AbstractFunctions, INotifyPropertyChanged
     {
-        private readonly ITermoCalcData _accessData;
+        private readonly IJournalNkuService _journalNkuService;
         //Материал шкафа
         private const double sheetSteel = 5.5;
         private const double stainlessSteel = 4.5;
@@ -163,9 +163,9 @@ namespace ExcelMacroAdd.Forms.ViewModels
 
         #endregion
 
-        public TermoCalculationViewModel(ITermoCalcData accessData)
+        public TermoCalculationViewModel(IJournalNkuService journalNkuService)
         {
-            _accessData = accessData;
+            _journalNkuService = journalNkuService;
             //IsVisibleLabel = true;
         }
 
@@ -181,7 +181,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             if (sArticle == null)
                 return;
 
-            var boxData = await _accessData.AccessTermoCalc.GetEntityJournal(sArticle.ToLower());
+            var boxData = await _journalNkuService.GetEntityJournal(sArticle.ToLower());
 
             if (boxData == null)
                 return;

@@ -15,14 +15,14 @@ namespace ExcelMacroAdd.Forms
     {
         private const byte StartSwitchCurrent = 5;
         private readonly IDataInXml dataInXml;
-        private readonly ISelectionTwinBlockData accessData;
+        private readonly ITwinBlockService twinBlockService;
 
-        public SelectionTwinBlock(IDataInXml dataInXml, ISelectionTwinBlockData accessData, IFormSettings formSettings)
+        public SelectionTwinBlock(IDataInXml dataInXml, ITwinBlockService twinBlockService, IFormSettings formSettings)
         {
             InitializeComponent();
             TopMost = formSettings.FormTopMost;
             this.dataInXml = dataInXml;
-            this.accessData = accessData;
+            this.twinBlockService = twinBlockService;
 
             comboBoxCurrent.SelectedIndexChanged += (s, e) => CheckingAvailableAccessories();
             checkBoxReverse.CheckedChanged += (s, e) => CheckingAvailableAccessories();
@@ -30,7 +30,7 @@ namespace ExcelMacroAdd.Forms
 
         private void SelectionTwinBlock_Load(object sender, EventArgs e)
         {
-            comboBoxCurrent.Items.AddRange(accessData.AccessTwinBlock.GetComboBox1Items());
+            comboBoxCurrent.Items.AddRange(twinBlockService.GetComboBox1Items());
             comboBoxCurrent.SelectedIndex = StartSwitchCurrent;
         }
 
@@ -44,12 +44,12 @@ namespace ExcelMacroAdd.Forms
 
         private void CheckingAvailableAccessories()
         {
-            var data = accessData.AccessTwinBlock.GetDataInTableDb(comboBoxCurrent.SelectedItem.ToString(), checkBoxReverse.Checked);
+            var data = twinBlockService.GetDataInTableDb(comboBoxCurrent.SelectedItem.ToString(), checkBoxReverse.Checked);
 
             if (!string.IsNullOrEmpty(data.Item1))
             {
                 pictureBox.Image =
-                    ByteArrayToImage(accessData.AccessTwinBlock.GetBlobPictureDb(comboBoxCurrent.SelectedItem.ToString(),
+                    ByteArrayToImage(twinBlockService.GetBlobPictureDb(comboBoxCurrent.SelectedItem.ToString(),
                         checkBoxReverse.Checked));
                 btnGoSheet.Enabled = true;
             }
@@ -97,7 +97,7 @@ namespace ExcelMacroAdd.Forms
             using (var scope = new ExcelPerformanceScope(Globals.ThisAddIn.GetApplication()))
             {
                 int offsetRow = 0;
-                var data = accessData.AccessTwinBlock.GetDataInTableDb(
+                var data = twinBlockService.GetDataInTableDb(
                     comboBoxCurrent.SelectedItem.ToString(), checkBoxReverse.Checked);
 
                 var writeExcel = new WriteExcel(dataInXml, "EKF", data.Item1, offsetRow);
