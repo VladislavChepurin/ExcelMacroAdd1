@@ -24,7 +24,6 @@ namespace ExelMacroAdd.Tests
         {
             tempDirectory = Path.Combine(Path.GetTempPath(), "ExcelMacroAddTests", Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(tempDirectory);
-            AppDomain.CurrentDomain.SetData("DataDirectory", tempDirectory + Path.DirectorySeparatorChar);
 
             string sourceDatabase = Path.Combine(GetSolutionRoot(), "ExcelMacroAdd", "DataLayer", "DataBase", "BdMain.sqlite");
             string targetDatabase = Path.Combine(tempDirectory, "BdMain.sqlite");

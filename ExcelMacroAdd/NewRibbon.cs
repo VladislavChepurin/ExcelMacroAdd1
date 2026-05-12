@@ -1,4 +1,7 @@
 ﻿using ExcelMacroAdd.BusinessLayer;
+using ExcelMacroAdd.BusinessLayer.Interfaces;
+using ExcelMacroAdd.DataLayer.Infrastructure;
+using ExcelMacroAdd.DataLayer.UnitOfWork;
 using ExcelMacroAdd.Forms;
 using ExcelMacroAdd.Functions;
 using ExcelMacroAdd.ProxyObjects;
@@ -17,9 +20,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ExcelMacroAdd.BusinessLayer.Interfaces;
-using ExcelMacroAdd.DataLayer.Infrastructure;
-using ExcelMacroAdd.DataLayer.UnitOfWork;
 using Office = Microsoft.Office.Core;
 
 
@@ -95,20 +95,6 @@ namespace ExcelMacroAdd
 
             //Создание внедряемых зависимостей
             dataInXml = new DataInXmlProxy(new DataInXml());
-
-#if !DEBUG
-            //Чтобы не тормозил интерфейс при первом запросе в базу данных
-            new Task(() =>
-            {
-                if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataLayer/DataBase/BdMacro.sqlite")))
-                {
-                    using (var warmupUnitOfWork = unitOfWorkFactory.Create())
-                    {
-                        warmupUnitOfWork.Context.Switches.Select(x => x.Id).FirstOrDefault();
-                    }
-                }
-            }).Start();
-#endif
         }
 
         #region Элементы IRibbonExtensibility

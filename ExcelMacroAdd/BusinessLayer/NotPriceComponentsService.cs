@@ -99,7 +99,6 @@ namespace ExcelMacroAdd.BusinessLayer
             {
                 var context = unitOfWork.Context;
                 var existingRecord = await context.NotPriceComponents
-                    .AsNoTracking()
                     .FirstOrDefaultAsync(p => p.Article == request.Article);
 
                 if (existingRecord == null)
@@ -146,9 +145,7 @@ namespace ExcelMacroAdd.BusinessLayer
                     return null;
                 }
 
-                entity.IsValid = status;
-                unitOfWork.Context.NotPriceComponents.Attach(entity);
-                unitOfWork.Context.Entry(entity).Property(p => p.IsValid).IsModified = true;
+                entity.IsValid = status;               
                 await unitOfWork.SaveChangesAsync();
                 return await ReloadRecordAsync(unitOfWork.Context, entity.Id);
             }

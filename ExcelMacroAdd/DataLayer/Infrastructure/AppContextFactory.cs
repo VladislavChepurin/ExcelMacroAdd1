@@ -6,21 +6,30 @@ namespace ExcelMacroAdd.DataLayer.Infrastructure
 {
     public sealed class AppContextFactory : IAppContextFactory
     {
-        private readonly string _dataDirectoryPath;
+        private const string DatabaseFileName = "BdMain.sqlite";
+        private readonly string _databaseFilePath;
 
-        public AppContextFactory(string dataDirectoryPath)
+        public AppContextFactory(string databasePathOrDirectory)
         {
-            if (string.IsNullOrWhiteSpace(dataDirectoryPath))
+            if (string.IsNullOrWhiteSpace(databasePathOrDirectory))
             {
-                throw new ArgumentException("Путь к каталогу базы данных не может быть пустым.", nameof(dataDirectoryPath));
+                throw new ArgumentException("Путь к базе данных не может быть пустым.", nameof(databasePathOrDirectory));
             }
 
-            _dataDirectoryPath = Path.GetFullPath(dataDirectoryPath);
+            _databaseFilePath = ResolveDatabaseFilePath(databasePathOrDirectory);
         }
 
         public AppContext Create()
         {
-            return new AppContext(_dataDirectoryPath);
+            return new AppContext(_databaseFilePath);
+        }
+
+        private static string ResolveDatabaseFilePath(string databasePathOrDirectory)
+        {
+            string fullPath = Path.GetFullPath(databasePathOrDirectory);
+            return fullPath.EndsWith(".sqlite", StringComparison.OrdinalIgnoreCase)
+                ? fullPath
+                : Path.Combine(fullPath, DatabaseFileName);
         }
     }
 }

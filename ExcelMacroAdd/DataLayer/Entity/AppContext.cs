@@ -1,14 +1,16 @@
-﻿using System;
+using System;
 using System.Data.Entity;
+using System.Data.SQLite;
+using System.IO;
 
 namespace ExcelMacroAdd.DataLayer.Entity
 {
     public class AppContext : DbContext
     {
-        public AppContext(string path) : base("Context")
+        public AppContext(string databaseFilePath) : base(CreateConnection(databaseFilePath), true)
         {
-            AppDomain.CurrentDomain.SetData("DataDirectory", path);
         }
+
         public DbSet<BoxBase> JornalNkus { get; set; }
         public DbSet<Switch> Switches { get; set; }
         public DbSet<CircuitBreaker> CircuitBreakers { get; set; }
@@ -33,6 +35,21 @@ namespace ExcelMacroAdd.DataLayer.Entity
         public DbSet<SignalOrAuxiliaryContact> SignalOrAuxiliaryContacts { get; set; }
         public DbSet<NotPriceComponent> NotPriceComponents { get; set; }
         public DbSet<Multiplicity> Multiplicities { get; set; }
-        
+
+        private static SQLiteConnection CreateConnection(string databaseFilePath)
+        {
+            if (string.IsNullOrWhiteSpace(databaseFilePath))
+            {
+                throw new ArgumentException("Путь к файлу базы данных не может быть пустым.", nameof(databaseFilePath));
+            }
+
+            string fullDatabaseFilePath = Path.GetFullPath(databaseFilePath);
+            var connectionStringBuilder = new SQLiteConnectionStringBuilder
+            {
+                DataSource = fullDatabaseFilePath
+            };
+
+            return new SQLiteConnection(connectionStringBuilder.ConnectionString);
+        }
     }
 }
