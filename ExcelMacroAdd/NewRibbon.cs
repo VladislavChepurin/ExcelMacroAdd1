@@ -84,11 +84,11 @@ namespace ExcelMacroAdd
             unitOfWorkFactory = new UnitOfWorkFactory(appContextFactory);
 
             additionalDevicesService = new AdditionalDevicesQueryService(unitOfWorkFactory);
-            circuitBreakerService = new CircuitBreakerQueryService(unitOfWorkFactory);
+            circuitBreakerService = new CircuitBreakerQueryService(unitOfWorkFactory, memoryCache);
             journalNkuService = new JournalNkuQueryService(unitOfWorkFactory, memoryCache);
             journalNkuWriteService = new JournalNkuWriteService(unitOfWorkFactory, memoryCache);
             notPriceComponentsService = new NotPriceComponentsService(unitOfWorkFactory);
-            switchService = new SwitchQueryService(unitOfWorkFactory);
+            switchService = new SwitchQueryService(unitOfWorkFactory, memoryCache);
             transformerService = new TransformerQueryService(unitOfWorkFactory);
             twinBlockService = new TwinBlockQueryService(unitOfWorkFactory);
             validateLicenseKey = new ValidateLicenseKey();

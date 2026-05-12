@@ -64,6 +64,7 @@ namespace ExelMacroAdd.Tests
                 var writeService = scope.CreateJournalWriteService();
                 var material = scope.GetFirstMaterial();
                 var execution = scope.GetFirstExecution();
+                int productVendorId = scope.GetFirstProductVendorId();
                 string article = ("TEST-UPDATE-" + TestContext.CurrentContext.Test.ID).ToLowerInvariant();
 
                 scope.SeedJournalRecord(new BoxBase
@@ -76,6 +77,7 @@ namespace ExelMacroAdd.Tests
                     Width = "500",
                     Depth = "300",
                     MaterialBoxId = material.MaterialId,
+                    ProductVendorId = productVendorId,
                     ExecutionBoxId = execution.ExecutionId
                 });
 
@@ -109,6 +111,7 @@ namespace ExelMacroAdd.Tests
                     Assert.AreEqual("2200", updatedFromDatabase.Height);
                     Assert.AreEqual("800", updatedFromDatabase.Width);
                     Assert.AreEqual("500", updatedFromDatabase.Depth);
+                    Assert.AreEqual(productVendorId, updatedFromDatabase.ProductVendorId);
                     Assert.AreEqual("2200", updatedFromQuery.Height);
                     Assert.AreEqual(65, updatedFromQuery.Ip);
                 });

@@ -12,6 +12,6 @@ namespace ExcelMacroAdd.BusinessLayer.Interfaces
 
         string[] GetAllUniqueSeries(string vendor);
 
-        IUserCircuitBreaker GetDataCircutBreaker(string vendor, string series);
+        IUserCircuitBreaker GetDataCircuitBreaker(string vendor, string series);
     }
 }

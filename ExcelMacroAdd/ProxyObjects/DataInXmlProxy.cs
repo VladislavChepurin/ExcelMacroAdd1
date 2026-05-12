@@ -10,7 +10,8 @@ namespace ExcelMacroAdd.ProxyObjects
     {
         private readonly IDataInXml _dataInXml;
         private readonly ConcurrentDictionary<string, Vendor> _cache = new ConcurrentDictionary<string, Vendor>();
-        private Vendor[] vendors;      
+        private readonly object _vendorsLock = new object();
+        private volatile Vendor[] vendors;
 
         public DataInXmlProxy(DataInXml dataInXml)
         {
@@ -30,27 +31,45 @@ namespace ExcelMacroAdd.ProxyObjects
 
         public Vendor[] ReadFileXml()
         {
-            if (vendors == null)
+            var cachedVendors = vendors;
+            if (cachedVendors != null)
             {
-                vendors = _dataInXml.ReadFileXml();
+                return cachedVendors;
+            }
+
+            lock (_vendorsLock)
+            {
+                if (vendors == null)
+                {
+                    vendors = _dataInXml.ReadFileXml();
+                }
+
                 return vendors;
             }
-            return vendors;
         }
 
         public void WriteXml(string vendor, params string[] data)
         {
-            //Очищаем 
-            _cache.Clear();
-            vendors = null;
+            InvalidateCache();
             //Проксируем вызов на прямую
             _dataInXml.WriteXml(vendor, data);
         }
 
         public void XmlFileCreate()
         {
+            InvalidateCache();
             //Проксируем вызов на прямую
             _dataInXml.XmlFileCreate();
+        }
+
+        private void InvalidateCache()
+        {
+            _cache.Clear();
+
+            lock (_vendorsLock)
+            {
+                vendors = null;
+            }
         }
     }
 }

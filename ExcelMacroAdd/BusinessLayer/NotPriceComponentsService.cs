@@ -138,8 +138,7 @@ namespace ExcelMacroAdd.BusinessLayer
 
             using (var unitOfWork = _unitOfWorkFactory.Create())
             {
-                var entity = await unitOfWork.Context.NotPriceComponents
-                    .AsNoTracking()
+                var entity = await unitOfWork.Context.NotPriceComponents                   
                     .FirstOrDefaultAsync(p => p.Article == article);
 
                 if (entity == null)

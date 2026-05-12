@@ -73,7 +73,6 @@ namespace ExcelMacroAdd.BusinessLayer
                 string article = NormalizeArticle(request.Article);
 
                 var existing = await context.JornalNkus
-                    .AsNoTracking()
                     .FirstOrDefaultAsync(p => p.Article == article);
 
                 if (existing == null)
@@ -84,23 +83,16 @@ namespace ExcelMacroAdd.BusinessLayer
                 var materialId = await ResolveMaterialIdAsync(context, request.MaterialName);
                 var executionId = await ResolveExecutionIdAsync(context, request.ExecutionName);
 
-                var updated = new BoxBase
-                {
-                    Id = existing.Id,
-                    Article = article,
-                    Ip = request.Ip,
-                    Climate = NormalizeOptionalValue(request.Climate),
-                    Weight = NormalizeOptionalValue(request.Weight),
-                    Height = request.Height,
-                    Width = request.Width,
-                    Depth = request.Depth,
-                    MaterialBoxId = materialId,
-                    ProductVendorId = existing.ProductVendorId,
-                    ExecutionBoxId = executionId
-                };
+                existing.Article = article;
+                existing.Ip = request.Ip;
+                existing.Climate = NormalizeOptionalValue(request.Climate);
+                existing.Weight = NormalizeOptionalValue(request.Weight);
+                existing.Height = request.Height;
+                existing.Width = request.Width;
+                existing.Depth = request.Depth;
+                existing.MaterialBoxId = materialId;
+                existing.ExecutionBoxId = executionId;
 
-                context.JornalNkus.Attach(updated);
-                context.Entry(updated).State = EntityState.Modified;
                 await unitOfWork.SaveChangesAsync();
                 InvalidateCache(article);
                 return new JournalNkuWriteResult(JournalNkuWriteStatus.Updated, article);

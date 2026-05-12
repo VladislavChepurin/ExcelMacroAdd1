@@ -80,6 +80,17 @@ namespace ExelMacroAdd.Tests
             }
         }
 
+        public int GetFirstProductVendorId()
+        {
+            using (var unitOfWork = UnitOfWorkFactory.Create())
+            {
+                return unitOfWork.Context.ProductVendors
+                    .OrderBy(x => x.Id)
+                    .Select(x => x.Id)
+                    .First();
+            }
+        }
+
         public string GetFirstMultiplicityName()
         {
             using (var unitOfWork = UnitOfWorkFactory.Create())

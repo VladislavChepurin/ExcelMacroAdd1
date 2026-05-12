@@ -320,7 +320,7 @@ namespace ExcelMacroAdd.Forms
             var row = circuitBreakerRows[rowIndex];
             string vendor = row.VendorComboBox.Text;
             string series = row.SeriesComboBox.Text;
-            var data = circuitBreakerService.GetDataCircutBreaker(vendor, series);
+            var data = circuitBreakerService.GetDataCircuitBreaker(vendor, series);
 
             SetGroupLabel(row.GroupLabel, data.group);
 
