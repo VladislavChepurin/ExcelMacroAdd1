@@ -35,7 +35,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
 
         private readonly INotPriceComponentsService _notPriceComponentsService;
         private BindingList<NotPriceComponent> _filteredList;
-        private BindingList<NotPriceComponent> _recordList;
+        private List<NotPriceComponent> _allRecords;
         private NotPriceComponent _selectedRecord;
         private string _searchTerm;
         private CancellationTokenSource _filterTokenSource;
@@ -79,19 +79,6 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 }
 
                 return LinkToTheWebsite;
-            }
-        }
-
-        public BindingList<NotPriceComponent> RecordList
-        {
-            get => _recordList;
-            set
-            {
-                if (_recordList != value)
-                {
-                    _recordList = value;
-                    OnPropertyChanged(nameof(RecordList));
-                }
             }
         }
 
@@ -180,6 +167,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
         {
             _notPriceComponentsService = notPriceComponentsService ?? throw new ArgumentNullException(nameof(notPriceComponentsService));
             _filterTokenSource = new CancellationTokenSource();
+            _allRecords = new List<NotPriceComponent>();
             FilteredList = new BindingList<NotPriceComponent>();
             _uiContext = SynchronizationContext.Current ?? new WindowsFormsSynchronizationContext();
         }
@@ -190,9 +178,9 @@ namespace ExcelMacroAdd.Forms.ViewModels
             {
                 IsLoading = true;
                 var records = await _notPriceComponentsService.GetAllRecordsAsync().ConfigureAwait(false);
-                RecordList = new BindingList<NotPriceComponent>(records.ToList());
-                FilteredList = new BindingList<NotPriceComponent>(records.ToList());
-                CountStatusList = $"Всего доступно {RecordList.Count} записей, выбрано {FilteredList.Count} записей";
+                _allRecords = records.ToList();
+                FilteredList = new BindingList<NotPriceComponent>(_allRecords);
+                CountStatusList = $"Всего доступно {_allRecords.Count} записей, выбрано {FilteredList.Count} записей";
             }
             catch (Exception ex)
             {
@@ -217,36 +205,34 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 if (token.IsCancellationRequested) return;
 
                 var search = SearchTerm?.Trim();
-                IEnumerable<NotPriceComponent> result;
+                List<NotPriceComponent> result;
 
                 if (string.IsNullOrWhiteSpace(search))
                 {
-                    result = RecordList;
+                    result = _allRecords;
                 }
                 else
                 {
-                    var filtered = RecordList
+                    result = _allRecords
                     .AsParallel()
                     .WithCancellation(token)
                     .Where(item =>
                     item != null &&
-                    (                                    // ← fix 1: скобка
+                    (
                         (!string.IsNullOrEmpty(item.Article) &&
                          item.Article.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0) ||
                         (!string.IsNullOrEmpty(item.Description) &&
                          item.Description.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0) ||
                         (!string.IsNullOrEmpty(item.VendorDisplayName) &&
                          item.VendorDisplayName.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
-                    ))                                   // ← fix 1: скобка
-                    .Take(MaxDisplayItems)                   // ← fix 2: Take сразу, без Count
-                    .ToList();                               // ← fix 3: материализация один раз
-
-                    result = filtered;
+                    ))
+                    .Take(MaxDisplayItems)
+                    .ToList();
                 }
 
-                FilteredList = new BindingList<NotPriceComponent>(result.ToList());
+                FilteredList = new BindingList<NotPriceComponent>(result);
 
-                CountStatusList = $"Всего доступно {RecordList.Count} записей, выбрано {FilteredList.Count} записей";
+                CountStatusList = $"Всего доступно {_allRecords.Count} записей, выбрано {FilteredList.Count} записей";
             }
             catch (TaskCanceledException)
             {
@@ -416,12 +402,13 @@ namespace ExcelMacroAdd.Forms.ViewModels
         {
             _uiContext.Post(_ =>
             {
-                // Обновляем в RecordList
-                var recordItem = RecordList.FirstOrDefault(r => r.Id == updatedRecord.Id);
-                if (recordItem != null)
+                bool wasSelected = SelectedRecord?.Id == updatedRecord.Id;
+
+                // Обновляем в _allRecords
+                var recordIndex = _allRecords.FindIndex(r => r.Id == updatedRecord.Id);
+                if (recordIndex >= 0)
                 {
-                    var index = RecordList.IndexOf(recordItem);
-                    RecordList[index] = updatedRecord;
+                    _allRecords[recordIndex] = updatedRecord;
                 }
 
                 // Обновляем в FilteredList
@@ -432,7 +419,12 @@ namespace ExcelMacroAdd.Forms.ViewModels
                     FilteredList[index] = updatedRecord;
                 }
 
-                CountStatusList = $"Всего доступно {RecordList.Count} записей, выбрано {FilteredList.Count} записей";
+                if (wasSelected)
+                {
+                    SelectedRecord = updatedRecord;
+                }
+
+                CountStatusList = $"Всего доступно {_allRecords.Count} записей, выбрано {FilteredList.Count} записей";
             }, null);
         }
 
@@ -441,10 +433,10 @@ namespace ExcelMacroAdd.Forms.ViewModels
         {
             _uiContext.Post(_ =>
             {
-                // Удаляем из RecordList
-                var recordToRemove = RecordList.FirstOrDefault(r => r.Id == recordId);
+                // Удаляем из _allRecords
+                var recordToRemove = _allRecords.FirstOrDefault(r => r.Id == recordId);
                 if (recordToRemove != null)
-                    RecordList.Remove(recordToRemove);
+                    _allRecords.Remove(recordToRemove);
 
                 // Удаляем из FilteredList
                 var filterToRemove = FilteredList.FirstOrDefault(r => r.Id == recordId);
@@ -454,7 +446,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
                 if (SelectedRecord?.Id == recordId)
                     SelectedRecord = null;
 
-                CountStatusList = $"Всего доступно {RecordList.Count} записей, выбрано {FilteredList.Count} записей";
+                CountStatusList = $"Всего доступно {_allRecords.Count} записей, выбрано {FilteredList.Count} записей";
             }, null);
         }
 

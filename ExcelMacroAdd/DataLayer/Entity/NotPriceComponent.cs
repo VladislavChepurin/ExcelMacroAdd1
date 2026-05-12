@@ -7,7 +7,13 @@ namespace ExcelMacroAdd.DataLayer.Entity
 {
     public class NotPriceComponent
     {
+        private static readonly Regex DatePattern = new Regex(
+            @"\b\d{2}-\d{2}-\d{4}\b",
+            RegexOptions.Compiled);
+
         private decimal? _price;
+        private string _cachedDataRecordDisplayName;
+        private string _dataRecord;
 
         public int Id { get; set; }
 
@@ -32,11 +38,19 @@ namespace ExcelMacroAdd.DataLayer.Entity
             get => _price;
             set => _price = value < 0 ? throw new ArgumentException("Цена не может быть отрицательной") : value;
         }
-        public int Discount{ get; set; }
+        public int Discount { get; set; }
 
-        public string DataRecord { get; set; }
+        public string DataRecord
+        {
+            get => _dataRecord;
+            set
+            {
+                _dataRecord = value;
+                _cachedDataRecordDisplayName = null;
+            }
+        }
 
-        public string Link { get; set; }          
+        public string Link { get; set; }
 
         // Вычисляемое свойство для безопасного отображения вендора
         [NotMapped] // Не добавлять в базу данных
@@ -46,26 +60,25 @@ namespace ExcelMacroAdd.DataLayer.Entity
         public string MultiplicityDisplayName => Multiplicity?.Value ?? "шт";
 
         [NotMapped]
-        public string DataRecordDisplayName
+        public string DataRecordDisplayName =>
+            _cachedDataRecordDisplayName ?? (_cachedDataRecordDisplayName = ParseDataRecord());
+
+        private string ParseDataRecord()
         {
-            get
+            if (string.IsNullOrWhiteSpace(_dataRecord))
+                return "Нет даты";
+
+            var match = DatePattern.Match(_dataRecord);
+            if (!match.Success)
+                return "Нет даты";
+
+            if (DateTime.TryParseExact(match.Value, "dd-MM-yyyy",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
             {
-                if (string.IsNullOrWhiteSpace(DataRecord))
-                    return "Нет даты";
-
-                var match = Regex.Match(DataRecord, @"\b\d{2}-\d{2}-\d{4}\b");
-                if (!match.Success)
-                    return "Нет даты";
-
-                // Дополнительная проверка валидности даты
-                if (DateTime.TryParseExact(match.Value, "dd-MM-yyyy",
-                    CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
-                {
-                    return match.Value;
-                }
-
-                return "Неверный формат даты";
+                return match.Value;
             }
+
+            return "Неверный формат даты";
         }
     }
 }

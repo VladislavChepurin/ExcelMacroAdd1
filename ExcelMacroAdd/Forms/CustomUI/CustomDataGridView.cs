@@ -9,10 +9,11 @@ namespace ExcelMacroAdd.Forms.CustomUI
 
         public CustomDataGridView() : base()
         {
+            DoubleBuffered = true;
             VerticalScrollBar.Visible = true;
             VerticalScrollBar.VisibleChanged += new EventHandler(VerticalScrollBar_VisibleChanged);
         }
-        
+
         void VerticalScrollBar_VisibleChanged(object sender, EventArgs e)
         {
             if (!VerticalScrollBar.Visible)

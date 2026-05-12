@@ -98,33 +98,28 @@ namespace ExcelMacroAdd.BusinessLayer
             using (var unitOfWork = _unitOfWorkFactory.Create())
             {
                 var context = unitOfWork.Context;
-                var existingRecord = await context.NotPriceComponents
+                var existing = await context.NotPriceComponents
                     .FirstOrDefaultAsync(p => p.Article == request.Article);
 
-                if (existingRecord == null)
+                if (existing == null)
                 {
                     return null;
                 }
 
-                var updatedRecord = new NotPriceComponent
-                {
-                    Id = existingRecord.Id,
-                    IsValid = existingRecord.IsValid,
-                    Article = existingRecord.Article,
-                    Description = request.Description,
-                    MultiplicityId = await ResolveMultiplicityIdAsync(context, request.MultiplicityName),
-                    ProductVendorId = await ResolveProductVendorIdAsync(unitOfWork, request.ProductVendorName, createVendorIfMissing),
-                    Price = request.Price,
-                    Discount = request.Discount,
-                    DataRecord = CreateDataRecord(),
-                    Link = string.IsNullOrWhiteSpace(request.Link) ? existingRecord.Link : request.Link
-                };
+                existing.Description = request.Description;
+                existing.MultiplicityId = await ResolveMultiplicityIdAsync(context, request.MultiplicityName);
+                existing.ProductVendorId = await ResolveProductVendorIdAsync(unitOfWork, request.ProductVendorName, createVendorIfMissing);
+                existing.Price = request.Price;
+                existing.Discount = request.Discount;
+                existing.DataRecord = CreateDataRecord();
 
-                context.NotPriceComponents.Attach(updatedRecord);
-                context.Entry(updatedRecord).State = EntityState.Modified;
+                if (!string.IsNullOrWhiteSpace(request.Link))
+                {
+                    existing.Link = request.Link;
+                }
 
                 await unitOfWork.SaveChangesAsync();
-                return await ReloadRecordAsync(context, updatedRecord.Id);
+                return await ReloadRecordAsync(context, existing.Id);
             }
         }
 
@@ -137,7 +132,7 @@ namespace ExcelMacroAdd.BusinessLayer
 
             using (var unitOfWork = _unitOfWorkFactory.Create())
             {
-                var entity = await unitOfWork.Context.NotPriceComponents                   
+                var entity = await unitOfWork.Context.NotPriceComponents
                     .FirstOrDefaultAsync(p => p.Article == article);
 
                 if (entity == null)
@@ -145,7 +140,7 @@ namespace ExcelMacroAdd.BusinessLayer
                     return null;
                 }
 
-                entity.IsValid = status;               
+                entity.IsValid = status;
                 await unitOfWork.SaveChangesAsync();
                 return await ReloadRecordAsync(unitOfWork.Context, entity.Id);
             }
