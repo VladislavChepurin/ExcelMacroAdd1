@@ -255,6 +255,9 @@ namespace ExcelMacroAdd.Forms.ViewModels
                         string filePathWithoutStamp = Path.Combine(folderWithoutStamp, $"Паспорт {serialNumber.Replace("/", "_")}.docx");
                         document.SaveAs(filePathWithoutStamp);
 
+                        //Удаляем две последние страницы
+                        DeleteContentAfterLastPageBreak(document);
+
                         // Добавляем изображения в документ для версии с печатью
                         AddStampToDocument(document);
 
@@ -354,6 +357,52 @@ namespace ExcelMacroAdd.Forms.ViewModels
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext()); // Гарантирует выполнение в UI потоке
         }
+
+
+        /// <summary>
+        /// Удаляет две последние страницы
+        /// </summary>
+        /// <param name="document"></param>
+        /// <summary>
+        /// Ищет последний разрыв страницы (^m) или разрыва раздела (^b) и удаляет его вместе со всем содержимым после него.
+        /// Если разрыв не найден – ничего не удаляется.
+        /// </summary>
+        private void DeleteContentAfterLastPageBreak(Word.Document document)
+        {
+            Word.Range searchRange = null;
+            try
+            {
+                searchRange = document.Content;
+                searchRange.Find.ClearFormatting();
+
+                // Ищем последний разрыв страницы
+                searchRange.Find.Text = "^m";
+                searchRange.Find.Forward = false;
+                searchRange.Find.Execute();
+
+                if (!searchRange.Find.Found)
+                {
+                    // Если разрыв страницы не найден, ищем последний разрыв раздела
+                    searchRange.Find.Text = "^b";
+                    searchRange.Find.Forward = false;
+                    searchRange.Find.Execute();
+                }
+
+                if (searchRange.Find.Found)
+                {
+                    // Удаляем всё, начиная с найденного разрыва и до конца документа
+                    Word.Range deleteRange = document.Range(searchRange.Start, document.Content.End);
+                    deleteRange.Delete();
+                    Marshal.ReleaseComObject(deleteRange);
+                }
+            }
+            finally
+            {
+                if (searchRange != null)
+                    Marshal.ReleaseComObject(searchRange);
+            }
+        }
+
 
         /// <summary>
         /// Добавляет печать и подпись в документ Word как плавающие объекты поверх текста

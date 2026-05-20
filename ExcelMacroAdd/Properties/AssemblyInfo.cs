@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // общие сведения об этой сборке.
 [assembly: AssemblyTitle("ExcelMacroAdd")]
-[assembly: AssemblyDescription("Для получения разрешения на коммерческое использование необходимо прямое согласие автора и приобретение лицензии. Автор имеет право вносить изменения в функциональность программного обеспечения без уведомления пользователей.")]
+[assembly: AssemblyDescription("Данное программное обеспечение передается во временное пользование. Все права остаются за автором данного программного обеспечения. Автор имеет право вносить изменения в функциональность программного обеспечения без уведомления пользователей.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("vlad1988_1@mail.ru")]
 [assembly: AssemblyProduct("Набор расширений для Excel")]
@@ -32,6 +32,6 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.0.0")]
+[assembly: AssemblyVersion("3.0.1.0")]
+[assembly: AssemblyFileVersion("3.0.1.0")]
 [assembly: NeutralResourcesLanguage("")]
