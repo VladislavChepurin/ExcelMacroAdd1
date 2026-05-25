@@ -190,6 +190,8 @@ namespace ExcelMacroAdd.Forms.ViewModels
                                           + GetCellValue(currentRow, EnclosureDepthColumn);
                         secondWords = FuncReplace(designationOfLVSwitchgear ?? string.Empty); // ссылка на метод замены
                         mass = GetCellValueOrDefault(currentRow, MassColumn);
+                        if (string.IsNullOrWhiteSpace(mass))             
+                            mass = "_____";                   
                         manufacturingData = GetCellRawValue(currentRow, ManufacturingDataColumn);
                         serialNumber = GetCellValue(currentRow, SerialNumberColumn);
                         apparatusMounting = GetCellValue(currentRow, ApparatusMountingColumn);
@@ -689,6 +691,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             { "Корпус", "Корпуса"},
             { "Ящик", "Ящика"},
             { "Бокс", "Бокса"},
+            { "Сборка", "Сборки"},
             { "Панель", "Панели"},
             { "распределительный", "распределительного"},
             { "телекоммуникационный", "телекоммуникационного"},
@@ -699,6 +702,7 @@ namespace ExcelMacroAdd.Forms.ViewModels
             { "Термошкаф", "Термошкафа" },
             { "термошкаф", "термошкафа" }
         };
+
 
         /// <summary>
         /// Функция склонения слов

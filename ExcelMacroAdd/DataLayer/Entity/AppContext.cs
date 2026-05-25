@@ -46,10 +46,12 @@ namespace ExcelMacroAdd.DataLayer.Entity
             string fullDatabaseFilePath = Path.GetFullPath(databaseFilePath);
             var connectionStringBuilder = new SQLiteConnectionStringBuilder
             {
-                DataSource = fullDatabaseFilePath
+                DataSource = fullDatabaseFilePath,
+                FailIfMissing = true
             };
 
-            return new SQLiteConnection(connectionStringBuilder.ConnectionString);
+            // System.Data.SQLite custom parsing can mis-handle UNC paths.
+            return new SQLiteConnection(connectionStringBuilder.ConnectionString, parseViaFramework: true);
         }
     }
 }
