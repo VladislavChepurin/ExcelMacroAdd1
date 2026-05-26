@@ -9,6 +9,8 @@ namespace ExcelMacroAdd.DataLayer.Entity
     {
         public AppContext(string databaseFilePath) : base(CreateConnection(databaseFilePath), true)
         {
+            //Явный запрет Code First
+            Database.SetInitializer<AppContext>(null);
         }
 
         public DbSet<BoxBase> JornalNkus { get; set; }
